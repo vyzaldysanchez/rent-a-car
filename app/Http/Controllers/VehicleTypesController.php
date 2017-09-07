@@ -9,38 +9,47 @@ use Illuminate\Http\Request;
 
 class VehicleTypesController extends Controller
 {
+    /**
+     * @var \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    private $response;
+
+    public function __construct()
+    {
+        $this->response = response();
+    }
+
     public function index(): JsonResponse
     {
-        $response = response();
         $types = VehicleType::all();
 
         if ($types->all()) {
-            return $response->json($types, HttpStatus::SUCCESS);
+            return $this->response->json($types, HttpStatus::SUCCESS);
         }
 
-        return $response->json(null, HttpStatus::NO_CONTENT);
+        return $this->response->json(null, HttpStatus::NO_CONTENT);
     }
 
     public function display(VehicleType $vehicleType): JsonResponse
     {
-        return response()->json($vehicleType, HttpStatus::SUCCESS);
+        return $this->response->json($vehicleType, HttpStatus::SUCCESS);
     }
 
     public function store(Request $request): JsonResponse
     {
         $vehicleType = VehicleType::create($request->all());
-        return response()->json($vehicleType, HttpStatus::CREATED);
+        return $this->response->json($vehicleType, HttpStatus::CREATED);
     }
 
     public function update(Request $request, VehicleType $vehicleType): JsonResponse
     {
         $vehicleType->update($request->all());
-        return response()->json($vehicleType, HttpStatus::SUCCESS);
+        return $this->response->json($vehicleType, HttpStatus::SUCCESS);
     }
 
     public function delete(VehicleType $vehicleType): JsonResponse
     {
         $vehicleType->delete();
-        return response()->json(null, HttpStatus::NO_CONTENT);
+        return $this->response->json(null, HttpStatus::NO_CONTENT);
     }
 }
