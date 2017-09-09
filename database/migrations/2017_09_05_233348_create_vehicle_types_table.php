@@ -16,13 +16,9 @@ class CreateVehicleTypesTable extends Migration
         Schema::create('vehicle_types', function (Blueprint $table) {
             $table->increments('id');
             $table->text('description');
-            $table->text('image_path');
+            $table->text('image_url');
             $table->enum('state', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
-        });
-
-        Schema::table('vehicle_types', function (Blueprint $table) {
-            $table->renameColumn('image_path', 'image_url');
         });
     }
 

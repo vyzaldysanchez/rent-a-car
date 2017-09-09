@@ -15,10 +15,14 @@ class CreateVehicleModelsTable extends Migration
     {
         Schema::create('vehicle_models', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('vehicle_brand_id');
             $table->text('description');
             $table->enum('state', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+        });
+
+        Schema::table('vehicle_models', function (Blueprint $table) {
+            $table->integer('vehicle_brand_id')->unsigned();
+            $table->foreign(['vehicle_brand_id'])->references('id')->on('vehicle_brands');
         });
     }
 
