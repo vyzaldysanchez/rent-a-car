@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('vehicles/', 'VehiclesController@index');
+Route::get('vehicles/{vehicle}', 'VehiclesController@display');
+Route::post('vehicles', 'VehiclesController@store');
+Route::put('vehicles/{vehicle}', 'VehiclesController@update');
+Route::delete('vehicles/{vehicle}', 'VehiclesController@delete');
+
 Route::get('vehicles/types', 'VehicleTypesController@index');
 Route::get('vehicles/types/{vehicleType}', 'VehicleTypesController@display');
 Route::post('vehicles/types', 'VehicleTypesController@store');
