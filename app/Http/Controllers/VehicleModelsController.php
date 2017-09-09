@@ -30,26 +30,26 @@ class VehicleModelsController extends Controller
         return $this->response->json(null, HttpStatus::NO_CONTENT);
     }
 
-    public function display(VehicleModel $vehicleType): JsonResponse
+    public function display(VehicleModel $model): JsonResponse
     {
-        return $this->response->json($vehicleType, HttpStatus::SUCCESS);
+        return $this->response->json($model, HttpStatus::SUCCESS);
     }
 
     public function store(Request $request): JsonResponse
     {
-        $vehicleType = VehicleBrand::create($request->all());
-        return $this->response->json($vehicleType, HttpStatus::CREATED);
+        $model = VehicleBrand::create($request->all());
+        return $this->response->json($model, HttpStatus::CREATED);
     }
 
-    public function update(Request $request, VehicleModel $vehicleType): JsonResponse
+    public function update(Request $request, VehicleModel $model): JsonResponse
     {
-        $vehicleType->update($request->all());
-        return $this->response->json($vehicleType, HttpStatus::SUCCESS);
+        $model->update($request->all());
+        return $this->response->json($model, HttpStatus::SUCCESS);
     }
 
-    public function delete(VehicleModel $vehicleType): JsonResponse
+    public function delete(VehicleModel $model): JsonResponse
     {
-        $vehicleType->delete();
+        $model->delete();
         return $this->response->json(null, HttpStatus::NO_CONTENT);
     }
 }
