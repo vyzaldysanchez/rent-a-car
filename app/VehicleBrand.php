@@ -33,6 +33,10 @@ class VehicleBrand extends Model
      * @var string
      */
     protected $state;
+    /**
+     * @var string
+     */
+    protected $image_url;
 
-    protected $fillable = ['description', 'imageUrl'];
+    protected $fillable = ['description', 'image_url'];
 }
