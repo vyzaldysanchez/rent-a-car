@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
 
 class VehicleBrandTableSeeder extends Seeder
 {
@@ -14,20 +13,10 @@ class VehicleBrandTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         \App\VehicleBrand::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $faker = \Faker\Factory::create();
-
-        $brandsCreated = 0;
-
-        for (; $brandsCreated < static::MAX_TYPES_TO_CREATE; $brandsCreated++) {
-            $currentDate = Carbon::now();
-            \App\VehicleBrand::create([
-                'description'=> $faker->text(50),
-                'image_url' => $faker->imageUrl(),
-                'created_at' => $currentDate,
-                'updated_at' => $currentDate,
-            ]);
-        }
+        factory(\App\VehicleBrand::class, 10)->create();
     }
 }
