@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utils\HttpStatus;
-use App\VehicleType;
+use App\Models\VehicleType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

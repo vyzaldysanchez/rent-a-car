@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utils\HttpStatus;
-use App\VehicleBrand;
+use App\Models\VehicleBrand;
 use Illuminate\Http\JsonResponse;
 
 class VehicleBrandsController extends Controller

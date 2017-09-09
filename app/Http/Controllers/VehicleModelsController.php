@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\VehicleModel;
+use App\Http\Utils\HttpStatus;
+use App\Models\VehicleModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,10 +21,10 @@ class VehicleModelsController extends Controller
 
     public function index(): JsonResponse
     {
-        $brands = VehicleBrand::all();
+        $models = VehicleModel::all();
 
-        if ($brands->all()) {
-            return $this->response->json($brands, HttpStatus::SUCCESS);
+        if ($models->all()) {
+            return $this->response->json($models, HttpStatus::SUCCESS);
         }
 
         return $this->response->json(null, HttpStatus::NO_CONTENT);
