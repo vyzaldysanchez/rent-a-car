@@ -16,3 +16,27 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('vehicles/types', 'VehicleTypesController@index');
+Route::get('vehicles/types/{vehicleType}', 'VehicleTypesController@display');
+Route::post('vehicles/types', 'VehicleTypesController@store');
+Route::put('vehicles/types/{vehicleType}', 'VehicleTypesController@update');
+Route::delete('vehicles/types/{vehicleType}', 'VehicleTypesController@delete');
+
+Route::get('vehicles/brands', 'VehicleBrandsController@index');
+Route::get('vehicles/brands/{brand}', 'VehicleBrandsController@display');
+Route::post('vehicles/brands', 'VehicleBrandsController@store');
+Route::put('vehicles/brands/{brand}', 'VehicleBrandsController@update');
+Route::delete('vehicles/brands/{brand}', 'VehicleBrandsController@delete');
+
+Route::get('vehicles/models', 'VehicleModelsController@index');
+Route::get('vehicles/models/{model}', 'VehicleModelsController@display');
+Route::post('vehicles/models', 'VehicleModelsController@store');
+Route::put('vehicles/models/{model}', 'VehicleModelsController@update');
+Route::delete('vehicles/models/{model}', 'VehicleModelsController@delete');
+
+Route::get('vehicles/fuels', 'FuelsController@index');
+Route::get('vehicles/fuels/{fuel}', 'FuelsController@display');
+Route::post('vehicles/fuels', 'FuelsController@store');
+Route::put('vehicles/fuels/{fuel}', 'FuelsController@update');
+Route::delete('vehicles/fuels/{fuel}', 'FuelsController@delete');

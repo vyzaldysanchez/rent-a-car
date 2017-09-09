@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\CommonStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +17,9 @@ class CreateVehicleTypesTable extends Migration
         Schema::create('vehicle_types', function (Blueprint $table) {
             $table->increments('id');
             $table->text('description');
-            $table->text('image_path');
-            $table->enum('state', ['ACTIVE', 'INACTIVE']);
+            $table->text('image_url');
+            $table->enum('state', [CommonStatus::ACTIVE, CommonStatus::INACTIVE])
+                ->default(CommonStatus::ACTIVE);
             $table->timestamps();
         });
     }
