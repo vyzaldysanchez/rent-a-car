@@ -23,7 +23,7 @@ class VehicleTypesController extends Controller
     {
         $types = VehicleType::all();
 
-        if ($types->all()) {
+        if ($types->count()) {
             return $this->response->json($types, HttpStatus::SUCCESS);
         }
 

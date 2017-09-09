@@ -23,7 +23,7 @@ class VehicleModelsController extends Controller
     {
         $models = VehicleModel::all();
 
-        if ($models->all()) {
+        if ($models->count()) {
             return $this->response->json($models, HttpStatus::SUCCESS);
         }
 

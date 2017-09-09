@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Utils\HttpStatus;
 use App\Models\VehicleBrand;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class VehicleBrandsController extends Controller
 {
@@ -22,7 +23,7 @@ class VehicleBrandsController extends Controller
     {
         $brands = VehicleBrand::all();
 
-        if ($brands->all()) {
+        if ($brands->count()) {
             return $this->response->json($brands, HttpStatus::SUCCESS);
         }
 
