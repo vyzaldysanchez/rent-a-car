@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
-$factory->define(\App\VehicleModel::class, function (Faker $faker) {
+$factory->define(\App\Models\VehicleModel::class, function (Faker $faker) {
     $currentDate = Carbon::now();
 
     return [

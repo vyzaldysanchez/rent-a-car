@@ -1,11 +1,10 @@
 <?php
 
+use App\Models\VehicleType;
 use Illuminate\Database\Seeder;
 
 class VehicleTypesTableSeeder extends Seeder
 {
-    private const MAX_TYPES_TO_CREATE = 10;
-
     /**
      * Run the database seeds.
      *
@@ -13,8 +12,8 @@ class VehicleTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\VehicleType::truncate();
+        VehicleType::truncate();
 
-        factory(\App\VehicleType::class, 10)->create();
+        factory(VehicleType::class, 10)->create();
     }
 }
