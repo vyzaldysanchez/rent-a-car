@@ -34,3 +34,9 @@ Route::get('vehicles/models/{model}', 'VehicleModelsController@display');
 Route::post('vehicles/models', 'VehicleModelsController@store');
 Route::put('vehicles/models/{model}', 'VehicleModelsController@update');
 Route::delete('vehicles/models/{model}', 'VehicleModelsController@delete');
+
+Route::get('vehicles/fuels', 'FuelsController@index');
+Route::get('vehicles/fuels/{fuel}', 'FuelsController@display');
+Route::post('vehicles/fuels', 'FuelsController@store');
+Route::put('vehicles/fuels/{fuel}', 'FuelsController@update');
+Route::delete('vehicles/fuels/{fuel}', 'FuelsController@delete');
