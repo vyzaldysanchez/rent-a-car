@@ -28,3 +28,9 @@ Route::get('vehicles/brands/{brand}', 'VehicleBrandsController@display');
 Route::post('vehicles/brands', 'VehicleBrandsController@store');
 Route::put('vehicles/brands/{brand}', 'VehicleBrandsController@update');
 Route::delete('vehicles/brands/{brand}', 'VehicleBrandsController@delete');
+
+Route::get('vehicles/brands', 'VehicleModelsController@index');
+Route::get('vehicles/brands/{brand}', 'VehicleModelsController@display');
+Route::post('vehicles/brands', 'VehicleModelsController@store');
+Route::put('vehicles/brands/{brand}', 'VehicleModelsController@update');
+Route::delete('vehicles/brands/{brand}', 'VehicleModelsController@delete');
