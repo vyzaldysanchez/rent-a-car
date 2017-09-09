@@ -20,6 +20,10 @@ class CreateVehicleTypesTable extends Migration
             $table->enum('state', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
+
+        Schema::table('vehicle_types', function (Blueprint $table) {
+            $table->renameColumn('image_path', 'image_url');
+        });
     }
 
     /**
