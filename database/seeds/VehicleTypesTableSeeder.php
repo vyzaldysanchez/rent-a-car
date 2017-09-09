@@ -15,15 +15,6 @@ class VehicleTypesTableSeeder extends Seeder
     {
         \App\VehicleType::truncate();
 
-        $faker = \Faker\Factory::create();
-
-        $vehicleTypesCreated = 0;
-        for (; $vehicleTypesCreated < static::MAX_TYPES_TO_CREATE; $vehicleTypesCreated++) {
-            \App\VehicleType::create([
-                'description' => $faker->text(50),
-                'image_path' => $faker->imageUrl(),
-                'state' => 'ACTIVE'
-            ]);
-        }
+        factory(\App\VehicleType::class, 10)->create();
     }
 }
