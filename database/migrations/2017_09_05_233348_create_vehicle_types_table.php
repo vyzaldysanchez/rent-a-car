@@ -17,7 +17,7 @@ class CreateVehicleTypesTable extends Migration
             $table->increments('id');
             $table->text('description');
             $table->text('image_path');
-            $table->enum('state', ['ACTIVE', 'INACTIVE']);
+            $table->enum('state', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
     }
