@@ -1,0 +1,45 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class VehicleModel
+ * @package App
+ * @property int $id
+ * @property int $vehicle_brand_id
+ * @property string $description
+ * @property string $state
+ * @property string $created_at
+ * @property string $updated_at
+ */
+class VehicleModel extends Model
+{
+    /**
+     * @var int
+     */
+    protected $id;
+    /**
+     * @var int
+     */
+    protected $vehicle_brand_id;
+    /**
+     * @var string
+     */
+    protected $description;
+    /**
+     * @var string
+     */
+    protected $state;
+    /**
+     * @var string
+     */
+    protected $created_at;
+    /**
+     * @var string
+     */
+    protected $updated_at;
+
+    protected $fillable = ['vehicle_brand_id', 'description', 'state'];
+}
