@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class VehicleBrandTableSeeder extends Seeder
 {
@@ -20,9 +21,12 @@ class VehicleBrandTableSeeder extends Seeder
         $brandsCreated = 0;
 
         for (; $brandsCreated < static::MAX_TYPES_TO_CREATE; $brandsCreated++) {
+            $currentDate = Carbon::now();
             \App\VehicleBrand::create([
                 'description'=> $faker->text(50),
-                'image_url' => $faker->imageUrl()
+                'image_url' => $faker->imageUrl(),
+                'created_at' => $currentDate,
+                'updated_at' => $currentDate,
             ]);
         }
     }
