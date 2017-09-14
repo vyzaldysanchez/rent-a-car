@@ -41,7 +41,7 @@ class Client extends Model
      */
     protected $credit_limit;
     /**
-     * @var id
+     * @var int
      */
     protected $person_type_id;
     /**
