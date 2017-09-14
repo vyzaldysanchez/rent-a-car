@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $identification_number
  * @property string $credit_card_number
- * @property float $credit_limit
- * @property int $person_type_id
+ * @property float  $credit_limit
+ * @property int    $person_type_id
  * @property string $state
  * @property string $created_at
  * @property string $updated_at
@@ -57,5 +57,12 @@ class Client extends Model
      */
     protected $updated_at;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'identification_number',
+        'credit_card_number',
+        'credit_limit',
+        'state',
+        'person_type_id',
+    ];
 }
