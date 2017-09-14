@@ -17,9 +17,9 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 250);
-            $table->string('identification_number', 15);
+            $table->string('identification_number', 11)->unique();
             $table->string('credit_card_number', 19);
-            $table->float('credit_limit', 10, 2);
+            $table->float('credit_limit', 14, 2);
 
             $table->integer('person_type_id')->unsigned()->default(0);
             $table->foreign('person_type_id')->references('id')->on('person_types');

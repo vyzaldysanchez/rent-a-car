@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePersonTypesTable extends Migration
 {
@@ -15,7 +15,7 @@ class CreatePersonTypesTable extends Migration
     {
         Schema::create('person_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 200);
+            $table->string('name', 200)->default(\App\Models\PersonType::PHYSICAL_TYPE);
             $table->timestamps();
         });
     }
