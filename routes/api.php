@@ -58,3 +58,9 @@ Route::get('clients/{client}', 'ClientsController@display');
 Route::post('clients', 'ClientsController@store');
 Route::put('clients/{client}', 'ClientsController@update');
 Route::delete('clients/{client}', 'ClientsController@delete');
+
+Route::get('employees', 'EmployeesController@index');
+Route::get('employees/{employee}', 'EmployeesController@display');
+Route::post('employees', 'EmployeesController@store');
+Route::put('employees/{employee}', 'EmployeesController@update');
+Route::delete('employees/{employee}', 'EmployeesController@delete');
