@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Enums\CommonStatus;
+use App\Models\Enums\EmployeeWorkSchedule;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->increments('id');
             $table->string('name', 45);
             $table->string('identification_card', 11);
-            $table->enum('work_schedule', [])->default('');//:TODO create schedule enum
+            $table->enum('work_schedule', EmployeeWorkSchedule::getAll());//:TODO create schedule enum
             $table->float('commission_percent', 3)->default(0.00);
             $table->date('admission_date');
             $table->enum('state', CommonStatus::getAll())->default(CommonStatus::INACTIVE);
