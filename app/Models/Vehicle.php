@@ -9,23 +9,35 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  *
  * @property int $id
- * @property int $description
- * @property int $chassis_number
- * @property int $engine_number
- * @property int $plate_number
+ * @property string $description
+ * @property string $chassis_number
+ * @property string $engine_number
+ * @property string $plate_number
  * @property int $vehicle_type_id
  * @property int $vehicle_brand_id
  * @property int $vehicle_model_id
  * @property int $fuel_id
- * @property int $state
- * @property int $created_at
- * @property int $updated_at
+ * @property string $state
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Vehicle extends Model
 {
     const CHASSIS_LENGTH = 17;
     const ENGINE_LENGTH = 11;
     const PLATE_LENGTH = 8;
+
+    protected $fillable = [
+        'description',
+        'chassis_number',
+        'engine_number',
+        'plate_number',
+        'vehicle_type_id',
+        'vehicle_brand_id',
+        'vehicle_model_id',
+        'fuel_id',
+        'state'
+    ];
 
     public function type(): VehicleType
     {
