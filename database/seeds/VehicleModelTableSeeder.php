@@ -18,9 +18,6 @@ class VehicleModelTableSeeder extends Seeder
         VehicleModel::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $brand = VehicleBrand::all('id')->first();
-
-        factory(VehicleModel::class, 10)
-            ->create(['vehicle_brand_id' => $brand->id]);
+        factory(VehicleModel::class, 10)->create();
     }
 }
