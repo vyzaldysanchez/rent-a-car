@@ -29,21 +29,21 @@ class Vehicle extends Model
 
     public function type(): VehicleType
     {
-        return $this->belongsTo('App\Models\VehicleType');
+        return $this->hasOne('App\Models\VehicleType');
     }
 
     public function brand(): VehicleBrand
     {
-        return $this->belongsTo('App\Models\VehicleBrand');
+        return $this->hasOne('App\Models\VehicleBrand');
     }
 
     public function model(): VehicleModel
     {
-        return $this->belongsTo('App\Models\VehicleModel');
+        return $this->hasOne('App\Models\VehicleModel');
     }
 
     public function fuel(): Fuel
     {
-        return $this->belongsTo('App\Models\Fuel');
+        return $this->hasOne('App\Models\Fuel');
     }
 }
