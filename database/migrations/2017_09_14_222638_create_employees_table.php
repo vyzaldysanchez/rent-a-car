@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 45);
-            $table->string('identification_card', 11);
+            $table->string('identification_card', 11)->unique();
             $table->enum('work_schedule', EmployeeWorkSchedule::getAll());
             $table->float('commission_percent', 3)->default(0.00);
             $table->date('admission_date');
