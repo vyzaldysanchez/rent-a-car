@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\{
-    VehicleBrand, VehicleModel
-};
+use App\Models\Enums\UserRole;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class VehicleModelTableSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +14,12 @@ class VehicleModelTableSeeder extends Seeder
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        VehicleModel::truncate();
+        User::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        factory(VehicleModel::class, 10)->create();
+        factory(User::class, 1)->create([
+            'email' => 'admin@rent-a-car.net',
+            'role' => UserRole::ADMIN
+        ]);
     }
 }
