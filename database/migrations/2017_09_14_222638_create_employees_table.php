@@ -23,6 +23,10 @@ class CreateEmployeesTable extends Migration
             $table->float('commission_percent', 3)->default(0.00);
             $table->date('admission_date');
             $table->enum('state', CommonStatus::getAll())->default(CommonStatus::INACTIVE);
+
+            $table->integer('user_id')->unsigned()->default(0);
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->timestamps();
         });
     }
