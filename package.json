@@ -17,5 +17,12 @@
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
         "vue": "^2.1.10"
+    },
+    "dependencies": {
+        "bootstrap": "^3.3.7",
+        "chartist": "^0.11.0",
+        "es6-promise": "^4.1.1",
+        "v-click-outside": "^0.1.1",
+        "vue-router": "^2.7.0"
     }
 }
