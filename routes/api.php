@@ -64,3 +64,9 @@ Route::get('employees/{employee}', 'EmployeesController@display');
 Route::post('employees', 'EmployeesController@store');
 Route::put('employees/{employee}', 'EmployeesController@update');
 Route::delete('employees/{employee}', 'EmployeesController@delete');
+
+Route::get('users', 'UsersController@index');
+Route::get('users/{user}', 'UsersController@display');
+Route::post('users', 'UsersController@store');
+Route::put('users/{user}', 'UsersController@update');
+Route::delete('users/{user}', 'UsersController@delete');
