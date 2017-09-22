@@ -24,7 +24,7 @@
   }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   $bg-nude: #f4f3ef !default;
   
   .moving-arrow {

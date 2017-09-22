@@ -918,7 +918,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_v_click_outside__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_v_click_outside___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_v_click_outside__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gloablComponents__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globalComponents__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_UIComponents_NotificationPlugin__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_UIComponents_SidebarPlugin__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__App__ = __webpack_require__(43);
@@ -950,7 +950,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // plugin setup
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3__gloablComponents__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3__globalComponents__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_v_click_outside___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4__components_UIComponents_NotificationPlugin__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5__components_UIComponents_SidebarPlugin__["a" /* default */]);
@@ -14426,7 +14426,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -14475,101 +14475,103 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    type: {
-      type: String,
-      default: 'sidebar',
-      validator: function validator(value) {
-        var acceptedValues = ['sidebar', 'navbar'];
-        return acceptedValues.indexOf(value) !== -1;
-      }
-    },
-    backgroundColor: {
-      type: String,
-      default: 'black',
-      validator: function validator(value) {
-        var acceptedValues = ['white', 'black', 'darkblue'];
-        return acceptedValues.indexOf(value) !== -1;
-      }
-    },
-    activeColor: {
-      type: String,
-      default: 'success',
-      validator: function validator(value) {
-        var acceptedValues = ['primary', 'info', 'success', 'warning', 'danger'];
-        return acceptedValues.indexOf(value) !== -1;
-      }
-    },
-    sidebarLinks: {
-      type: Array,
-      default: function _default() {
-        return [];
-      }
-    }
-  },
-  components: {
-    MovingArrow: __WEBPACK_IMPORTED_MODULE_0__MovingArrow_vue___default.a
-  },
-  computed: {
-    sidebarClasses: function sidebarClasses() {
-      if (this.type === 'sidebar') {
-        return 'sidebar';
-      } else {
-        return 'collapse navbar-collapse off-canvas-sidebar';
-      }
-    },
-    navClasses: function navClasses() {
-      if (this.type === 'sidebar') {
-        return 'nav';
-      } else {
-        return 'nav navbar-nav';
-      }
-    },
-
-    /**
-     * Styles to animate the arrow near the current active sidebar link
-     * @returns {{transform: string}}
-     */
-    arrowMovePx: function arrowMovePx() {
-      return this.linkHeight * this.activeLinkIndex;
-    }
-  },
-  data: function data() {
-    return {
-      linkHeight: 60,
-      activeLinkIndex: 0,
-
-      windowWidth: 0,
-      isWindows: false,
-      hasAutoHeight: false
-    };
-  },
-
-  methods: {
-    findActiveLink: function findActiveLink() {
-      var _this = this;
-
-      this.sidebarLinks.find(function (element, index) {
-        var found = element.path === _this.$route.path;
-        if (found) {
-          _this.activeLinkIndex = index;
+    props: {
+        type: {
+            type: String,
+            default: 'sidebar',
+            validator: function validator(value) {
+                var acceptedValues = ['sidebar', 'navbar'];
+                return acceptedValues.indexOf(value) !== -1;
+            }
+        },
+        backgroundColor: {
+            type: String,
+            default: 'black',
+            validator: function validator(value) {
+                var acceptedValues = ['white', 'black', 'darkblue'];
+                return acceptedValues.indexOf(value) !== -1;
+            }
+        },
+        activeColor: {
+            type: String,
+            default: 'success',
+            validator: function validator(value) {
+                var acceptedValues = ['primary', 'info', 'success', 'warning', 'danger'];
+                return acceptedValues.indexOf(value) !== -1;
+            }
+        },
+        sidebarLinks: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
         }
-        return found;
-      });
-    }
-  },
-  mounted: function mounted() {
-    this.findActiveLink();
-  },
+    },
+    components: {
+        MovingArrow: __WEBPACK_IMPORTED_MODULE_0__MovingArrow_vue___default.a
+    },
+    computed: {
+        sidebarClasses: function sidebarClasses() {
+            if (this.type === 'sidebar') {
+                return 'sidebar';
+            } else {
+                return 'collapse navbar-collapse off-canvas-sidebar';
+            }
+        },
+        navClasses: function navClasses() {
+            if (this.type === 'sidebar') {
+                return 'nav';
+            } else {
+                return 'nav navbar-nav';
+            }
+        },
 
-  watch: {
-    $route: function $route(newRoute, oldRoute) {
-      this.findActiveLink();
+        /**
+         * Styles to animate the arrow near the current active sidebar link
+         * @returns {{transform: string}}
+         */
+        arrowMovePx: function arrowMovePx() {
+            return this.linkHeight * this.activeLinkIndex;
+        }
+    },
+    data: function data() {
+        return {
+            linkHeight: 60,
+            activeLinkIndex: 0,
+
+            windowWidth: 0,
+            isWindows: false,
+            hasAutoHeight: false
+        };
+    },
+
+    methods: {
+        findActiveLink: function findActiveLink() {
+            var _this = this;
+
+            this.sidebarLinks.find(function (element, index) {
+                var found = element.path === _this.$route.path;
+                if (found) {
+                    _this.activeLinkIndex = index;
+                }
+                return found;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.findActiveLink();
+    },
+
+    watch: {
+        $route: function $route(newRoute, oldRoute) {
+            this.findActiveLink();
+        }
     }
-  }
 });
 
 /***/ }),
@@ -14725,6 +14727,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: _vm.navClasses
   }, _vm._l((_vm.sidebarLinks), function(link, index) {
     return _c('router-link', {
+      key: index,
       ref: link.name,
       refInFor: true,
       attrs: {
@@ -14733,7 +14736,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('a', [_c('i', {
       class: link.icon
-    }), _vm._v(" "), _c('p', [_vm._v(_vm._s(link.name) + "\n          ")])])])
+    }), _vm._v(" "), _c('p', [_vm._v(_vm._s(link.name) + "\n                    ")])])])
   })), _vm._v(" "), _c('moving-arrow', {
     attrs: {
       "move-y": _vm.arrowMovePx
@@ -14754,7 +14757,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "src": "/img/vue-logo.png",
       "alt": ""
     }
-  })]), _vm._v("\n        Paper Dashboard\n      ")])])
+  })]), _vm._v("\n                Paper Dashboard\n            ")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -15490,7 +15493,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -15501,7 +15504,6 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -15548,15 +15550,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-heart heart"
   }), _vm._v(" by\n      "), _c('a', {
     attrs: {
-      "href": "https://github.com/cristijora",
+      "href": "https://github.com/vyzaldySanchez",
       "target": "_blank"
     }
-  }, [_vm._v("Cristi Jora")]), _vm._v(".\n      Designed by "), _c('a', {
-    attrs: {
-      "href": "https://www.creative-tim.com/?ref=pdf-vuejs",
-      "target": "_blank"
-    }
-  }, [_vm._v("Creative Tim")]), _vm._v(".\n    ")])
+  }, [_vm._v("Vyzaldy Sanchez")]), _vm._v(".\n    ")])
 }]}
 module.exports.render._withStripped = true
 if (false) {

@@ -49,13 +49,13 @@
                 return `alert-${this.type}`
             },
             customPosition() {
-                let initialMargin = 20
-                let alertHeight = 90
+                let initialMargin = 20,
+                    alertHeight = 90;
                 let sameAlertsCount = this.$notifications.state.filter((alert) => {
                     return alert.horizontalAlign === this.horizontalAlign && alert.verticalAlign === this.verticalAlign
-                }).length
-                let pixels = (sameAlertsCount - 1) * alertHeight + initialMargin
-                let styles = {}
+                }).length;
+                let pixels = (sameAlertsCount - 1) * alertHeight + initialMargin;
+                let styles = {};
                 if (this.verticalAlign === 'top') {
                     styles.top = `${pixels}px`
                 } else {
