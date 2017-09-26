@@ -5,10 +5,11 @@ import vClickOutside from 'v-click-outside'
 import GlobalComponents from './globalComponents'
 import Notifications from './components/UIComponents/NotificationPlugin'
 import SideBar from './components/UIComponents/SidebarPlugin'
-import App from './App'
+import App from './App.vue'
 // router setup
 import routes from './routes/routes'
 // library imports
+import localforage from 'localforage'
 import Chartist from 'chartist'
 import 'bootstrap/dist/css/bootstrap.css'
 import './../sass/paper-dashboard.scss'
@@ -21,10 +22,25 @@ Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
 
+// Storage setup
+localforage.config({
+    name: 'vy-rent-car',
+});
+
 // configure router
 const router = new VueRouter({
     routes, // short for routes: routes
     linkActiveClass: 'active'
+});
+
+router.beforeEach((to, from, next) => {
+    localforage.getItem('current-user').then(user => {
+        if (user || to.fullPath === '/user/login') {
+            next();
+        } else {
+            next({path: '/user/login'});
+        }
+    });
 });
 
 // global library setup
@@ -40,6 +56,6 @@ new Vue({
     render: h => h(App),
     router,
     data: {
-        Chartist: Chartist
+        Chartist
     }
 });
