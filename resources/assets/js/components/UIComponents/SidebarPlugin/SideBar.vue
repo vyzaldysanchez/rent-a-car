@@ -11,7 +11,7 @@
                     <div class="logo-img">
                         <img src="/img/vue-logo.png" alt="">
                     </div>
-                    Paper Dashboard
+                    {{userName}}
                 </a>
             </div>
             <slot>
@@ -45,7 +45,7 @@
                 default: 'sidebar',
                 validator: (value) => {
                     let acceptedValues = ['sidebar', 'navbar'];
-                    return acceptedValues.indexOf(value) !== -1
+                    return acceptedValues.indexOf(value) !== -1;
                 }
             },
             backgroundColor: {
@@ -53,7 +53,7 @@
                 default: 'black',
                 validator: (value) => {
                     let acceptedValues = ['white', 'black', 'darkblue'];
-                    return acceptedValues.indexOf(value) !== -1
+                    return acceptedValues.indexOf(value) !== -1;
                 }
             },
             activeColor: {
@@ -61,12 +61,16 @@
                 default: 'success',
                 validator: (value) => {
                     let acceptedValues = ['primary', 'info', 'success', 'warning', 'danger'];
-                    return acceptedValues.indexOf(value) !== -1
+                    return acceptedValues.indexOf(value) !== -1;
                 }
             },
             sidebarLinks: {
                 type: Array,
                 default: () => []
+            },
+            userName: {
+                type: String,
+                default: () => ''
             }
         },
         components: {
@@ -75,14 +79,14 @@
         computed: {
             sidebarClasses() {
                 if (this.type === 'sidebar') {
-                    return 'sidebar'
+                    return 'sidebar';
                 }
 
-                return 'collapse navbar-collapse off-canvas-sidebar'
+                return 'collapse navbar-collapse off-canvas-sidebar';
             },
             navClasses() {
                 if (this.type === 'sidebar') {
-                    return 'nav'
+                    return 'nav';
                 }
 
                 return 'nav navbar-nav';
@@ -92,7 +96,7 @@
              * @returns {{transform: string}}
              */
             arrowMovePx() {
-                return this.linkHeight * this.activeLinkIndex
+                return this.linkHeight * this.activeLinkIndex;
             }
         },
         data() {
@@ -110,18 +114,18 @@
                 this.sidebarLinks.find((element, index) => {
                     let found = element.path === this.$route.path;
                     if (found) {
-                        this.activeLinkIndex = index
+                        this.activeLinkIndex = index;
                     }
-                    return found
+                    return found;
                 })
             }
         },
         mounted() {
-            this.findActiveLink()
+            this.findActiveLink();
         },
         watch: {
             $route: function (newRoute, oldRoute) {
-                this.findActiveLink()
+                this.findActiveLink();
             }
         }
     }
