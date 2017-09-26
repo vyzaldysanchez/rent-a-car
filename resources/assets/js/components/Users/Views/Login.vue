@@ -45,7 +45,7 @@
     import userService from '../../../services/user.service';
 
     const LOGIN_TEXT = 'Login',
-        LOADING_TEXT = '';
+        LOADING_TEXT = 'Loading...';
 
     export default {
         components: {
