@@ -37,4 +37,9 @@ class Controller extends BaseController
     {
         return $this->response->json($data, HttpStatus::CREATED);
     }
+
+    protected function unauthorized(): JsonResponse
+    {
+        return $this->response->json(null, HttpStatus::UNAUTHORIZED);
+    }
 }
