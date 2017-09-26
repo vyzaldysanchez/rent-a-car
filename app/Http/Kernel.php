@@ -3,7 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\{
-    Cors, EncryptCookies, RedirectIfAuthenticated, TrimStrings, TrustProxies, VerifyCsrfToken
+    Cors, EncryptCookies, RedirectIfAuthenticated, TrimStrings, TrustProxies
 };
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
@@ -48,7 +48,6 @@ class Kernel extends HttpKernel
             StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
             SubstituteBindings::class,
         ],
         'api' => [
