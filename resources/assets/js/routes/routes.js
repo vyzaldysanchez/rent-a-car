@@ -1,6 +1,5 @@
 import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
 import LoginLayout from '../components/Users/Layout/LoginLayout.vue'
-
 // GeneralViews
 import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 // Admin pages
@@ -13,7 +12,7 @@ import Typography from '../components/Dashboard/Views/Typography.vue'
 import TableList from '../components/Dashboard/Views/TableList.vue'
 import Login from '../components/Users/Views/Login.vue'
 import localforage from 'localforage'
-import {AUTH_USER_KEY} from '../services/user.service'
+import userService, {AUTH_USER_KEY} from '../services/user.service'
 
 const routes = [
     {
@@ -32,6 +31,14 @@ const routes = [
                             next();
                         }
                     });
+                }
+            },
+            {
+                path: 'logout',
+                name: 'logout',
+                beforeEnter: (to, from, next) => {
+                    userService.logout()
+                        .then(() => next({path: '/user/login'}));
                 }
             }
         ]

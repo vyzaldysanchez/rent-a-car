@@ -41,4 +41,13 @@ class LoginController extends Controller
     {
         return $this->success($user);
     }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->noContent();
+    }
 }

@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware('web')->group(function () {
     Route::post('auth/login', 'Auth\LoginController@login');
+    Route::post('auth/logout', 'Auth\LoginController@logout');
 
     Route::get('vehicles/', 'VehiclesController@index');
     Route::get('vehicles/{vehicle}', 'VehiclesController@display');
