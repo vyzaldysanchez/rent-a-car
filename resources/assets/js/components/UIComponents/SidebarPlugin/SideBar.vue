@@ -9,7 +9,7 @@
             <div class="logo">
                 <a href="#" class="simple-text">
                     <div class="logo-img">
-                        <img src="/img/vue-logo.png" alt="">
+                        <i class="fa fa-base fa-user-o"></i>
                     </div>
                     {{userName}}
                 </a>
@@ -131,6 +131,11 @@
     }
 
 </script>
-<style>
-
+<style scoped lang="scss">
+    @import "../../../../sass/variables";
+    .logo-img {
+        i {
+            color: $brand-black;
+        }
+    }
 </style>
