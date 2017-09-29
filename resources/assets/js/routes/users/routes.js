@@ -1,5 +1,5 @@
-import LoginLayout from '../../components/Users/Layout/LoginLayout.vue'
-import Login from '../../components/Users/Views/Login.vue'
+import LoginLayout from '../../components/Dashboard/Users/Layout/LoginLayout.vue'
+import Login from '../../components/Dashboard/Users/Views/Login.vue'
 import userService, {AUTH_USER_KEY} from '../../services/user.service'
 import * as localforage from 'localforage'
 

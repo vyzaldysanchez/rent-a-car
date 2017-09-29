@@ -10,9 +10,11 @@ import Maps from '../components/Dashboard/Views/Maps.vue'
 import Typography from '../components/Dashboard/Views/Typography.vue'
 import TableList from '../components/Dashboard/Views/TableList.vue'
 import usersRoutes from './users/routes'
+import vehiclesRoutes from './vehicles/routes'
 
 const routes = [
     usersRoutes,
+    vehiclesRoutes,
     {
         path: '/',
         component: DashboardLayout,
