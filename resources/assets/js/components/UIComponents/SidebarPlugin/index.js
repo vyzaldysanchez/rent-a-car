@@ -4,6 +4,11 @@ const SidebarStore = {
     showSidebar: false,
     sidebarLinks: [
         {
+            name: 'Vehicle Types',
+            icon: '',
+            path: '/admin/vehicles/types'
+        },
+        {
             name: 'Dashboard',
             icon: 'ti-panel',
             path: '/admin/overview'
