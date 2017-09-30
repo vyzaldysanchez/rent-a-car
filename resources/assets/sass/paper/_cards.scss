@@ -115,13 +115,8 @@
   }
 
   .table {
-    tbody td:first-child,
-    thead th:first-child {
+    tbody td, thead th {
       padding-left: 15px;
-    }
-
-    tbody td:last-child,
-    thead th:last-child {
       padding-right: 15px;
     }
   }
