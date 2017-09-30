@@ -24,7 +24,7 @@ const routes = [
         component: DashboardLayout,
         redirect: '/admin/stats',
         children: [
-            vehiclesRoutes,
+            ...vehiclesRoutes,
             {
                 path: 'overview',
                 name: 'overview',
