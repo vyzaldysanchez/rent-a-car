@@ -4,11 +4,11 @@
             <fg-input name="search-box" placeholder="Search..."
                       v-model="valueToSearch" @input="filterItems()"></fg-input>
             <div class="card card-plain">
-                <paper-table type="hover" :title="title" :sub-title="subTitle" :data="items"
+                <paper-table type="hover" :title="title" :sub-title="subTitle" :data="filteredItems.slice(0, 15)"
                              :columns="columns">
                 </paper-table>
             </div>
-            <pager :items-per-page="15" :items="this.$props.tableData" @pager-update="updateItemsDisplayed"></pager>
+            <pager :items-per-page="15" :items="initialData" @pager-update="updateItemsDisplayed"></pager>
         </div>
     </div>
 </template>
@@ -27,20 +27,19 @@
             columns: Array,
             tableData: Array
         },
-        computed: {
-            items() {
-                return this.filteredItems.slice(0, 15);
-            }
-        },
         data() {
             return {
                 valueToSearch: '',
-                filteredItems: this.$props.tableData.slice(0)
+                initialData: this.$props.tableData.slice(0),
+                filteredItems: []
             };
+        },
+        mounted() {
+            this.filteredItems = this.initialData.slice(0);
         },
         methods: {
             filterItems() {
-                this.filteredItems = this.$props.tableData.filter(item => {
+                this.filteredItems = this.initialData = this.$props.tableData.filter(item => {
                     return Object.keys(item).some(prop => {
                         return item[prop].toString().toLowerCase().indexOf(this.valueToSearch) !== -1;
                     });

@@ -32,15 +32,27 @@
             },
             initialPageReached() {
                 return this.currentPage === 1;
+            },
+            itemsCopy() {
+                return this.$props.items.slice(0);
             }
         },
         data() {
             return {
                 currentPage: 1,
-                totalItemsDisplayed: this.$props.items.length > this.itemsPerPage ? this.itemsPerPage : this.$props.items.length
+                totalItemsDisplayed: this.calculateItemsDisplayed()
             };
         },
+        watch: {
+            itemsCopy() {
+                this.currentPage = 1;
+                this.totalItemsDisplayed = this.calculateItemsDisplayed();
+            }
+        },
         methods: {
+            calculateItemsDisplayed() {
+                return this.$props.items.length > this.itemsPerPage ? this.itemsPerPage : this.$props.items.length;
+            },
             goBackward() {
                 if (!this.initialPageReached) {
                     this.currentPage--;
