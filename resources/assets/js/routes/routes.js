@@ -14,7 +14,6 @@ import vehiclesRoutes from './vehicles/routes'
 
 const routes = [
     usersRoutes,
-    vehiclesRoutes,
     {
         path: '/',
         component: DashboardLayout,
@@ -25,6 +24,7 @@ const routes = [
         component: DashboardLayout,
         redirect: '/admin/stats',
         children: [
+            vehiclesRoutes,
             {
                 path: 'overview',
                 name: 'overview',
