@@ -63,20 +63,27 @@
         },
         methods: {
             login() {
-                const user = {email: this.email, password: this.password};
-                this.authenticating = true;
-                this.loginBtnText = LOADING_TEXT;
+                if (this.isFormValid()) {
+                    const user = {email: this.email, password: this.password};
+                    this.authenticating = true;
+                    this.loginBtnText = LOADING_TEXT;
 
-                userService.login(user)
-                    .then(() => this.$router.push({path: '/'}))
-                    .catch(error => {
-                        this.authenticating = false;
-                        this.loginBtnText = LOGIN_TEXT;
+                    userService.login(user)
+                        .then(() => this.$router.push({path: '/'}))
+                        .catch(error => {
+                            this.authenticating = false;
+                            this.loginBtnText = LOGIN_TEXT;
 
-                        if (error.response.status === 401) {
-                            this.alertError('Credentials invalid. Try again.');
-                        }
-                    });
+                            if (error.response.status === 401) {
+                                this.alertError('Credentials invalid. Try again.');
+                            }
+                        });
+                } else {
+                    this.alertError('Some credentials are empty, check and try again.');
+                }
+            },
+            isFormValid() {
+                return this.email && this.password;
             },
             alertError(message = '') {
                 this.$notifications.notify({
