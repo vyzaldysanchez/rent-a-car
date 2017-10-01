@@ -3,16 +3,22 @@
         <div v-if="!loaded">
             <h3 class="text-center">Loading data...</h3>
         </div>
-        <table-list v-if="loaded" :columns="propsToDisplay" :tableData="vehicleTypes"></table-list>
+        <vehicle-types-form @type-created="addVehicleType"></vehicle-types-form>
+
+        <hr>
+
+        <table-list v-if="loaded" :columns="propsToDisplay" v-bind:tableData="vehicleTypes"></table-list>
     </div>
 </template>
 <script>
     import TableList from './../Views/TableList.vue'
+    import VehicleTypesForm from './Forms/VehicleTypesForm.vue'
 
     const vehicleTypesColumns = ['Ord', 'Description', 'State'];
 
     export default {
         components: {
+            VehicleTypesForm,
             TableList
         },
         data() {
@@ -32,6 +38,14 @@
                     this.loaded = true;
                 }
             );
+        },
+        methods: {
+            addVehicleType(data) {
+                const {id, description, state} = data,
+                    vehicleType = {ord: this.vehicleTypes.length + 1, id, description, state: state || 'ACTIVE'};
+
+                this.vehicleTypes.push(vehicleType);
+            }
         }
     };
 </script>

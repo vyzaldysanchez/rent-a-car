@@ -27,6 +27,16 @@
             columns: Array,
             tableData: Array
         },
+        computed: {
+            tableItems() {
+                return this.$props.tableData.slice(0);
+            }
+        },
+        watch: {
+            tableData: () => {
+               this.filterItems();
+            }
+        },
         data() {
             return {
                 valueToSearch: '',
@@ -35,18 +45,18 @@
             };
         },
         mounted() {
-            this.filteredItems = this.initialData.slice(0);
+            this.updateItemsDisplayed(this.initialData.slice(0));
         },
         methods: {
             filterItems() {
-                this.filteredItems = this.initialData = this.$props.tableData.filter(item => {
+                this.filteredItems = this.initialData = this.tableItems.slice(0).filter(item => {
                     return Object.keys(item).some(prop => {
                         return item[prop].toString().toLowerCase().indexOf(this.valueToSearch) !== -1;
                     });
                 });
             },
             updateItemsDisplayed(items) {
-                this.filteredItems = items;
+                this.filteredItems = items.slice(0);
             }
         }
     }
