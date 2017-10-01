@@ -4,6 +4,11 @@ const SidebarStore = {
     showSidebar: false,
     sidebarLinks: [
         {
+            name: 'Vehicle Types',
+            icon: '',
+            path: '/admin/vehicles/types'
+        },
+        {
             name: 'Dashboard',
             icon: 'ti-panel',
             path: '/admin/overview'
@@ -37,6 +42,11 @@ const SidebarStore = {
             name: 'Notifications',
             icon: 'ti-bell',
             path: '/admin/notifications'
+        },
+        {
+            name: 'logout',
+            icon: 'ti-angle-double-left',
+            path: '/user/logout'
         }
     ],
     displaySidebar(value) {

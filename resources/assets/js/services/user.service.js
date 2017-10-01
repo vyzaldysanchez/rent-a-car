@@ -9,10 +9,17 @@ export default {
         return axios.post('http://localhost:8000/api/auth/login/', user)
             .then(this.setUserFromResponse);
     },
+    logout() {
+        return axios.post('http://localhost:8000/api/auth/logout/')
+            .then(this.removeCurrentUserFromMemory);
+    },
     setUserFromResponse(response) {
         return localforage.setItem(
             AUTH_USER_KEY,
             userFactory.createUserFromHTTP(response)
         );
+    },
+    removeCurrentUserFromMemory() {
+        return localforage.removeItem(AUTH_USER_KEY);
     }
 };

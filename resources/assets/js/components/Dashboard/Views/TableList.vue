@@ -1,85 +1,62 @@
 <template>
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <paper-table :title="table1.title" :sub-title="table1.subTitle" :data="table1.data"
-                             :columns="table1.columns">
-
-                </paper-table>
-            </div>
-        </div>
-
-        <div class="col-md-12">
+            <fg-input name="search-box" placeholder="Search..."
+                      v-model="valueToSearch" @input="filterItems()"></fg-input>
             <div class="card card-plain">
-                <paper-table type="hover" :title="table1.title" :sub-title="table1.subTitle" :data="table1.data"
-                             :columns="table1.columns">
-
+                <paper-table type="hover" :title="title" :sub-title="subTitle" :data="filteredItems.slice(0, 15)"
+                             :columns="columns">
                 </paper-table>
             </div>
+            <pager :items-per-page="15" :items="initialData" @pager-update="updateItemsDisplayed"></pager>
         </div>
-
     </div>
 </template>
 <script>
     import PaperTable from '../../UIComponents/PaperTable.vue'
-
-    const tableColumns = ['Id', 'Name', 'Salary', 'Country', 'City'];
-    const tableData = [
-        {
-            id: 1,
-            name: 'Dakota Rice',
-            salary: '$36.738',
-            country: 'Niger',
-            city: 'Oud-Turnhout'
-        },
-        {
-            id: 2,
-            name: 'Minerva Hooper',
-            salary: '$23,789',
-            country: 'Curaçao',
-            city: 'Sinaai-Waas'
-        },
-        {
-            id: 3,
-            name: 'Sage Rodriguez',
-            salary: '$56,142',
-            country: 'Netherlands',
-            city: 'Baileux'
-        },
-        {
-            id: 4,
-            name: 'Philip Chaney',
-            salary: '$38,735',
-            country: 'Korea, South',
-            city: 'Overland Park'
-        },
-        {
-            id: 5,
-            name: 'Doris Greene',
-            salary: '$63,542',
-            country: 'Malawi',
-            city: 'Feldkirchen in Kärnten'
-        }
-    ];
+    import Pager from '../../UIComponents/Pager.vue'
 
     export default {
         components: {
+            Pager,
             PaperTable
+        },
+        props: {
+            title: {type: String, default: ''},
+            subTitle: {type: String, default: ''},
+            columns: Array,
+            tableData: Array
+        },
+        computed: {
+            tableItems() {
+                return this.$props.tableData.slice(0);
+            }
+        },
+        watch: {
+            tableData: () => {
+               this.filterItems();
+            }
         },
         data() {
             return {
-                table1: {
-                    title: 'Stripped Table',
-                    subTitle: 'Here is a subtitle for this table',
-                    columns: [...tableColumns],
-                    data: [...tableData]
-                },
-                table2: {
-                    title: 'Table on Plain Background',
-                    subTitle: 'Here is a subtitle for this table',
-                    columns: [...tableColumns],
-                    data: [...tableData]
-                }
+                valueToSearch: '',
+                initialData: this.$props.tableData.slice(0),
+                filteredItems: []
+            };
+        },
+        mounted() {
+            this.updateItemsDisplayed(this.initialData.slice(0));
+        },
+        methods: {
+            filterItems() {
+                this.filteredItems = this.initialData = this.tableItems.slice(0).filter(item => {
+                    return Object.keys(item).some(prop => {
+                        return item[prop].toString().toLowerCase().indexOf(this.valueToSearch) !== -1;
+                    });
+                });
+            },
+            updateItemsDisplayed(items) {
+                this.filteredItems = items.slice(0);
             }
         }
     }

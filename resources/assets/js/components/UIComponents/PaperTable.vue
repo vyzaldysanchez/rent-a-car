@@ -13,7 +13,9 @@
                 </thead>
                 <tbody>
                 <tr v-for="item in data">
-                    <td v-for="column in columns" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+                    <td v-for="column in columns" v-if="hasValue(item, column)">
+                        {{itemValue(item, column)}}
+                    </td>
                 </tr>
                 </tbody>
             </table>

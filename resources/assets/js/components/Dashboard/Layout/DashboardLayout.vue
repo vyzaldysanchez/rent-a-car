@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <side-bar type="sidebar" :sidebar-links="$sidebar.sidebarLinks">
+        <side-bar type="sidebar" :sidebar-links="$sidebar.sidebarLinks" :userName="userName">
 
         </side-bar>
         <notifications>
@@ -24,6 +24,7 @@
     import TopNavbar from './TopNavbar.vue'
     import ContentFooter from './ContentFooter.vue'
     import DashboardContent from './Content.vue'
+    import {AUTH_USER_KEY} from '../../../services/user.service'
 
     export default {
         components: {
@@ -31,12 +32,21 @@
             ContentFooter,
             DashboardContent
         },
+        data() {
+            return {
+                userName: ''
+            };
+        },
         methods: {
             toggleSidebar() {
                 if (this.$sidebar.showSidebar) {
                     this.$sidebar.displaySidebar(false)
                 }
             }
+        },
+        mounted() {
+            this.$storage.getItem(AUTH_USER_KEY)
+                .then(user => this.userName = user.name);
         }
     }
 

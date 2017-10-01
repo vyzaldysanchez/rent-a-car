@@ -23,6 +23,9 @@
     }
 
 </script>
-<style>
-
+<style scoped lang="scss">
+    label {
+        display: flex;
+        flex-flow: column;
+    }
 </style>

@@ -41,11 +41,11 @@
     }
 </style>
 <script>
-    import PaperNotification from '../../UIComponents/NotificationPlugin/Notification.vue'
-    import userService from '../../../services/user.service';
+    import PaperNotification from '../../../UIComponents/NotificationPlugin/Notification.vue'
+    import userService from '../../../../services/user.service';
 
     const LOGIN_TEXT = 'Login',
-        LOADING_TEXT = '';
+        LOADING_TEXT = 'Loading...';
 
     export default {
         components: {
