@@ -11,8 +11,15 @@ Must install [Laravel](https://laravel.com/docs/5.5/installation) globally in yo
 
 [Upgrading PHP to version 7.x](https://www.digitalocean.com/community/tutorials/how-to-upgrade-to-php-7-on-ubuntu-14-04)
 
+Must install [Node.JS](https://nodejs.org/en/download/)
 
-`composer install` for dependencies.
+`yarn` for JS dependencies.
+
+`composer install` for PHP dependencies.
+
+`yarn run prod` to build production bundle.
+
+`yarn run watch poll` or `yarn run dev` to build the development bundle.
 
 `php artisan migrate --seed` to seed all default data.
 
