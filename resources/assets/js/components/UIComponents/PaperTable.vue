@@ -9,12 +9,19 @@
         <div class="content table-responsive table-full-width">
             <table class="table" :class="tableClass">
                 <thead>
-                <th v-for="column in columns">{{column}}</th>
+                <th v-for="column in columns">
+                    {{column}}
+                </th>
                 </thead>
                 <tbody>
                 <tr v-for="item in data">
                     <td v-for="column in columns" v-if="hasValue(item, column)">
-                        {{itemValue(item, column)}}
+                        <div v-if="hasValue(item, column) && !isAction(item, column)">
+                            {{itemValue(item, column)}}
+                        </div>
+                        <div class="actions" v-if="isAction(item, column)" v-for="action in item.actions">
+                            <a :class="action.classes" v-html="action.text" @click.prevent="action.click"></a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
@@ -38,24 +45,32 @@
             subTitle: {
                 type: String,
                 default: ''
-            }
+            },
+            useActions: {type: Boolean, default: false}
         },
         computed: {
             tableClass() {
-                return `table-${this.type}`
+                return `table-${this.type}`;
             }
         },
         methods: {
             hasValue(item, column) {
-                return this.itemValue(item, column) !== 'undefined'
+                return this.itemValue(item, column) !== 'undefined';
+            },
+            isAction(item, column) {
+                return this.useActions && Array.isArray(this.itemValue(item, column));
             },
             itemValue(item, column) {
-                return item[column.toLowerCase()]
+                return item[column.toLowerCase()];
             }
         }
     }
 
 </script>
-<style>
-
+<style scoped lang="scss">
+    .actions {
+        > a {
+            cursor: pointer;
+        }
+    }
 </style>
