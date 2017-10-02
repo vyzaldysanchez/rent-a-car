@@ -5,7 +5,7 @@
                       v-model="valueToSearch" @input="filterItems()"></fg-input>
             <div class="card card-plain">
                 <paper-table type="hover" :title="title" :sub-title="subTitle" :data="filteredItems.slice(0, 15)"
-                             :columns="columns">
+                             :columns="columns" :use-actions="useActions">
                 </paper-table>
             </div>
             <pager :items-per-page="15" :items="initialData" @pager-update="updateItemsDisplayed"></pager>
@@ -25,7 +25,8 @@
             title: {type: String, default: ''},
             subTitle: {type: String, default: ''},
             columns: Array,
-            tableData: Array
+            tableData: Array,
+            useActions: Boolean
         },
         computed: {
             tableItems() {
@@ -33,8 +34,8 @@
             }
         },
         watch: {
-            tableData: () => {
-               this.filterItems();
+            tableData() {
+                this.filterItems();
             }
         },
         data() {
