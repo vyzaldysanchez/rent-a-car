@@ -28,11 +28,11 @@ class CreateInspectionsTable extends Migration
             $table->enum('bottom_right_tire_state', VehicleTireStatus::getAll())->default(VehicleTireStatus::NEW);
 
             $table->integer('rent_id')->unsigned()->default(0);
-            $table->foreign('rent_id')->references('id')->on('rents');
+            $table->foreign('rent_id')->references('id')->on('rents')->onDelete('cascade');
             $table->integer('client_id')->unsigned()->default(0);
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->integer('employee_id')->unsigned()->default(0);
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -21,7 +21,7 @@ class CreateVehicleModelsTable extends Migration
                 ->default(CommonStatus::ACTIVE);
             $table->timestamps();
             $table->integer('vehicle_brand_id')->unsigned()->default(0);
-            $table->foreign(['vehicle_brand_id'])->references('id')->on('vehicle_brands');
+            $table->foreign(['vehicle_brand_id'])->references('id')->on('vehicle_brands')->onDelete('cascade');
         });
     }
 

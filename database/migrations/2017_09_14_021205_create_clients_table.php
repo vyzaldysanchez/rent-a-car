@@ -22,7 +22,7 @@ class CreateClientsTable extends Migration
             $table->float('credit_limit', 14, 2);
 
             $table->integer('person_type_id')->unsigned()->default(0);
-            $table->foreign('person_type_id')->references('id')->on('person_types');
+            $table->foreign('person_type_id')->references('id')->on('person_types')->onDelete('cascade');
 
             $table->enum('state', CommonStatus::getAll())->default(CommonStatus::ACTIVE);
             $table->timestamps();

@@ -27,10 +27,10 @@ class CreateVehiclesTable extends Migration
             $table->integer('vehicle_model_id')->unsigned()->default(0);
             $table->integer('fuel_id')->unsigned()->default(0);
 
-            $table->foreign('vehicle_type_id')->references('id')->on('vehicle_types');
-            $table->foreign('vehicle_brand_id')->references('id')->on('vehicle_brands');
-            $table->foreign('vehicle_model_id')->references('id')->on('vehicle_models');
-            $table->foreign('fuel_id')->references('id')->on('fuels');
+            $table->foreign('vehicle_type_id')->references('id')->on('vehicle_types')->onDelete('cascade');
+            $table->foreign('vehicle_brand_id')->references('id')->on('vehicle_brands')->onDelete('cascade');
+            $table->foreign('vehicle_model_id')->references('id')->on('vehicle_models')->onDelete('cascade');
+            $table->foreign('fuel_id')->references('id')->on('fuels')->onDelete('cascade');
 
             $table->enum('state', VehicleState::getStates())->default(VehicleState::AVAILABLE);
             $table->timestamps();
