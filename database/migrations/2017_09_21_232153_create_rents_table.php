@@ -25,11 +25,11 @@ class CreateRentsTable extends Migration
             $table->enum('state', RentState::getAll())->default(RentState::NOT_STARTED);
 
             $table->integer('employee_id')->unsigned()->default(0);
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->integer('vehicle_id')->unsigned()->default(0);
-            $table->foreign('vehicle_id')->references('id')->on('vehicles');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
             $table->integer('client_id')->unsigned()->default(0);
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
 
             $table->timestamps();
         });

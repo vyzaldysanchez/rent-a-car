@@ -49,7 +49,7 @@
                 const {id, description, state} = data,
                     vehicleType = {ord: this.vehicleTypes.length + 1, id, description, state: state || 'ACTIVE'};
 
-                this.vehicleTypes.push(vehicleType);
+                this.vehicleTypes.push(this.addActionsTo(vehicleType));
             },
             updateVehicleType(data) {
                 this.vehicleTypes = this.vehicleTypes.map(type => {
@@ -69,7 +69,7 @@
                             text: '<i class="fa fa-edit"></i>Edit'
                         },
                         {
-                            click: () => this.remove(vehicleType),
+                            click: () => this.askToRemove(vehicleType),
                             classes: 'text-danger',
                             text: '<i class="fa fa-remove"></i>Remove'
                         }
@@ -78,6 +78,23 @@
             },
             edit(vehicleType) {
                 this.vehicleTypeToEdit = vehicleType;
+            },
+            askToRemove(vehicleType) {
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: `The item and all it\'s data associated will be deleted.`,
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(() => this.remove(vehicleType));
+            },
+            remove(vehicleType) {
+                this.$axios.delete(`http://localhost:8000/api/types/${vehicleType.id}`)
+                    .then(() => {
+                        const index = this.vehicleTypes.findIndex(type => vehicleType.id === type.id);
+                        this.vehicleTypes = this.vehicleTypes.slice(0, index)
+                            .concat(this.vehicleTypes.slice(index + 1));
+                    });
             }
         }
     };
