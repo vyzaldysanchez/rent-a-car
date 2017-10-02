@@ -5,5 +5,10 @@ export default [
         path: 'vehicles/types',
         name: 'vehicle-types',
         component: VehicleTypes
+    },
+    {
+        path: 'vehicles/brands',
+        name: 'vehicle-brands',
+        component: null
     }
 ];

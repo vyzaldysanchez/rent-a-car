@@ -17,12 +17,12 @@ const routes = [
     {
         path: '/',
         component: DashboardLayout,
-        redirect: '/admin/vehicles/types'
+        redirect: '/admin'
     },
     {
         path: '/admin',
         component: DashboardLayout,
-        redirect: '/admin/stats',
+        redirect: '/admin/profile',
         children: [
             ...vehiclesRoutes,
             {
@@ -31,8 +31,8 @@ const routes = [
                 component: Overview
             },
             {
-                path: 'stats',
-                name: 'stats',
+                path: 'profile',
+                name: 'profile',
                 component: UserProfile
             },
             {

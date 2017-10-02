@@ -4,9 +4,18 @@ const SidebarStore = {
     showSidebar: false,
     sidebarLinks: [
         {
+            name: 'Home',
+            icon: 'ti-home',
+            path: '/admin/profile'
+        },
+        {
             name: 'Vehicle Types',
             icon: '',
             path: '/admin/vehicles/types'
+        },
+        {
+            name: 'Brands',
+            path: '/admin/vehicles/brands'
         },
         {
             name: 'logout',
