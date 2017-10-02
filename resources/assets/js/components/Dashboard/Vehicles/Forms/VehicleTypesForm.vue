@@ -8,7 +8,7 @@
 
                     <div class="text-center">
                         <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingVehicleType}"
-                                @click.prevent="save">
+                                @click.prevent="validBeforeSave">
                             Save
                         </button>
                     </div>
@@ -45,6 +45,16 @@
         methods: {
             isFormValid() {
                 return !!this.description;
+            },
+            validBeforeSave() {
+                const actionToPerform = this.edit ? 'updated' : 'created';
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: `The item will be ${actionToPerform}.`,
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.save.bind(this));
             },
             save() {
                 if (this.isFormValid()) {

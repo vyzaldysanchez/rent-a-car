@@ -49,7 +49,7 @@
                 const {id, description, state} = data,
                     vehicleType = {ord: this.vehicleTypes.length + 1, id, description, state: state || 'ACTIVE'};
 
-                this.vehicleTypes.push(vehicleType);
+                this.vehicleTypes.push(this.addActionsTo(vehicleType));
             },
             updateVehicleType(data) {
                 this.vehicleTypes = this.vehicleTypes.map(type => {
