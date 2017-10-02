@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueSweetAlert from 'vue-sweetalert'
 import vClickOutside from 'v-click-outside'
 // Plugins
 import GlobalComponents from './globalComponents'
@@ -19,6 +20,7 @@ import * as axios from 'axios'
 
 // plugin setup
 Vue.use(VueRouter);
+Vue.use(VueSweetAlert);
 Vue.use(GlobalComponents);
 Vue.use(vClickOutside);
 Vue.use(Notifications);
