@@ -17,7 +17,7 @@ class CreateVehicleBrandsTable extends Migration
         Schema::create('vehicle_brands', function (Blueprint $table) {
             $table->increments('id');
             $table->text('description');
-            $table->text('image_url');
+            $table->text('image_url')->nullable();
             $table->enum('state', [CommonStatus::ACTIVE, CommonStatus::INACTIVE])
                 ->default(CommonStatus::ACTIVE);
             $table->timestamps();

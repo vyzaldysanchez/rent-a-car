@@ -9,7 +9,7 @@
             <div class="logo">
                 <a href="#" class="simple-text">
                     <div class="logo-img">
-                        <i class="fa fa-base fa-user-o"></i>
+                        <i class="ti-user"></i>
                     </div>
                     {{userName}}
                 </a>

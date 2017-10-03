@@ -16,6 +16,7 @@
 <script>
     import TableList from './../Views/TableList.vue'
     import VehicleTypesForm from './Forms/VehicleTypesForm.vue'
+    import formUtils from './../../../utils/form.utils'
 
     const vehicleTypesColumns = ['Ord', 'Description', 'State', 'Actions'];
 
@@ -38,7 +39,7 @@
                         const {id, description, state} = type,
                             vehicleType = {ord: position + 1, id, description, state};
 
-                        return this.addActionsTo(vehicleType);
+                        return formUtils.addActionsTo(vehicleType, this.edit, this.askToRemove);
                     });
                     this.loaded = true;
                 }
@@ -49,7 +50,7 @@
                 const {id, description, state} = data,
                     vehicleType = {ord: this.vehicleTypes.length + 1, id, description, state: state || 'ACTIVE'};
 
-                this.vehicleTypes.push(this.addActionsTo(vehicleType));
+                this.vehicleTypes.push(formUtils.addActionsTo(vehicleType, this.edit, this.askToRemove));
             },
             updateVehicleType(data) {
                 this.vehicleTypes = this.vehicleTypes.map(type => {
@@ -58,22 +59,6 @@
                     }
 
                     return type;
-                });
-            },
-            addActionsTo(vehicleType) {
-                return Object.assign(vehicleType, {
-                    actions: [
-                        {
-                            click: () => this.edit(vehicleType),
-                            classes: 'text-warning',
-                            text: '<i class="fa fa-edit"></i>Edit'
-                        },
-                        {
-                            click: () => this.askToRemove(vehicleType),
-                            classes: 'text-danger',
-                            text: '<i class="fa fa-remove"></i>Remove'
-                        }
-                    ]
                 });
             },
             edit(vehicleType) {

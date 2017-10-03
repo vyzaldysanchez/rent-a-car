@@ -1,5 +1,5 @@
 <template>
-    <div class="vehicle-types-form">
+    <div class="vehicle-brands-form">
         <form>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -7,7 +7,7 @@
                     </fg-input>
 
                     <div class="text-center">
-                        <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingVehicleType}"
+                        <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingBrand}"
                                 @click.prevent="validBeforeSave">
                             Save
                         </button>
@@ -29,17 +29,17 @@
         },
         props: {
             edit: Boolean,
-            vehicleType: Object
+            brand: Object
         },
         watch: {
-            vehicleType(newValue) {
+            brand(newValue) {
                 this.description = newValue ? newValue.description : '';
             }
         },
         data() {
             return {
-                isSavingVehicleType: false,
-                description: this.$props.vehicleType ? this.$props.vehicleType.description : ''
+                description: this.$props.brand ? this.$props.brand.description : '',
+                isSavingBrand: false
             };
         },
         methods: {
@@ -51,7 +51,7 @@
                     const actionToPerform = this.edit ? 'updated' : 'created';
                     this.$swal({
                         title: 'Are you sure?',
-                        text: `The item will be ${actionToPerform}.`,
+                        html: `The vehicle brand <b>${this.description}</b> will be ${actionToPerform}.`,
                         type: 'warning',
                         showConfirmButton: true,
                         showCancelButton: true
@@ -61,25 +61,25 @@
                 }
             },
             save() {
-                const vehicleType = {description: this.description},
+                const body = {description: this.description},
                     actionPerformed = this.edit ?
-                        this.getUpdatePromise(vehicleType) :
-                        this.getCreatePromise(vehicleType);
+                        this.getUpdatePromise(body) :
+                        this.getCreatePromise(body);
 
-                this.isSavingVehicleType = true;
+                this.isSavingBrand = true;
 
                 actionPerformed.then(res => {
-                    const actionToNotify = this.edit ? 'type-updated' : 'type-created';
+                    const actionToNotify = this.edit ? 'brand-updated' : 'brand-created';
                     this.description = '';
-                    this.isSavingVehicleType = false;
+                    this.isSavingBrand = false;
                     this.$emit(actionToNotify, res.data);
                 });
             },
             getCreatePromise(body) {
-                return this.$axios.post(`http://localhost:8000/api/types`, body);
+                return this.$axios.post(`http://localhost:8000/api/brands`, body);
             },
             getUpdatePromise(body) {
-                return this.$axios.put(`http://localhost:8000/api/types/${this.$props.vehicleType.id}`, body);
+                return this.$axios.put(`http://localhost:8000/api/brands/${this.$props.brand.id}`, body);
             },
             notifyInvalidForm() {
                 this.$notifications.notify({
@@ -93,4 +93,3 @@
         }
     };
 </script>
-<style></style>
