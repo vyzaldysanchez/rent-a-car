@@ -47,33 +47,33 @@
                 return !!this.description;
             },
             validBeforeSave() {
-                const actionToPerform = this.edit ? 'updated' : 'created';
-                this.$swal({
-                    title: 'Are you sure?',
-                    text: `The item will be ${actionToPerform}.`,
-                    type: 'warning',
-                    showConfirmButton: true,
-                    showCancelButton: true
-                }).then(this.save.bind(this));
-            },
-            save() {
                 if (this.isFormValid()) {
-                    const vehicleType = {description: this.description},
-                        actionPerformed = this.edit ?
-                            this.getUpdatePromise(vehicleType) :
-                            this.getCreatePromise({description: this.description});
-
-                    this.isSavingVehicleType = true;
-
-                    actionPerformed.then(res => {
-                        const actionToNotify = this.edit ? 'type-updated' : 'type-created';
-                        this.description = '';
-                        this.isSavingVehicleType = false;
-                        this.$emit(actionToNotify, res.data);
-                    });
+                    const actionToPerform = this.edit ? 'updated' : 'created';
+                    this.$swal({
+                        title: 'Are you sure?',
+                        text: `The item will be ${actionToPerform}.`,
+                        type: 'warning',
+                        showConfirmButton: true,
+                        showCancelButton: true
+                    }).then(this.save.bind(this));
                 } else {
                     this.notifyInvalidForm();
                 }
+            },
+            save() {
+                const vehicleType = {description: this.description},
+                    actionPerformed = this.edit ?
+                        this.getUpdatePromise(vehicleType) :
+                        this.getCreatePromise(vehicleType);
+
+                this.isSavingVehicleType = true;
+
+                actionPerformed.then(res => {
+                    const actionToNotify = this.edit ? 'type-updated' : 'type-created';
+                    this.description = '';
+                    this.isSavingVehicleType = false;
+                    this.$emit(actionToNotify, res.data);
+                });
             },
             getCreatePromise(body) {
                 return this.$axios.post(`http://localhost:8000/api/types`, body);
