@@ -13,6 +13,8 @@ Must install [Laravel](https://laravel.com/docs/5.5/installation) globally in yo
 
 Must install [Node.JS](https://nodejs.org/en/download/)
 
+I'm using some vue.js components that can be found [here](https://github.com/cristijora/vue-paper-dashboard).
+
 `yarn` for JS dependencies.
 
 `composer install` for PHP dependencies.
