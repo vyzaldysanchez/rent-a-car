@@ -18,6 +18,10 @@ const SidebarStore = {
             path: '/admin/vehicles/brands'
         },
         {
+            name: 'Models',
+            path: '/admin/vehicles/models'
+        },
+        {
             name: 'logout',
             icon: 'ti-angle-double-left',
             path: '/user/logout'

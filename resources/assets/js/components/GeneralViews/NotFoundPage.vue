@@ -31,8 +31,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2 text-center">
-                            <h2 class="title text-danger">404 Not Found</h2>
-                            <h2 class="title">Oops! It seems that this page does not exist.</h2>
+                            <h2 class="text-danger">404 Not Found</h2>
+                            <h4>Oops! It seems that this page does not exist.</h4>
                         </div>
                     </div>
                 </div>
@@ -45,14 +45,12 @@
                         <li>
                             <router-link :to="{path:'/'}">Home</router-link>
                         </li>
-                        <li>
-                            <router-link :to="{path:'/register'}">Register</router-link>
-                        </li>
                     </ul>
                 </nav>
                 <div class="copyright pull-right">
                     &copy; 2017, made with
-                    <i class="fa fa-heart heart"></i> by Paper admin
+                    <i class="fa fa-heart heart"></i> by
+                    <a href="https://github.com/vyzaldySanchez" target="_blank">Vyzaldy Sanchez</a>.
                 </div>
             </div>
         </footer>

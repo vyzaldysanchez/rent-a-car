@@ -42,4 +42,6 @@ class VehicleType extends Model
     protected $updated_at;
 
     protected $fillable = ['description', 'image_url', 'state'];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

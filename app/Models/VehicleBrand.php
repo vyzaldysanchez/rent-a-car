@@ -42,4 +42,6 @@ class VehicleBrand extends Model
     protected $image_url;
 
     protected $fillable = ['description', 'image_url', 'state'];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

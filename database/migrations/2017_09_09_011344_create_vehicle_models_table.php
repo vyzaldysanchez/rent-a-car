@@ -17,8 +17,7 @@ class CreateVehicleModelsTable extends Migration
         Schema::create('vehicle_models', function (Blueprint $table) {
             $table->increments('id');
             $table->text('description');
-            $table->enum('state', [CommonStatus::ACTIVE, CommonStatus::INACTIVE])
-                ->default(CommonStatus::ACTIVE);
+            $table->enum('state', [CommonStatus::ACTIVE, CommonStatus::INACTIVE])->default(CommonStatus::ACTIVE);
             $table->timestamps();
             $table->integer('vehicle_brand_id')->unsigned()->default(0);
             $table->foreign(['vehicle_brand_id'])->references('id')->on('vehicle_brands')->onDelete('cascade');
