@@ -15,6 +15,7 @@
     import VehicleBrandsForm from './Forms/VehicleBrandsForm.vue'
     import TableList from './../Views/TableList.vue'
     import formUtils from '../../../utils/form.utils';
+    import brandsFactory from '../../../factories/brands.factory';
 
     const vehicleBrandsColumns = ['Ord', 'Description', 'State', 'Actions'];
 
@@ -33,22 +34,31 @@
         },
         mounted() {
             this.$axios.get('http://localhost:8000/api/brands').then(result => {
-                this.brands = result.data.map((brand, position) => {
-                    const {id, description, state} = brand,
-                        vehicleBrand = {ord: position + 1, id, description, state};
-
-                    return formUtils.addActionsTo(vehicleBrand, this.edit, this.askToRemove);
-                });
+                this.brands = result.data.map(
+                    (brand, index) => brandsFactory.createBrandForTableList({
+                        brand,
+                        index,
+                        onEdit: this.edit,
+                        onRemove: this.askToRemove
+                    })
+                );
 
                 this.isLoaded = true;
             });
         },
         methods: {
             addBrand(data) {
-                const {id, description, state} = data,
-                    vehicleBrand = {ord: this.brands.length + 1, id, description, state: state || 'ACTIVE'};
+                const index = this.brands.length;
+                let brand = Object.assign(data, {state: data.state || 'ACTIVE'});
 
-                this.brands.push(formUtils.addActionsTo(vehicleBrand, this.edit, this.askToRemove));
+                brand = brandsFactory.createBrandForTableList({
+                    brand,
+                    index,
+                    onEdit: this.edit,
+                    onRemove: this.askToRemove
+                });
+
+                this.brands.push(brand);
             },
             updateBrand(data) {
                 this.brands = this.brands.map(brand => {
