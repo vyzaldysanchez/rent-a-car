@@ -10,7 +10,7 @@ class VehicleModelsController extends Controller
 {
     public function index(): JsonResponse
     {
-        $models = VehicleModel::with('brand')->get();
+        $models = VehicleModel::all();
 
         if ($models->count()) {
             return $this->success($models);
