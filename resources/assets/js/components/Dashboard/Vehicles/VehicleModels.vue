@@ -35,7 +35,7 @@
 
                 this.brands = brandsResponse.data.map((brand, index) => brandsFactory.createBrand({brand, index}));
                 this.models = modelsResponse.data.map((model, index) => {
-                    const brand = this.brands.find(brand => brand.id === model['vehicle_brand_id']);
+                    const brand = this.brands.find(brand => brand.id == model['vehicle_brand_id']);
 
                     delete model['vehicle_brand_id'];
 
@@ -65,7 +65,7 @@
                 let model = Object.assign(data, {state: data.state || 'ACTIVE'});
 
                 const index = this.models.length,
-                    brand = this.brands.find(brand => brand.id === model['vehicle_brand_id']);
+                    brand = this.brands.find(brand => brand.id == model['vehicle_brand_id']);
 
                 model = modelsFactory.createModelForTableList({
                     model,
