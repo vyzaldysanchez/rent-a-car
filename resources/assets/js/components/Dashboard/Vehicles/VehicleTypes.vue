@@ -60,6 +60,8 @@
 
                     return type;
                 });
+
+                this.vehicleTypeToEdit = null;
             },
             edit(vehicleType) {
                 this.vehicleTypeToEdit = vehicleType;

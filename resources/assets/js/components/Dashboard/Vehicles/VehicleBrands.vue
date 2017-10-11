@@ -68,6 +68,7 @@
 
                     return brand;
                 });
+                this.brandToUpdate = null;
             },
             edit(brand) {
                 this.brandToUpdate = brand;
