@@ -1,22 +1,22 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import VueSweetAlert from 'vue-sweetalert'
-import vClickOutside from 'v-click-outside'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import VueSweetAlert from 'vue-sweetalert';
+import vClickOutside from 'v-click-outside';
 // Plugins
-import GlobalComponents from './globalComponents'
-import Notifications from './components/UIComponents/NotificationPlugin'
-import SideBar from './components/UIComponents/SidebarPlugin'
-import App from './App.vue'
-import {AUTH_USER_KEY} from './services/user.service'
+import GlobalComponents from './globalComponents';
+import Notifications from './components/UIComponents/NotificationPlugin';
+import SideBar from './components/UIComponents/SidebarPlugin';
+import App from './App.vue';
+import { AUTH_USER_KEY } from './services/user.service';
 // router setup
-import routes from './routes/routes'
+import routes from './routes/routes';
 // library imports
-import * as localforage from 'localforage'
-import Chartist from 'chartist'
-import 'bootstrap/dist/css/bootstrap.css'
-import './../sass/paper-dashboard.scss'
-import 'es6-promise/auto'
-import * as axios from 'axios'
+import * as localforage from 'localforage';
+import Chartist from 'chartist';
+import 'bootstrap/dist/css/bootstrap.css';
+import './../sass/paper-dashboard.scss';
+import 'es6-promise/auto';
+import * as axios from 'axios';
 
 // plugin setup
 Vue.use(VueRouter);
@@ -28,7 +28,7 @@ Vue.use(SideBar);
 
 // Storage setup
 localforage.config({
-    name: 'vy-rent-car',
+    name: 'vy-rent-car'
 });
 
 // configure router
@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
         if (user || to.fullPath === '/user/login') {
             next();
         } else {
-            next({path: '/user/login'});
+            next({ path: '/user/login' });
         }
     });
 });
