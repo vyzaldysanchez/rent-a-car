@@ -64,7 +64,7 @@
             addModel(data) {
                 let model = Object.assign(data, {state: data.state || 'ACTIVE'});
 
-                const index = this.models.length,
+                const index = this.models.length + 1,
                     brand = this.brands.find(brand => brand.id == model['vehicle_brand_id']);
 
                 model = modelsFactory.createModelForTableList({
@@ -98,7 +98,6 @@
                     showConfirmButton: true,
                     showCancelButton: true
                 }).then(() => this.remove(model));
-
             },
             remove(model) {
                 this.$axios.delete(`http://localhost:8000/api/models/${model.id}`)

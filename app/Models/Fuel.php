@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Fuel
  * @package App
  *
- * @property int $id
+ * @property int    $id
  * @property string $description
  * @property string $state
  * @property string $created_at
@@ -36,6 +36,8 @@ class Fuel extends Model
      * @var string
      */
     protected $updated_at;
+
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $fillable = ['description', 'state'];
 }
