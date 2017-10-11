@@ -1,10 +1,10 @@
 <template>
     <div class="form-group">
-        <label v-if="label">
+        <label v-if="label" :for="name">
             {{label}}
         </label>
-        <input class="form-control border-input" v-bind="$props" :value="value"
-               @input="$emit('input',$event.target.value)">
+        <input class="form-control border-input" v-bind="$props" :name="name" :value="value" :minlength="min"
+               :maxlength="max" @input="$emit('input',$event.target.value)"/>
     </div>
 </template>
 <script>
@@ -18,7 +18,9 @@
             name: String,
             disabled: Boolean,
             placeholder: String,
-            value: [String, Number]
+            value: [String, Number],
+            max: Number,
+            min: Number
         }
     }
 
