@@ -89,6 +89,8 @@
 
                     return model;
                 });
+
+                this.modelToUpdate = null;
             },
             askToRemove(model) {
                 this.$swal({

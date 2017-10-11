@@ -71,9 +71,8 @@
 
                     return fuel;
                 });
-            },
-            edit(fuel) {
-                this.fuelToUpdate = fuel;
+
+                this.fuelToUpdate = null;
             },
             askToRemove(fuel) {
                 this.$swal({
