@@ -68,6 +68,11 @@
 
 </script>
 <style scoped lang="scss">
+    table {
+        display: block;
+        overflow-x: scroll;
+    }
+
     .actions {
         > a {
             cursor: pointer;
