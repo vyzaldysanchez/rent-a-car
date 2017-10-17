@@ -26,7 +26,7 @@ const SidebarStore = {
         {
             name: 'Vehicles',
             icon: 'ti-car',
-            path: '/admin/vehicles'
+            path: '/admin/vehicles/manage'
         },
         {
             name: 'logout',

@@ -25,7 +25,7 @@ export default [{
         component: VehicleFuels
     },
     {
-        path: 'vehicles/',
+        path: 'vehicles/manage',
         name: 'vehicles',
         component: Vehicles
     }
