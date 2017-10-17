@@ -69,7 +69,7 @@
 </script>
 <style scoped lang="scss">
     table {
-        display: block;
+        /*display: inline-block;*/
         overflow-x: scroll;
     }
 
