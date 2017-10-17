@@ -2,7 +2,7 @@
     <div class="login">
         <div class="col-md-6 col-md-offset-3">
             <div class="header">
-                <h2>{{title}}</h2>
+                <h2><i class="ti-car"></i> {{title}}</h2>
                 <h3>{{subtitle}}</h3>
             </div>
 
