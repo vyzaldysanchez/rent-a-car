@@ -68,8 +68,7 @@
 
 </script>
 <style scoped lang="scss">
-    table {
-        /*display: inline-block;*/
+    .table-responsive {
         overflow-x: scroll;
     }
 
