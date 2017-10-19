@@ -73,6 +73,8 @@
     }
 
     .actions {
+        display: inline-block;
+
         > a {
             cursor: pointer;
         }

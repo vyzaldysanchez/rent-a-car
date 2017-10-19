@@ -15,6 +15,7 @@
 <script>
     import TableList from './../../Dashboard/Views/TableList.vue';
     import VehiclesForm from './Forms/VehiclesForm.vue';
+    import factory from '../../../factories/factory';
 
     const tableColumns = ['Ord', 'Description', 'Chassis', 'Engine', 'Plate', 'Type', 'Brand', 'Model', 'Fuel', 'State', 'Actions'];
 
@@ -34,8 +35,7 @@
             this.$axios.get('http://localhost:8000/api/vehicles')
                 .then(response => {
                     this.vehicles = response.data.map((vehicle, index) => {
-                        return {
-                            ord: index + 1,
+                        const mappedVehicle = {
                             description: vehicle.description,
                             chassis: vehicle['chassis_number'],
                             engine: vehicle['engine_number'],
@@ -46,7 +46,10 @@
                             fuel: vehicle.fuel.description,
                             state: vehicle.state,
                         };
+
+                        return factory.createForTableList({object: mappedVehicle, index, onEdit: null, onRemove: null});
                     });
+
                     this.isLoaded = true;
                 });
         }
