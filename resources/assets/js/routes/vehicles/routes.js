@@ -2,6 +2,7 @@ import VehicleTypes from '../../components/Dashboard/Vehicles/VehicleTypes.vue';
 import VehicleBrands from '../../components/Dashboard/Vehicles/VehicleBrands.vue';
 import VehicleModels from '../../components/Dashboard/Vehicles/VehicleModels.vue';
 import VehicleFuels from '../../components/Dashboard/Vehicles/VehicleFuels.vue';
+import Vehicles from '../../components/Dashboard/Vehicles/Vehicles.vue';
 
 export default [{
         path: 'vehicles/types',
@@ -22,5 +23,10 @@ export default [{
         path: 'vehicles/fuels',
         name: 'vehicle-fuels',
         component: VehicleFuels
+    },
+    {
+        path: 'vehicles/manage',
+        name: 'vehicles',
+        component: Vehicles
     }
 ];

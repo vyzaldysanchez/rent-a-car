@@ -60,93 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -243,223 +161,85 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
+/* 1 */,
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 /*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
 */
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
 
-var hasDocument = typeof document !== 'undefined'
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
 
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
 }
 
-var listToStyles = __webpack_require__(26)
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
+	return '/*# ' + data + ' */';
 }
 
 
@@ -470,8 +250,8 @@ function applyToTag (styleElement, obj) {
 "use strict";
 
 
-var bind = __webpack_require__(8);
-var isBuffer = __webpack_require__(88);
+var bind = __webpack_require__(13);
+var isBuffer = __webpack_require__(71);
 
 /*global toString:true*/
 
@@ -775,45 +555,18 @@ module.exports = {
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(37)
+  __webpack_require__(49)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(39),
+  __webpack_require__(51),
   /* template */
-  __webpack_require__(40),
+  __webpack_require__(52),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -845,14 +598,144 @@ module.exports = Component.exports
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(168)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(170),
+  /* template */
+  __webpack_require__(181),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Views/TableList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] TableList.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-17830a10", Component.options)
+  } else {
+    hotAPI.reload("data-v-17830a10", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    addActionsTo: function addActionsTo(object, onEdit, onDelete) {
+        return Object.assign(object, {
+            actions: [{
+                click: function click() {
+                    return onEdit(object);
+                },
+                classes: 'text-warning',
+                text: '<i class="fa fa-edit"></i>Edit'
+            }, {
+                click: function click() {
+                    return onDelete(object);
+                },
+                classes: 'text-danger',
+                text: '<i class="fa fa-remove"></i>Remove'
+            }]
+        });
+    }
+});
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_USER_KEY; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__factories_user_factory__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_localforage__);
+
+
+
+
+var AUTH_USER_KEY = 'auth-user';
+
+/* harmony default export */ __webpack_exports__["b"] = ({
+    login: function login() {
+        var user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { email: '', password: '' };
+
+        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('http://localhost:8000/api/auth/login/', user).then(this.setUserFromResponse);
+    },
+    logout: function logout() {
+        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('http://localhost:8000/api/auth/logout/').then(this.removeCurrentUserFromMemory);
+    },
+    setUserFromResponse: function setUserFromResponse(response) {
+        return __WEBPACK_IMPORTED_MODULE_2_localforage__["setItem"](AUTH_USER_KEY, __WEBPACK_IMPORTED_MODULE_1__factories_user_factory__["a" /* default */].createUserFromHTTP(response));
+    },
+    removeCurrentUserFromMemory: function removeCurrentUserFromMemory() {
+        return __WEBPACK_IMPORTED_MODULE_2_localforage__["removeItem"](AUTH_USER_KEY);
+    }
+});
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(3);
-var normalizeHeaderName = __webpack_require__(90);
+var normalizeHeaderName = __webpack_require__(73);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -868,10 +751,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(10);
+    adapter = __webpack_require__(15);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(10);
+    adapter = __webpack_require__(15);
   }
   return adapter;
 }
@@ -942,512 +825,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(83)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(85),
-  /* template */
-  __webpack_require__(105),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-0d3327c9",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Users/Views/Login.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Login.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0d3327c9", Component.options)
-  } else {
-    hotAPI.reload("data-v-0d3327c9", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function bind(fn, thisArg) {
-  return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
-  };
-};
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(3);
-var settle = __webpack_require__(91);
-var buildURL = __webpack_require__(93);
-var parseHeaders = __webpack_require__(94);
-var isURLSameOrigin = __webpack_require__(95);
-var createError = __webpack_require__(11);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(96);
-
-module.exports = function xhrAdapter(config) {
-  return new Promise(function dispatchXhrRequest(resolve, reject) {
-    var requestData = config.data;
-    var requestHeaders = config.headers;
-
-    if (utils.isFormData(requestData)) {
-      delete requestHeaders['Content-Type']; // Let the browser set it
-    }
-
-    var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if ("development" !== 'test' &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
-
-    // HTTP basic authentication
-    if (config.auth) {
-      var username = config.auth.username || '';
-      var password = config.auth.password || '';
-      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
-    }
-
-    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
-
-    // Set the request timeout in MS
-    request.timeout = config.timeout;
-
-    // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
-        return;
-      }
-
-      // The request errored out and we didn't get a response, this will be
-      // handled by onerror instead
-      // With one exception: request that using file: protocol, most browsers
-      // will return status as 0 even though it's a successful request
-      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-        return;
-      }
-
-      // Prepare the response
-      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
-      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
-      var response = {
-        data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
-        headers: responseHeaders,
-        config: config,
-        request: request
-      };
-
-      settle(resolve, reject, response);
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle low level network errors
-    request.onerror = function handleError() {
-      // Real errors are hidden from us by the browser
-      // onerror should only fire if it's a network error
-      reject(createError('Network Error', config, null, request));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle timeout
-    request.ontimeout = function handleTimeout() {
-      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
-        request));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Add xsrf header
-    // This is only done if running in a standard browser environment.
-    // Specifically not if we're in a web worker, or react-native.
-    if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(97);
-
-      // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies.read(config.xsrfCookieName) :
-          undefined;
-
-      if (xsrfValue) {
-        requestHeaders[config.xsrfHeaderName] = xsrfValue;
-      }
-    }
-
-    // Add headers to the request
-    if ('setRequestHeader' in request) {
-      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
-        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
-          // Remove Content-Type if data is undefined
-          delete requestHeaders[key];
-        } else {
-          // Otherwise add header to the request
-          request.setRequestHeader(key, val);
-        }
-      });
-    }
-
-    // Add withCredentials to request if needed
-    if (config.withCredentials) {
-      request.withCredentials = true;
-    }
-
-    // Add responseType to request if needed
-    if (config.responseType) {
-      try {
-        request.responseType = config.responseType;
-      } catch (e) {
-        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
-        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
-        if (config.responseType !== 'json') {
-          throw e;
-        }
-      }
-    }
-
-    // Handle progress if needed
-    if (typeof config.onDownloadProgress === 'function') {
-      request.addEventListener('progress', config.onDownloadProgress);
-    }
-
-    // Not all browsers support upload events
-    if (typeof config.onUploadProgress === 'function' && request.upload) {
-      request.upload.addEventListener('progress', config.onUploadProgress);
-    }
-
-    if (config.cancelToken) {
-      // Handle cancellation
-      config.cancelToken.promise.then(function onCanceled(cancel) {
-        if (!request) {
-          return;
-        }
-
-        request.abort();
-        reject(cancel);
-        // Clean up request
-        request = null;
-      });
-    }
-
-    if (requestData === undefined) {
-      requestData = null;
-    }
-
-    // Send the request
-    request.send(requestData);
-  });
-};
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var enhanceError = __webpack_require__(92);
-
-/**
- * Create an Error with the specified message, config, error code, request and response.
- *
- * @param {string} message The error message.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-module.exports = function createError(message, config, code, request, response) {
-  var error = new Error(message);
-  return enhanceError(error, config, code, request, response);
-};
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * A `Cancel` is an object that is thrown when an operation is canceled.
- *
- * @class
- * @param {string=} message The message.
- */
-function Cancel(message) {
-  this.message = message;
-}
-
-Cancel.prototype.toString = function toString() {
-  return 'Cancel' + (this.message ? ': ' + this.message : '');
-};
-
-Cancel.prototype.__CANCEL__ = true;
-
-module.exports = Cancel;
-
-
-/***/ }),
-/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
@@ -3763,16 +3144,624 @@ module.exports = localforage_js;
 
 },{"3":3}]},{},[4])(4)
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(46)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(48),
+  /* template */
+  __webpack_require__(53),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/UIComponents/NotificationPlugin/Notifications.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Notifications.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-757194e4", Component.options)
+  } else {
+    hotAPI.reload("data-v-757194e4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(70);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(3);
+var settle = __webpack_require__(74);
+var buildURL = __webpack_require__(76);
+var parseHeaders = __webpack_require__(77);
+var isURLSameOrigin = __webpack_require__(78);
+var createError = __webpack_require__(16);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(79);
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+    var loadEvent = 'onreadystatechange';
+    var xDomain = false;
+
+    // For IE 8/9 CORS support
+    // Only supports POST and GET calls and doesn't returns the response headers.
+    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+    if ("development" !== 'test' &&
+        typeof window !== 'undefined' &&
+        window.XDomainRequest && !('withCredentials' in request) &&
+        !isURLSameOrigin(config.url)) {
+      request = new window.XDomainRequest();
+      loadEvent = 'onload';
+      xDomain = true;
+      request.onprogress = function handleProgress() {};
+      request.ontimeout = function handleTimeout() {};
+    }
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password || '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    // Listen for ready state
+    request[loadEvent] = function handleLoad() {
+      if (!request || (request.readyState !== 4 && !xDomain)) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+      var response = {
+        data: responseData,
+        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
+        status: request.status === 1223 ? 204 : request.status,
+        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config, null, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
+        request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(80);
+
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+          cookies.read(config.xsrfCookieName) :
+          undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (config.withCredentials) {
+      request.withCredentials = true;
+    }
+
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+        if (config.responseType !== 'json') {
+          throw e;
+        }
+      }
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
+
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
+
+    if (requestData === undefined) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(75);
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, request, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(187)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(189),
+  /* template */
+  __webpack_require__(190),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-a8da5b24",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Users/Views/Login.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Login.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a8da5b24", Component.options)
+  } else {
+    hotAPI.reload("data-v-a8da5b24", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_form_utils__ = __webpack_require__(6);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    createBrandForTableList: function createBrandForTableList(_ref) {
+        var brand = _ref.brand,
+            index = _ref.index,
+            onEdit = _ref.onEdit,
+            onRemove = _ref.onRemove;
+
+        var vehicleBrand = this.createBrand({ brand: brand, index: index });
+        return __WEBPACK_IMPORTED_MODULE_0__utils_form_utils__["a" /* default */].addActionsTo(vehicleBrand, onEdit, onRemove);
+    },
+    createBrand: function createBrand(_ref2) {
+        var brand = _ref2.brand,
+            index = _ref2.index,
+            _ref2$props = _ref2.props,
+            props = _ref2$props === undefined ? {} : _ref2$props;
+
+        return Object.assign(brand, { ord: index + 1 }, props);
+    }
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_form_utils__ = __webpack_require__(6);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    create: function create(_ref) {
+        var object = _ref.object,
+            index = _ref.index,
+            _ref$props = _ref.props,
+            props = _ref$props === undefined ? {} : _ref$props;
+
+        return Object.assign(object, { ord: index + 1 }, props);
+    },
+    createForTableList: function createForTableList(_ref2) {
+        var object = _ref2.object,
+            index = _ref2.index,
+            onEdit = _ref2.onEdit,
+            onRemove = _ref2.onRemove;
+
+        var obj = this.create({ object: object, index: index });
+        return __WEBPACK_IMPORTED_MODULE_0__utils_form_utils__["a" /* default */].addActionsTo(obj, onEdit, onRemove);
+    }
+});
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = "/fonts/vendor/bootstrap/dist/glyphicons-halflings-regular.eot?f4769f9bdb7466be65088239c12046d1";
 
 /***/ }),
-/* 16 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -3818,7 +3807,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(182);
+var	fixUrls = __webpack_require__(235);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -4131,43 +4120,46 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 17 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(18);
-module.exports = __webpack_require__(188);
+__webpack_require__(25);
+module.exports = __webpack_require__(241);
 
 
 /***/ }),
-/* 18 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_v_click_outside__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_v_click_outside___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_v_click_outside__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globalComponents__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_UIComponents_NotificationPlugin__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_UIComponents_SidebarPlugin__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__App_vue__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_user_service__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__routes_routes__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_localforage__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_localforage__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_chartist__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_chartist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_chartist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_bootstrap_dist_css_bootstrap_css__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_bootstrap_dist_css_bootstrap_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_bootstrap_dist_css_bootstrap_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__sass_paper_dashboard_scss__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__sass_paper_dashboard_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__sass_paper_dashboard_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_es6_promise_auto__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_es6_promise_auto__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_axios__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_sweetalert__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_sweetalert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_sweetalert__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_v_click_outside__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_v_click_outside___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_v_click_outside__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globalComponents__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_UIComponents_NotificationPlugin__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_UIComponents_SidebarPlugin__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_vue__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__App_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_user_service__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__routes_routes__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_localforage__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_localforage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_chartist__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_chartist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_chartist__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_bootstrap_dist_css_bootstrap_css__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_bootstrap_dist_css_bootstrap_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_bootstrap_dist_css_bootstrap_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__sass_paper_dashboard_scss__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__sass_paper_dashboard_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__sass_paper_dashboard_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_es6_promise_auto__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_es6_promise_auto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_es6_promise_auto__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_axios__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_axios__);
+
 
 
 
@@ -4189,24 +4181,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // plugin setup
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3__globalComponents__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_v_click_outside___default.a);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4__components_UIComponents_NotificationPlugin__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5__components_UIComponents_SidebarPlugin__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_sweetalert___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4__globalComponents__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_v_click_outside___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5__components_UIComponents_NotificationPlugin__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6__components_UIComponents_SidebarPlugin__["a" /* default */]);
 
 // Storage setup
-__WEBPACK_IMPORTED_MODULE_9_localforage__["config"]({
+__WEBPACK_IMPORTED_MODULE_10_localforage__["config"]({
     name: 'vy-rent-car'
 });
 
 // configure router
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-    routes: __WEBPACK_IMPORTED_MODULE_8__routes_routes__["a" /* default */], // short for routes: routes
+    routes: __WEBPACK_IMPORTED_MODULE_9__routes_routes__["a" /* default */], // short for routes: routes
     linkActiveClass: 'active'
 });
 
 router.beforeEach(function (to, from, next) {
-    __WEBPACK_IMPORTED_MODULE_9_localforage__["getItem"](__WEBPACK_IMPORTED_MODULE_7__services_user_service__["a" /* AUTH_USER_KEY */]).then(function (user) {
+    __WEBPACK_IMPORTED_MODULE_10_localforage__["getItem"](__WEBPACK_IMPORTED_MODULE_8__services_user_service__["a" /* AUTH_USER_KEY */]).then(function (user) {
         if (user || to.fullPath === '/user/login') {
             next();
         } else {
@@ -4224,13 +4217,13 @@ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype, '$C
 
 Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype, '$storage', {
     get: function get() {
-        return __WEBPACK_IMPORTED_MODULE_9_localforage__;
+        return __WEBPACK_IMPORTED_MODULE_10_localforage__;
     }
 });
 
 Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype, '$axios', {
     get: function get() {
-        return __WEBPACK_IMPORTED_MODULE_14_axios__;
+        return __WEBPACK_IMPORTED_MODULE_15_axios__;
     }
 });
 
@@ -4238,16 +4231,16 @@ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype, '$a
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     render: function render(h) {
-        return h(__WEBPACK_IMPORTED_MODULE_6__App_vue___default.a);
+        return h(__WEBPACK_IMPORTED_MODULE_7__App_vue___default.a);
     },
     router: router,
     data: {
-        Chartist: __WEBPACK_IMPORTED_MODULE_10_chartist___default.a
+        Chartist: __WEBPACK_IMPORTED_MODULE_11_chartist___default.a
     }
 });
 
 /***/ }),
-/* 19 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14339,10 +14332,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 20 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16854,21 +16847,35 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 21 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.VueSweetAlert=t():e.VueSweetAlert=t()}(this,function(){return function(e){function t(o){if(n[o])return n[o].exports;var a=n[o]={exports:{},id:o,loaded:!1};return e[o].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var n={};return t.m=e,t.c=n,t.p="/build/",t(0)}([function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var a=n(1),r=o(a);t.default=r.default},function(e,t,n){"use strict";function o(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var a=n(6),r=o(a);n(5);var i={};i.install=function(e){e.prototype.$swal=r.default},t.default=i},function(e,t,n){t=e.exports=n(3)(),t.push([e.id,'body.swal2-shown{overflow-y:hidden}.swal2-container,body.swal2-iosfix{position:fixed;left:0;right:0}.swal2-container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;top:0;bottom:0;padding:10px;background-color:transparent;z-index:1060}.swal2-container.swal2-fade{transition:background-color .1s}.swal2-container.swal2-shown{background-color:rgba(0,0,0,.4)}.swal2-modal{background-color:#fff;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;border-radius:5px;box-sizing:border-box;text-align:center;margin:auto;overflow-x:hidden;overflow-y:auto;display:none;position:relative;max-width:100%}.swal2-modal:focus{outline:none}.swal2-modal.swal2-loading{overflow-y:hidden}.swal2-modal .swal2-title{color:#595959;font-size:30px;text-align:center;font-weight:600;text-transform:none;position:relative;margin:0 0 .4em;padding:0;display:block;word-wrap:break-word}.swal2-modal .swal2-buttonswrapper{margin-top:15px}.swal2-modal .swal2-buttonswrapper:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4;cursor:no-drop}.swal2-modal .swal2-buttonswrapper.swal2-loading .swal2-styled.swal2-confirm{box-sizing:border-box;border:4px solid transparent;border-color:transparent;width:40px;height:40px;padding:0;margin:7.5px;vertical-align:top;background-color:transparent!important;color:transparent;cursor:default;border-radius:100%;-webkit-animation:rotate-loading 1.5s linear 0s infinite normal;animation:rotate-loading 1.5s linear 0s infinite normal;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-modal .swal2-buttonswrapper.swal2-loading .swal2-styled.swal2-cancel{margin-left:30px;margin-right:30px}.swal2-modal .swal2-buttonswrapper.swal2-loading :not(.swal2-styled).swal2-confirm:after{display:inline-block;content:"";margin-left:5px 0 15px;vertical-align:-1px;height:15px;width:15px;border:3px solid #999;box-shadow:1px 1px 1px #fff;border-right-color:transparent;border-radius:50%;-webkit-animation:rotate-loading 1.5s linear 0s infinite normal;animation:rotate-loading 1.5s linear 0s infinite normal}.swal2-modal .swal2-styled{border:0;border-radius:3px;box-shadow:none;color:#fff;cursor:pointer;font-size:17px;font-weight:500;margin:15px 5px 0;padding:10px 32px}.swal2-modal .swal2-image{margin:20px auto;max-width:100%}.swal2-modal .swal2-close{background:transparent;border:0;margin:0;padding:0;width:38px;height:40px;font-size:36px;line-height:40px;font-family:serif;position:absolute;top:5px;right:8px;cursor:pointer;color:#ccc;transition:color .1s ease}.swal2-modal .swal2-close:hover{color:#d55}.swal2-modal>.swal2-checkbox,.swal2-modal>.swal2-file,.swal2-modal>.swal2-input,.swal2-modal>.swal2-radio,.swal2-modal>.swal2-select,.swal2-modal>.swal2-textarea{display:none}.swal2-modal .swal2-content{font-size:18px;text-align:center;font-weight:300;position:relative;float:none;margin:0;padding:0;line-height:normal;color:#545454;word-wrap:break-word}.swal2-modal .swal2-checkbox,.swal2-modal .swal2-file,.swal2-modal .swal2-input,.swal2-modal .swal2-radio,.swal2-modal .swal2-select,.swal2-modal .swal2-textarea{margin:20px auto}.swal2-modal .swal2-file,.swal2-modal .swal2-input,.swal2-modal .swal2-textarea{width:100%;box-sizing:border-box;font-size:18px;border-radius:3px;border:1px solid #d9d9d9;box-shadow:inset 0 1px 1px rgba(0,0,0,.06);transition:border-color box-shadow .3s}.swal2-modal .swal2-file.swal2-inputerror,.swal2-modal .swal2-input.swal2-inputerror,.swal2-modal .swal2-textarea.swal2-inputerror{border-color:#f27474!important;box-shadow:0 0 2px #f27474!important}.swal2-modal .swal2-file:focus,.swal2-modal .swal2-input:focus,.swal2-modal .swal2-textarea:focus{outline:none;border:1px solid #b4dbed;box-shadow:0 0 3px #c4e6f5}.swal2-modal .swal2-file:focus::-webkit-input-placeholder,.swal2-modal .swal2-input:focus::-webkit-input-placeholder,.swal2-modal .swal2-textarea:focus::-webkit-input-placeholder{transition:opacity .3s ease .03s;opacity:.8}.swal2-modal .swal2-file:focus:-ms-input-placeholder,.swal2-modal .swal2-input:focus:-ms-input-placeholder,.swal2-modal .swal2-textarea:focus:-ms-input-placeholder{transition:opacity .3s ease .03s;opacity:.8}.swal2-modal .swal2-file:focus::placeholder,.swal2-modal .swal2-input:focus::placeholder,.swal2-modal .swal2-textarea:focus::placeholder{transition:opacity .3s ease .03s;opacity:.8}.swal2-modal .swal2-file::-webkit-input-placeholder,.swal2-modal .swal2-input::-webkit-input-placeholder,.swal2-modal .swal2-textarea::-webkit-input-placeholder{color:#e6e6e6}.swal2-modal .swal2-file:-ms-input-placeholder,.swal2-modal .swal2-input:-ms-input-placeholder,.swal2-modal .swal2-textarea:-ms-input-placeholder{color:#e6e6e6}.swal2-modal .swal2-file::placeholder,.swal2-modal .swal2-input::placeholder,.swal2-modal .swal2-textarea::placeholder{color:#e6e6e6}.swal2-modal .swal2-range input{float:left;width:80%}.swal2-modal .swal2-range output{float:right;width:20%;font-size:20px;font-weight:600;text-align:center}.swal2-modal .swal2-range input,.swal2-modal .swal2-range output{height:43px;line-height:43px;vertical-align:middle;margin:20px auto;padding:0}.swal2-modal .swal2-input{height:43px;padding:0 12px}.swal2-modal .swal2-input[type=number]{max-width:150px}.swal2-modal .swal2-file{font-size:20px}.swal2-modal .swal2-textarea{height:108px;padding:12px}.swal2-modal .swal2-select{color:#545454;font-size:inherit;padding:5px 10px;min-width:40%;max-width:100%}.swal2-modal .swal2-radio{border:0}.swal2-modal .swal2-radio label:not(:first-child){margin-left:20px}.swal2-modal .swal2-radio input,.swal2-modal .swal2-radio span{vertical-align:middle}.swal2-modal .swal2-radio input{margin:0 3px 0 0}.swal2-modal .swal2-checkbox{color:#545454}.swal2-modal .swal2-checkbox input,.swal2-modal .swal2-checkbox span{vertical-align:middle}.swal2-modal .swal2-validationerror{background-color:#f0f0f0;margin:0 -20px;overflow:hidden;padding:10px;color:gray;font-size:16px;font-weight:300;display:none}.swal2-modal .swal2-validationerror:before{content:"!";display:inline-block;width:24px;height:24px;border-radius:50%;background-color:#ea7d7d;color:#fff;line-height:24px;text-align:center;margin-right:10px}@supports (-ms-accelerator:true){.swal2-range input{width:100%!important}.swal2-range output{display:none}}@media (-ms-high-contrast:active),(-ms-high-contrast:none){.swal2-range input{width:100%!important}.swal2-range output{display:none}}.swal2-icon{width:80px;height:80px;border:4px solid transparent;border-radius:50%;margin:20px auto 30px;padding:0;position:relative;box-sizing:content-box;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-icon.swal2-error{border-color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;display:block}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{position:absolute;height:5px;width:47px;background-color:#f27474;display:block;top:37px;border-radius:2px}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{-webkit-transform:rotate(45deg);transform:rotate(45deg);left:17px}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{-webkit-transform:rotate(-45deg);transform:rotate(-45deg);right:16px}.swal2-icon.swal2-warning{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#f8bb86;border-color:#facea8}.swal2-icon.swal2-info,.swal2-icon.swal2-warning{font-size:60px;line-height:80px;text-align:center}.swal2-icon.swal2-info{font-family:Open Sans,sans-serif;color:#3fc3ee;border-color:#9de0f6}.swal2-icon.swal2-question{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#87adbd;border-color:#c9dae1;font-size:60px;line-height:80px;text-align:center}.swal2-icon.swal2-success{border-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{border-radius:50%;position:absolute;width:60px;height:120px;-webkit-transform:rotate(45deg);transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{border-radius:120px 0 0 120px;top:-7px;left:-33px;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);-webkit-transform-origin:60px 60px;transform-origin:60px 60px}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{border-radius:0 120px 120px 0;top:-11px;left:30px;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);-webkit-transform-origin:0 60px;transform-origin:0 60px}.swal2-icon.swal2-success .swal2-success-ring{width:80px;height:80px;border:4px solid hsla(98,55%,69%,.2);border-radius:50%;box-sizing:content-box;position:absolute;left:-4px;top:-4px;z-index:2}.swal2-icon.swal2-success .swal2-success-fix{width:7px;height:90px;position:absolute;left:28px;top:8px;z-index:1;-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}.swal2-icon.swal2-success [class^=swal2-success-line]{height:5px;background-color:#a5dc86;display:block;border-radius:2px;position:absolute;z-index:2}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{width:25px;left:14px;top:46px;-webkit-transform:rotate(45deg);transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{width:47px;right:8px;top:38px;-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}.swal2-progresssteps{font-weight:600;margin:0 0 20px;padding:0}.swal2-progresssteps li{display:inline-block;position:relative}.swal2-progresssteps .swal2-progresscircle{background:#3085d6;border-radius:2em;color:#fff;height:2em;line-height:2em;text-align:center;width:2em;z-index:20}.swal2-progresssteps .swal2-progresscircle:first-child{margin-left:0}.swal2-progresssteps .swal2-progresscircle:last-child{margin-right:0}.swal2-progresssteps .swal2-progresscircle.swal2-activeprogressstep{background:#3085d6}.swal2-progresssteps .swal2-progresscircle.swal2-activeprogressstep~.swal2-progresscircle,.swal2-progresssteps .swal2-progresscircle.swal2-activeprogressstep~.swal2-progressline{background:#add8e6}.swal2-progresssteps .swal2-progressline{background:#3085d6;height:.4em;margin:0 -1px;z-index:10}[class^=swal2]{-webkit-tap-highlight-color:transparent}@-webkit-keyframes showSweetAlert{0%{-webkit-transform:scale(.7);transform:scale(.7)}45%{-webkit-transform:scale(1.05);transform:scale(1.05)}80%{-webkit-transform:scale(.95);transform:scale(.95)}to{-webkit-transform:scale(1);transform:scale(1)}}@keyframes showSweetAlert{0%{-webkit-transform:scale(.7);transform:scale(.7)}45%{-webkit-transform:scale(1.05);transform:scale(1.05)}80%{-webkit-transform:scale(.95);transform:scale(.95)}to{-webkit-transform:scale(1);transform:scale(1)}}@-webkit-keyframes hideSweetAlert{0%{-webkit-transform:scale(1);transform:scale(1);opacity:1}to{-webkit-transform:scale(.5);transform:scale(.5);opacity:0}}@keyframes hideSweetAlert{0%{-webkit-transform:scale(1);transform:scale(1);opacity:1}to{-webkit-transform:scale(.5);transform:scale(.5);opacity:0}}.swal2-show{-webkit-animation:showSweetAlert .3s;animation:showSweetAlert .3s}.swal2-show.swal2-noanimation{-webkit-animation:none;animation:none}.swal2-hide{-webkit-animation:hideSweetAlert .15s forwards;animation:hideSweetAlert .15s forwards}.swal2-hide.swal2-noanimation{-webkit-animation:none;animation:none}@-webkit-keyframes animate-success-tip{0%{width:0;left:1px;top:19px}54%{width:0;left:1px;top:19px}70%{width:50px;left:-8px;top:37px}84%{width:17px;left:21px;top:48px}to{width:25px;left:14px;top:45px}}@keyframes animate-success-tip{0%{width:0;left:1px;top:19px}54%{width:0;left:1px;top:19px}70%{width:50px;left:-8px;top:37px}84%{width:17px;left:21px;top:48px}to{width:25px;left:14px;top:45px}}@-webkit-keyframes animate-success-long{0%{width:0;right:46px;top:54px}65%{width:0;right:46px;top:54px}84%{width:55px;right:0;top:35px}to{width:47px;right:8px;top:38px}}@keyframes animate-success-long{0%{width:0;right:46px;top:54px}65%{width:0;right:46px;top:54px}84%{width:55px;right:0;top:35px}to{width:47px;right:8px;top:38px}}@-webkit-keyframes rotatePlaceholder{0%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}5%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}12%{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}to{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}}@keyframes rotatePlaceholder{0%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}5%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}12%{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}to{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}}.swal2-animate-success-line-tip{-webkit-animation:animate-success-tip .75s;animation:animate-success-tip .75s}.swal2-animate-success-line-long{-webkit-animation:animate-success-long .75s;animation:animate-success-long .75s}.swal2-success.swal2-animate-success-icon .swal2-success-circular-line-right{-webkit-animation:rotatePlaceholder 4.25s ease-in;animation:rotatePlaceholder 4.25s ease-in}@-webkit-keyframes animate-error-icon{0%{-webkit-transform:rotateX(100deg);transform:rotateX(100deg);opacity:0}to{-webkit-transform:rotateX(0deg);transform:rotateX(0deg);opacity:1}}@keyframes animate-error-icon{0%{-webkit-transform:rotateX(100deg);transform:rotateX(100deg);opacity:0}to{-webkit-transform:rotateX(0deg);transform:rotateX(0deg);opacity:1}}.swal2-animate-error-icon{-webkit-animation:animate-error-icon .5s;animation:animate-error-icon .5s}@-webkit-keyframes animate-x-mark{0%{-webkit-transform:scale(.4);transform:scale(.4);margin-top:26px;opacity:0}50%{-webkit-transform:scale(.4);transform:scale(.4);margin-top:26px;opacity:0}80%{-webkit-transform:scale(1.15);transform:scale(1.15);margin-top:-6px}to{-webkit-transform:scale(1);transform:scale(1);margin-top:0;opacity:1}}@keyframes animate-x-mark{0%{-webkit-transform:scale(.4);transform:scale(.4);margin-top:26px;opacity:0}50%{-webkit-transform:scale(.4);transform:scale(.4);margin-top:26px;opacity:0}80%{-webkit-transform:scale(1.15);transform:scale(1.15);margin-top:-6px}to{-webkit-transform:scale(1);transform:scale(1);margin-top:0;opacity:1}}.swal2-animate-x-mark{-webkit-animation:animate-x-mark .5s;animation:animate-x-mark .5s}@-webkit-keyframes rotate-loading{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes rotate-loading{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}',""])},function(e,t){e.exports=function(){var e=[];return e.toString=function(){for(var e=[],t=0;t<this.length;t++){var n=this[t];n[2]?e.push("@media "+n[2]+"{"+n[1]+"}"):e.push(n[1])}return e.join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var o={},a=0;a<this.length;a++){var r=this[a][0];"number"==typeof r&&(o[r]=!0)}for(a=0;a<t.length;a++){var i=t[a];"number"==typeof i[0]&&o[i[0]]||(n&&!i[2]?i[2]=n:n&&(i[2]="("+i[2]+") and ("+n+")"),e.push(i))}},e}},function(e,t,n){function o(e,t){for(var n=0;n<e.length;n++){var o=e[n],a=f[o.id];if(a){a.refs++;for(var r=0;r<a.parts.length;r++)a.parts[r](o.parts[r]);for(;r<o.parts.length;r++)a.parts.push(c(o.parts[r],t))}else{for(var i=[],r=0;r<o.parts.length;r++)i.push(c(o.parts[r],t));f[o.id]={id:o.id,refs:1,parts:i}}}}function a(e){for(var t=[],n={},o=0;o<e.length;o++){var a=e[o],r=a[0],i=a[1],s=a[2],l=a[3],c={css:i,media:s,sourceMap:l};n[r]?n[r].parts.push(c):t.push(n[r]={id:r,parts:[c]})}return t}function r(e,t){var n=g(),o=x[x.length-1];if("top"===e.insertAt)o?o.nextSibling?n.insertBefore(t,o.nextSibling):n.appendChild(t):n.insertBefore(t,n.firstChild),x.push(t);else{if("bottom"!==e.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(t)}}function i(e){e.parentNode.removeChild(e);var t=x.indexOf(e);t>=0&&x.splice(t,1)}function s(e){var t=document.createElement("style");return t.type="text/css",r(e,t),t}function l(e){var t=document.createElement("link");return t.rel="stylesheet",r(e,t),t}function c(e,t){var n,o,a;if(t.singleton){var r=b++;n=h||(h=s(t)),o=u.bind(null,n,r,!1),a=u.bind(null,n,r,!0)}else e.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(n=l(t),o=p.bind(null,n),a=function(){i(n),n.href&&URL.revokeObjectURL(n.href)}):(n=s(t),o=d.bind(null,n),a=function(){i(n)});return o(e),function(t){if(t){if(t.css===e.css&&t.media===e.media&&t.sourceMap===e.sourceMap)return;o(e=t)}else a()}}function u(e,t,n,o){var a=n?"":o.css;if(e.styleSheet)e.styleSheet.cssText=v(t,a);else{var r=document.createTextNode(a),i=e.childNodes;i[t]&&e.removeChild(i[t]),i.length?e.insertBefore(r,i[t]):e.appendChild(r)}}function d(e,t){var n=t.css,o=t.media;if(o&&e.setAttribute("media",o),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}function p(e,t){var n=t.css,o=t.sourceMap;o&&(n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */");var a=new Blob([n],{type:"text/css"}),r=e.href;e.href=URL.createObjectURL(a),r&&URL.revokeObjectURL(r)}var f={},m=function(e){var t;return function(){return"undefined"==typeof t&&(t=e.apply(this,arguments)),t}},w=m(function(){return/msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase())}),g=m(function(){return document.head||document.getElementsByTagName("head")[0]}),h=null,b=0,x=[];e.exports=function(e,t){t=t||{},"undefined"==typeof t.singleton&&(t.singleton=w()),"undefined"==typeof t.insertAt&&(t.insertAt="bottom");var n=a(e);return o(n,t),function(e){for(var r=[],i=0;i<n.length;i++){var s=n[i],l=f[s.id];l.refs--,r.push(l)}if(e){var c=a(e);o(c,t)}for(var i=0;i<r.length;i++){var l=r[i];if(0===l.refs){for(var u=0;u<l.parts.length;u++)l.parts[u]();delete f[l.id]}}}};var v=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t,n){var o=n(2);"string"==typeof o&&(o=[[e.id,o,""]]);n(4)(o,{});o.locals&&(e.exports=o.locals)},function(e,t,n){/*!
+	 * sweetalert2 v6.6.6
+	 * Released under the MIT License.
+	 */
+!function(t,n){e.exports=n()}(this,function(){"use strict";var e={title:"",titleText:"",text:"",html:"",type:null,customClass:"",target:"body",animation:!0,allowOutsideClick:!0,allowEscapeKey:!0,allowEnterKey:!0,showConfirmButton:!0,showCancelButton:!1,preConfirm:null,confirmButtonText:"OK",confirmButtonColor:"#3085d6",confirmButtonClass:null,cancelButtonText:"Cancel",cancelButtonColor:"#aaa",cancelButtonClass:null,buttonsStyling:!0,reverseButtons:!1,focusCancel:!1,showCloseButton:!1,showLoaderOnConfirm:!1,imageUrl:null,imageWidth:null,imageHeight:null,imageClass:null,timer:null,width:500,padding:20,background:"#fff",input:null,inputPlaceholder:"",inputValue:"",inputOptions:{},inputAutoTrim:!0,inputClass:null,inputAttributes:{},inputValidator:null,progressSteps:[],currentProgressStep:null,progressStepsDistance:"40px",onOpen:null,onClose:null,useRejections:!0},t="swal2-",n=function(e){var n={};for(var o in e)n[e[o]]=t+e[o];return n},o=n(["container","shown","iosfix","modal","overlay","fade","show","hide","noanimation","close","title","content","buttonswrapper","confirm","cancel","icon","image","input","file","range","select","radio","checkbox","textarea","inputerror","validationerror","progresssteps","activeprogressstep","progresscircle","progressline","loading","styled"]),a=n(["success","warning","info","question","error"]),r=function(e,t){e=String(e).replace(/[^0-9a-f]/gi,""),e.length<6&&(e=e[0]+e[0]+e[1]+e[1]+e[2]+e[2]),t=t||0;for(var n="#",o=0;o<3;o++){var a=parseInt(e.substr(2*o,2),16);a=Math.round(Math.min(Math.max(0,a+a*t),255)).toString(16),n+=("00"+a).substr(a.length)}return n},i=function(e){var t=[];for(var n in e)t.indexOf(e[n])===-1&&t.push(e[n]);return t},s={previousWindowKeyDown:null,previousActiveElement:null,previousBodyPadding:null},l=function(e){if("undefined"==typeof document)return void console.error("SweetAlert2 requires document to initialize");var t=document.createElement("div");t.className=o.container,t.innerHTML=c;var n=document.querySelector(e.target);n||(console.warn("SweetAlert2: Can't find the target \""+e.target+'"'),n=document.body),n.appendChild(t);var a=d(),r=P(a,o.input),i=P(a,o.file),s=a.querySelector("."+o.range+" input"),l=a.querySelector("."+o.range+" output"),u=P(a,o.select),p=a.querySelector("."+o.checkbox+" input"),f=P(a,o.textarea);return r.oninput=function(){Y.resetValidationError()},r.onkeydown=function(t){setTimeout(function(){13===t.keyCode&&e.allowEnterKey&&(t.stopPropagation(),Y.clickConfirm())},0)},i.onchange=function(){Y.resetValidationError()},s.oninput=function(){Y.resetValidationError(),l.value=s.value},s.onchange=function(){Y.resetValidationError(),s.previousSibling.value=s.value},u.onchange=function(){Y.resetValidationError()},p.onchange=function(){Y.resetValidationError()},f.oninput=function(){Y.resetValidationError()},a},c=('\n <div role="dialog" aria-labelledby="'+o.title+'" aria-describedby="'+o.content+'" class="'+o.modal+'" tabindex="-1">\n   <ul class="'+o.progresssteps+'"></ul>\n   <div class="'+o.icon+" "+a.error+'">\n     <span class="swal2-x-mark"><span class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span>\n   </div>\n   <div class="'+o.icon+" "+a.question+'">?</div>\n   <div class="'+o.icon+" "+a.warning+'">!</div>\n   <div class="'+o.icon+" "+a.info+'">i</div>\n   <div class="'+o.icon+" "+a.success+'">\n     <div class="swal2-success-circular-line-left"></div>\n     <span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>\n     <div class="swal2-success-ring"></div> <div class="swal2-success-fix"></div>\n     <div class="swal2-success-circular-line-right"></div>\n   </div>\n   <img class="'+o.image+'" />\n   <h2 class="'+o.title+'" id="'+o.title+'"></h2>\n   <div id="'+o.content+'" class="'+o.content+'"></div>\n   <input class="'+o.input+'" />\n   <input type="file" class="'+o.file+'" />\n   <div class="'+o.range+'">\n     <output></output>\n     <input type="range" />\n   </div>\n   <select class="'+o.select+'"></select>\n   <div class="'+o.radio+'"></div>\n   <label for="'+o.checkbox+'" class="'+o.checkbox+'">\n     <input type="checkbox" />\n   </label>\n   <textarea class="'+o.textarea+'"></textarea>\n   <div class="'+o.validationerror+'"></div>\n   <div class="'+o.buttonswrapper+'">\n     <button type="button" class="'+o.confirm+'">OK</button>\n     <button type="button" class="'+o.cancel+'">Cancel</button>\n   </div>\n   <button type="button" class="'+o.close+'" aria-label="Close this dialog">×</button>\n </div>\n').replace(/(^|\n)\s*/g,""),u=function(){return document.body.querySelector("."+o.container)},d=function(){return u()?u().querySelector("."+o.modal):null},p=function(){var e=d();return e.querySelectorAll("."+o.icon)},f=function(e){return u()?u().querySelector("."+e):null},m=function(){return f(o.title)},w=function(){return f(o.content)},g=function(){return f(o.image)},h=function(){return f(o.buttonswrapper)},b=function(){return f(o.progresssteps)},x=function(){return f(o.validationerror)},v=function(){return f(o.confirm)},y=function(){return f(o.cancel)},k=function(){return f(o.close)},C=function(e){var t=[v(),y()];e&&t.reverse();var n=t.concat(Array.prototype.slice.call(d().querySelectorAll('button, input:not([type=hidden]), textarea, select, a, *[tabindex]:not([tabindex="-1"])')));return i(n)},S=function(e,t){return!!e.classList&&e.classList.contains(t)},A=function(e){if(e.focus(),"file"!==e.type){var t=e.value;e.value="",e.value=t}},E=function(e,t){if(e&&t){var n=t.split(/\s+/).filter(Boolean);n.forEach(function(t){e.classList.add(t)})}},B=function(e,t){if(e&&t){var n=t.split(/\s+/).filter(Boolean);n.forEach(function(t){e.classList.remove(t)})}},P=function(e,t){for(var n=0;n<e.childNodes.length;n++)if(S(e.childNodes[n],t))return e.childNodes[n]},L=function(e,t){t||(t="block"),e.style.opacity="",e.style.display=t},M=function(e){e.style.opacity="",e.style.display="none"},T=function(e){for(;e.firstChild;)e.removeChild(e.firstChild)},O=function(e){return e.offsetWidth||e.offsetHeight||e.getClientRects().length},q=function(e,t){e.style.removeProperty?e.style.removeProperty(t):e.style.removeAttribute(t)},H=function(e){if(!O(e))return!1;if("function"==typeof MouseEvent){var t=new MouseEvent("click",{view:window,bubbles:!1,cancelable:!0});e.dispatchEvent(t)}else if(document.createEvent){var n=document.createEvent("MouseEvents");n.initEvent("click",!1,!1),e.dispatchEvent(n)}else document.createEventObject?e.fireEvent("onclick"):"function"==typeof e.onclick&&e.onclick()},V=function(){var e=document.createElement("div"),t={WebkitAnimation:"webkitAnimationEnd",OAnimation:"oAnimationEnd oanimationend",msAnimation:"MSAnimationEnd",animation:"animationend"};for(var n in t)if(t.hasOwnProperty(n)&&void 0!==e.style[n])return t[n];return!1}(),j=function(){if(window.onkeydown=s.previousWindowKeyDown,s.previousActiveElement&&s.previousActiveElement.focus){var e=window.scrollX,t=window.scrollY;s.previousActiveElement.focus(),e&&t&&window.scrollTo(e,t)}},z=function(){var e="ontouchstart"in window||navigator.msMaxTouchPoints;if(e)return 0;var t=document.createElement("div");t.style.width="50px",t.style.height="50px",t.style.overflow="scroll",document.body.appendChild(t);var n=t.offsetWidth-t.clientWidth;return document.body.removeChild(t),n},N=function(e,t){var n=void 0;return function(){var o=function(){n=null,e()};clearTimeout(n),n=setTimeout(o,t)}},R="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},U=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(e[o]=n[o])}return e},I=U({},e),K=[],D=void 0,W=function(t){var n=d()||l(t);for(var r in t)e.hasOwnProperty(r)||"extraParams"===r||console.warn('SweetAlert2: Unknown parameter "'+r+'"');n.style.width="number"==typeof t.width?t.width+"px":t.width,n.style.padding=t.padding+"px",n.style.background=t.background;for(var i=n.querySelectorAll("[class^=swal2-success-circular-line], .swal2-success-fix"),s=0;s<i.length;s++)i[s].style.background=t.background;var c=m(),u=w(),f=h(),x=v(),C=y(),S=k();if(t.titleText?c.innerText=t.titleText:c.innerHTML=t.title.split("\n").join("<br />"),t.text||t.html){if("object"===R(t.html))if(u.innerHTML="",0 in t.html)for(var A=0;A in t.html;A++)u.appendChild(t.html[A].cloneNode(!0));else u.appendChild(t.html.cloneNode(!0));else t.html?u.innerHTML=t.html:t.text&&(u.textContent=t.text);L(u)}else M(u);t.showCloseButton?L(S):M(S),n.className=o.modal,t.customClass&&E(n,t.customClass);var P=b(),O=parseInt(null===t.currentProgressStep?Y.getQueueStep():t.currentProgressStep,10);t.progressSteps.length?(L(P),T(P),O>=t.progressSteps.length&&console.warn("SweetAlert2: Invalid currentProgressStep parameter, it should be less than progressSteps.length (currentProgressStep like JS arrays starts from 0)"),t.progressSteps.forEach(function(e,n){var a=document.createElement("li");if(E(a,o.progresscircle),a.innerHTML=e,n===O&&E(a,o.activeprogressstep),P.appendChild(a),n!==t.progressSteps.length-1){var r=document.createElement("li");E(r,o.progressline),r.style.width=t.progressStepsDistance,P.appendChild(r)}})):M(P);for(var H=p(),V=0;V<H.length;V++)M(H[V]);if(t.type){var j=!1;for(var z in a)if(t.type===z){j=!0;break}if(!j)return console.error("SweetAlert2: Unknown alert type: "+t.type),!1;var N=n.querySelector("."+o.icon+"."+a[t.type]);if(L(N),t.animation)switch(t.type){case"success":E(N,"swal2-animate-success-icon"),E(N.querySelector(".swal2-success-line-tip"),"swal2-animate-success-line-tip"),E(N.querySelector(".swal2-success-line-long"),"swal2-animate-success-line-long");break;case"error":E(N,"swal2-animate-error-icon"),E(N.querySelector(".swal2-x-mark"),"swal2-animate-x-mark")}}var U=g();t.imageUrl?(U.setAttribute("src",t.imageUrl),L(U),t.imageWidth?U.setAttribute("width",t.imageWidth):U.removeAttribute("width"),t.imageHeight?U.setAttribute("height",t.imageHeight):U.removeAttribute("height"),U.className=o.image,t.imageClass&&E(U,t.imageClass)):M(U),t.showCancelButton?C.style.display="inline-block":M(C),t.showConfirmButton?q(x,"display"):M(x),t.showConfirmButton||t.showCancelButton?L(f):M(f),x.innerHTML=t.confirmButtonText,C.innerHTML=t.cancelButtonText,t.buttonsStyling&&(x.style.backgroundColor=t.confirmButtonColor,C.style.backgroundColor=t.cancelButtonColor),x.className=o.confirm,E(x,t.confirmButtonClass),C.className=o.cancel,E(C,t.cancelButtonClass),t.buttonsStyling?(E(x,o.styled),E(C,o.styled)):(B(x,o.styled),B(C,o.styled),x.style.backgroundColor=x.style.borderLeftColor=x.style.borderRightColor="",C.style.backgroundColor=C.style.borderLeftColor=C.style.borderRightColor=""),t.animation===!0?B(n,o.noanimation):E(n,o.noanimation)},_=function(e,t){var n=u(),a=d();e?(E(a,o.show),E(n,o.fade),B(a,o.hide)):B(a,o.fade),L(a),n.style.overflowY="hidden",V&&!S(a,o.noanimation)?a.addEventListener(V,function e(){a.removeEventListener(V,e),n.style.overflowY="auto"}):n.style.overflowY="auto",E(document.documentElement,o.shown),E(document.body,o.shown),E(n,o.shown),X(),Z(),s.previousActiveElement=document.activeElement,null!==t&&"function"==typeof t&&setTimeout(function(){t(a)})},X=function(){null===s.previousBodyPadding&&document.body.scrollHeight>window.innerHeight&&(s.previousBodyPadding=document.body.style.paddingRight,document.body.style.paddingRight=z()+"px")},$=function(){null!==s.previousBodyPadding&&(document.body.style.paddingRight=s.previousBodyPadding,s.previousBodyPadding=null)},Z=function(){var e=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;if(e&&!S(document.body,o.iosfix)){var t=document.body.scrollTop;document.body.style.top=t*-1+"px",E(document.body,o.iosfix)}},Q=function(){if(S(document.body,o.iosfix)){var e=parseInt(document.body.style.top,10);B(document.body,o.iosfix),document.body.style.top="",document.body.scrollTop=e*-1}},Y=function e(){for(var t=arguments.length,n=Array(t),a=0;a<t;a++)n[a]=arguments[a];if(void 0===n[0])return console.error("SweetAlert2 expects at least 1 attribute!"),!1;var i=U({},I);switch(R(n[0])){case"string":i.title=n[0],i.html=n[1],i.type=n[2];break;case"object":U(i,n[0]),i.extraParams=n[0].extraParams,"email"===i.input&&null===i.inputValidator&&(i.inputValidator=function(e){return new Promise(function(t,n){var o=/^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;o.test(e)?t():n("Invalid email address")})}),"url"===i.input&&null===i.inputValidator&&(i.inputValidator=function(e){return new Promise(function(t,n){var o=/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&\/\/=]*)$/;o.test(e)?t():n("Invalid URL")})});break;default:return console.error('SweetAlert2: Unexpected type of argument! Expected "string" or "object", got '+R(n[0])),!1}W(i);var l=u(),c=d();return new Promise(function(t,n){i.timer&&(c.timeout=setTimeout(function(){e.closeModal(i.onClose),i.useRejections?n("timer"):t({dismiss:"timer"})},i.timer));var a=function(e){if(e=e||i.input,!e)return null;switch(e){case"select":case"textarea":case"file":return P(c,o[e]);case"checkbox":return c.querySelector("."+o.checkbox+" input");case"radio":return c.querySelector("."+o.radio+" input:checked")||c.querySelector("."+o.radio+" input:first-child");case"range":return c.querySelector("."+o.range+" input");default:return P(c,o.input)}},p=function(){var e=a();if(!e)return null;switch(i.input){case"checkbox":return e.checked?1:0;case"radio":return e.checked?e.value:null;case"file":return e.files.length?e.files[0]:null;default:return i.inputAutoTrim?e.value.trim():e.value}};i.input&&setTimeout(function(){var e=a();e&&A(e)},0);for(var f=function(n){i.showLoaderOnConfirm&&e.showLoading(),i.preConfirm?i.preConfirm(n,i.extraParams).then(function(o){e.closeModal(i.onClose),t(o||n)},function(t){e.hideLoading(),t&&e.showValidationError(t)}):(e.closeModal(i.onClose),t(i.useRejections?n:{value:n}))},S=function(o){var a=o||window.event,s=a.target||a.srcElement,l=v(),c=y(),u=l&&(l===s||l.contains(s)),d=c&&(c===s||c.contains(s));switch(a.type){case"mouseover":case"mouseup":i.buttonsStyling&&(u?l.style.backgroundColor=r(i.confirmButtonColor,-.1):d&&(c.style.backgroundColor=r(i.cancelButtonColor,-.1)));break;case"mouseout":i.buttonsStyling&&(u?l.style.backgroundColor=i.confirmButtonColor:d&&(c.style.backgroundColor=i.cancelButtonColor));break;case"mousedown":i.buttonsStyling&&(u?l.style.backgroundColor=r(i.confirmButtonColor,-.2):d&&(c.style.backgroundColor=r(i.cancelButtonColor,-.2)));break;case"click":if(u&&e.isVisible())if(e.disableButtons(),i.input){var m=p();i.inputValidator?(e.disableInput(),i.inputValidator(m,i.extraParams).then(function(){e.enableButtons(),e.enableInput(),f(m)},function(t){e.enableButtons(),e.enableInput(),t&&e.showValidationError(t)})):f(m)}else f(!0);else d&&e.isVisible()&&(e.disableButtons(),e.closeModal(i.onClose),i.useRejections?n("cancel"):t({dismiss:"cancel"}))}},T=c.querySelectorAll("button"),q=0;q<T.length;q++)T[q].onclick=S,T[q].onmouseover=S,T[q].onmouseout=S,T[q].onmousedown=S;k().onclick=function(){e.closeModal(i.onClose),i.useRejections?n("close"):t({dismiss:"close"})},l.onclick=function(o){o.target===l&&i.allowOutsideClick&&(e.closeModal(i.onClose),i.useRejections?n("overlay"):t({dismiss:"overlay"}))};var V=h(),j=v(),z=y();i.reverseButtons?j.parentNode.insertBefore(z,j):j.parentNode.insertBefore(j,z);var U=function(e,t){for(var n=C(i.focusCancel),o=0;o<n.length;o++){e+=t,e===n.length?e=0:e===-1&&(e=n.length-1);var a=n[e];if(O(a))return a.focus()}},I=function(o){var a=o||window.event,r=a.keyCode||a.which;if([9,13,32,27,37,38,39,40].indexOf(r)!==-1){for(var s=a.target||a.srcElement,l=C(i.focusCancel),c=-1,u=0;u<l.length;u++)if(s===l[u]){c=u;break}9===r?(a.shiftKey?U(c,-1):U(c,1),a.stopPropagation(),a.preventDefault()):37===r||38===r||39===r||40===r?document.activeElement===j&&O(z)?z.focus():document.activeElement===z&&O(j)&&j.focus():13===r||32===r?c===-1&&i.allowEnterKey&&(i.focusCancel?H(z,a):H(j,a),a.stopPropagation(),a.preventDefault()):27===r&&i.allowEscapeKey===!0&&(e.closeModal(i.onClose),i.useRejections?n("esc"):t({dismiss:"esc"}))}};window.onkeydown&&window.onkeydown.toString()===I.toString()||(s.previousWindowKeyDown=window.onkeydown,window.onkeydown=I),i.buttonsStyling&&(j.style.borderLeftColor=i.confirmButtonColor,j.style.borderRightColor=i.confirmButtonColor),e.hideLoading=e.disableLoading=function(){i.showConfirmButton||(M(j),i.showCancelButton||M(h())),B(V,o.loading),B(c,o.loading),j.disabled=!1,z.disabled=!1},e.getTitle=function(){return m()},e.getContent=function(){return w()},e.getInput=function(){return a()},e.getImage=function(){return g()},e.getButtonsWrapper=function(){return h()},e.getConfirmButton=function(){return v()},e.getCancelButton=function(){return y()},e.enableButtons=function(){j.disabled=!1,z.disabled=!1},e.disableButtons=function(){j.disabled=!0,z.disabled=!0},e.enableConfirmButton=function(){j.disabled=!1},e.disableConfirmButton=function(){j.disabled=!0},e.enableInput=function(){var e=a();if(!e)return!1;if("radio"===e.type)for(var t=e.parentNode.parentNode,n=t.querySelectorAll("input"),o=0;o<n.length;o++)n[o].disabled=!1;else e.disabled=!1},e.disableInput=function(){var e=a();if(!e)return!1;if(e&&"radio"===e.type)for(var t=e.parentNode.parentNode,n=t.querySelectorAll("input"),o=0;o<n.length;o++)n[o].disabled=!0;else e.disabled=!0},e.recalculateHeight=N(function(){var e=d();if(e){var t=e.style.display;e.style.minHeight="",L(e),e.style.minHeight=e.scrollHeight+1+"px",e.style.display=t}},50),e.showValidationError=function(e){var t=x();t.innerHTML=e,L(t);var n=a();n&&(A(n),E(n,o.inputerror))},e.resetValidationError=function(){var t=x();M(t),e.recalculateHeight();var n=a();n&&B(n,o.inputerror)},e.getProgressSteps=function(){return i.progressSteps},e.setProgressSteps=function(e){i.progressSteps=e,W(i)},e.showProgressSteps=function(){L(b())},e.hideProgressSteps=function(){M(b())},e.enableButtons(),e.hideLoading(),e.resetValidationError();for(var K=["input","file","range","select","radio","checkbox","textarea"],X=void 0,$=0;$<K.length;$++){var Z=o[K[$]],Q=P(c,Z);if(X=a(K[$])){for(var Y in X.attributes)if(X.attributes.hasOwnProperty(Y)){var J=X.attributes[Y].name;"type"!==J&&"value"!==J&&X.removeAttribute(J)}for(var F in i.inputAttributes)X.setAttribute(F,i.inputAttributes[F])}Q.className=Z,i.inputClass&&E(Q,i.inputClass),M(Q)}var G=void 0;switch(i.input){case"text":case"email":case"password":case"number":case"tel":case"url":X=P(c,o.input),X.value=i.inputValue,X.placeholder=i.inputPlaceholder,X.type=i.input,L(X);break;case"file":X=P(c,o.file),X.placeholder=i.inputPlaceholder,X.type=i.input,L(X);break;case"range":var ee=P(c,o.range),te=ee.querySelector("input"),ne=ee.querySelector("output");te.value=i.inputValue,te.type=i.input,ne.value=i.inputValue,L(ee);break;case"select":var oe=P(c,o.select);if(oe.innerHTML="",i.inputPlaceholder){var ae=document.createElement("option");ae.innerHTML=i.inputPlaceholder,ae.value="",ae.disabled=!0,ae.selected=!0,oe.appendChild(ae)}G=function(e){for(var t in e){var n=document.createElement("option");n.value=t,n.innerHTML=e[t],i.inputValue===t&&(n.selected=!0),oe.appendChild(n)}L(oe),oe.focus()};break;case"radio":var re=P(c,o.radio);re.innerHTML="",G=function(e){for(var t in e){var n=document.createElement("input"),a=document.createElement("label"),r=document.createElement("span");n.type="radio",n.name=o.radio,n.value=t,i.inputValue===t&&(n.checked=!0),r.innerHTML=e[t],a.appendChild(n),a.appendChild(r),a.for=n.id,re.appendChild(a)}L(re);var s=re.querySelectorAll("input");s.length&&s[0].focus()};break;case"checkbox":var ie=P(c,o.checkbox),se=a("checkbox");se.type="checkbox",se.value=1,se.id=o.checkbox,se.checked=Boolean(i.inputValue);var le=ie.getElementsByTagName("span");le.length&&ie.removeChild(le[0]),le=document.createElement("span"),le.innerHTML=i.inputPlaceholder,ie.appendChild(le),L(ie);break;case"textarea":var ce=P(c,o.textarea);ce.value=i.inputValue,ce.placeholder=i.inputPlaceholder,L(ce);break;case null:break;default:console.error('SweetAlert2: Unexpected type of input! Expected "text", "email", "password", "number", "tel", "select", "radio", "checkbox", "textarea", "file" or "url", got "'+i.input+'"')}"select"!==i.input&&"radio"!==i.input||(i.inputOptions instanceof Promise?(e.showLoading(),i.inputOptions.then(function(t){e.hideLoading(),G(t)})):"object"===R(i.inputOptions)?G(i.inputOptions):console.error("SweetAlert2: Unexpected type of inputOptions! Expected object or Promise, got "+R(i.inputOptions))),_(i.animation,i.onOpen),i.allowEnterKey?U(-1,1):document.activeElement&&document.activeElement.blur(),u().scrollTop=0,"undefined"==typeof MutationObserver||D||(D=new MutationObserver(e.recalculateHeight),D.observe(c,{childList:!0,characterData:!0,subtree:!0}))})};return Y.isVisible=function(){return!!d()},Y.queue=function(e){K=e;var t=function(){K=[],document.body.removeAttribute("data-swal2-queue-step")},n=[];return new Promise(function(e,o){!function a(r,i){r<K.length?(document.body.setAttribute("data-swal2-queue-step",r),Y(K[r]).then(function(e){n.push(e),a(r+1,i)},function(e){t(),o(e)})):(t(),e(n))}(0)})},Y.getQueueStep=function(){return document.body.getAttribute("data-swal2-queue-step")},Y.insertQueueStep=function(e,t){return t&&t<K.length?K.splice(t,0,e):K.push(e)},Y.deleteQueueStep=function(e){"undefined"!=typeof K[e]&&K.splice(e,1)},Y.close=Y.closeModal=function(e){var t=u(),n=d();if(n){B(n,o.show),E(n,o.hide),clearTimeout(n.timeout),j();var a=function(){t.parentNode&&t.parentNode.removeChild(t),B(document.documentElement,o.shown),B(document.body,o.shown),$(),Q()};V&&!S(n,o.noanimation)?n.addEventListener(V,function e(){n.removeEventListener(V,e),S(n,o.hide)&&a()}):a(),null!==e&&"function"==typeof e&&setTimeout(function(){e(n)})}},Y.clickConfirm=function(){return v().click()},Y.clickCancel=function(){return y().click()},Y.showLoading=Y.enableLoading=function(){var e=d();e||Y("");var t=h(),n=v(),a=y();L(t),L(n,"inline-block"),E(t,o.loading),E(e,o.loading),n.disabled=!0,a.disabled=!0},Y.setDefaults=function(t){if(!t||"object"!==("undefined"==typeof t?"undefined":R(t)))return console.error("SweetAlert2: the argument for setDefaults() is required and has to be a object");for(var n in t)e.hasOwnProperty(n)||"extraParams"===n||(console.warn('SweetAlert2: Unknown parameter "'+n+'"'),delete t[n]);U(I,t)},Y.resetDefaults=function(){I=U({},e)},Y.noop=function(){},Y.version="6.6.6",Y.default=Y,Y}),window.Sweetalert2&&(window.sweetAlert=window.swal=window.Sweetalert2)}])});
+//# sourceMappingURL=vue-sweetalert.js.map
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(n,e){ true?module.exports=e():"function"==typeof define&&define.amd?define("v-click-outside",e):n["v-click-outside"]=e()}(this,function(){"use strict";var n={instances:[]};return n.onEvent=function(e){n.instances.forEach(function(n){var t=n.el,i=n.fn;e.target===t||t.contains(e.target)||i&&i(e)})},n.bind=function(e){n.instances.push({el:e,fn:null}),1===n.instances.length&&document.addEventListener("click",n.onEvent)},n.update=function(e,t){if("function"!=typeof t.value)throw new Error("Argument must be a function");n.instances.find(function(n){return n.el===e}).fn=t.value},n.unbind=function(e){var t=n.instances.find(function(n){return n.el===e}),i=n.instances.indexOf(t);n.instances.splice(i,1),0===n.instances.length&&document.removeEventListener("click",n.onEvent)},{install:function(e){e.directive("click-outside",n)}}});
 
 
 /***/ }),
-/* 22 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_UIComponents_Inputs_formGroupInput_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_UIComponents_Inputs_formGroupInput_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_UIComponents_Inputs_formGroupInput_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_UIComponents_Inputs_formGroupInput_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Dropdown_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Dropdown_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Dropdown_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Inputs_formGroupSelect_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Inputs_formGroupSelect_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Inputs_formGroupSelect_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_UIComponents_Dropdown_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_UIComponents_Dropdown_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_UIComponents_Dropdown_vue__);
+
 
 
 
@@ -16877,32 +16884,33 @@ if (inBrowser && window.Vue) {
  */
 
 var GlobalComponents = {
-  install: function install(Vue) {
-    Vue.component('fg-input', __WEBPACK_IMPORTED_MODULE_0__components_UIComponents_Inputs_formGroupInput_vue___default.a);
-    Vue.component('drop-down', __WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Dropdown_vue___default.a);
-  }
+    install: function install(Vue) {
+        Vue.component('fg-input', __WEBPACK_IMPORTED_MODULE_0__components_UIComponents_Inputs_formGroupInput_vue___default.a);
+        Vue.component('fg-select', __WEBPACK_IMPORTED_MODULE_1__components_UIComponents_Inputs_formGroupSelect_vue___default.a);
+        Vue.component('drop-down', __WEBPACK_IMPORTED_MODULE_2__components_UIComponents_Dropdown_vue___default.a);
+    }
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (GlobalComponents);
 
 /***/ }),
-/* 23 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(24)
+  __webpack_require__(32)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(27),
+  __webpack_require__(35),
   /* template */
-  __webpack_require__(28),
+  __webpack_require__(36),
   /* styles */
   injectStyle,
   /* scopeId */
-  null,
+  "data-v-1b363190",
   /* moduleIdentifier (server only) */
   null
 )
@@ -16930,23 +16938,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 24 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(25);
+var content = __webpack_require__(33);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("eb6130b0", content, false);
+var update = __webpack_require__(2)("53d87618", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1b363190\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./formGroupInput.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1b363190\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./formGroupInput.vue");
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1b363190\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./formGroupInput.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1b363190\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./formGroupInput.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -16956,21 +16964,21 @@ if(false) {
 }
 
 /***/ }),
-/* 25 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\nlabel[data-v-1b363190] {\n  display: flex;\n  flex-flow: column;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 26 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /**
@@ -17003,7 +17011,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 27 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17028,19 +17036,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         name: String,
         disabled: Boolean,
         placeholder: String,
-        value: [String, Number]
+        value: [String, Number],
+        max: Number,
+        min: Number
     }
 });
 
 /***/ }),
-/* 28 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "form-group"
-  }, [(_vm.label) ? _c('label', [_vm._v("\n        " + _vm._s(_vm.label) + "\n    ")]) : _vm._e(), _vm._v(" "), _c('input', _vm._b({
+  }, [(_vm.label) ? _c('label', {
+    attrs: {
+      "for": _vm.name
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.label) + "\n    ")]) : _vm._e(), _vm._v(" "), _c('input', _vm._b({
     staticClass: "form-control border-input",
+    attrs: {
+      "name": _vm.name,
+      "minlength": _vm.min,
+      "maxlength": _vm.max
+    },
     domProps: {
       "value": _vm.value
     },
@@ -17060,15 +17079,180 @@ if (false) {
 }
 
 /***/ }),
-/* 29 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(1)(
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(38)
+}
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(30),
+  __webpack_require__(40),
   /* template */
-  __webpack_require__(31),
+  __webpack_require__(41),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-b1051b04",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/UIComponents/Inputs/formGroupSelect.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] formGroupSelect.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b1051b04", Component.options)
+  } else {
+    hotAPI.reload("data-v-b1051b04", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(39);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("5e32259a", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b1051b04\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./formGroupSelect.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b1051b04\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./formGroupSelect.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\nlabel[data-v-b1051b04] {\n  display: flex;\n  flex-flow: column;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        label: String,
+        name: String,
+        id: String,
+        value: [String, Number],
+        placeholder: String,
+        options: Array
+    },
+    data: function data() {
+        return {};
+    }
+});
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "form-group"
+  }, [(_vm.label) ? _c('label', {
+    attrs: {
+      "for": _vm.name
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.label) + "\n    ")]) : _vm._e(), _vm._v(" "), _c('select', _vm._b({
+    staticClass: "form-control border-input",
+    attrs: {
+      "name": _vm.name,
+      "id": _vm.id
+    },
+    domProps: {
+      "value": _vm.value
+    },
+    on: {
+      "change": function($event) {
+        _vm.$emit('change', $event.target.value)
+      }
+    }
+  }, 'select', _vm.$props, false), [(_vm.placeholder) ? _c('option', {
+    attrs: {
+      "disabled": ""
+    },
+    domProps: {
+      "value": null
+    }
+  }, [_vm._v(_vm._s(_vm.placeholder))]) : _vm._e(), _vm._v(" "), _vm._l((_vm.options), function(option, index) {
+    return _c('option', {
+      key: index,
+      domProps: {
+        "value": option.value
+      }
+    }, [_vm._v(_vm._s(option.label))])
+  })], 2)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b1051b04", module.exports)
+  }
+}
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(43),
+  /* template */
+  __webpack_require__(44),
   /* styles */
   null,
   /* scopeId */
@@ -17100,7 +17284,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 30 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17143,7 +17327,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 31 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17179,11 +17363,11 @@ if (false) {
 }
 
 /***/ }),
-/* 32 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Notifications_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Notifications_vue__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Notifications_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Notifications_vue__);
 
 
@@ -17213,57 +17397,13 @@ var NotificationsPlugin = {
 /* harmony default export */ __webpack_exports__["a"] = (NotificationsPlugin);
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(34)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(36),
-  /* template */
-  __webpack_require__(41),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/UIComponents/NotificationPlugin/Notifications.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Notifications.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-757194e4", Component.options)
-  } else {
-    hotAPI.reload("data-v-757194e4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 34 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(35);
+var content = __webpack_require__(47);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -17283,10 +17423,10 @@ if(false) {
 }
 
 /***/ }),
-/* 35 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -17297,12 +17437,12 @@ exports.push([module.i, "\n.list-item {\n  display: inline-block;\n  margin-righ
 
 
 /***/ }),
-/* 36 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Notification_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Notification_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Notification_vue__);
 //
 //
@@ -17338,13 +17478,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 37 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(38);
+var content = __webpack_require__(50);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -17364,10 +17504,10 @@ if(false) {
 }
 
 /***/ }),
-/* 38 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -17378,7 +17518,7 @@ exports.push([module.i, "/*      light colors - used for select dropdown        
 
 
 /***/ }),
-/* 39 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17465,7 +17605,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 40 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17516,7 +17656,7 @@ if (false) {
 }
 
 /***/ }),
-/* 41 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17553,44 +17693,40 @@ if (false) {
 }
 
 /***/ }),
-/* 42 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SideBar_vue__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SideBar_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SideBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__SideBar_vue__);
 
 
 var SidebarStore = {
     showSidebar: false,
     sidebarLinks: [{
-        name: 'Dashboard',
-        icon: 'ti-panel',
-        path: '/admin/overview'
+        name: 'Home',
+        icon: 'ti-home',
+        path: '/admin/profile'
     }, {
-        name: 'User Profile',
-        icon: 'ti-user',
-        path: '/admin/stats'
+        name: 'Vehicle Types',
+        path: '/admin/vehicles/types'
     }, {
-        name: 'Table List',
-        icon: 'ti-view-list-alt',
-        path: '/admin/table-list'
+        name: 'Brands',
+        path: '/admin/vehicles/brands'
     }, {
-        name: 'Typography',
-        icon: 'ti-text',
-        path: '/admin/typography'
+        name: 'Models',
+        path: '/admin/vehicles/models'
     }, {
-        name: 'Icons',
-        icon: 'ti-pencil-alt2',
-        path: '/admin/icons'
+        name: 'Fuels',
+        path: '/admin/vehicles/fuels'
     }, {
-        name: 'Maps',
-        icon: 'ti-map',
-        path: '/admin/maps'
+        name: 'Vehicles',
+        icon: 'ti-car',
+        path: '/admin/vehicles/manage'
     }, {
-        name: 'Notifications',
-        icon: 'ti-bell',
-        path: '/admin/notifications'
+        name: 'logout',
+        icon: 'ti-angle-double-left',
+        path: '/user/logout'
     }],
     displaySidebar: function displaySidebar(value) {
         this.showSidebar = value;
@@ -17601,9 +17737,7 @@ var SidebarPlugin = {
     install: function install(Vue) {
         Vue.mixin({
             data: function data() {
-                return {
-                    sidebarStore: SidebarStore
-                };
+                return { sidebarStore: SidebarStore };
             }
         });
 
@@ -17620,23 +17754,23 @@ var SidebarPlugin = {
 /* harmony default export */ __webpack_exports__["a"] = (SidebarPlugin);
 
 /***/ }),
-/* 43 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(44)
+  __webpack_require__(56)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(46),
+  __webpack_require__(58),
   /* template */
-  __webpack_require__(52),
+  __webpack_require__(64),
   /* styles */
   injectStyle,
   /* scopeId */
-  null,
+  "data-v-35410dc2",
   /* moduleIdentifier (server only) */
   null
 )
@@ -17664,23 +17798,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 44 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(45);
+var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("024b97fa", content, false);
+var update = __webpack_require__(2)("d7788da4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-35410dc2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SideBar.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-35410dc2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SideBar.vue");
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-35410dc2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SideBar.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-35410dc2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SideBar.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -17690,26 +17824,26 @@ if(false) {
 }
 
 /***/ }),
-/* 45 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.logo-img i[data-v-35410dc2] {\n  color: #000000;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 46 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MovingArrow_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MovingArrow_vue__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MovingArrow_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__MovingArrow_vue__);
 //
 //
@@ -17782,6 +17916,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             default: function _default() {
                 return [];
             }
+        },
+        userName: {
+            type: String,
+            default: function _default() {
+                return '';
+            }
         }
     },
     components: {
@@ -17847,19 +17987,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 47 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(48)
+  __webpack_require__(60)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(50),
+  __webpack_require__(62),
   /* template */
-  __webpack_require__(51),
+  __webpack_require__(63),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -17891,13 +18031,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 48 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(49);
+var content = __webpack_require__(61);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -17917,10 +18057,10 @@ if(false) {
 }
 
 /***/ }),
-/* 49 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -17931,7 +18071,7 @@ exports.push([module.i, "\n.moving-arrow[data-v-f0910584] {\n  border-right: 17p
 
 
 /***/ }),
-/* 50 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17962,7 +18102,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 51 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17980,7 +18120,7 @@ if (false) {
 }
 
 /***/ }),
-/* 52 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17995,7 +18135,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "style-3"
     }
-  }, [_vm._m(0), _vm._v(" "), _vm._t("default"), _vm._v(" "), _c('ul', {
+  }, [_c('div', {
+    staticClass: "logo"
+  }, [_c('a', {
+    staticClass: "simple-text",
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._m(0), _vm._v("\n                " + _vm._s(_vm.userName) + "\n            ")])]), _vm._v(" "), _vm._t("default"), _vm._v(" "), _c('ul', {
     class: _vm.navClasses
   }, _vm._l((_vm.sidebarLinks), function(link, index) {
     return _c('router-link', {
@@ -18016,20 +18163,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })], 2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "logo"
-  }, [_c('a', {
-    staticClass: "simple-text",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('div', {
     staticClass: "logo-img"
-  }, [_c('img', {
-    attrs: {
-      "src": "/img/vue-logo.png",
-      "alt": ""
-    }
-  })]), _vm._v("\n                Paper Dashboard\n            ")])])
+  }, [_c('i', {
+    staticClass: "ti-user"
+  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -18040,19 +18177,19 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(54)
+  __webpack_require__(66)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(56),
+  __webpack_require__(68),
   /* template */
-  __webpack_require__(57),
+  __webpack_require__(69),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -18084,13 +18221,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(55);
+var content = __webpack_require__(67);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -18110,10 +18247,10 @@ if(false) {
 }
 
 /***/ }),
-/* 55 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -18124,7 +18261,7 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 56 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18147,26 +18284,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 57 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -18181,23 +18303,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('ul', {
     staticClass: "nav navbar-nav"
-  }, [_c('li', [_c('a', {
-    staticClass: "dropdown-toggle",
-    attrs: {
-      "data-toggle": "dropdown"
-    }
-  }, [_c('i', {
-    staticClass: "ti-panel"
-  }), _vm._v(" "), _c('p', [_vm._v("Stats")])])]), _vm._v(" "), _c('drop-down', {
-    attrs: {
-      "title": "5 Notifications",
-      "icon": "ti-bell"
-    }
-  }, [_c('li', [_c('a', [_vm._v("Notification 1")])]), _vm._v(" "), _c('li', [_c('a', [_vm._v("Notification 2")])]), _vm._v(" "), _c('li', [_c('a', [_vm._v("Notification 3")])]), _vm._v(" "), _c('li', [_c('a', [_vm._v("Notification 4")])]), _vm._v(" "), _c('li', [_c('a', [_vm._v("Another notification")])])]), _vm._v(" "), _c('li', [_c('a', [_c('i', {
+  }, [_c('li', [_c('a', [_c('i', {
     staticClass: "ti-settings"
   }), _vm._v(" "), _c('p', [_vm._v("Settings")])])]), _vm._v(" "), _c('li', {
     staticClass: "divider"
-  })], 1)])], 1)
+  })])])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -18208,1090 +18318,16 @@ if (false) {
 }
 
 /***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Users_Layout_LoginLayout_vue__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Users_Layout_LoginLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Users_Layout_LoginLayout_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_GeneralViews_NotFoundPage_vue__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_GeneralViews_NotFoundPage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_GeneralViews_NotFoundPage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_Overview_vue__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_Overview_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_Overview_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_UserProfile_vue__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_UserProfile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_UserProfile_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Notifications_vue__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Notifications_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Notifications_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Icons_vue__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Icons_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Icons_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Maps_vue__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Maps_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Maps_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_Typography_vue__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_Typography_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_Typography_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Dashboard_Views_TableList_vue__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Dashboard_Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_Dashboard_Views_TableList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Users_Views_Login_vue__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Users_Views_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Users_Views_Login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_localforage__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_localforage__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_user_service__ = __webpack_require__(196);
-
-
-
-// GeneralViews
-
-// Admin pages
-
-
-
-
-
-
-
-
-
-
-
-var routes = [{
-    path: '/user',
-    component: __WEBPACK_IMPORTED_MODULE_1__components_Users_Layout_LoginLayout_vue___default.a,
-    children: [{
-        path: 'login',
-        name: 'login',
-        component: __WEBPACK_IMPORTED_MODULE_10__components_Users_Views_Login_vue___default.a,
-        beforeEnter: function beforeEnter(to, from, next) {
-            __WEBPACK_IMPORTED_MODULE_11_localforage___default.a.getItem(__WEBPACK_IMPORTED_MODULE_12__services_user_service__["a" /* AUTH_USER_KEY */]).then(function (user) {
-                if (user) {
-                    next({ path: '/admin/overview' });
-                } else {
-                    next();
-                }
-            });
-        }
-    }]
-}, {
-    path: '/',
-    component: __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue___default.a,
-    redirect: '/admin/overview'
-}, {
-    path: '/admin',
-    component: __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue___default.a,
-    redirect: '/admin/stats',
-    children: [{
-        path: 'overview',
-        name: 'overview',
-        component: __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_Overview_vue___default.a
-    }, {
-        path: 'stats',
-        name: 'stats',
-        component: __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_UserProfile_vue___default.a
-    }, {
-        path: 'notifications',
-        name: 'notifications',
-        component: __WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Notifications_vue___default.a
-    }, {
-        path: 'icons',
-        name: 'icons',
-        component: __WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Icons_vue___default.a
-    }, {
-        path: 'maps',
-        name: 'maps',
-        component: __WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Maps_vue___default.a
-    }, {
-        path: 'typography',
-        name: 'typography',
-        component: __WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_Typography_vue___default.a
-    }, {
-        path: 'table-list',
-        name: 'table-list',
-        component: __WEBPACK_IMPORTED_MODULE_9__components_Dashboard_Views_TableList_vue___default.a
-    }]
-}, { path: '*', component: __WEBPACK_IMPORTED_MODULE_2__components_GeneralViews_NotFoundPage_vue___default.a }];
-
-/**
- * Asynchronously load view (Webpack Lazy loading compatible)
- * The specified component must be inside the Views folder
- * @param  {string} name  the filename (basename) of the view to load.
- function view(name) {
-   var res= require('../components/Dashboard/Views/' + name + '.vue');
-   return res;
-};**/
-
-/* harmony default export */ __webpack_exports__["a"] = (routes);
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(60)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(62),
-  /* template */
-  __webpack_require__(78),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/DashboardLayout.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] DashboardLayout.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-104ff37c", Component.options)
-  } else {
-    hotAPI.reload("data-v-104ff37c", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(61);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("29136282", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-104ff37c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./DashboardLayout.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-104ff37c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./DashboardLayout.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Content_vue__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Content_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Content_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        TopNavbar: __WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue___default.a,
-        ContentFooter: __WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue___default.a,
-        DashboardContent: __WEBPACK_IMPORTED_MODULE_2__Content_vue___default.a
-    },
-    methods: {
-        toggleSidebar: function toggleSidebar() {
-            if (this.$sidebar.showSidebar) {
-                this.$sidebar.displaySidebar(false);
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(64)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(66),
-  /* template */
-  __webpack_require__(67),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/TopNavbar.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] TopNavbar.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-82f1f13a", Component.options)
-  } else {
-    hotAPI.reload("data-v-82f1f13a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(65);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("e5fefaa6", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-82f1f13a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TopNavbar.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-82f1f13a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TopNavbar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    computed: {
-        routeName: function routeName() {
-            var name = this.$route.name;
-
-            return this.capitalizeFirstLetter(name);
-        }
-    },
-    data: function data() {
-        return {
-            activeNotifications: false
-        };
-    },
-
-    methods: {
-        capitalizeFirstLetter: function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        },
-        toggleNotificationDropDown: function toggleNotificationDropDown() {
-            this.activeNotifications = !this.activeNotifications;
-        },
-        closeDropDown: function closeDropDown() {
-            this.activeNotifications = false;
-        },
-        toggleSidebar: function toggleSidebar() {
-            this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
-        },
-        hideSidebar: function hideSidebar() {
-            this.$sidebar.displaySidebar(false);
-        }
-    }
-});
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('nav', {
-    staticClass: "navbar navbar-default"
-  }, [_c('div', {
-    staticClass: "container-fluid"
-  }, [_c('div', {
-    staticClass: "navbar-header"
-  }, [_c('button', {
-    staticClass: "navbar-toggle",
-    class: {
-      toggled: _vm.$sidebar.showSidebar
-    },
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": _vm.toggleSidebar
-    }
-  }, [_c('span', {
-    staticClass: "sr-only"
-  }, [_vm._v("Toggle navigation")]), _vm._v(" "), _c('span', {
-    staticClass: "icon-bar bar1"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "icon-bar bar2"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "icon-bar bar3"
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "navbar-brand"
-  }, [_vm._v(_vm._s(_vm.routeName))])]), _vm._v(" "), _c('div', {
-    staticClass: "navbar-right-menu"
-  }, [_c('ul', {
-    staticClass: "nav navbar-nav navbar-right"
-  }, [_vm._m(0), _vm._v(" "), _c('drop-down', {
-    attrs: {
-      "title": "5 Notifications",
-      "icon": "ti-bell"
-    }
-  }, [_c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Notification 1")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Notification 2")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Notification 3")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Notification 4")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Another notification")])])]), _vm._v(" "), _vm._m(1)], 1)])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "open"
-  }, [_c('a', {
-    staticClass: "dropdown-toggle btn-magnify",
-    attrs: {
-      "href": "#",
-      "data-toggle": "dropdown"
-    }
-  }, [_c('i', {
-    staticClass: "ti-panel"
-  }), _vm._v(" "), _c('p', [_vm._v("Stats")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', [_c('a', {
-    staticClass: "btn-rotate",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('i', {
-    staticClass: "ti-settings"
-  }), _vm._v(" "), _c('p', [_vm._v("\n                            Settings\n                        ")])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-82f1f13a", module.exports)
-  }
-}
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(69)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(71),
-  /* template */
-  __webpack_require__(72),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/ContentFooter.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] ContentFooter.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-52f38692", Component.options)
-  } else {
-    hotAPI.reload("data-v-52f38692", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(70);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("19d96f01", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-52f38692\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContentFooter.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-52f38692\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContentFooter.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
 /* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({});
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('footer', {
-    staticClass: "footer"
-  }, [_c('div', {
-    staticClass: "container-fluid"
-  }, [_c('nav', {
-    staticClass: "pull-left"
-  }, [_c('ul', [_c('li', [_c('router-link', {
-    attrs: {
-      "to": {
-        path: '/admin'
-      }
-    }
-  }, [_vm._v("Dashboard")])], 1)])]), _vm._v(" "), _vm._m(0)])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "copyright pull-right"
-  }, [_vm._v("\n      © Coded with\n      "), _c('i', {
-    staticClass: "fa fa-heart heart"
-  }), _vm._v(" by\n      "), _c('a', {
-    attrs: {
-      "href": "https://github.com/vyzaldySanchez",
-      "target": "_blank"
-    }
-  }, [_vm._v("Vyzaldy Sanchez")]), _vm._v(".\n    ")])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-52f38692", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(74)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(76),
-  /* template */
-  __webpack_require__(77),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/Content.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Content.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9bdc94d2", Component.options)
-  } else {
-    hotAPI.reload("data-v-9bdc94d2", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(75);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("388f13e8", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9bdc94d2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Content.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9bdc94d2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Content.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.fade-enter-active,\n.fade-leave-active {\n    transition: opacity .1s\n}\n.fade-enter,\n.fade-leave-to\n    /* .fade-leave-active in <2.1.8 */\n\n{\n    opacity: 0\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 76 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({});
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "content"
-  }, [_c('div', {
-    staticClass: "container-fluid"
-  }, [_c('transition', {
-    attrs: {
-      "name": "fade",
-      "mode": "out-in"
-    }
-  }, [_c('router-view')], 1)], 1)])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-9bdc94d2", module.exports)
-  }
-}
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "wrapper"
-  }, [_c('side-bar', {
-    attrs: {
-      "type": "sidebar",
-      "sidebar-links": _vm.$sidebar.sidebarLinks
-    }
-  }), _vm._v(" "), _c('notifications'), _vm._v(" "), _c('div', {
-    staticClass: "main-panel"
-  }, [_c('top-navbar'), _vm._v(" "), _c('dashboard-content', {
-    nativeOn: {
-      "click": function($event) {
-        _vm.toggleSidebar($event)
-      }
-    }
-  }), _vm._v(" "), _c('content-footer')], 1)], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-104ff37c", module.exports)
-  }
-}
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(80)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(82),
-  /* template */
-  __webpack_require__(106),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-0d89e71d",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Users/Layout/LoginLayout.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] LoginLayout.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0d89e71d", Component.options)
-  } else {
-    hotAPI.reload("data-v-0d89e71d", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(81);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("b3d6eae2", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0d89e71d\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoginLayout.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0d89e71d\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoginLayout.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_Login_vue__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Views_Login_vue__);
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        Login: __WEBPACK_IMPORTED_MODULE_0__Views_Login_vue___default.a
-    }
-});
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(84);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("21fd7ca4", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0d3327c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0d3327c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.login[data-v-0d3327c9] {\n  display: flex;\n  flex-flow: column;\n  margin-top: 10%;\n}\n.login .header[data-v-0d3327c9] {\n    text-align: center;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(196);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-var LOGIN_TEXT = 'Login',
-    LOADING_TEXT = '';
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default.a
-    },
-    data: function data() {
-        return {
-            authenticating: false,
-            email: null,
-            password: null,
-            title: 'Welcome to Rent-cart',
-            subtitle: 'Please, login!',
-            loginBtnText: LOGIN_TEXT
-        };
-    },
-
-    methods: {
-        login: function login() {
-            var _this = this;
-
-            var user = { email: this.email, password: this.password };
-            this.authenticating = true;
-            this.loginBtnText = LOADING_TEXT;
-
-            __WEBPACK_IMPORTED_MODULE_1__services_user_service__["b" /* default */].login(user).then(function () {
-                return _this.$router.push({ path: '/' });
-            }).catch(function (error) {
-                _this.authenticating = false;
-                _this.loginBtnText = LOGIN_TEXT;
-
-                if (error.response.status === 401) {
-                    _this.alertError('Credentials invalid. Try again.');
-                }
-            });
-        },
-        alertError: function alertError() {
-            var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-            this.$notifications.notify({
-                message: message,
-                type: 'danger',
-                verticalAlign: 'bottom',
-                horizontalAlign: 'right',
-                icon: 'fa fa-warning'
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(87);
-
-/***/ }),
-/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(3);
-var bind = __webpack_require__(8);
-var Axios = __webpack_require__(89);
-var defaults = __webpack_require__(6);
+var bind = __webpack_require__(13);
+var Axios = __webpack_require__(72);
+var defaults = __webpack_require__(9);
 
 /**
  * Create an instance of Axios
@@ -19324,15 +18360,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(13);
-axios.CancelToken = __webpack_require__(103);
-axios.isCancel = __webpack_require__(12);
+axios.Cancel = __webpack_require__(18);
+axios.CancelToken = __webpack_require__(86);
+axios.isCancel = __webpack_require__(17);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(104);
+axios.spread = __webpack_require__(87);
 
 module.exports = axios;
 
@@ -19341,7 +18377,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 88 */
+/* 71 */
 /***/ (function(module, exports) {
 
 /*!
@@ -19368,18 +18404,18 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 89 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(9);
 var utils = __webpack_require__(3);
-var InterceptorManager = __webpack_require__(98);
-var dispatchRequest = __webpack_require__(99);
-var isAbsoluteURL = __webpack_require__(101);
-var combineURLs = __webpack_require__(102);
+var InterceptorManager = __webpack_require__(81);
+var dispatchRequest = __webpack_require__(82);
+var isAbsoluteURL = __webpack_require__(84);
+var combineURLs = __webpack_require__(85);
 
 /**
  * Create a new instance of Axios
@@ -19461,7 +18497,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 90 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19480,13 +18516,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 91 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(11);
+var createError = __webpack_require__(16);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -19513,7 +18549,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 92 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19541,7 +18577,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 93 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19616,7 +18652,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 94 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19660,7 +18696,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 95 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19735,7 +18771,7 @@ module.exports = (
 
 
 /***/ }),
-/* 96 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19778,7 +18814,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 97 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19838,7 +18874,7 @@ module.exports = (
 
 
 /***/ }),
-/* 98 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19897,16 +18933,16 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 99 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(3);
-var transformData = __webpack_require__(100);
-var isCancel = __webpack_require__(12);
-var defaults = __webpack_require__(6);
+var transformData = __webpack_require__(83);
+var isCancel = __webpack_require__(17);
+var defaults = __webpack_require__(9);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -19983,7 +19019,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 100 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20010,7 +19046,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 101 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20031,7 +19067,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 102 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20052,13 +19088,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 103 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(13);
+var Cancel = __webpack_require__(18);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -20116,7 +19152,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 104 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20150,98 +19186,789 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 105 */
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    createUserFromHTTP: function createUserFromHTTP(response) {
+        return {
+            email: response.data.email,
+            id: response.data.id,
+            role: response.data.role,
+            name: response.data.name
+        };
+    }
+});
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_GeneralViews_NotFoundPage_vue__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_GeneralViews_NotFoundPage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_GeneralViews_NotFoundPage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Views_Overview_vue__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Views_Overview_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Views_Overview_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_UserProfile_vue__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_UserProfile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_UserProfile_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_Notifications_vue__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_Notifications_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_Notifications_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Icons_vue__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Icons_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Icons_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Maps_vue__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Maps_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Maps_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Typography_vue__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Typography_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Typography_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_TableList_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_TableList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__users_routes__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__vehicles_routes__ = __webpack_require__(192);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+
+// GeneralViews
+
+// Admin pages
+
+
+
+
+
+
+
+
+
+
+var routes = [__WEBPACK_IMPORTED_MODULE_9__users_routes__["a" /* default */], {
+    path: '/',
+    component: __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue___default.a,
+    redirect: '/admin'
+}, {
+    path: '/admin',
+    component: __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Layout_DashboardLayout_vue___default.a,
+    redirect: '/admin/profile',
+    children: [].concat(_toConsumableArray(__WEBPACK_IMPORTED_MODULE_10__vehicles_routes__["a" /* default */]), [{
+        path: 'overview',
+        name: 'overview',
+        component: __WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Views_Overview_vue___default.a
+    }, {
+        path: 'profile',
+        name: 'profile',
+        component: __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Views_UserProfile_vue___default.a
+    }, {
+        path: 'notifications',
+        name: 'notifications',
+        component: __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Views_Notifications_vue___default.a
+    }, {
+        path: 'icons',
+        name: 'icons',
+        component: __WEBPACK_IMPORTED_MODULE_5__components_Dashboard_Views_Icons_vue___default.a
+    }, {
+        path: 'maps',
+        name: 'maps',
+        component: __WEBPACK_IMPORTED_MODULE_6__components_Dashboard_Views_Maps_vue___default.a
+    }, {
+        path: 'typography',
+        name: 'typography',
+        component: __WEBPACK_IMPORTED_MODULE_7__components_Dashboard_Views_Typography_vue___default.a
+    }, {
+        path: 'table-list',
+        name: 'table-list',
+        component: __WEBPACK_IMPORTED_MODULE_8__components_Dashboard_Views_TableList_vue___default.a
+    }])
+}, { path: '*', component: __WEBPACK_IMPORTED_MODULE_1__components_GeneralViews_NotFoundPage_vue___default.a }];
+
+/**
+ * Asynchronously load view (Webpack Lazy loading compatible)
+ * The specified component must be inside the Views folder
+ * @param  {string} name  the filename (basename) of the view to load.
+ function view(name) {
+   var res= require('../components/Dashboard/Views/' + name + '.vue');
+   return res;
+};**/
+
+/* harmony default export */ __webpack_exports__["a"] = (routes);
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(91)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(93),
+  /* template */
+  __webpack_require__(109),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/DashboardLayout.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] DashboardLayout.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-104ff37c", Component.options)
+  } else {
+    hotAPI.reload("data-v-104ff37c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(92);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("29136282", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-104ff37c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./DashboardLayout.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-104ff37c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./DashboardLayout.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Content_vue__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Content_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Content_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_user_service__ = __webpack_require__(7);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        TopNavbar: __WEBPACK_IMPORTED_MODULE_0__TopNavbar_vue___default.a,
+        ContentFooter: __WEBPACK_IMPORTED_MODULE_1__ContentFooter_vue___default.a,
+        DashboardContent: __WEBPACK_IMPORTED_MODULE_2__Content_vue___default.a
+    },
+    data: function data() {
+        return {
+            userName: ''
+        };
+    },
+
+    methods: {
+        toggleSidebar: function toggleSidebar() {
+            if (this.$sidebar.showSidebar) {
+                this.$sidebar.displaySidebar(false);
+            }
+        }
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.$storage.getItem(__WEBPACK_IMPORTED_MODULE_3__services_user_service__["a" /* AUTH_USER_KEY */]).then(function (user) {
+            return _this.userName = user.name;
+        });
+    }
+});
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(95)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(97),
+  /* template */
+  __webpack_require__(98),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/TopNavbar.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] TopNavbar.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-82f1f13a", Component.options)
+  } else {
+    hotAPI.reload("data-v-82f1f13a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(96);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("e5fefaa6", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-82f1f13a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TopNavbar.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-82f1f13a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TopNavbar.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    computed: {
+        routeName: function routeName() {
+            var name = this.$route.name;
+
+            return this.capitalizeFirstLetter(name);
+        }
+    },
+    data: function data() {
+        return {
+            activeNotifications: false
+        };
+    },
+
+    methods: {
+        capitalizeFirstLetter: function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        toggleNotificationDropDown: function toggleNotificationDropDown() {
+            this.activeNotifications = !this.activeNotifications;
+        },
+        closeDropDown: function closeDropDown() {
+            this.activeNotifications = false;
+        },
+        toggleSidebar: function toggleSidebar() {
+            this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+        },
+        hideSidebar: function hideSidebar() {
+            this.$sidebar.displaySidebar(false);
+        }
+    }
+});
+
+/***/ }),
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "login"
+  return _c('nav', {
+    staticClass: "navbar navbar-default"
   }, [_c('div', {
-    staticClass: "col-md-6 col-md-offset-3"
+    staticClass: "container-fluid"
   }, [_c('div', {
-    staticClass: "header"
-  }, [_c('h2', [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('h3', [_vm._v(_vm._s(_vm.subtitle))])]), _vm._v(" "), _c('form', [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [_c('fg-input', {
-    attrs: {
-      "type": "text",
-      "label": "Username",
-      "placeholder": "employee"
-    },
-    model: {
-      value: (_vm.email),
-      callback: function($$v) {
-        _vm.email = $$v
-      },
-      expression: "email"
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "col-md-12"
-  }, [_c('fg-input', {
-    attrs: {
-      "type": "password",
-      "label": "Password",
-      "placesholder": "******"
-    },
-    model: {
-      value: (_vm.password),
-      callback: function($$v) {
-        _vm.password = $$v
-      },
-      expression: "password"
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "text-center"
+    staticClass: "navbar-header"
   }, [_c('button', {
-    staticClass: "btn btn-info btn-fill btn-wd",
+    staticClass: "navbar-toggle",
     class: {
-      'disabled': _vm.authenticating
+      toggled: _vm.$sidebar.showSidebar
+    },
+    attrs: {
+      "type": "button"
     },
     on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.login($event)
-      }
+      "click": _vm.toggleSidebar
     }
-  }, [_vm._v("Login\n                    ")])]), _vm._v(" "), _c('notifications')], 1)])])])
-},staticRenderFns: []}
+  }, [_c('span', {
+    staticClass: "sr-only"
+  }, [_vm._v("Toggle navigation")]), _vm._v(" "), _c('span', {
+    staticClass: "icon-bar bar1"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "icon-bar bar2"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "icon-bar bar3"
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "navbar-brand"
+  }, [_vm._v(_vm._s(_vm.routeName))])]), _vm._v(" "), _vm._m(0)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "navbar-right-menu"
+  }, [_c('ul', {
+    staticClass: "nav navbar-nav navbar-right"
+  }, [_c('li', [_c('a', {
+    staticClass: "btn-rotate",
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "ti-settings"
+  }), _vm._v(" "), _c('p', [_vm._v("\n                            Settings\n                        ")])])])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0d3327c9", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-82f1f13a", module.exports)
   }
+}
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(100)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(102),
+  /* template */
+  __webpack_require__(103),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/ContentFooter.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ContentFooter.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-52f38692", Component.options)
+  } else {
+    hotAPI.reload("data-v-52f38692", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(101);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("19d96f01", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-52f38692\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContentFooter.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-52f38692\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ContentFooter.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('footer', {
+    staticClass: "footer"
+  }, [_c('div', {
+    staticClass: "container-fluid"
+  }, [_c('nav', {
+    staticClass: "pull-left"
+  }, [_c('ul', [_c('li', [_c('router-link', {
+    attrs: {
+      "to": {
+        path: '/admin'
+      }
+    }
+  }, [_vm._v("Dashboard")])], 1)])]), _vm._v(" "), _vm._m(0)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "copyright pull-right"
+  }, [_vm._v("\n      © Coded with\n      "), _c('i', {
+    staticClass: "fa fa-heart heart"
+  }), _vm._v(" by\n      "), _c('a', {
+    attrs: {
+      "href": "https://github.com/vyzaldySanchez",
+      "target": "_blank"
+    }
+  }, [_vm._v("Vyzaldy Sanchez")]), _vm._v(".\n    ")])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-52f38692", module.exports)
+  }
+}
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(105)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(107),
+  /* template */
+  __webpack_require__(108),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Layout/Content.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Content.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9bdc94d2", Component.options)
+  } else {
+    hotAPI.reload("data-v-9bdc94d2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(106);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("388f13e8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9bdc94d2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Content.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9bdc94d2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Content.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ }),
 /* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.fade-enter-active,\n.fade-leave-active {\n    transition: opacity .1s\n}\n.fade-enter,\n.fade-leave-to\n    /* .fade-leave-active in <2.1.8 */\n\n{\n    opacity: 0\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 107 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container"
-  }, [_c('login')], 1)
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "container-fluid"
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('router-view')], 1)], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0d89e71d", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-9bdc94d2", module.exports)
   }
 }
 
 /***/ }),
-/* 107 */
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "wrapper"
+  }, [_c('side-bar', {
+    attrs: {
+      "type": "sidebar",
+      "sidebar-links": _vm.$sidebar.sidebarLinks,
+      "userName": _vm.userName
+    }
+  }), _vm._v(" "), _c('notifications'), _vm._v(" "), _c('div', {
+    staticClass: "main-panel"
+  }, [_c('top-navbar'), _vm._v(" "), _c('dashboard-content', {
+    nativeOn: {
+      "click": function($event) {
+        _vm.toggleSidebar($event)
+      }
+    }
+  }), _vm._v(" "), _c('content-footer')], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-104ff37c", module.exports)
+  }
+}
+
+/***/ }),
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(108),
+  __webpack_require__(111),
   /* template */
-  __webpack_require__(109),
+  __webpack_require__(112),
   /* styles */
   null,
   /* scopeId */
@@ -20273,13 +20000,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 108 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
 //
 //
 //
@@ -20343,7 +20068,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 109 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20390,13 +20115,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         path: '/'
       }
     }
-  }, [_vm._v("Home")])], 1), _vm._v(" "), _c('li', [_c('router-link', {
-    attrs: {
-      "to": {
-        path: '/register'
-      }
-    }
-  }, [_vm._v("Register")])], 1)])]), _vm._v(" "), _vm._m(2)])])])
+  }, [_vm._v("Home")])], 1)])]), _vm._v(" "), _vm._m(2)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('button', {
     staticClass: "navbar-toggle",
@@ -20424,16 +20143,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-md-8 col-md-offset-2 text-center"
   }, [_c('h2', {
-    staticClass: "title text-danger"
-  }, [_vm._v("404 Not Found")]), _vm._v(" "), _c('h2', {
-    staticClass: "title"
-  }, [_vm._v("Oops! It seems that this page does not exist.")])])])])])])
+    staticClass: "text-danger"
+  }, [_vm._v("404 Not Found")]), _vm._v(" "), _c('h4', [_vm._v("Oops! It seems that this page does not exist.")])])])])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "copyright pull-right"
   }, [_vm._v("\n                © 2017, made with\n                "), _c('i', {
     staticClass: "fa fa-heart heart"
-  }), _vm._v(" by Paper admin\n            ")])
+  }), _vm._v(" by\n                "), _c('a', {
+    attrs: {
+      "href": "https://github.com/vyzaldySanchez",
+      "target": "_blank"
+    }
+  }, [_vm._v("Vyzaldy Sanchez")]), _vm._v(".\n            ")])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -20444,19 +20166,19 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(111)
+  __webpack_require__(114)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(113),
+  __webpack_require__(116),
   /* template */
-  __webpack_require__(124),
+  __webpack_require__(127),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -20488,13 +20210,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(112);
+var content = __webpack_require__(115);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -20514,10 +20236,10 @@ if(false) {
 }
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -20528,14 +20250,14 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_Cards_StatsCard_vue__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_Cards_StatsCard_vue__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_Cards_StatsCard_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_Cards_StatsCard_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UIComponents_Cards_ChartCard_vue__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UIComponents_Cards_ChartCard_vue__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UIComponents_Cards_ChartCard_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__UIComponents_Cards_ChartCard_vue__);
 //
 //
@@ -20695,19 +20417,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(115)
+  __webpack_require__(118)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(117),
+  __webpack_require__(120),
   /* template */
-  __webpack_require__(118),
+  __webpack_require__(121),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -20739,13 +20461,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 115 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(116);
+var content = __webpack_require__(119);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -20765,10 +20487,10 @@ if(false) {
 }
 
 /***/ }),
-/* 116 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -20779,7 +20501,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", 
 
 
 /***/ }),
-/* 117 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20809,7 +20531,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 118 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20836,19 +20558,19 @@ if (false) {
 }
 
 /***/ }),
-/* 119 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(120)
+  __webpack_require__(123)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(122),
+  __webpack_require__(125),
   /* template */
-  __webpack_require__(123),
+  __webpack_require__(126),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -20880,13 +20602,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 120 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(121);
+var content = __webpack_require__(124);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -20906,10 +20628,10 @@ if(false) {
 }
 
 /***/ }),
-/* 121 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -20920,7 +20642,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 122 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21016,7 +20738,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 123 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21052,7 +20774,7 @@ if (false) {
 }
 
 /***/ }),
-/* 124 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21159,19 +20881,19 @@ if (false) {
 }
 
 /***/ }),
-/* 125 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(126)
+  __webpack_require__(129)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(128),
+  __webpack_require__(131),
   /* template */
-  __webpack_require__(144),
+  __webpack_require__(147),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21203,13 +20925,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 126 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(127);
+var content = __webpack_require__(130);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21229,10 +20951,10 @@ if(false) {
 }
 
 /***/ }),
-/* 127 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -21243,16 +20965,16 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 128 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UserProfile_EditProfileForm_vue__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UserProfile_EditProfileForm_vue__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UserProfile_EditProfileForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UserProfile_EditProfileForm_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UserProfile_UserCard_vue__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UserProfile_UserCard_vue__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UserProfile_UserCard_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__UserProfile_UserCard_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserProfile_MembersCard_vue__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserProfile_MembersCard_vue__ = __webpack_require__(142);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserProfile_MembersCard_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__UserProfile_MembersCard_vue__);
 //
 //
@@ -21285,19 +21007,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(130)
+  __webpack_require__(133)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(132),
+  __webpack_require__(135),
   /* template */
-  __webpack_require__(133),
+  __webpack_require__(136),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21329,13 +21051,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 130 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(131);
+var content = __webpack_require__(134);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21355,10 +21077,10 @@ if(false) {
 }
 
 /***/ }),
-/* 131 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -21369,7 +21091,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 132 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21505,7 +21227,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 133 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21716,19 +21438,19 @@ if (false) {
 }
 
 /***/ }),
-/* 134 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(135)
+  __webpack_require__(138)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(137),
+  __webpack_require__(140),
   /* template */
-  __webpack_require__(138),
+  __webpack_require__(141),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21760,13 +21482,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 135 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(136);
+var content = __webpack_require__(139);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21786,10 +21508,10 @@ if(false) {
 }
 
 /***/ }),
-/* 136 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -21800,7 +21522,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 137 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21874,7 +21596,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 138 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21928,19 +21650,19 @@ if (false) {
 }
 
 /***/ }),
-/* 139 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(140)
+  __webpack_require__(143)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(142),
+  __webpack_require__(145),
   /* template */
-  __webpack_require__(143),
+  __webpack_require__(146),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21972,13 +21694,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 140 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(141);
+var content = __webpack_require__(144);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21998,10 +21720,10 @@ if(false) {
 }
 
 /***/ }),
-/* 141 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -22012,7 +21734,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 142 */
+/* 145 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22089,7 +21811,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 143 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22140,7 +21862,7 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22161,19 +21883,19 @@ if (false) {
 }
 
 /***/ }),
-/* 145 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(146)
+  __webpack_require__(149)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(148),
+  __webpack_require__(151),
   /* template */
-  __webpack_require__(149),
+  __webpack_require__(152),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -22205,13 +21927,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 146 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(147);
+var content = __webpack_require__(150);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -22231,10 +21953,10 @@ if(false) {
 }
 
 /***/ }),
-/* 147 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -22245,12 +21967,12 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 148 */
+/* 151 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
 //
 //
@@ -22378,7 +22100,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 149 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22563,19 +22285,19 @@ if (false) {
 }
 
 /***/ }),
-/* 150 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(151)
+  __webpack_require__(154)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(153),
+  __webpack_require__(156),
   /* template */
-  __webpack_require__(154),
+  __webpack_require__(157),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -22607,13 +22329,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 151 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(152);
+var content = __webpack_require__(155);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -22633,10 +22355,10 @@ if(false) {
 }
 
 /***/ }),
-/* 152 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -22647,7 +22369,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 153 */
+/* 156 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24142,7 +23864,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 154 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -26296,19 +26018,19 @@ if (false) {
 }
 
 /***/ }),
-/* 155 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(156)
+  __webpack_require__(159)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(158),
+  __webpack_require__(161),
   /* template */
-  __webpack_require__(159),
+  __webpack_require__(162),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -26340,13 +26062,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 156 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(157);
+var content = __webpack_require__(160);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -26366,10 +26088,10 @@ if(false) {
 }
 
 /***/ }),
-/* 157 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -26380,7 +26102,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 158 */
+/* 161 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26456,7 +26178,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 159 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -26485,19 +26207,19 @@ if (false) {
 }
 
 /***/ }),
-/* 160 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(161)
+  __webpack_require__(164)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(163),
+  __webpack_require__(166),
   /* template */
-  __webpack_require__(164),
+  __webpack_require__(167),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -26529,13 +26251,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 161 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(162);
+var content = __webpack_require__(165);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -26555,10 +26277,10 @@ if(false) {
 }
 
 /***/ }),
-/* 162 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
@@ -26569,7 +26291,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 163 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26748,7 +26470,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 164 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -26877,57 +26599,13 @@ if (false) {
 }
 
 /***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(166)
-}
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(168),
-  /* template */
-  __webpack_require__(174),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Views/TableList.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] TableList.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-17830a10", Component.options)
-  } else {
-    hotAPI.reload("data-v-17830a10", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(167);
+var content = __webpack_require__(169);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -26947,35 +26625,29 @@ if(false) {
 }
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_PaperTable_vue__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_PaperTable_vue__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_PaperTable_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_PaperTable_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UIComponents_Pager_vue__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__UIComponents_Pager_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__UIComponents_Pager_vue__);
 //
 //
 //
@@ -26993,79 +26665,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var tableColumns = ['Id', 'Name', 'Salary', 'Country', 'City'];
-var tableData = [{
-    id: 1,
-    name: 'Dakota Rice',
-    salary: '$36.738',
-    country: 'Niger',
-    city: 'Oud-Turnhout'
-}, {
-    id: 2,
-    name: 'Minerva Hooper',
-    salary: '$23,789',
-    country: 'Curaçao',
-    city: 'Sinaai-Waas'
-}, {
-    id: 3,
-    name: 'Sage Rodriguez',
-    salary: '$56,142',
-    country: 'Netherlands',
-    city: 'Baileux'
-}, {
-    id: 4,
-    name: 'Philip Chaney',
-    salary: '$38,735',
-    country: 'Korea, South',
-    city: 'Overland Park'
-}, {
-    id: 5,
-    name: 'Doris Greene',
-    salary: '$63,542',
-    country: 'Malawi',
-    city: 'Feldkirchen in Kärnten'
-}];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
+        Pager: __WEBPACK_IMPORTED_MODULE_1__UIComponents_Pager_vue___default.a,
         PaperTable: __WEBPACK_IMPORTED_MODULE_0__UIComponents_PaperTable_vue___default.a
+    },
+    props: {
+        title: { type: String, default: '' },
+        subTitle: { type: String, default: '' },
+        columns: Array,
+        tableData: Array,
+        useActions: Boolean
+    },
+    computed: {
+        tableItems: function tableItems() {
+            return this.$props.tableData.slice(0);
+        }
+    },
+    watch: {
+        tableData: function tableData() {
+            this.filterItems();
+        }
     },
     data: function data() {
         return {
-            table1: {
-                title: 'Stripped Table',
-                subTitle: 'Here is a subtitle for this table',
-                columns: [].concat(tableColumns),
-                data: [].concat(tableData)
-            },
-            table2: {
-                title: 'Table on Plain Background',
-                subTitle: 'Here is a subtitle for this table',
-                columns: [].concat(tableColumns),
-                data: [].concat(tableData)
-            }
+            valueToSearch: '',
+            initialData: this.$props.tableData.slice(0),
+            filteredItems: []
         };
+    },
+    mounted: function mounted() {
+        this.updateItemsDisplayed(this.initialData.slice(0));
+    },
+
+    methods: {
+        filterItems: function filterItems() {
+            var _this = this;
+
+            this.filteredItems = this.initialData = this.tableItems.slice(0).filter(function (item) {
+                return Object.keys(item).some(function (prop) {
+                    return item[prop].toString().toLowerCase().indexOf(_this.valueToSearch) !== -1;
+                });
+            });
+        },
+        updateItemsDisplayed: function updateItemsDisplayed(items) {
+            this.filteredItems = items.slice(0);
+        }
     }
 });
 
 /***/ }),
-/* 169 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(170)
+  __webpack_require__(172)
 }
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(172),
+  __webpack_require__(174),
   /* template */
-  __webpack_require__(173),
+  __webpack_require__(175),
   /* styles */
   injectStyle,
   /* scopeId */
-  null,
+  "data-v-73eeca4f",
   /* moduleIdentifier (server only) */
   null
 )
@@ -27093,23 +26760,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 170 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(171);
+var content = __webpack_require__(173);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("a86cc41e", content, false);
+var update = __webpack_require__(2)("1825749c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-73eeca4f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaperTable.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-73eeca4f\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaperTable.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-73eeca4f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaperTable.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-73eeca4f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PaperTable.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -27119,25 +26786,34 @@ if(false) {
 }
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\ntable[data-v-73eeca4f] {\n  /*display: inline-block;*/\n  overflow-x: scroll;\n}\n.actions > a[data-v-73eeca4f] {\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -27176,7 +26852,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         subTitle: {
             type: String,
             default: ''
-        }
+        },
+        useActions: { type: Boolean, default: false }
     },
     computed: {
         tableClass: function tableClass() {
@@ -27187,6 +26864,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         hasValue: function hasValue(item, column) {
             return this.itemValue(item, column) !== 'undefined';
         },
+        isAction: function isAction(item, column) {
+            return this.useActions && Array.isArray(this.itemValue(item, column));
+        },
         itemValue: function itemValue(item, column) {
             return item[column.toLowerCase()];
         }
@@ -27194,7 +26874,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -27210,10 +26890,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table",
     class: _vm.tableClass
   }, [_c('thead', _vm._l((_vm.columns), function(column) {
-    return _c('th', [_vm._v(_vm._s(column))])
+    return _c('th', [_vm._v("\n                " + _vm._s(column) + "\n            ")])
   })), _vm._v(" "), _c('tbody', _vm._l((_vm.data), function(item) {
     return _c('tr', _vm._l((_vm.columns), function(column) {
-      return (_vm.hasValue(item, column)) ? _c('td', [_vm._v(_vm._s(_vm.itemValue(item, column)))]) : _vm._e()
+      return (_vm.hasValue(item, column)) ? _c('td', [(_vm.hasValue(item, column) && !_vm.isAction(item, column)) ? _c('div', [_vm._v("\n                        " + _vm._s(_vm.itemValue(item, column)) + "\n                    ")]) : _vm._e(), _vm._v(" "), _vm._l((item.actions), function(action) {
+        return (_vm.isAction(item, column)) ? _c('div', {
+          staticClass: "actions"
+        }, [_c('a', {
+          class: action.classes,
+          domProps: {
+            "innerHTML": _vm._s(action.text)
+          },
+          on: {
+            "click": function($event) {
+              $event.preventDefault();
+              action.click($event)
+            }
+          }
+        })]) : _vm._e()
+      })], 2) : _vm._e()
     }))
   }))])])])
 },staticRenderFns: []}
@@ -27226,7 +26921,220 @@ if (false) {
 }
 
 /***/ }),
-/* 174 */
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(177)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(179),
+  /* template */
+  __webpack_require__(180),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-9f7a6eb4",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/UIComponents/Pager.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Pager.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9f7a6eb4", Component.options)
+  } else {
+    hotAPI.reload("data-v-9f7a6eb4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(178);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("441968a9", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9f7a6eb4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Pager.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9f7a6eb4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Pager.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn.disabled[data-v-9f7a6eb4]:hover {\n  color: initial !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 179 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        itemsPerPage: { type: Number, default: 5 },
+        items: Array
+    },
+    computed: {
+        totalPages: function totalPages() {
+            if (this.$props.items && this.$props.items.length) {
+                return Math.ceil(this.$props.items.length / this.$props.itemsPerPage);
+            }
+
+            return 1;
+        },
+        totalPagesReached: function totalPagesReached() {
+            return this.currentPage === this.totalPages;
+        },
+        initialPageReached: function initialPageReached() {
+            return this.currentPage === 1;
+        },
+        itemsCopy: function itemsCopy() {
+            return this.$props.items.slice(0);
+        }
+    },
+    data: function data() {
+        return {
+            currentPage: 1,
+            totalItemsDisplayed: this.calculateItemsDisplayed()
+        };
+    },
+
+    watch: {
+        itemsCopy: function itemsCopy() {
+            this.currentPage = 1;
+            this.totalItemsDisplayed = this.calculateItemsDisplayed();
+        }
+    },
+    methods: {
+        calculateItemsDisplayed: function calculateItemsDisplayed() {
+            return this.$props.items.length > this.itemsPerPage ? this.itemsPerPage : this.$props.items.length;
+        },
+        goBackward: function goBackward() {
+            if (!this.initialPageReached) {
+                this.currentPage--;
+                var itemsToEmit = this.$props.items.slice(this.totalItemsDisplayed - this.$props.itemsPerPage * 2, this.totalItemsDisplayed - this.$props.itemsPerPage);
+                this.totalItemsDisplayed -= this.$props.itemsPerPage;
+                this.refreshItems(itemsToEmit);
+            }
+        },
+        goForward: function goForward() {
+            if (!this.totalPagesReached) {
+                this.currentPage++;
+                var itemsToEmit = this.$props.items.slice(this.totalItemsDisplayed, this.$props.itemsPerPage + this.totalItemsDisplayed);
+                this.totalItemsDisplayed += this.$props.itemsPerPage;
+                this.refreshItems(itemsToEmit);
+            }
+        },
+        refreshItems: function refreshItems(items) {
+            this.$emit('pager-update', items);
+        }
+    }
+});
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "pager"
+  }, [_c('button', {
+    staticClass: "btn",
+    class: {
+      disabled: _vm.initialPageReached
+    },
+    attrs: {
+      "disabled": _vm.initialPageReached
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.goBackward()
+      }
+    }
+  }, [_vm._v("\n        Previous\n    ")]), _vm._v("\n    " + _vm._s(_vm.currentPage) + "\n    "), _c('span', [_vm._v(" of ")]), _vm._v("\n    " + _vm._s(_vm.totalPages) + "\n    "), _c('button', {
+    staticClass: "btn",
+    class: {
+      disabled: _vm.totalPagesReached
+    },
+    attrs: {
+      "disabled": _vm.totalPagesReached
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.goForward()
+      }
+    }
+  }, [_vm._v("\n        Next\n    ")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9f7a6eb4", module.exports)
+  }
+}
+
+/***/ }),
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -27234,28 +27142,43 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-12"
-  }, [_c('div', {
-    staticClass: "card"
-  }, [_c('paper-table', {
+  }, [_c('fg-input', {
     attrs: {
-      "title": _vm.table1.title,
-      "sub-title": _vm.table1.subTitle,
-      "data": _vm.table1.data,
-      "columns": _vm.table1.columns
+      "name": "search-box",
+      "placeholder": "Search..."
+    },
+    on: {
+      "input": function($event) {
+        _vm.filterItems()
+      }
+    },
+    model: {
+      value: (_vm.valueToSearch),
+      callback: function($$v) {
+        _vm.valueToSearch = $$v
+      },
+      expression: "valueToSearch"
     }
-  })], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-12"
-  }, [_c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "card card-plain"
   }, [_c('paper-table', {
     attrs: {
       "type": "hover",
-      "title": _vm.table1.title,
-      "sub-title": _vm.table1.subTitle,
-      "data": _vm.table1.data,
-      "columns": _vm.table1.columns
+      "title": _vm.title,
+      "sub-title": _vm.subTitle,
+      "data": _vm.filteredItems.slice(0, 15),
+      "columns": _vm.columns,
+      "use-actions": _vm.useActions
     }
-  })], 1)])])
+  })], 1), _vm._v(" "), _c('pager', {
+    attrs: {
+      "items-per-page": 15,
+      "items": _vm.initialData
+    },
+    on: {
+      "pager-update": _vm.updateItemsDisplayed
+    }
+  })], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -27266,7 +27189,2739 @@ if (false) {
 }
 
 /***/ }),
-/* 175 */
+/* 182 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Users_Layout_LoginLayout_vue__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Users_Layout_LoginLayout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Users_Layout_LoginLayout_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Users_Views_Login_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Users_Views_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Users_Views_Login_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_localforage__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_localforage__);
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    path: '/user',
+    component: __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Users_Layout_LoginLayout_vue___default.a,
+    children: [{
+        path: 'login',
+        name: 'login',
+        component: __WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Users_Views_Login_vue___default.a,
+        beforeEnter: function beforeEnter(to, from, next) {
+            __WEBPACK_IMPORTED_MODULE_3_localforage__["getItem"](__WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* AUTH_USER_KEY */]).then(function (user) {
+                if (user) {
+                    next({ path: '/admin/overview' });
+                } else {
+                    next();
+                }
+            });
+        }
+    }, {
+        path: 'logout',
+        name: 'logout',
+        beforeEnter: function beforeEnter(to, from, next) {
+            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["b" /* default */].logout().then(function () {
+                return next({ path: '/user/login' });
+            });
+        }
+    }]
+});
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(184)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(186),
+  /* template */
+  __webpack_require__(191),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-5b8e2e50",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Users/Layout/LoginLayout.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] LoginLayout.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5b8e2e50", Component.options)
+  } else {
+    hotAPI.reload("data-v-5b8e2e50", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(185);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("3048da29", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5b8e2e50\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoginLayout.vue", function() {
+     var newContent = require("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5b8e2e50\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoginLayout.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_Login_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Views_Login_vue__);
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        Login: __WEBPACK_IMPORTED_MODULE_0__Views_Login_vue___default.a
+    }
+});
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(188);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("269ad22e", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a8da5b24\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue", function() {
+     var newContent = require("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a8da5b24\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.login[data-v-a8da5b24] {\n  display: flex;\n  flex-flow: column;\n  margin-top: 10%;\n}\n.login .header[data-v-a8da5b24] {\n    text-align: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(7);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+var LOGIN_TEXT = 'Login',
+    LOADING_TEXT = 'Loading...';
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default.a
+    },
+    data: function data() {
+        return {
+            authenticating: false,
+            email: null,
+            password: null,
+            title: 'Welcome to Rent-cart',
+            subtitle: 'Please, login!',
+            loginBtnText: LOGIN_TEXT
+        };
+    },
+
+    methods: {
+        login: function login() {
+            var _this = this;
+
+            if (this.isFormValid()) {
+                var user = { email: this.email, password: this.password };
+                this.authenticating = true;
+                this.loginBtnText = LOADING_TEXT;
+
+                __WEBPACK_IMPORTED_MODULE_1__services_user_service__["b" /* default */].login(user).then(function () {
+                    return _this.$router.push({ path: '/' });
+                }).catch(function (error) {
+                    _this.authenticating = false;
+                    _this.loginBtnText = LOGIN_TEXT;
+
+                    if (error.response.status === 401) {
+                        _this.alertError('Credentials invalid. Try again.');
+                    }
+                });
+            } else {
+                this.alertError('Some credentials are empty, check and try again.');
+            }
+        },
+        isFormValid: function isFormValid() {
+            return this.email && this.password;
+        },
+        alertError: function alertError() {
+            var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+            this.$notifications.notify({
+                message: message,
+                type: 'danger',
+                verticalAlign: 'bottom',
+                horizontalAlign: 'right',
+                icon: 'fa fa-warning'
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "login"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('h2', [_c('i', {
+    staticClass: "ti-car"
+  }), _vm._v(" " + _vm._s(_vm.title))]), _vm._v(" "), _c('h3', [_vm._v(_vm._s(_vm.subtitle))])]), _vm._v(" "), _c('form', [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('fg-input', {
+    attrs: {
+      "type": "text",
+      "label": "Username",
+      "placeholder": "employee"
+    },
+    model: {
+      value: (_vm.email),
+      callback: function($$v) {
+        _vm.email = $$v
+      },
+      expression: "email"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-12"
+  }, [_c('fg-input', {
+    attrs: {
+      "type": "password",
+      "label": "Password",
+      "placesholder": "******"
+    },
+    model: {
+      value: (_vm.password),
+      callback: function($$v) {
+        _vm.password = $$v
+      },
+      expression: "password"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-fill btn-wd",
+    class: {
+      'disabled': _vm.authenticating
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.login($event)
+      }
+    }
+  }, [_vm._v("Login\n                    ")])]), _vm._v(" "), _c('notifications')], 1)])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-a8da5b24", module.exports)
+  }
+}
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('login')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5b8e2e50", module.exports)
+  }
+}
+
+/***/ }),
+/* 192 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Vehicles_VehicleTypes_vue__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Vehicles_VehicleTypes_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Vehicles_VehicleTypes_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Vehicles_VehicleBrands_vue__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Vehicles_VehicleBrands_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Vehicles_VehicleBrands_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Vehicles_VehicleModels_vue__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Vehicles_VehicleModels_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Vehicles_VehicleModels_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Vehicles_VehicleFuels_vue__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Vehicles_VehicleFuels_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Vehicles_VehicleFuels_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Vehicles_Vehicles_vue__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Vehicles_Vehicles_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Vehicles_Vehicles_vue__);
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ([{
+    path: 'vehicles/types',
+    name: 'vehicle-types',
+    component: __WEBPACK_IMPORTED_MODULE_0__components_Dashboard_Vehicles_VehicleTypes_vue___default.a
+}, {
+    path: 'vehicles/brands',
+    name: 'vehicle-brands',
+    component: __WEBPACK_IMPORTED_MODULE_1__components_Dashboard_Vehicles_VehicleBrands_vue___default.a
+}, {
+    path: 'vehicles/models',
+    name: 'vehicle-models',
+    component: __WEBPACK_IMPORTED_MODULE_2__components_Dashboard_Vehicles_VehicleModels_vue___default.a
+}, {
+    path: 'vehicles/fuels',
+    name: 'vehicle-fuels',
+    component: __WEBPACK_IMPORTED_MODULE_3__components_Dashboard_Vehicles_VehicleFuels_vue___default.a
+}, {
+    path: 'vehicles/manage',
+    name: 'vehicles',
+    component: __WEBPACK_IMPORTED_MODULE_4__components_Dashboard_Vehicles_Vehicles_vue___default.a
+}]);
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(194)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(196),
+  /* template */
+  __webpack_require__(202),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-3b563a42",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/VehicleTypes.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleTypes.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3b563a42", Component.options)
+  } else {
+    hotAPI.reload("data-v-3b563a42", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(195);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("03908ba3", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b563a42\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VehicleTypes.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3b563a42\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VehicleTypes.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 196 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Forms_VehicleTypesForm_vue__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Forms_VehicleTypesForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Forms_VehicleTypesForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_form_utils__ = __webpack_require__(6);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+var vehicleTypesColumns = ['Ord', 'Description', 'State', 'Actions'];
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        VehicleTypesForm: __WEBPACK_IMPORTED_MODULE_1__Forms_VehicleTypesForm_vue___default.a,
+        TableList: __WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue___default.a
+    },
+    data: function data() {
+        return {
+            loaded: false,
+            propsToDisplay: [].concat(vehicleTypesColumns),
+            vehicleTypes: [],
+            vehicleTypeToEdit: null
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.$axios.get('http://localhost:8000/api/types').then(function (res) {
+            _this.vehicleTypes = res.data.map(function (type, position) {
+                var id = type.id,
+                    description = type.description,
+                    state = type.state,
+                    vehicleType = { ord: position + 1, id: id, description: description, state: state };
+
+
+                return __WEBPACK_IMPORTED_MODULE_2__utils_form_utils__["a" /* default */].addActionsTo(vehicleType, _this.edit, _this.askToRemove);
+            });
+            _this.loaded = true;
+        });
+    },
+
+    methods: {
+        addVehicleType: function addVehicleType(data) {
+            var id = data.id,
+                description = data.description,
+                state = data.state,
+                vehicleType = { ord: this.vehicleTypes.length + 1, id: id, description: description, state: state || 'ACTIVE' };
+
+
+            this.vehicleTypes.push(__WEBPACK_IMPORTED_MODULE_2__utils_form_utils__["a" /* default */].addActionsTo(vehicleType, this.edit, this.askToRemove));
+        },
+        updateVehicleType: function updateVehicleType(data) {
+            this.vehicleTypes = this.vehicleTypes.map(function (type) {
+                if (type.id === data.id) {
+                    type = Object.assign(type, { description: data.description });
+                }
+
+                return type;
+            });
+
+            this.vehicleTypeToEdit = null;
+        },
+        edit: function edit(vehicleType) {
+            this.vehicleTypeToEdit = vehicleType;
+        },
+        askToRemove: function askToRemove(vehicleType) {
+            var _this2 = this;
+
+            this.$swal({
+                title: 'Are you sure?',
+                text: 'The item and all it\'s data associated will be deleted.',
+                type: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true
+            }).then(function () {
+                return _this2.remove(vehicleType);
+            });
+        },
+        remove: function remove(vehicleType) {
+            var _this3 = this;
+
+            this.$axios.delete('http://localhost:8000/api/types/' + vehicleType.id).then(function () {
+                var index = _this3.vehicleTypes.findIndex(function (type) {
+                    return vehicleType.id === type.id;
+                });
+                _this3.vehicleTypes = _this3.vehicleTypes.slice(0, index).concat(_this3.vehicleTypes.slice(index + 1));
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(198)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(200),
+  /* template */
+  __webpack_require__(201),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/Forms/VehicleTypesForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleTypesForm.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-454b5066", Component.options)
+  } else {
+    hotAPI.reload("data-v-454b5066", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(199);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("6150dc80", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454b5066\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VehicleTypesForm.vue", function() {
+     var newContent = require("!!../../../../../../../node_modules/css-loader/index.js!../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-454b5066\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VehicleTypesForm.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 200 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default.a
+    },
+    props: {
+        edit: Boolean,
+        vehicleType: Object
+    },
+    watch: {
+        vehicleType: function vehicleType(newValue) {
+            this.description = newValue ? newValue.description : '';
+        }
+    },
+    data: function data() {
+        return {
+            isSavingVehicleType: false,
+            description: this.$props.vehicleType ? this.$props.vehicleType.description : ''
+        };
+    },
+
+    methods: {
+        isFormValid: function isFormValid() {
+            return !!this.description;
+        },
+        validBeforeSave: function validBeforeSave() {
+            if (this.isFormValid()) {
+                var actionToPerform = this.edit ? 'updated' : 'created';
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: 'The item will be ' + actionToPerform + '.',
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.save.bind(this));
+            } else {
+                this.notifyInvalidForm();
+            }
+        },
+        save: function save() {
+            var _this = this;
+
+            var vehicleType = { description: this.description },
+                actionPerformed = this.edit ? this.getUpdatePromise(vehicleType) : this.getCreatePromise(vehicleType);
+
+            this.isSavingVehicleType = true;
+
+            actionPerformed.then(function (res) {
+                var actionToNotify = _this.edit ? 'type-updated' : 'type-created';
+                _this.description = '';
+                _this.isSavingVehicleType = false;
+                _this.$emit(actionToNotify, res.data);
+            });
+        },
+        getCreatePromise: function getCreatePromise(body) {
+            return this.$axios.post('http://localhost:8000/api/types', body);
+        },
+        getUpdatePromise: function getUpdatePromise(body) {
+            return this.$axios.put('http://localhost:8000/api/types/' + this.$props.vehicleType.id, body);
+        },
+        notifyInvalidForm: function notifyInvalidForm() {
+            this.$notifications.notify({
+                message: 'The description field is empty.',
+                type: 'danger',
+                verticalAlign: 'bottom',
+                horizontalAlign: 'right',
+                icon: 'fa fa-warning'
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-types-form"
+  }, [_c('form', [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Description",
+      "placeholder": "Description...",
+      "required": true
+    },
+    model: {
+      value: (_vm.description),
+      callback: function($$v) {
+        _vm.description = $$v
+      },
+      expression: "description"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-fill btn-wd",
+    class: {
+      'disabled': _vm.isSavingVehicleType
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.validBeforeSave($event)
+      }
+    }
+  }, [_vm._v("\n                        Save\n                    ")])])], 1)])]), _vm._v(" "), _c('notifications')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-454b5066", module.exports)
+  }
+}
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-types"
+  }, [(!_vm.loaded) ? _c('div', [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("Loading data...")])]) : _vm._e(), _vm._v(" "), _c('vehicle-types-form', {
+    attrs: {
+      "edit": _vm.vehicleTypeToEdit !== null,
+      "vehicle-type": _vm.vehicleTypeToEdit
+    },
+    on: {
+      "type-created": _vm.addVehicleType,
+      "type-updated": _vm.updateVehicleType
+    }
+  }), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.loaded) ? _c('table-list', {
+    attrs: {
+      "columns": _vm.propsToDisplay,
+      "tableData": _vm.vehicleTypes,
+      "use-actions": true
+    }
+  }) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3b563a42", module.exports)
+  }
+}
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(204),
+  /* template */
+  __webpack_require__(208),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/VehicleBrands.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleBrands.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b73d165a", Component.options)
+  } else {
+    hotAPI.reload("data-v-b73d165a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Forms_VehicleBrandsForm_vue__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Forms_VehicleBrandsForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Forms_VehicleBrandsForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_form_utils__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__factories_brands_factory__ = __webpack_require__(20);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+var vehicleBrandsColumns = ['Ord', 'Description', 'State', 'Actions'];
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        TableList: __WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue___default.a,
+        VehicleBrandsForm: __WEBPACK_IMPORTED_MODULE_0__Forms_VehicleBrandsForm_vue___default.a
+    },
+    data: function data() {
+        return {
+            tableColumns: [].concat(vehicleBrandsColumns),
+            isLoaded: false,
+            brands: [],
+            brandToUpdate: null
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.$axios.get('http://localhost:8000/api/brands').then(function (result) {
+            _this.brands = result.data.map(function (brand, index) {
+                return __WEBPACK_IMPORTED_MODULE_3__factories_brands_factory__["a" /* default */].createBrandForTableList({
+                    brand: brand,
+                    index: index,
+                    onEdit: _this.edit,
+                    onRemove: _this.askToRemove
+                });
+            });
+
+            _this.isLoaded = true;
+        });
+    },
+
+    methods: {
+        addBrand: function addBrand(data) {
+            var index = this.brands.length;
+            var brand = Object.assign(data, { state: data.state || 'ACTIVE' });
+
+            brand = __WEBPACK_IMPORTED_MODULE_3__factories_brands_factory__["a" /* default */].createBrandForTableList({
+                brand: brand,
+                index: index,
+                onEdit: this.edit,
+                onRemove: this.askToRemove
+            });
+
+            this.brands.push(brand);
+        },
+        updateBrand: function updateBrand(data) {
+            this.brands = this.brands.map(function (brand) {
+                if (brand.id === data.id) {
+                    brand = Object.assign(brand, { description: data.description });
+                }
+
+                return brand;
+            });
+            this.brandToUpdate = null;
+        },
+        edit: function edit(brand) {
+            this.brandToUpdate = brand;
+        },
+        askToRemove: function askToRemove(brand) {
+            var _this2 = this;
+
+            this.$swal({
+                title: 'Are you sure?',
+                text: 'The brand and all it\'s data associated will be deleted.',
+                type: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true
+            }).then(function () {
+                return _this2.remove(brand);
+            });
+        },
+        remove: function remove(brand) {
+            var _this3 = this;
+
+            this.$axios.delete('http://localhost:8000/api/brands/' + brand.id).then(function () {
+                var index = _this3.brands.findIndex(function (vehicleBrand) {
+                    return brand.id === vehicleBrand.id;
+                });
+                _this3.brands = _this3.brands.slice(0, index).concat(_this3.brands.slice(index + 1));
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(206),
+  /* template */
+  __webpack_require__(207),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/Forms/VehicleBrandsForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleBrandsForm.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4f6949f7", Component.options)
+  } else {
+    hotAPI.reload("data-v-4f6949f7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 206 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default.a
+    },
+    props: {
+        edit: Boolean,
+        brand: Object
+    },
+    watch: {
+        brand: function brand(newValue) {
+            this.description = newValue ? newValue.description : '';
+        }
+    },
+    data: function data() {
+        return {
+            description: this.$props.brand ? this.$props.brand.description : '',
+            isSavingBrand: false
+        };
+    },
+
+    methods: {
+        isFormValid: function isFormValid() {
+            return !!this.description;
+        },
+        validBeforeSave: function validBeforeSave() {
+            if (this.isFormValid()) {
+                var actionToPerform = this.edit ? 'updated' : 'created';
+                this.$swal({
+                    title: 'Are you sure?',
+                    html: 'The vehicle brand <b>' + this.description + '</b> will be ' + actionToPerform + '.',
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.save.bind(this));
+            } else {
+                this.notifyInvalidForm();
+            }
+        },
+        save: function save() {
+            var _this = this;
+
+            var body = { description: this.description },
+                actionPerformed = this.edit ? this.getUpdatePromise(body) : this.getCreatePromise(body);
+
+            this.isSavingBrand = true;
+
+            actionPerformed.then(function (res) {
+                var actionToNotify = _this.edit ? 'brand-updated' : 'brand-created';
+                _this.description = '';
+                _this.isSavingBrand = false;
+                _this.$emit(actionToNotify, res.data);
+            });
+        },
+        getCreatePromise: function getCreatePromise(body) {
+            return this.$axios.post('http://localhost:8000/api/brands', body);
+        },
+        getUpdatePromise: function getUpdatePromise(body) {
+            return this.$axios.put('http://localhost:8000/api/brands/' + this.$props.brand.id, body);
+        },
+        notifyInvalidForm: function notifyInvalidForm() {
+            this.$notifications.notify({
+                message: 'The description field is empty.',
+                type: 'danger',
+                verticalAlign: 'bottom',
+                horizontalAlign: 'right',
+                icon: 'fa fa-warning'
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-brands-form"
+  }, [_c('form', [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Description",
+      "placeholder": "Description...",
+      "required": true
+    },
+    model: {
+      value: (_vm.description),
+      callback: function($$v) {
+        _vm.description = $$v
+      },
+      expression: "description"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-fill btn-wd",
+    class: {
+      'disabled': _vm.isSavingBrand
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.validBeforeSave($event)
+      }
+    }
+  }, [_vm._v("\n                        Save\n                    ")])])], 1)])]), _vm._v(" "), _c('notifications')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4f6949f7", module.exports)
+  }
+}
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-brands"
+  }, [(!_vm.isLoaded) ? _c('div', [_c('h3', [_vm._v("Loading...")])]) : _vm._e(), _vm._v(" "), _c('vehicle-brands-form', {
+    attrs: {
+      "edit": _vm.brandToUpdate !== null,
+      "brand": _vm.brandToUpdate
+    },
+    on: {
+      "brand-created": _vm.addBrand,
+      "brand-updated": _vm.updateBrand
+    }
+  }), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.isLoaded) ? _c('table-list', {
+    attrs: {
+      "columns": _vm.tableColumns,
+      "use-actions": true,
+      "table-data": _vm.brands
+    }
+  }) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b73d165a", module.exports)
+  }
+}
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(210),
+  /* template */
+  __webpack_require__(215),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/VehicleModels.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleModels.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-60238b1e", Component.options)
+  } else {
+    hotAPI.reload("data-v-60238b1e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 210 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Forms_VehicleModelsForm_vue__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Forms_VehicleModelsForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Forms_VehicleModelsForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__factories_brands_factory__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__factories_models_factory__ = __webpack_require__(214);
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+var tableColumns = ['Ord', 'Description', 'Brand', 'State', 'Actions'];
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        TableList: __WEBPACK_IMPORTED_MODULE_0__Views_TableList_vue___default.a,
+        VehicleModelsForm: __WEBPACK_IMPORTED_MODULE_1__Forms_VehicleModelsForm_vue___default.a
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        Promise.all([this.$axios.get('http://localhost:8000/api/brands'), this.$axios.get('http://localhost:8000/api/models')]).then(function (response) {
+            var _response = _slicedToArray(response, 2),
+                brandsResponse = _response[0],
+                modelsResponse = _response[1];
+
+            _this.brands = brandsResponse.data.map(function (brand, index) {
+                return __WEBPACK_IMPORTED_MODULE_2__factories_brands_factory__["a" /* default */].createBrand({ brand: brand, index: index });
+            });
+            _this.models = modelsResponse.data.map(function (model, index) {
+                var brand = _this.brands.find(function (brand) {
+                    return brand.id == model['vehicle_brand_id'];
+                });
+
+                delete model['vehicle_brand_id'];
+
+                return __WEBPACK_IMPORTED_MODULE_3__factories_models_factory__["a" /* default */].createModelForTableList({
+                    model: model,
+                    brand: brand,
+                    index: index,
+                    onEdit: _this.edit,
+                    onRemove: _this.askToRemove
+                });
+            });
+
+            _this.isLoaded = true;
+        });
+    },
+    data: function data() {
+        return {
+            isLoaded: false,
+            tableColumns: [].concat(tableColumns),
+            brands: [],
+            models: [],
+            modelToUpdate: null
+        };
+    },
+
+    methods: {
+        addModel: function addModel(data) {
+            var model = Object.assign(data, { state: data.state || 'ACTIVE' });
+
+            var index = this.models.length + 1,
+                brand = this.brands.find(function (brand) {
+                return brand.id == model['vehicle_brand_id'];
+            });
+
+            model = __WEBPACK_IMPORTED_MODULE_3__factories_models_factory__["a" /* default */].createModelForTableList({
+                model: model,
+                brand: brand,
+                index: index,
+                onEdit: this.edit,
+                onRemove: this.askToRemove
+            });
+
+            this.models.push(model);
+        },
+        edit: function edit(model) {
+            this.modelToUpdate = model;
+        },
+        updateModel: function updateModel(data) {
+            var _this2 = this;
+
+            this.models = this.models.map(function (model) {
+                if (model.id === data.id) {
+                    model = Object.assign(model, { description: data.description, brandId: data.brandId });
+                    model.brand = _this2.brands.find(function (brand) {
+                        return brand.id == model.brandId;
+                    }).description;
+                }
+
+                return model;
+            });
+
+            this.modelToUpdate = null;
+        },
+        askToRemove: function askToRemove(model) {
+            var _this3 = this;
+
+            this.$swal({
+                title: 'Are you sure?',
+                text: 'The model and all it\'s data associated will be deleted.',
+                type: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true
+            }).then(function () {
+                return _this3.remove(model);
+            });
+        },
+        remove: function remove(model) {
+            var _this4 = this;
+
+            this.$axios.delete('http://localhost:8000/api/models/' + model.id).then(function () {
+                var index = _this4.models.findIndex(function (vehicleModel) {
+                    return model.id === vehicleModel.id;
+                });
+                _this4.brands = _this4.models.slice(0, index).concat(_this4.models.slice(index + 1));
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(212),
+  /* template */
+  __webpack_require__(213),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/Forms/VehicleModelsForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleModelsForm.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9483ded6", Component.options)
+  } else {
+    hotAPI.reload("data-v-9483ded6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 212 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        model: Object,
+        brands: Array,
+        edit: Boolean
+    },
+    watch: {
+        model: function model(newValue) {
+            this.description = newValue ? newValue.description : '';
+            this.brandId = newValue ? newValue.brandId : null;
+        }
+    },
+    components: {
+        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default.a
+    },
+    computed: {
+        brandsOptions: function brandsOptions() {
+            return this.$props.brands.map(function (brand) {
+                return { value: brand.id, label: brand.description };
+            });
+        }
+    },
+    data: function data() {
+        return {
+            description: this.$props.model ? this.$props.model.description : '',
+            isSavingModel: false,
+            brandId: this.$props.brandId ? this.$props.model.brandId : null
+        };
+    },
+
+    methods: {
+        updateBrandId: function updateBrandId(id) {
+            this.brandId = id;
+        },
+        isFormValid: function isFormValid() {
+            return !!this.description.trim() && !!this.brandId;
+        },
+        validBeforeSave: function validBeforeSave() {
+            if (this.isFormValid()) {
+                var actionToPerform = this.edit ? 'updated' : 'created';
+
+                this.$swal({
+                    title: 'Are you sure?',
+                    html: 'The vehicle model <b>' + this.description + '</b> will be ' + actionToPerform + '.',
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.save.bind(this));
+            } else {
+                this.notifyInvalidForm();
+            }
+        },
+        save: function save() {
+            var _this = this;
+
+            var body = { description: this.description, 'vehicle_brand_id': this.brandId },
+                actionPerformed = this.edit ? this.getUpdatePromise(body) : this.getCreatePromise(body);
+
+            this.isSavingBrand = true;
+
+            actionPerformed.then(function (res) {
+                var actionToNotify = _this.edit ? 'model-updated' : 'model-created';
+                _this.description = '';
+                res.data.brandId = _this.brandId;
+                _this.brandId = null;
+                _this.isSavingModel = false;
+                _this.$emit(actionToNotify, res.data);
+            });
+        },
+        getCreatePromise: function getCreatePromise(body) {
+            return this.$axios.post('http://localhost:8000/api/models', body);
+        },
+        getUpdatePromise: function getUpdatePromise(body) {
+            return this.$axios.put('http://localhost:8000/api/models/' + this.$props.model.id, body);
+        },
+        notifyInvalidForm: function notifyInvalidForm() {
+            var errorMessage = '';
+
+            if (!this.brandId) {
+                errorMessage = 'A brand must be selected to continue.';
+            }
+
+            if (!this.description.trim()) {
+                errorMessage = 'The description field is empty.';
+            }
+
+            this.$notifications.notify({
+                message: errorMessage,
+                type: 'danger',
+                verticalAlign: 'bottom',
+                horizontalAlign: 'right',
+                icon: 'fa fa-warning'
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 213 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-brands-form"
+  }, [_c('form', [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Description",
+      "placeholder": "Description...",
+      "required": true
+    },
+    model: {
+      value: (_vm.description),
+      callback: function($$v) {
+        _vm.description = $$v
+      },
+      expression: "description"
+    }
+  }), _vm._v(" "), _c('fg-select', {
+    attrs: {
+      "label": "Brand",
+      "name": "brand",
+      "id": "brand",
+      "options": _vm.brandsOptions,
+      "placeholder": "Select a brand from the list below..."
+    },
+    on: {
+      "change": _vm.updateBrandId
+    },
+    model: {
+      value: (_vm.brandId),
+      callback: function($$v) {
+        _vm.brandId = $$v
+      },
+      expression: "brandId"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-fill btn-wd",
+    class: {
+      'disabled': _vm.isSavingModel
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.validBeforeSave($event)
+      }
+    }
+  }, [_vm._v("\n                        Save\n                    ")])])], 1)])]), _vm._v(" "), _c('notifications')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9483ded6", module.exports)
+  }
+}
+
+/***/ }),
+/* 214 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_form_utils__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__factory__ = __webpack_require__(21);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    createModelForTableList: function createModelForTableList(_ref) {
+        var model = _ref.model,
+            brand = _ref.brand,
+            index = _ref.index,
+            onEdit = _ref.onEdit,
+            onRemove = _ref.onRemove;
+
+        var vehicleModel = __WEBPACK_IMPORTED_MODULE_1__factory__["a" /* default */].create({ object: model, index: index });
+
+        vehicleModel.brand = brand ? brand.description : '';
+        vehicleModel.brandId = brand.id ? brand.id : null;
+
+        return __WEBPACK_IMPORTED_MODULE_0__utils_form_utils__["a" /* default */].addActionsTo(vehicleModel, onEdit, onRemove);
+    },
+
+    factory: __WEBPACK_IMPORTED_MODULE_1__factory__["a" /* default */]
+});
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-models"
+  }, [(!_vm.isLoaded) ? _c('div', [_c('h3', [_vm._v("Loading...")])]) : _vm._e(), _vm._v(" "), _c('vehicle-models-form', {
+    attrs: {
+      "edit": _vm.modelToUpdate !== null,
+      "model": _vm.modelToUpdate,
+      "brands": _vm.brands
+    },
+    on: {
+      "model-created": _vm.addModel,
+      "model-updated": _vm.updateModel
+    }
+  }), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.isLoaded) ? _c('table-list', {
+    attrs: {
+      "columns": _vm.tableColumns,
+      "use-actions": true,
+      "table-data": _vm.models
+    }
+  }) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-60238b1e", module.exports)
+  }
+}
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(217),
+  /* template */
+  __webpack_require__(221),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/VehicleFuels.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleFuels.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4620d546", Component.options)
+  } else {
+    hotAPI.reload("data-v-4620d546", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 217 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Forms_VehicleFuelsForm_vue__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Forms_VehicleFuelsForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Forms_VehicleFuelsForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__factories_factory__ = __webpack_require__(21);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+var tableColumns = ['Ord', 'Description', 'State', 'Actions'];
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        VehicleFuelsForm: __WEBPACK_IMPORTED_MODULE_0__Forms_VehicleFuelsForm_vue___default.a,
+        TableList: __WEBPACK_IMPORTED_MODULE_1__Views_TableList_vue___default.a
+    },
+    data: function data() {
+        return {
+            isLoaded: false,
+            tableColumns: tableColumns,
+            fuels: [],
+            fuelToUpdate: null
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.$axios.get('http://localhost:8000/api/fuels').then(function (response) {
+            _this.fuels = response.data.map(function (fuel, index) {
+                return __WEBPACK_IMPORTED_MODULE_2__factories_factory__["a" /* default */].createForTableList({
+                    object: fuel,
+                    index: index,
+                    onEdit: _this.edit,
+                    onRemove: _this.askToRemove
+                });
+            });
+            _this.isLoaded = true;
+        });
+    },
+
+    methods: {
+        addFuel: function addFuel(data) {
+            var fuel = Object.assign(data, { state: data.state || 'ACTIVE' });
+
+            fuel = __WEBPACK_IMPORTED_MODULE_2__factories_factory__["a" /* default */].createForTableList({
+                object: fuel,
+                index: this.fuels.length,
+                onEdit: this.edit,
+                onRemove: this.askToRemove
+            });
+
+            this.fuels.push(fuel);
+        },
+        edit: function edit(model) {
+            this.fuelToUpdate = model;
+        },
+        updateFuel: function updateFuel(data) {
+            this.fuels = this.fuels.map(function (fuel) {
+                if (fuel.id === data.id) {
+                    fuel = Object.assign(fuel, { description: data.description });
+                }
+
+                return fuel;
+            });
+
+            this.fuelToUpdate = null;
+        },
+        askToRemove: function askToRemove(fuel) {
+            var _this2 = this;
+
+            this.$swal({
+                title: 'Are you sure?',
+                text: 'The fuel and all it\'s data associated will be deleted.',
+                type: 'warning',
+                showConfirmButton: true,
+                showCancelButton: true
+            }).then(function () {
+                return _this2.remove(fuel);
+            });
+        },
+        remove: function remove(fuel) {
+            var _this3 = this;
+
+            this.$axios.delete('http://localhost:8000/api/fuels/' + fuel.id).then(function () {
+                var index = _this3.fuels.findIndex(function (vehicleFuel) {
+                    return fuel.id === vehicleFuel.id;
+                });
+                _this3.fuels = _this3.fuels.slice(0, index).concat(_this3.fuels.slice(index + 1));
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(219),
+  /* template */
+  __webpack_require__(220),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/Forms/VehicleFuelsForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehicleFuelsForm.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6388c96a", Component.options)
+  } else {
+    hotAPI.reload("data-v-6388c96a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 219 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notification_vue___default.a
+    },
+    props: {
+        edit: Boolean,
+        fuel: Object
+    },
+    watch: {
+        fuel: function fuel(newFuel) {
+            this.description = newFuel ? newFuel.description : '';
+        }
+    },
+    data: function data() {
+        return {
+            isSavingFuel: false,
+            description: this.$props.fuel ? this.$props.fuel.description : ''
+        };
+    },
+
+    methods: {
+        isValid: function isValid() {
+            return !!this.description;
+        },
+        validBeforeSave: function validBeforeSave() {
+            if (this.isValid()) {
+                var actionToPerform = this.edit ? 'updated' : 'created';
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: 'The item will be ' + actionToPerform + '.',
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.save.bind(this));
+            } else {
+                this.notifyInvalidForm();
+            }
+        },
+        save: function save() {
+            var _this = this;
+
+            var fuel = { description: this.description },
+                actionPerformed = this.edit ? this.getUpdatePromise(fuel) : this.getCreatePromise(fuel);
+
+            this.isSavingFuel = true;
+
+            actionPerformed.then(function (res) {
+                var actionToNotify = _this.edit ? 'fuel-updated' : 'fuel-created';
+                _this.description = '';
+                _this.isSavingFuel = false;
+                _this.$emit(actionToNotify, res.data);
+            });
+        },
+        getCreatePromise: function getCreatePromise(body) {
+            return this.$axios.post('http://localhost:8000/api/fuels', body);
+        },
+        getUpdatePromise: function getUpdatePromise(body) {
+            return this.$axios.put('http://localhost:8000/api/fuels/' + this.$props.fuel.id, body);
+        },
+        notifyInvalidForm: function notifyInvalidForm() {
+            this.$notifications.notify({
+                message: 'The description field is empty.',
+                type: 'danger',
+                verticalAlign: 'bottom',
+                horizontalAlign: 'right',
+                icon: 'fa fa-warning'
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicles-fuels-form"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Description",
+      "placeholder": "Fuel description...",
+      "required": true
+    },
+    model: {
+      value: (_vm.description),
+      callback: function($$v) {
+        _vm.description = $$v
+      },
+      expression: "description"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-fill btn-wd",
+    class: {
+      'disabled': _vm.isSavingFuel
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.validBeforeSave($event)
+      }
+    }
+  }, [_vm._v("\n                    Save\n                ")])])], 1)]), _vm._v(" "), _c('notifications')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6388c96a", module.exports)
+  }
+}
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-fuels"
+  }, [(!_vm.isLoaded) ? _c('div', [_c('h3', [_vm._v("Loading...")])]) : _vm._e(), _vm._v(" "), (_vm.isLoaded) ? _c('div', [_c('vehicle-fuels-form', {
+    attrs: {
+      "edit": _vm.fuelToUpdate !== null,
+      "fuel": _vm.fuelToUpdate
+    },
+    on: {
+      "fuel-created": _vm.addFuel,
+      "fuel-updated": _vm.updateFuel
+    }
+  }), _vm._v(" "), _c('hr'), _vm._v(" "), _c('table-list', {
+    attrs: {
+      "columns": _vm.tableColumns,
+      "use-actions": true,
+      "table-data": _vm.fuels
+    }
+  })], 1) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4620d546", module.exports)
+  }
+}
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(223),
+  /* template */
+  __webpack_require__(227),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/Vehicles.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Vehicles.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3a4cc5dc", Component.options)
+  } else {
+    hotAPI.reload("data-v-3a4cc5dc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 223 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Dashboard_Views_TableList_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Dashboard_Views_TableList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Dashboard_Views_TableList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Forms_VehiclesForm_vue__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Forms_VehiclesForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Forms_VehiclesForm_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+var tableColumns = ['Ord', 'Description', 'Chassis', 'Engine', 'Plate', 'Type', 'Brand', 'Model', 'Fuel', 'State', 'Actions'];
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        TableList: __WEBPACK_IMPORTED_MODULE_0__Dashboard_Views_TableList_vue___default.a,
+        VehiclesForm: __WEBPACK_IMPORTED_MODULE_1__Forms_VehiclesForm_vue___default.a
+    },
+    data: function data() {
+        return {
+            isLoaded: false,
+            vehicles: [],
+            tableColumns: [].concat(tableColumns)
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.$axios.get('http://localhost:8000/api/vehicles').then(function (response) {
+            _this.vehicles = response.data.map(function (vehicle, index) {
+                return {
+                    ord: index + 1,
+                    description: vehicle.description,
+                    chassis: vehicle['chassis_number'],
+                    engine: vehicle['engine_number'],
+                    plate: vehicle['plate_number'],
+                    type: vehicle.type.description,
+                    model: vehicle.model.description,
+                    brand: vehicle.brand.description,
+                    fuel: vehicle.fuel.description,
+                    state: vehicle.state
+                };
+            });
+            _this.isLoaded = true;
+        });
+    }
+});
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(225),
+  /* template */
+  __webpack_require__(226),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/vyzaldy/Workspace/rent-a-car/resources/assets/js/components/Dashboard/Vehicles/Forms/VehiclesForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VehiclesForm.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8fa2c200", Component.options)
+  } else {
+    hotAPI.reload("data-v-8fa2c200", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 225 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notifications_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notifications_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notifications_vue__);
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        PaperNotification: __WEBPACK_IMPORTED_MODULE_0__UIComponents_NotificationPlugin_Notifications_vue___default.a
+    },
+    props: {
+        vehicle: Object
+    },
+    watch: {
+        chassis: function chassis(value) {
+            this.chassis = value.slice(0, 17).toUpperCase();
+        },
+        engine: function engine(value) {
+            this.engine = value.slice(0, 11).toUpperCase();
+        },
+        plate: function plate(value) {
+            this.plate = value.slice(0, 8).toUpperCase();
+        },
+        vehicle: function vehicle(value) {
+            this.edit = !!value;
+        }
+    },
+    data: function data() {
+        return {
+            description: '',
+            chassis: '',
+            engine: '',
+            plate: '',
+            brandId: null,
+            modelId: null,
+            typeId: null,
+            fuelId: null,
+            types: [],
+            brands: [],
+            models: [],
+            fuels: [],
+            isSavingVehicle: false,
+            formError: '',
+            edit: !!this.$props.vehicle
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        Promise.all([this.$axios.get('http://localhost:8000/api/types'), this.$axios.get('http://localhost:8000/api/models'), this.$axios.get('http://localhost:8000/api/brands'), this.$axios.get('http://localhost:8000/api/fuels')]).then(function (response) {
+            var _response = _slicedToArray(response, 4),
+                types = _response[0],
+                models = _response[1],
+                brands = _response[2],
+                fuels = _response[3];
+
+            _this.types = types.data.map(function (type) {
+                return { value: type.id, label: type.description };
+            });
+            _this.models = models.data.map(function (model) {
+                return { value: model.id, label: model.description };
+            });
+            _this.brands = brands.data.map(function (brand) {
+                return { value: brand.id, label: brand.description };
+            });
+            _this.fuels = fuels.data.map(function (fuel) {
+                return { value: fuel.id, label: fuel.description };
+            });
+        });
+    },
+
+    methods: {
+        isFormValid: function isFormValid() {
+            if (!this.description) {
+                this.formError = 'The description is required';
+                return false;
+            }
+
+            if (!this.chassis) {
+                this.formError = 'The chassis is required';
+                return false;
+            }
+
+            if (this.chassis.length < 17) {
+                this.formError = 'The chassis is not long enough';
+                return false;
+            }
+
+            if (!this.engine) {
+                this.formError = 'The engine is required';
+                return false;
+            }
+
+            if (this.engine.length < 11) {
+                this.formError = 'The engine is not long enough';
+                return false;
+            }
+
+            if (!this.plate) {
+                this.formError = 'The plate is required';
+                return false;
+            }
+
+            if (this.plate.length < 8) {
+                this.formError = 'The plate is not long enough';
+                return false;
+            }
+
+            if (!this.typeId) {
+                this.formError = 'The vehicle type is required';
+                return false;
+            }
+
+            if (!this.brandId) {
+                this.formError = 'The brand is required';
+                return false;
+            }
+
+            if (!this.modelId) {
+                this.formError = 'The model is required';
+                return false;
+            }
+
+            if (!this.fuelId) {
+                this.formError = 'The fuel is required';
+                return false;
+            }
+
+            return true;
+        },
+        validBeforeSave: function validBeforeSave() {
+            if (this.isSavingVehicle) {
+                return;
+            }
+
+            if (this.isFormValid()) {
+                var actionToPerform = this.edit ? 'updated' : 'created';
+
+                this.$swal({
+                    title: 'Are you sure?',
+                    html: 'The vehicle <b>' + this.description + '</b> will be ' + actionToPerform + '.',
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.save.bind(this));
+            } else {
+                this.notifyFormError(this.formError);
+            }
+        },
+        save: function save() {
+            var _this2 = this;
+
+            var body = {
+                description: this.description,
+                'chassis_number': this.chassis,
+                'engine_number': this.engine,
+                'plate_number': this.plate,
+                'vehicle_brand_id': this.brandId,
+                'vehicle_type_id': this.typeId,
+                'vehicle_model_id': this.modelId,
+                'fuel_id': this.fuelId
+            },
+                actionPerformed = this.edit ? this.getUpdatePromise(body) : this.getCreatePromise(body);
+
+            this.isSavingBrand = true;
+
+            actionPerformed.then(function (res) {
+                var actionToNotify = _this2.edit ? 'model-updated' : 'model-created';
+                _this2.description = '';
+                res.data.brandId = _this2.brandId;
+                _this2.brandId = null;
+                _this2.isSavingModel = false;
+                _this2.$emit(actionToNotify, res.data);
+            });
+        },
+        getCreatePromise: function getCreatePromise(body) {
+            return this.$axios.post('http://localhost:8000/api/vehicles', body);
+        },
+        getUpdatePromise: function getUpdatePromise(body) {
+            return this.$axios.put('http://localhost:8000/api/vehicles/' + this.$props.vehicle.id, body);
+        },
+        notifyFormError: function notifyFormError(error) {
+            this.$notifications.notify({
+                message: error,
+                type: 'danger',
+                verticalAlign: 'bottom',
+                horizontalAlign: 'right',
+                icon: 'fa fa-warning'
+            });
+        },
+        updateType: function updateType(id) {
+            this.typeId = id;
+        },
+        updateModel: function updateModel(id) {
+            this.modelId = id;
+        },
+        updateBrand: function updateBrand(id) {
+            this.brandId = id;
+        },
+        updateFuel: function updateFuel(id) {
+            this.fuelId = id;
+        }
+    }
+});
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicles-form"
+  }, [_c('form', [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-5 col-md-offset-1"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Description",
+      "placeholder": "Vehicle Description..."
+    },
+    model: {
+      value: (_vm.description),
+      callback: function($$v) {
+        _vm.description = $$v
+      },
+      expression: "description"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Chasis No.",
+      "placeholder": "AESFAIAS7676Q...",
+      "min": 17,
+      "max": 17
+    },
+    model: {
+      value: (_vm.chassis),
+      callback: function($$v) {
+        _vm.chassis = $$v
+      },
+      expression: "chassis"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5 col-md-offset-1"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Engine No.",
+      "placeholder": "ADFGHGREADSDFSDR...",
+      "min": 11,
+      "max": 11
+    },
+    model: {
+      value: (_vm.engine),
+      callback: function($$v) {
+        _vm.engine = $$v
+      },
+      expression: "engine"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5"
+  }, [_c('fg-input', {
+    attrs: {
+      "label": "Plate No.",
+      "placeholder": "ADFGHGREADSDFSDR...",
+      "min": 8,
+      "max": 8
+    },
+    model: {
+      value: (_vm.plate),
+      callback: function($$v) {
+        _vm.plate = $$v
+      },
+      expression: "plate"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5 col-md-offset-1"
+  }, [_c('fg-select', {
+    attrs: {
+      "label": "Vehicle type",
+      "placeholder": "Select a vehicle type from the list below...",
+      "options": _vm.types
+    },
+    on: {
+      "change": _vm.updateType
+    },
+    model: {
+      value: (_vm.typeId),
+      callback: function($$v) {
+        _vm.typeId = $$v
+      },
+      expression: "typeId"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5"
+  }, [_c('fg-select', {
+    attrs: {
+      "label": "Vehicle brand",
+      "placeholder": "Select a brand from the list below...",
+      "options": _vm.brands
+    },
+    on: {
+      "change": _vm.updateBrand
+    },
+    model: {
+      value: (_vm.brandId),
+      callback: function($$v) {
+        _vm.brandId = $$v
+      },
+      expression: "brandId"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5 col-md-offset-1"
+  }, [_c('fg-select', {
+    attrs: {
+      "label": "Vehicle model",
+      "placeholder": "Select a model from the list below...",
+      "options": _vm.models
+    },
+    on: {
+      "change": _vm.updateModel
+    },
+    model: {
+      value: (_vm.modelId),
+      callback: function($$v) {
+        _vm.modelId = $$v
+      },
+      expression: "modelId"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-5"
+  }, [_c('fg-select', {
+    attrs: {
+      "label": "Fuel",
+      "placeholder": "Select a fuel type from the list below...",
+      "options": _vm.fuels
+    },
+    on: {
+      "change": _vm.updateFuel
+    },
+    model: {
+      value: (_vm.fuelId),
+      callback: function($$v) {
+        _vm.fuelId = $$v
+      },
+      expression: "fuelId"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-info btn-fill btn-wd",
+    class: {
+      'disabled': _vm.isSavingVehicle
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.validBeforeSave($event)
+      }
+    }
+  }, [_vm._v("\n                    Save\n                ")])])])]), _vm._v(" "), _c('notifications')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-8fa2c200", module.exports)
+  }
+}
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicles"
+  }, [(!_vm.isLoaded) ? _c('div', [_c('h3', [_vm._v("Loading...")])]) : _vm._e(), _vm._v(" "), (_vm.isLoaded) ? _c('div', [_c('vehicles-form'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('table-list', {
+    attrs: {
+      "columns": _vm.tableColumns,
+      "table-data": _vm.vehicles,
+      "use-actions": true
+    }
+  })], 1) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3a4cc5dc", module.exports)
+  }
+}
+
+/***/ }),
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -31761,13 +34416,13 @@ return Chartist;
 
 
 /***/ }),
-/* 176 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(177);
+var content = __webpack_require__(230);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -31775,7 +34430,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(16)(content, options);
+var update = __webpack_require__(23)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -31792,45 +34447,45 @@ if(false) {
 }
 
 /***/ }),
-/* 177 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "/*!\n * Bootstrap v3.3.7 (http://getbootstrap.com)\n * Copyright 2011-2016 Twitter, Inc.\n * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)\n */\n/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\nhtml {\n  font-family: sans-serif;\n  -webkit-text-size-adjust: 100%;\n      -ms-text-size-adjust: 100%;\n}\nbody {\n  margin: 0;\n}\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block;\n}\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n  vertical-align: baseline;\n}\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n[hidden],\ntemplate {\n  display: none;\n}\na {\n  background-color: transparent;\n}\na:active,\na:hover {\n  outline: 0;\n}\nabbr[title] {\n  border-bottom: 1px dotted;\n}\nb,\nstrong {\n  font-weight: bold;\n}\ndfn {\n  font-style: italic;\n}\nh1 {\n  margin: .67em 0;\n  font-size: 2em;\n}\nmark {\n  color: #000;\n  background: #ff0;\n}\nsmall {\n  font-size: 80%;\n}\nsub,\nsup {\n  position: relative;\n  font-size: 75%;\n  line-height: 0;\n  vertical-align: baseline;\n}\nsup {\n  top: -.5em;\n}\nsub {\n  bottom: -.25em;\n}\nimg {\n  border: 0;\n}\nsvg:not(:root) {\n  overflow: hidden;\n}\nfigure {\n  margin: 1em 40px;\n}\nhr {\n  height: 0;\n  -webkit-box-sizing: content-box;\n     -moz-box-sizing: content-box;\n          box-sizing: content-box;\n}\npre {\n  overflow: auto;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em;\n}\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  margin: 0;\n  font: inherit;\n  color: inherit;\n}\nbutton {\n  overflow: visible;\n}\nbutton,\nselect {\n  text-transform: none;\n}\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  cursor: pointer;\n}\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  padding: 0;\n  border: 0;\n}\ninput {\n  line-height: normal;\n}\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: 0;\n}\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\ninput[type=\"search\"] {\n  -webkit-box-sizing: content-box;\n     -moz-box-sizing: content-box;\n          box-sizing: content-box;\n  -webkit-appearance: textfield;\n}\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\nfieldset {\n  padding: .35em .625em .75em;\n  margin: 0 2px;\n  border: 1px solid #c0c0c0;\n}\nlegend {\n  padding: 0;\n  border: 0;\n}\ntextarea {\n  overflow: auto;\n}\noptgroup {\n  font-weight: bold;\n}\ntable {\n  border-spacing: 0;\n  border-collapse: collapse;\n}\ntd,\nth {\n  padding: 0;\n}\n/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */\n@media print {\n  *,\n  *:before,\n  *:after {\n    color: #000 !important;\n    text-shadow: none !important;\n    background: transparent !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n  }\n  a,\n  a:visited {\n    text-decoration: underline;\n  }\n  a[href]:after {\n    content: \" (\" attr(href) \")\";\n  }\n  abbr[title]:after {\n    content: \" (\" attr(title) \")\";\n  }\n  a[href^=\"#\"]:after,\n  a[href^=\"javascript:\"]:after {\n    content: \"\";\n  }\n  pre,\n  blockquote {\n    border: 1px solid #999;\n\n    page-break-inside: avoid;\n  }\n  thead {\n    display: table-header-group;\n  }\n  tr,\n  img {\n    page-break-inside: avoid;\n  }\n  img {\n    max-width: 100% !important;\n  }\n  p,\n  h2,\n  h3 {\n    orphans: 3;\n    widows: 3;\n  }\n  h2,\n  h3 {\n    page-break-after: avoid;\n  }\n  .navbar {\n    display: none;\n  }\n  .btn > .caret,\n  .dropup > .btn > .caret {\n    border-top-color: #000 !important;\n  }\n  .label {\n    border: 1px solid #000;\n  }\n  .table {\n    border-collapse: collapse !important;\n  }\n  .table td,\n  .table th {\n    background-color: #fff !important;\n  }\n  .table-bordered th,\n  .table-bordered td {\n    border: 1px solid #ddd !important;\n  }\n}\n@font-face {\n  font-family: 'Glyphicons Halflings';\n\n  src: url(" + __webpack_require__(15) + ");\n  src: url(" + __webpack_require__(15) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(178) + ") format('woff2'), url(" + __webpack_require__(179) + ") format('woff'), url(" + __webpack_require__(180) + ") format('truetype'), url(" + __webpack_require__(181) + "#glyphicons_halflingsregular) format('svg');\n}\n.glyphicon {\n  position: relative;\n  top: 1px;\n  display: inline-block;\n  font-family: 'Glyphicons Halflings';\n  font-style: normal;\n  font-weight: normal;\n  line-height: 1;\n\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.glyphicon-asterisk:before {\n  content: \"*\";\n}\n.glyphicon-plus:before {\n  content: \"+\";\n}\n.glyphicon-euro:before,\n.glyphicon-eur:before {\n  content: \"\\20AC\";\n}\n.glyphicon-minus:before {\n  content: \"\\2212\";\n}\n.glyphicon-cloud:before {\n  content: \"\\2601\";\n}\n.glyphicon-envelope:before {\n  content: \"\\2709\";\n}\n.glyphicon-pencil:before {\n  content: \"\\270F\";\n}\n.glyphicon-glass:before {\n  content: \"\\E001\";\n}\n.glyphicon-music:before {\n  content: \"\\E002\";\n}\n.glyphicon-search:before {\n  content: \"\\E003\";\n}\n.glyphicon-heart:before {\n  content: \"\\E005\";\n}\n.glyphicon-star:before {\n  content: \"\\E006\";\n}\n.glyphicon-star-empty:before {\n  content: \"\\E007\";\n}\n.glyphicon-user:before {\n  content: \"\\E008\";\n}\n.glyphicon-film:before {\n  content: \"\\E009\";\n}\n.glyphicon-th-large:before {\n  content: \"\\E010\";\n}\n.glyphicon-th:before {\n  content: \"\\E011\";\n}\n.glyphicon-th-list:before {\n  content: \"\\E012\";\n}\n.glyphicon-ok:before {\n  content: \"\\E013\";\n}\n.glyphicon-remove:before {\n  content: \"\\E014\";\n}\n.glyphicon-zoom-in:before {\n  content: \"\\E015\";\n}\n.glyphicon-zoom-out:before {\n  content: \"\\E016\";\n}\n.glyphicon-off:before {\n  content: \"\\E017\";\n}\n.glyphicon-signal:before {\n  content: \"\\E018\";\n}\n.glyphicon-cog:before {\n  content: \"\\E019\";\n}\n.glyphicon-trash:before {\n  content: \"\\E020\";\n}\n.glyphicon-home:before {\n  content: \"\\E021\";\n}\n.glyphicon-file:before {\n  content: \"\\E022\";\n}\n.glyphicon-time:before {\n  content: \"\\E023\";\n}\n.glyphicon-road:before {\n  content: \"\\E024\";\n}\n.glyphicon-download-alt:before {\n  content: \"\\E025\";\n}\n.glyphicon-download:before {\n  content: \"\\E026\";\n}\n.glyphicon-upload:before {\n  content: \"\\E027\";\n}\n.glyphicon-inbox:before {\n  content: \"\\E028\";\n}\n.glyphicon-play-circle:before {\n  content: \"\\E029\";\n}\n.glyphicon-repeat:before {\n  content: \"\\E030\";\n}\n.glyphicon-refresh:before {\n  content: \"\\E031\";\n}\n.glyphicon-list-alt:before {\n  content: \"\\E032\";\n}\n.glyphicon-lock:before {\n  content: \"\\E033\";\n}\n.glyphicon-flag:before {\n  content: \"\\E034\";\n}\n.glyphicon-headphones:before {\n  content: \"\\E035\";\n}\n.glyphicon-volume-off:before {\n  content: \"\\E036\";\n}\n.glyphicon-volume-down:before {\n  content: \"\\E037\";\n}\n.glyphicon-volume-up:before {\n  content: \"\\E038\";\n}\n.glyphicon-qrcode:before {\n  content: \"\\E039\";\n}\n.glyphicon-barcode:before {\n  content: \"\\E040\";\n}\n.glyphicon-tag:before {\n  content: \"\\E041\";\n}\n.glyphicon-tags:before {\n  content: \"\\E042\";\n}\n.glyphicon-book:before {\n  content: \"\\E043\";\n}\n.glyphicon-bookmark:before {\n  content: \"\\E044\";\n}\n.glyphicon-print:before {\n  content: \"\\E045\";\n}\n.glyphicon-camera:before {\n  content: \"\\E046\";\n}\n.glyphicon-font:before {\n  content: \"\\E047\";\n}\n.glyphicon-bold:before {\n  content: \"\\E048\";\n}\n.glyphicon-italic:before {\n  content: \"\\E049\";\n}\n.glyphicon-text-height:before {\n  content: \"\\E050\";\n}\n.glyphicon-text-width:before {\n  content: \"\\E051\";\n}\n.glyphicon-align-left:before {\n  content: \"\\E052\";\n}\n.glyphicon-align-center:before {\n  content: \"\\E053\";\n}\n.glyphicon-align-right:before {\n  content: \"\\E054\";\n}\n.glyphicon-align-justify:before {\n  content: \"\\E055\";\n}\n.glyphicon-list:before {\n  content: \"\\E056\";\n}\n.glyphicon-indent-left:before {\n  content: \"\\E057\";\n}\n.glyphicon-indent-right:before {\n  content: \"\\E058\";\n}\n.glyphicon-facetime-video:before {\n  content: \"\\E059\";\n}\n.glyphicon-picture:before {\n  content: \"\\E060\";\n}\n.glyphicon-map-marker:before {\n  content: \"\\E062\";\n}\n.glyphicon-adjust:before {\n  content: \"\\E063\";\n}\n.glyphicon-tint:before {\n  content: \"\\E064\";\n}\n.glyphicon-edit:before {\n  content: \"\\E065\";\n}\n.glyphicon-share:before {\n  content: \"\\E066\";\n}\n.glyphicon-check:before {\n  content: \"\\E067\";\n}\n.glyphicon-move:before {\n  content: \"\\E068\";\n}\n.glyphicon-step-backward:before {\n  content: \"\\E069\";\n}\n.glyphicon-fast-backward:before {\n  content: \"\\E070\";\n}\n.glyphicon-backward:before {\n  content: \"\\E071\";\n}\n.glyphicon-play:before {\n  content: \"\\E072\";\n}\n.glyphicon-pause:before {\n  content: \"\\E073\";\n}\n.glyphicon-stop:before {\n  content: \"\\E074\";\n}\n.glyphicon-forward:before {\n  content: \"\\E075\";\n}\n.glyphicon-fast-forward:before {\n  content: \"\\E076\";\n}\n.glyphicon-step-forward:before {\n  content: \"\\E077\";\n}\n.glyphicon-eject:before {\n  content: \"\\E078\";\n}\n.glyphicon-chevron-left:before {\n  content: \"\\E079\";\n}\n.glyphicon-chevron-right:before {\n  content: \"\\E080\";\n}\n.glyphicon-plus-sign:before {\n  content: \"\\E081\";\n}\n.glyphicon-minus-sign:before {\n  content: \"\\E082\";\n}\n.glyphicon-remove-sign:before {\n  content: \"\\E083\";\n}\n.glyphicon-ok-sign:before {\n  content: \"\\E084\";\n}\n.glyphicon-question-sign:before {\n  content: \"\\E085\";\n}\n.glyphicon-info-sign:before {\n  content: \"\\E086\";\n}\n.glyphicon-screenshot:before {\n  content: \"\\E087\";\n}\n.glyphicon-remove-circle:before {\n  content: \"\\E088\";\n}\n.glyphicon-ok-circle:before {\n  content: \"\\E089\";\n}\n.glyphicon-ban-circle:before {\n  content: \"\\E090\";\n}\n.glyphicon-arrow-left:before {\n  content: \"\\E091\";\n}\n.glyphicon-arrow-right:before {\n  content: \"\\E092\";\n}\n.glyphicon-arrow-up:before {\n  content: \"\\E093\";\n}\n.glyphicon-arrow-down:before {\n  content: \"\\E094\";\n}\n.glyphicon-share-alt:before {\n  content: \"\\E095\";\n}\n.glyphicon-resize-full:before {\n  content: \"\\E096\";\n}\n.glyphicon-resize-small:before {\n  content: \"\\E097\";\n}\n.glyphicon-exclamation-sign:before {\n  content: \"\\E101\";\n}\n.glyphicon-gift:before {\n  content: \"\\E102\";\n}\n.glyphicon-leaf:before {\n  content: \"\\E103\";\n}\n.glyphicon-fire:before {\n  content: \"\\E104\";\n}\n.glyphicon-eye-open:before {\n  content: \"\\E105\";\n}\n.glyphicon-eye-close:before {\n  content: \"\\E106\";\n}\n.glyphicon-warning-sign:before {\n  content: \"\\E107\";\n}\n.glyphicon-plane:before {\n  content: \"\\E108\";\n}\n.glyphicon-calendar:before {\n  content: \"\\E109\";\n}\n.glyphicon-random:before {\n  content: \"\\E110\";\n}\n.glyphicon-comment:before {\n  content: \"\\E111\";\n}\n.glyphicon-magnet:before {\n  content: \"\\E112\";\n}\n.glyphicon-chevron-up:before {\n  content: \"\\E113\";\n}\n.glyphicon-chevron-down:before {\n  content: \"\\E114\";\n}\n.glyphicon-retweet:before {\n  content: \"\\E115\";\n}\n.glyphicon-shopping-cart:before {\n  content: \"\\E116\";\n}\n.glyphicon-folder-close:before {\n  content: \"\\E117\";\n}\n.glyphicon-folder-open:before {\n  content: \"\\E118\";\n}\n.glyphicon-resize-vertical:before {\n  content: \"\\E119\";\n}\n.glyphicon-resize-horizontal:before {\n  content: \"\\E120\";\n}\n.glyphicon-hdd:before {\n  content: \"\\E121\";\n}\n.glyphicon-bullhorn:before {\n  content: \"\\E122\";\n}\n.glyphicon-bell:before {\n  content: \"\\E123\";\n}\n.glyphicon-certificate:before {\n  content: \"\\E124\";\n}\n.glyphicon-thumbs-up:before {\n  content: \"\\E125\";\n}\n.glyphicon-thumbs-down:before {\n  content: \"\\E126\";\n}\n.glyphicon-hand-right:before {\n  content: \"\\E127\";\n}\n.glyphicon-hand-left:before {\n  content: \"\\E128\";\n}\n.glyphicon-hand-up:before {\n  content: \"\\E129\";\n}\n.glyphicon-hand-down:before {\n  content: \"\\E130\";\n}\n.glyphicon-circle-arrow-right:before {\n  content: \"\\E131\";\n}\n.glyphicon-circle-arrow-left:before {\n  content: \"\\E132\";\n}\n.glyphicon-circle-arrow-up:before {\n  content: \"\\E133\";\n}\n.glyphicon-circle-arrow-down:before {\n  content: \"\\E134\";\n}\n.glyphicon-globe:before {\n  content: \"\\E135\";\n}\n.glyphicon-wrench:before {\n  content: \"\\E136\";\n}\n.glyphicon-tasks:before {\n  content: \"\\E137\";\n}\n.glyphicon-filter:before {\n  content: \"\\E138\";\n}\n.glyphicon-briefcase:before {\n  content: \"\\E139\";\n}\n.glyphicon-fullscreen:before {\n  content: \"\\E140\";\n}\n.glyphicon-dashboard:before {\n  content: \"\\E141\";\n}\n.glyphicon-paperclip:before {\n  content: \"\\E142\";\n}\n.glyphicon-heart-empty:before {\n  content: \"\\E143\";\n}\n.glyphicon-link:before {\n  content: \"\\E144\";\n}\n.glyphicon-phone:before {\n  content: \"\\E145\";\n}\n.glyphicon-pushpin:before {\n  content: \"\\E146\";\n}\n.glyphicon-usd:before {\n  content: \"\\E148\";\n}\n.glyphicon-gbp:before {\n  content: \"\\E149\";\n}\n.glyphicon-sort:before {\n  content: \"\\E150\";\n}\n.glyphicon-sort-by-alphabet:before {\n  content: \"\\E151\";\n}\n.glyphicon-sort-by-alphabet-alt:before {\n  content: \"\\E152\";\n}\n.glyphicon-sort-by-order:before {\n  content: \"\\E153\";\n}\n.glyphicon-sort-by-order-alt:before {\n  content: \"\\E154\";\n}\n.glyphicon-sort-by-attributes:before {\n  content: \"\\E155\";\n}\n.glyphicon-sort-by-attributes-alt:before {\n  content: \"\\E156\";\n}\n.glyphicon-unchecked:before {\n  content: \"\\E157\";\n}\n.glyphicon-expand:before {\n  content: \"\\E158\";\n}\n.glyphicon-collapse-down:before {\n  content: \"\\E159\";\n}\n.glyphicon-collapse-up:before {\n  content: \"\\E160\";\n}\n.glyphicon-log-in:before {\n  content: \"\\E161\";\n}\n.glyphicon-flash:before {\n  content: \"\\E162\";\n}\n.glyphicon-log-out:before {\n  content: \"\\E163\";\n}\n.glyphicon-new-window:before {\n  content: \"\\E164\";\n}\n.glyphicon-record:before {\n  content: \"\\E165\";\n}\n.glyphicon-save:before {\n  content: \"\\E166\";\n}\n.glyphicon-open:before {\n  content: \"\\E167\";\n}\n.glyphicon-saved:before {\n  content: \"\\E168\";\n}\n.glyphicon-import:before {\n  content: \"\\E169\";\n}\n.glyphicon-export:before {\n  content: \"\\E170\";\n}\n.glyphicon-send:before {\n  content: \"\\E171\";\n}\n.glyphicon-floppy-disk:before {\n  content: \"\\E172\";\n}\n.glyphicon-floppy-saved:before {\n  content: \"\\E173\";\n}\n.glyphicon-floppy-remove:before {\n  content: \"\\E174\";\n}\n.glyphicon-floppy-save:before {\n  content: \"\\E175\";\n}\n.glyphicon-floppy-open:before {\n  content: \"\\E176\";\n}\n.glyphicon-credit-card:before {\n  content: \"\\E177\";\n}\n.glyphicon-transfer:before {\n  content: \"\\E178\";\n}\n.glyphicon-cutlery:before {\n  content: \"\\E179\";\n}\n.glyphicon-header:before {\n  content: \"\\E180\";\n}\n.glyphicon-compressed:before {\n  content: \"\\E181\";\n}\n.glyphicon-earphone:before {\n  content: \"\\E182\";\n}\n.glyphicon-phone-alt:before {\n  content: \"\\E183\";\n}\n.glyphicon-tower:before {\n  content: \"\\E184\";\n}\n.glyphicon-stats:before {\n  content: \"\\E185\";\n}\n.glyphicon-sd-video:before {\n  content: \"\\E186\";\n}\n.glyphicon-hd-video:before {\n  content: \"\\E187\";\n}\n.glyphicon-subtitles:before {\n  content: \"\\E188\";\n}\n.glyphicon-sound-stereo:before {\n  content: \"\\E189\";\n}\n.glyphicon-sound-dolby:before {\n  content: \"\\E190\";\n}\n.glyphicon-sound-5-1:before {\n  content: \"\\E191\";\n}\n.glyphicon-sound-6-1:before {\n  content: \"\\E192\";\n}\n.glyphicon-sound-7-1:before {\n  content: \"\\E193\";\n}\n.glyphicon-copyright-mark:before {\n  content: \"\\E194\";\n}\n.glyphicon-registration-mark:before {\n  content: \"\\E195\";\n}\n.glyphicon-cloud-download:before {\n  content: \"\\E197\";\n}\n.glyphicon-cloud-upload:before {\n  content: \"\\E198\";\n}\n.glyphicon-tree-conifer:before {\n  content: \"\\E199\";\n}\n.glyphicon-tree-deciduous:before {\n  content: \"\\E200\";\n}\n.glyphicon-cd:before {\n  content: \"\\E201\";\n}\n.glyphicon-save-file:before {\n  content: \"\\E202\";\n}\n.glyphicon-open-file:before {\n  content: \"\\E203\";\n}\n.glyphicon-level-up:before {\n  content: \"\\E204\";\n}\n.glyphicon-copy:before {\n  content: \"\\E205\";\n}\n.glyphicon-paste:before {\n  content: \"\\E206\";\n}\n.glyphicon-alert:before {\n  content: \"\\E209\";\n}\n.glyphicon-equalizer:before {\n  content: \"\\E210\";\n}\n.glyphicon-king:before {\n  content: \"\\E211\";\n}\n.glyphicon-queen:before {\n  content: \"\\E212\";\n}\n.glyphicon-pawn:before {\n  content: \"\\E213\";\n}\n.glyphicon-bishop:before {\n  content: \"\\E214\";\n}\n.glyphicon-knight:before {\n  content: \"\\E215\";\n}\n.glyphicon-baby-formula:before {\n  content: \"\\E216\";\n}\n.glyphicon-tent:before {\n  content: \"\\26FA\";\n}\n.glyphicon-blackboard:before {\n  content: \"\\E218\";\n}\n.glyphicon-bed:before {\n  content: \"\\E219\";\n}\n.glyphicon-apple:before {\n  content: \"\\F8FF\";\n}\n.glyphicon-erase:before {\n  content: \"\\E221\";\n}\n.glyphicon-hourglass:before {\n  content: \"\\231B\";\n}\n.glyphicon-lamp:before {\n  content: \"\\E223\";\n}\n.glyphicon-duplicate:before {\n  content: \"\\E224\";\n}\n.glyphicon-piggy-bank:before {\n  content: \"\\E225\";\n}\n.glyphicon-scissors:before {\n  content: \"\\E226\";\n}\n.glyphicon-bitcoin:before {\n  content: \"\\E227\";\n}\n.glyphicon-btc:before {\n  content: \"\\E227\";\n}\n.glyphicon-xbt:before {\n  content: \"\\E227\";\n}\n.glyphicon-yen:before {\n  content: \"\\A5\";\n}\n.glyphicon-jpy:before {\n  content: \"\\A5\";\n}\n.glyphicon-ruble:before {\n  content: \"\\20BD\";\n}\n.glyphicon-rub:before {\n  content: \"\\20BD\";\n}\n.glyphicon-scale:before {\n  content: \"\\E230\";\n}\n.glyphicon-ice-lolly:before {\n  content: \"\\E231\";\n}\n.glyphicon-ice-lolly-tasted:before {\n  content: \"\\E232\";\n}\n.glyphicon-education:before {\n  content: \"\\E233\";\n}\n.glyphicon-option-horizontal:before {\n  content: \"\\E234\";\n}\n.glyphicon-option-vertical:before {\n  content: \"\\E235\";\n}\n.glyphicon-menu-hamburger:before {\n  content: \"\\E236\";\n}\n.glyphicon-modal-window:before {\n  content: \"\\E237\";\n}\n.glyphicon-oil:before {\n  content: \"\\E238\";\n}\n.glyphicon-grain:before {\n  content: \"\\E239\";\n}\n.glyphicon-sunglasses:before {\n  content: \"\\E240\";\n}\n.glyphicon-text-size:before {\n  content: \"\\E241\";\n}\n.glyphicon-text-color:before {\n  content: \"\\E242\";\n}\n.glyphicon-text-background:before {\n  content: \"\\E243\";\n}\n.glyphicon-object-align-top:before {\n  content: \"\\E244\";\n}\n.glyphicon-object-align-bottom:before {\n  content: \"\\E245\";\n}\n.glyphicon-object-align-horizontal:before {\n  content: \"\\E246\";\n}\n.glyphicon-object-align-left:before {\n  content: \"\\E247\";\n}\n.glyphicon-object-align-vertical:before {\n  content: \"\\E248\";\n}\n.glyphicon-object-align-right:before {\n  content: \"\\E249\";\n}\n.glyphicon-triangle-right:before {\n  content: \"\\E250\";\n}\n.glyphicon-triangle-left:before {\n  content: \"\\E251\";\n}\n.glyphicon-triangle-bottom:before {\n  content: \"\\E252\";\n}\n.glyphicon-triangle-top:before {\n  content: \"\\E253\";\n}\n.glyphicon-console:before {\n  content: \"\\E254\";\n}\n.glyphicon-superscript:before {\n  content: \"\\E255\";\n}\n.glyphicon-subscript:before {\n  content: \"\\E256\";\n}\n.glyphicon-menu-left:before {\n  content: \"\\E257\";\n}\n.glyphicon-menu-right:before {\n  content: \"\\E258\";\n}\n.glyphicon-menu-down:before {\n  content: \"\\E259\";\n}\n.glyphicon-menu-up:before {\n  content: \"\\E260\";\n}\n* {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\n*:before,\n*:after {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\nhtml {\n  font-size: 10px;\n\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n}\nbody {\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #333;\n  background-color: #fff;\n}\ninput,\nbutton,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n}\na {\n  color: #337ab7;\n  text-decoration: none;\n}\na:hover,\na:focus {\n  color: #23527c;\n  text-decoration: underline;\n}\na:focus {\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px;\n}\nfigure {\n  margin: 0;\n}\nimg {\n  vertical-align: middle;\n}\n.img-responsive,\n.thumbnail > img,\n.thumbnail a > img,\n.carousel-inner > .item > img,\n.carousel-inner > .item > a > img {\n  display: block;\n  max-width: 100%;\n  height: auto;\n}\n.img-rounded {\n  border-radius: 6px;\n}\n.img-thumbnail {\n  display: inline-block;\n  max-width: 100%;\n  height: auto;\n  padding: 4px;\n  line-height: 1.42857143;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-radius: 4px;\n  -webkit-transition: all .2s ease-in-out;\n       -o-transition: all .2s ease-in-out;\n          transition: all .2s ease-in-out;\n}\n.img-circle {\n  border-radius: 50%;\n}\nhr {\n  margin-top: 20px;\n  margin-bottom: 20px;\n  border: 0;\n  border-top: 1px solid #eee;\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n.sr-only-focusable:active,\n.sr-only-focusable:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto;\n}\n[role=\"button\"] {\n  cursor: pointer;\n}\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\n.h1,\n.h2,\n.h3,\n.h4,\n.h5,\n.h6 {\n  font-family: inherit;\n  font-weight: 500;\n  line-height: 1.1;\n  color: inherit;\n}\nh1 small,\nh2 small,\nh3 small,\nh4 small,\nh5 small,\nh6 small,\n.h1 small,\n.h2 small,\n.h3 small,\n.h4 small,\n.h5 small,\n.h6 small,\nh1 .small,\nh2 .small,\nh3 .small,\nh4 .small,\nh5 .small,\nh6 .small,\n.h1 .small,\n.h2 .small,\n.h3 .small,\n.h4 .small,\n.h5 .small,\n.h6 .small {\n  font-weight: normal;\n  line-height: 1;\n  color: #777;\n}\nh1,\n.h1,\nh2,\n.h2,\nh3,\n.h3 {\n  margin-top: 20px;\n  margin-bottom: 10px;\n}\nh1 small,\n.h1 small,\nh2 small,\n.h2 small,\nh3 small,\n.h3 small,\nh1 .small,\n.h1 .small,\nh2 .small,\n.h2 .small,\nh3 .small,\n.h3 .small {\n  font-size: 65%;\n}\nh4,\n.h4,\nh5,\n.h5,\nh6,\n.h6 {\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\nh4 small,\n.h4 small,\nh5 small,\n.h5 small,\nh6 small,\n.h6 small,\nh4 .small,\n.h4 .small,\nh5 .small,\n.h5 .small,\nh6 .small,\n.h6 .small {\n  font-size: 75%;\n}\nh1,\n.h1 {\n  font-size: 36px;\n}\nh2,\n.h2 {\n  font-size: 30px;\n}\nh3,\n.h3 {\n  font-size: 24px;\n}\nh4,\n.h4 {\n  font-size: 18px;\n}\nh5,\n.h5 {\n  font-size: 14px;\n}\nh6,\n.h6 {\n  font-size: 12px;\n}\np {\n  margin: 0 0 10px;\n}\n.lead {\n  margin-bottom: 20px;\n  font-size: 16px;\n  font-weight: 300;\n  line-height: 1.4;\n}\n@media (min-width: 768px) {\n  .lead {\n    font-size: 21px;\n  }\n}\nsmall,\n.small {\n  font-size: 85%;\n}\nmark,\n.mark {\n  padding: .2em;\n  background-color: #fcf8e3;\n}\n.text-left {\n  text-align: left;\n}\n.text-right {\n  text-align: right;\n}\n.text-center {\n  text-align: center;\n}\n.text-justify {\n  text-align: justify;\n}\n.text-nowrap {\n  white-space: nowrap;\n}\n.text-lowercase {\n  text-transform: lowercase;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-muted {\n  color: #777;\n}\n.text-primary {\n  color: #337ab7;\n}\na.text-primary:hover,\na.text-primary:focus {\n  color: #286090;\n}\n.text-success {\n  color: #3c763d;\n}\na.text-success:hover,\na.text-success:focus {\n  color: #2b542c;\n}\n.text-info {\n  color: #31708f;\n}\na.text-info:hover,\na.text-info:focus {\n  color: #245269;\n}\n.text-warning {\n  color: #8a6d3b;\n}\na.text-warning:hover,\na.text-warning:focus {\n  color: #66512c;\n}\n.text-danger {\n  color: #a94442;\n}\na.text-danger:hover,\na.text-danger:focus {\n  color: #843534;\n}\n.bg-primary {\n  color: #fff;\n  background-color: #337ab7;\n}\na.bg-primary:hover,\na.bg-primary:focus {\n  background-color: #286090;\n}\n.bg-success {\n  background-color: #dff0d8;\n}\na.bg-success:hover,\na.bg-success:focus {\n  background-color: #c1e2b3;\n}\n.bg-info {\n  background-color: #d9edf7;\n}\na.bg-info:hover,\na.bg-info:focus {\n  background-color: #afd9ee;\n}\n.bg-warning {\n  background-color: #fcf8e3;\n}\na.bg-warning:hover,\na.bg-warning:focus {\n  background-color: #f7ecb5;\n}\n.bg-danger {\n  background-color: #f2dede;\n}\na.bg-danger:hover,\na.bg-danger:focus {\n  background-color: #e4b9b9;\n}\n.page-header {\n  padding-bottom: 9px;\n  margin: 40px 0 20px;\n  border-bottom: 1px solid #eee;\n}\nul,\nol {\n  margin-top: 0;\n  margin-bottom: 10px;\n}\nul ul,\nol ul,\nul ol,\nol ol {\n  margin-bottom: 0;\n}\n.list-unstyled {\n  padding-left: 0;\n  list-style: none;\n}\n.list-inline {\n  padding-left: 0;\n  margin-left: -5px;\n  list-style: none;\n}\n.list-inline > li {\n  display: inline-block;\n  padding-right: 5px;\n  padding-left: 5px;\n}\ndl {\n  margin-top: 0;\n  margin-bottom: 20px;\n}\ndt,\ndd {\n  line-height: 1.42857143;\n}\ndt {\n  font-weight: bold;\n}\ndd {\n  margin-left: 0;\n}\n@media (min-width: 768px) {\n  .dl-horizontal dt {\n    float: left;\n    width: 160px;\n    overflow: hidden;\n    clear: left;\n    text-align: right;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n  .dl-horizontal dd {\n    margin-left: 180px;\n  }\n}\nabbr[title],\nabbr[data-original-title] {\n  cursor: help;\n  border-bottom: 1px dotted #777;\n}\n.initialism {\n  font-size: 90%;\n  text-transform: uppercase;\n}\nblockquote {\n  padding: 10px 20px;\n  margin: 0 0 20px;\n  font-size: 17.5px;\n  border-left: 5px solid #eee;\n}\nblockquote p:last-child,\nblockquote ul:last-child,\nblockquote ol:last-child {\n  margin-bottom: 0;\n}\nblockquote footer,\nblockquote small,\nblockquote .small {\n  display: block;\n  font-size: 80%;\n  line-height: 1.42857143;\n  color: #777;\n}\nblockquote footer:before,\nblockquote small:before,\nblockquote .small:before {\n  content: '\\2014   \\A0';\n}\n.blockquote-reverse,\nblockquote.pull-right {\n  padding-right: 15px;\n  padding-left: 0;\n  text-align: right;\n  border-right: 5px solid #eee;\n  border-left: 0;\n}\n.blockquote-reverse footer:before,\nblockquote.pull-right footer:before,\n.blockquote-reverse small:before,\nblockquote.pull-right small:before,\n.blockquote-reverse .small:before,\nblockquote.pull-right .small:before {\n  content: '';\n}\n.blockquote-reverse footer:after,\nblockquote.pull-right footer:after,\n.blockquote-reverse small:after,\nblockquote.pull-right small:after,\n.blockquote-reverse .small:after,\nblockquote.pull-right .small:after {\n  content: '\\A0   \\2014';\n}\naddress {\n  margin-bottom: 20px;\n  font-style: normal;\n  line-height: 1.42857143;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: Menlo, Monaco, Consolas, \"Courier New\", monospace;\n}\ncode {\n  padding: 2px 4px;\n  font-size: 90%;\n  color: #c7254e;\n  background-color: #f9f2f4;\n  border-radius: 4px;\n}\nkbd {\n  padding: 2px 4px;\n  font-size: 90%;\n  color: #fff;\n  background-color: #333;\n  border-radius: 3px;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);\n          box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);\n}\nkbd kbd {\n  padding: 0;\n  font-size: 100%;\n  font-weight: bold;\n  -webkit-box-shadow: none;\n          box-shadow: none;\n}\npre {\n  display: block;\n  padding: 9.5px;\n  margin: 0 0 10px;\n  font-size: 13px;\n  line-height: 1.42857143;\n  color: #333;\n  word-break: break-all;\n  word-wrap: break-word;\n  background-color: #f5f5f5;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n}\npre code {\n  padding: 0;\n  font-size: inherit;\n  color: inherit;\n  white-space: pre-wrap;\n  background-color: transparent;\n  border-radius: 0;\n}\n.pre-scrollable {\n  max-height: 340px;\n  overflow-y: scroll;\n}\n.container {\n  padding-right: 15px;\n  padding-left: 15px;\n  margin-right: auto;\n  margin-left: auto;\n}\n@media (min-width: 768px) {\n  .container {\n    width: 750px;\n  }\n}\n@media (min-width: 992px) {\n  .container {\n    width: 970px;\n  }\n}\n@media (min-width: 1200px) {\n  .container {\n    width: 1170px;\n  }\n}\n.container-fluid {\n  padding-right: 15px;\n  padding-left: 15px;\n  margin-right: auto;\n  margin-left: auto;\n}\n.row {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {\n  position: relative;\n  min-height: 1px;\n  padding-right: 15px;\n  padding-left: 15px;\n}\n.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {\n  float: left;\n}\n.col-xs-12 {\n  width: 100%;\n}\n.col-xs-11 {\n  width: 91.66666667%;\n}\n.col-xs-10 {\n  width: 83.33333333%;\n}\n.col-xs-9 {\n  width: 75%;\n}\n.col-xs-8 {\n  width: 66.66666667%;\n}\n.col-xs-7 {\n  width: 58.33333333%;\n}\n.col-xs-6 {\n  width: 50%;\n}\n.col-xs-5 {\n  width: 41.66666667%;\n}\n.col-xs-4 {\n  width: 33.33333333%;\n}\n.col-xs-3 {\n  width: 25%;\n}\n.col-xs-2 {\n  width: 16.66666667%;\n}\n.col-xs-1 {\n  width: 8.33333333%;\n}\n.col-xs-pull-12 {\n  right: 100%;\n}\n.col-xs-pull-11 {\n  right: 91.66666667%;\n}\n.col-xs-pull-10 {\n  right: 83.33333333%;\n}\n.col-xs-pull-9 {\n  right: 75%;\n}\n.col-xs-pull-8 {\n  right: 66.66666667%;\n}\n.col-xs-pull-7 {\n  right: 58.33333333%;\n}\n.col-xs-pull-6 {\n  right: 50%;\n}\n.col-xs-pull-5 {\n  right: 41.66666667%;\n}\n.col-xs-pull-4 {\n  right: 33.33333333%;\n}\n.col-xs-pull-3 {\n  right: 25%;\n}\n.col-xs-pull-2 {\n  right: 16.66666667%;\n}\n.col-xs-pull-1 {\n  right: 8.33333333%;\n}\n.col-xs-pull-0 {\n  right: auto;\n}\n.col-xs-push-12 {\n  left: 100%;\n}\n.col-xs-push-11 {\n  left: 91.66666667%;\n}\n.col-xs-push-10 {\n  left: 83.33333333%;\n}\n.col-xs-push-9 {\n  left: 75%;\n}\n.col-xs-push-8 {\n  left: 66.66666667%;\n}\n.col-xs-push-7 {\n  left: 58.33333333%;\n}\n.col-xs-push-6 {\n  left: 50%;\n}\n.col-xs-push-5 {\n  left: 41.66666667%;\n}\n.col-xs-push-4 {\n  left: 33.33333333%;\n}\n.col-xs-push-3 {\n  left: 25%;\n}\n.col-xs-push-2 {\n  left: 16.66666667%;\n}\n.col-xs-push-1 {\n  left: 8.33333333%;\n}\n.col-xs-push-0 {\n  left: auto;\n}\n.col-xs-offset-12 {\n  margin-left: 100%;\n}\n.col-xs-offset-11 {\n  margin-left: 91.66666667%;\n}\n.col-xs-offset-10 {\n  margin-left: 83.33333333%;\n}\n.col-xs-offset-9 {\n  margin-left: 75%;\n}\n.col-xs-offset-8 {\n  margin-left: 66.66666667%;\n}\n.col-xs-offset-7 {\n  margin-left: 58.33333333%;\n}\n.col-xs-offset-6 {\n  margin-left: 50%;\n}\n.col-xs-offset-5 {\n  margin-left: 41.66666667%;\n}\n.col-xs-offset-4 {\n  margin-left: 33.33333333%;\n}\n.col-xs-offset-3 {\n  margin-left: 25%;\n}\n.col-xs-offset-2 {\n  margin-left: 16.66666667%;\n}\n.col-xs-offset-1 {\n  margin-left: 8.33333333%;\n}\n.col-xs-offset-0 {\n  margin-left: 0;\n}\n@media (min-width: 768px) {\n  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {\n    float: left;\n  }\n  .col-sm-12 {\n    width: 100%;\n  }\n  .col-sm-11 {\n    width: 91.66666667%;\n  }\n  .col-sm-10 {\n    width: 83.33333333%;\n  }\n  .col-sm-9 {\n    width: 75%;\n  }\n  .col-sm-8 {\n    width: 66.66666667%;\n  }\n  .col-sm-7 {\n    width: 58.33333333%;\n  }\n  .col-sm-6 {\n    width: 50%;\n  }\n  .col-sm-5 {\n    width: 41.66666667%;\n  }\n  .col-sm-4 {\n    width: 33.33333333%;\n  }\n  .col-sm-3 {\n    width: 25%;\n  }\n  .col-sm-2 {\n    width: 16.66666667%;\n  }\n  .col-sm-1 {\n    width: 8.33333333%;\n  }\n  .col-sm-pull-12 {\n    right: 100%;\n  }\n  .col-sm-pull-11 {\n    right: 91.66666667%;\n  }\n  .col-sm-pull-10 {\n    right: 83.33333333%;\n  }\n  .col-sm-pull-9 {\n    right: 75%;\n  }\n  .col-sm-pull-8 {\n    right: 66.66666667%;\n  }\n  .col-sm-pull-7 {\n    right: 58.33333333%;\n  }\n  .col-sm-pull-6 {\n    right: 50%;\n  }\n  .col-sm-pull-5 {\n    right: 41.66666667%;\n  }\n  .col-sm-pull-4 {\n    right: 33.33333333%;\n  }\n  .col-sm-pull-3 {\n    right: 25%;\n  }\n  .col-sm-pull-2 {\n    right: 16.66666667%;\n  }\n  .col-sm-pull-1 {\n    right: 8.33333333%;\n  }\n  .col-sm-pull-0 {\n    right: auto;\n  }\n  .col-sm-push-12 {\n    left: 100%;\n  }\n  .col-sm-push-11 {\n    left: 91.66666667%;\n  }\n  .col-sm-push-10 {\n    left: 83.33333333%;\n  }\n  .col-sm-push-9 {\n    left: 75%;\n  }\n  .col-sm-push-8 {\n    left: 66.66666667%;\n  }\n  .col-sm-push-7 {\n    left: 58.33333333%;\n  }\n  .col-sm-push-6 {\n    left: 50%;\n  }\n  .col-sm-push-5 {\n    left: 41.66666667%;\n  }\n  .col-sm-push-4 {\n    left: 33.33333333%;\n  }\n  .col-sm-push-3 {\n    left: 25%;\n  }\n  .col-sm-push-2 {\n    left: 16.66666667%;\n  }\n  .col-sm-push-1 {\n    left: 8.33333333%;\n  }\n  .col-sm-push-0 {\n    left: auto;\n  }\n  .col-sm-offset-12 {\n    margin-left: 100%;\n  }\n  .col-sm-offset-11 {\n    margin-left: 91.66666667%;\n  }\n  .col-sm-offset-10 {\n    margin-left: 83.33333333%;\n  }\n  .col-sm-offset-9 {\n    margin-left: 75%;\n  }\n  .col-sm-offset-8 {\n    margin-left: 66.66666667%;\n  }\n  .col-sm-offset-7 {\n    margin-left: 58.33333333%;\n  }\n  .col-sm-offset-6 {\n    margin-left: 50%;\n  }\n  .col-sm-offset-5 {\n    margin-left: 41.66666667%;\n  }\n  .col-sm-offset-4 {\n    margin-left: 33.33333333%;\n  }\n  .col-sm-offset-3 {\n    margin-left: 25%;\n  }\n  .col-sm-offset-2 {\n    margin-left: 16.66666667%;\n  }\n  .col-sm-offset-1 {\n    margin-left: 8.33333333%;\n  }\n  .col-sm-offset-0 {\n    margin-left: 0;\n  }\n}\n@media (min-width: 992px) {\n  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {\n    float: left;\n  }\n  .col-md-12 {\n    width: 100%;\n  }\n  .col-md-11 {\n    width: 91.66666667%;\n  }\n  .col-md-10 {\n    width: 83.33333333%;\n  }\n  .col-md-9 {\n    width: 75%;\n  }\n  .col-md-8 {\n    width: 66.66666667%;\n  }\n  .col-md-7 {\n    width: 58.33333333%;\n  }\n  .col-md-6 {\n    width: 50%;\n  }\n  .col-md-5 {\n    width: 41.66666667%;\n  }\n  .col-md-4 {\n    width: 33.33333333%;\n  }\n  .col-md-3 {\n    width: 25%;\n  }\n  .col-md-2 {\n    width: 16.66666667%;\n  }\n  .col-md-1 {\n    width: 8.33333333%;\n  }\n  .col-md-pull-12 {\n    right: 100%;\n  }\n  .col-md-pull-11 {\n    right: 91.66666667%;\n  }\n  .col-md-pull-10 {\n    right: 83.33333333%;\n  }\n  .col-md-pull-9 {\n    right: 75%;\n  }\n  .col-md-pull-8 {\n    right: 66.66666667%;\n  }\n  .col-md-pull-7 {\n    right: 58.33333333%;\n  }\n  .col-md-pull-6 {\n    right: 50%;\n  }\n  .col-md-pull-5 {\n    right: 41.66666667%;\n  }\n  .col-md-pull-4 {\n    right: 33.33333333%;\n  }\n  .col-md-pull-3 {\n    right: 25%;\n  }\n  .col-md-pull-2 {\n    right: 16.66666667%;\n  }\n  .col-md-pull-1 {\n    right: 8.33333333%;\n  }\n  .col-md-pull-0 {\n    right: auto;\n  }\n  .col-md-push-12 {\n    left: 100%;\n  }\n  .col-md-push-11 {\n    left: 91.66666667%;\n  }\n  .col-md-push-10 {\n    left: 83.33333333%;\n  }\n  .col-md-push-9 {\n    left: 75%;\n  }\n  .col-md-push-8 {\n    left: 66.66666667%;\n  }\n  .col-md-push-7 {\n    left: 58.33333333%;\n  }\n  .col-md-push-6 {\n    left: 50%;\n  }\n  .col-md-push-5 {\n    left: 41.66666667%;\n  }\n  .col-md-push-4 {\n    left: 33.33333333%;\n  }\n  .col-md-push-3 {\n    left: 25%;\n  }\n  .col-md-push-2 {\n    left: 16.66666667%;\n  }\n  .col-md-push-1 {\n    left: 8.33333333%;\n  }\n  .col-md-push-0 {\n    left: auto;\n  }\n  .col-md-offset-12 {\n    margin-left: 100%;\n  }\n  .col-md-offset-11 {\n    margin-left: 91.66666667%;\n  }\n  .col-md-offset-10 {\n    margin-left: 83.33333333%;\n  }\n  .col-md-offset-9 {\n    margin-left: 75%;\n  }\n  .col-md-offset-8 {\n    margin-left: 66.66666667%;\n  }\n  .col-md-offset-7 {\n    margin-left: 58.33333333%;\n  }\n  .col-md-offset-6 {\n    margin-left: 50%;\n  }\n  .col-md-offset-5 {\n    margin-left: 41.66666667%;\n  }\n  .col-md-offset-4 {\n    margin-left: 33.33333333%;\n  }\n  .col-md-offset-3 {\n    margin-left: 25%;\n  }\n  .col-md-offset-2 {\n    margin-left: 16.66666667%;\n  }\n  .col-md-offset-1 {\n    margin-left: 8.33333333%;\n  }\n  .col-md-offset-0 {\n    margin-left: 0;\n  }\n}\n@media (min-width: 1200px) {\n  .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {\n    float: left;\n  }\n  .col-lg-12 {\n    width: 100%;\n  }\n  .col-lg-11 {\n    width: 91.66666667%;\n  }\n  .col-lg-10 {\n    width: 83.33333333%;\n  }\n  .col-lg-9 {\n    width: 75%;\n  }\n  .col-lg-8 {\n    width: 66.66666667%;\n  }\n  .col-lg-7 {\n    width: 58.33333333%;\n  }\n  .col-lg-6 {\n    width: 50%;\n  }\n  .col-lg-5 {\n    width: 41.66666667%;\n  }\n  .col-lg-4 {\n    width: 33.33333333%;\n  }\n  .col-lg-3 {\n    width: 25%;\n  }\n  .col-lg-2 {\n    width: 16.66666667%;\n  }\n  .col-lg-1 {\n    width: 8.33333333%;\n  }\n  .col-lg-pull-12 {\n    right: 100%;\n  }\n  .col-lg-pull-11 {\n    right: 91.66666667%;\n  }\n  .col-lg-pull-10 {\n    right: 83.33333333%;\n  }\n  .col-lg-pull-9 {\n    right: 75%;\n  }\n  .col-lg-pull-8 {\n    right: 66.66666667%;\n  }\n  .col-lg-pull-7 {\n    right: 58.33333333%;\n  }\n  .col-lg-pull-6 {\n    right: 50%;\n  }\n  .col-lg-pull-5 {\n    right: 41.66666667%;\n  }\n  .col-lg-pull-4 {\n    right: 33.33333333%;\n  }\n  .col-lg-pull-3 {\n    right: 25%;\n  }\n  .col-lg-pull-2 {\n    right: 16.66666667%;\n  }\n  .col-lg-pull-1 {\n    right: 8.33333333%;\n  }\n  .col-lg-pull-0 {\n    right: auto;\n  }\n  .col-lg-push-12 {\n    left: 100%;\n  }\n  .col-lg-push-11 {\n    left: 91.66666667%;\n  }\n  .col-lg-push-10 {\n    left: 83.33333333%;\n  }\n  .col-lg-push-9 {\n    left: 75%;\n  }\n  .col-lg-push-8 {\n    left: 66.66666667%;\n  }\n  .col-lg-push-7 {\n    left: 58.33333333%;\n  }\n  .col-lg-push-6 {\n    left: 50%;\n  }\n  .col-lg-push-5 {\n    left: 41.66666667%;\n  }\n  .col-lg-push-4 {\n    left: 33.33333333%;\n  }\n  .col-lg-push-3 {\n    left: 25%;\n  }\n  .col-lg-push-2 {\n    left: 16.66666667%;\n  }\n  .col-lg-push-1 {\n    left: 8.33333333%;\n  }\n  .col-lg-push-0 {\n    left: auto;\n  }\n  .col-lg-offset-12 {\n    margin-left: 100%;\n  }\n  .col-lg-offset-11 {\n    margin-left: 91.66666667%;\n  }\n  .col-lg-offset-10 {\n    margin-left: 83.33333333%;\n  }\n  .col-lg-offset-9 {\n    margin-left: 75%;\n  }\n  .col-lg-offset-8 {\n    margin-left: 66.66666667%;\n  }\n  .col-lg-offset-7 {\n    margin-left: 58.33333333%;\n  }\n  .col-lg-offset-6 {\n    margin-left: 50%;\n  }\n  .col-lg-offset-5 {\n    margin-left: 41.66666667%;\n  }\n  .col-lg-offset-4 {\n    margin-left: 33.33333333%;\n  }\n  .col-lg-offset-3 {\n    margin-left: 25%;\n  }\n  .col-lg-offset-2 {\n    margin-left: 16.66666667%;\n  }\n  .col-lg-offset-1 {\n    margin-left: 8.33333333%;\n  }\n  .col-lg-offset-0 {\n    margin-left: 0;\n  }\n}\ntable {\n  background-color: transparent;\n}\ncaption {\n  padding-top: 8px;\n  padding-bottom: 8px;\n  color: #777;\n  text-align: left;\n}\nth {\n  text-align: left;\n}\n.table {\n  width: 100%;\n  max-width: 100%;\n  margin-bottom: 20px;\n}\n.table > thead > tr > th,\n.table > tbody > tr > th,\n.table > tfoot > tr > th,\n.table > thead > tr > td,\n.table > tbody > tr > td,\n.table > tfoot > tr > td {\n  padding: 8px;\n  line-height: 1.42857143;\n  vertical-align: top;\n  border-top: 1px solid #ddd;\n}\n.table > thead > tr > th {\n  vertical-align: bottom;\n  border-bottom: 2px solid #ddd;\n}\n.table > caption + thead > tr:first-child > th,\n.table > colgroup + thead > tr:first-child > th,\n.table > thead:first-child > tr:first-child > th,\n.table > caption + thead > tr:first-child > td,\n.table > colgroup + thead > tr:first-child > td,\n.table > thead:first-child > tr:first-child > td {\n  border-top: 0;\n}\n.table > tbody + tbody {\n  border-top: 2px solid #ddd;\n}\n.table .table {\n  background-color: #fff;\n}\n.table-condensed > thead > tr > th,\n.table-condensed > tbody > tr > th,\n.table-condensed > tfoot > tr > th,\n.table-condensed > thead > tr > td,\n.table-condensed > tbody > tr > td,\n.table-condensed > tfoot > tr > td {\n  padding: 5px;\n}\n.table-bordered {\n  border: 1px solid #ddd;\n}\n.table-bordered > thead > tr > th,\n.table-bordered > tbody > tr > th,\n.table-bordered > tfoot > tr > th,\n.table-bordered > thead > tr > td,\n.table-bordered > tbody > tr > td,\n.table-bordered > tfoot > tr > td {\n  border: 1px solid #ddd;\n}\n.table-bordered > thead > tr > th,\n.table-bordered > thead > tr > td {\n  border-bottom-width: 2px;\n}\n.table-striped > tbody > tr:nth-of-type(odd) {\n  background-color: #f9f9f9;\n}\n.table-hover > tbody > tr:hover {\n  background-color: #f5f5f5;\n}\ntable col[class*=\"col-\"] {\n  position: static;\n  display: table-column;\n  float: none;\n}\ntable td[class*=\"col-\"],\ntable th[class*=\"col-\"] {\n  position: static;\n  display: table-cell;\n  float: none;\n}\n.table > thead > tr > td.active,\n.table > tbody > tr > td.active,\n.table > tfoot > tr > td.active,\n.table > thead > tr > th.active,\n.table > tbody > tr > th.active,\n.table > tfoot > tr > th.active,\n.table > thead > tr.active > td,\n.table > tbody > tr.active > td,\n.table > tfoot > tr.active > td,\n.table > thead > tr.active > th,\n.table > tbody > tr.active > th,\n.table > tfoot > tr.active > th {\n  background-color: #f5f5f5;\n}\n.table-hover > tbody > tr > td.active:hover,\n.table-hover > tbody > tr > th.active:hover,\n.table-hover > tbody > tr.active:hover > td,\n.table-hover > tbody > tr:hover > .active,\n.table-hover > tbody > tr.active:hover > th {\n  background-color: #e8e8e8;\n}\n.table > thead > tr > td.success,\n.table > tbody > tr > td.success,\n.table > tfoot > tr > td.success,\n.table > thead > tr > th.success,\n.table > tbody > tr > th.success,\n.table > tfoot > tr > th.success,\n.table > thead > tr.success > td,\n.table > tbody > tr.success > td,\n.table > tfoot > tr.success > td,\n.table > thead > tr.success > th,\n.table > tbody > tr.success > th,\n.table > tfoot > tr.success > th {\n  background-color: #dff0d8;\n}\n.table-hover > tbody > tr > td.success:hover,\n.table-hover > tbody > tr > th.success:hover,\n.table-hover > tbody > tr.success:hover > td,\n.table-hover > tbody > tr:hover > .success,\n.table-hover > tbody > tr.success:hover > th {\n  background-color: #d0e9c6;\n}\n.table > thead > tr > td.info,\n.table > tbody > tr > td.info,\n.table > tfoot > tr > td.info,\n.table > thead > tr > th.info,\n.table > tbody > tr > th.info,\n.table > tfoot > tr > th.info,\n.table > thead > tr.info > td,\n.table > tbody > tr.info > td,\n.table > tfoot > tr.info > td,\n.table > thead > tr.info > th,\n.table > tbody > tr.info > th,\n.table > tfoot > tr.info > th {\n  background-color: #d9edf7;\n}\n.table-hover > tbody > tr > td.info:hover,\n.table-hover > tbody > tr > th.info:hover,\n.table-hover > tbody > tr.info:hover > td,\n.table-hover > tbody > tr:hover > .info,\n.table-hover > tbody > tr.info:hover > th {\n  background-color: #c4e3f3;\n}\n.table > thead > tr > td.warning,\n.table > tbody > tr > td.warning,\n.table > tfoot > tr > td.warning,\n.table > thead > tr > th.warning,\n.table > tbody > tr > th.warning,\n.table > tfoot > tr > th.warning,\n.table > thead > tr.warning > td,\n.table > tbody > tr.warning > td,\n.table > tfoot > tr.warning > td,\n.table > thead > tr.warning > th,\n.table > tbody > tr.warning > th,\n.table > tfoot > tr.warning > th {\n  background-color: #fcf8e3;\n}\n.table-hover > tbody > tr > td.warning:hover,\n.table-hover > tbody > tr > th.warning:hover,\n.table-hover > tbody > tr.warning:hover > td,\n.table-hover > tbody > tr:hover > .warning,\n.table-hover > tbody > tr.warning:hover > th {\n  background-color: #faf2cc;\n}\n.table > thead > tr > td.danger,\n.table > tbody > tr > td.danger,\n.table > tfoot > tr > td.danger,\n.table > thead > tr > th.danger,\n.table > tbody > tr > th.danger,\n.table > tfoot > tr > th.danger,\n.table > thead > tr.danger > td,\n.table > tbody > tr.danger > td,\n.table > tfoot > tr.danger > td,\n.table > thead > tr.danger > th,\n.table > tbody > tr.danger > th,\n.table > tfoot > tr.danger > th {\n  background-color: #f2dede;\n}\n.table-hover > tbody > tr > td.danger:hover,\n.table-hover > tbody > tr > th.danger:hover,\n.table-hover > tbody > tr.danger:hover > td,\n.table-hover > tbody > tr:hover > .danger,\n.table-hover > tbody > tr.danger:hover > th {\n  background-color: #ebcccc;\n}\n.table-responsive {\n  min-height: .01%;\n  overflow-x: auto;\n}\n@media screen and (max-width: 767px) {\n  .table-responsive {\n    width: 100%;\n    margin-bottom: 15px;\n    overflow-y: hidden;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n    border: 1px solid #ddd;\n  }\n  .table-responsive > .table {\n    margin-bottom: 0;\n  }\n  .table-responsive > .table > thead > tr > th,\n  .table-responsive > .table > tbody > tr > th,\n  .table-responsive > .table > tfoot > tr > th,\n  .table-responsive > .table > thead > tr > td,\n  .table-responsive > .table > tbody > tr > td,\n  .table-responsive > .table > tfoot > tr > td {\n    white-space: nowrap;\n  }\n  .table-responsive > .table-bordered {\n    border: 0;\n  }\n  .table-responsive > .table-bordered > thead > tr > th:first-child,\n  .table-responsive > .table-bordered > tbody > tr > th:first-child,\n  .table-responsive > .table-bordered > tfoot > tr > th:first-child,\n  .table-responsive > .table-bordered > thead > tr > td:first-child,\n  .table-responsive > .table-bordered > tbody > tr > td:first-child,\n  .table-responsive > .table-bordered > tfoot > tr > td:first-child {\n    border-left: 0;\n  }\n  .table-responsive > .table-bordered > thead > tr > th:last-child,\n  .table-responsive > .table-bordered > tbody > tr > th:last-child,\n  .table-responsive > .table-bordered > tfoot > tr > th:last-child,\n  .table-responsive > .table-bordered > thead > tr > td:last-child,\n  .table-responsive > .table-bordered > tbody > tr > td:last-child,\n  .table-responsive > .table-bordered > tfoot > tr > td:last-child {\n    border-right: 0;\n  }\n  .table-responsive > .table-bordered > tbody > tr:last-child > th,\n  .table-responsive > .table-bordered > tfoot > tr:last-child > th,\n  .table-responsive > .table-bordered > tbody > tr:last-child > td,\n  .table-responsive > .table-bordered > tfoot > tr:last-child > td {\n    border-bottom: 0;\n  }\n}\nfieldset {\n  min-width: 0;\n  padding: 0;\n  margin: 0;\n  border: 0;\n}\nlegend {\n  display: block;\n  width: 100%;\n  padding: 0;\n  margin-bottom: 20px;\n  font-size: 21px;\n  line-height: inherit;\n  color: #333;\n  border: 0;\n  border-bottom: 1px solid #e5e5e5;\n}\nlabel {\n  display: inline-block;\n  max-width: 100%;\n  margin-bottom: 5px;\n  font-weight: bold;\n}\ninput[type=\"search\"] {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\ninput[type=\"radio\"],\ninput[type=\"checkbox\"] {\n  margin: 4px 0 0;\n  margin-top: 1px \\9;\n  line-height: normal;\n}\ninput[type=\"file\"] {\n  display: block;\n}\ninput[type=\"range\"] {\n  display: block;\n  width: 100%;\n}\nselect[multiple],\nselect[size] {\n  height: auto;\n}\ninput[type=\"file\"]:focus,\ninput[type=\"radio\"]:focus,\ninput[type=\"checkbox\"]:focus {\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px;\n}\noutput {\n  display: block;\n  padding-top: 7px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n}\n.form-control {\n  display: block;\n  width: 100%;\n  height: 34px;\n  padding: 6px 12px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;\n       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n.form-control:focus {\n  border-color: #66afe9;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);\n          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);\n}\n.form-control::-moz-placeholder {\n  color: #999;\n  opacity: 1;\n}\n.form-control:-ms-input-placeholder {\n  color: #999;\n}\n.form-control::-webkit-input-placeholder {\n  color: #999;\n}\n.form-control::-ms-expand {\n  background-color: transparent;\n  border: 0;\n}\n.form-control[disabled],\n.form-control[readonly],\nfieldset[disabled] .form-control {\n  background-color: #eee;\n  opacity: 1;\n}\n.form-control[disabled],\nfieldset[disabled] .form-control {\n  cursor: not-allowed;\n}\ntextarea.form-control {\n  height: auto;\n}\ninput[type=\"search\"] {\n  -webkit-appearance: none;\n}\n@media screen and (-webkit-min-device-pixel-ratio: 0) {\n  input[type=\"date\"].form-control,\n  input[type=\"time\"].form-control,\n  input[type=\"datetime-local\"].form-control,\n  input[type=\"month\"].form-control {\n    line-height: 34px;\n  }\n  input[type=\"date\"].input-sm,\n  input[type=\"time\"].input-sm,\n  input[type=\"datetime-local\"].input-sm,\n  input[type=\"month\"].input-sm,\n  .input-group-sm input[type=\"date\"],\n  .input-group-sm input[type=\"time\"],\n  .input-group-sm input[type=\"datetime-local\"],\n  .input-group-sm input[type=\"month\"] {\n    line-height: 30px;\n  }\n  input[type=\"date\"].input-lg,\n  input[type=\"time\"].input-lg,\n  input[type=\"datetime-local\"].input-lg,\n  input[type=\"month\"].input-lg,\n  .input-group-lg input[type=\"date\"],\n  .input-group-lg input[type=\"time\"],\n  .input-group-lg input[type=\"datetime-local\"],\n  .input-group-lg input[type=\"month\"] {\n    line-height: 46px;\n  }\n}\n.form-group {\n  margin-bottom: 15px;\n}\n.radio,\n.checkbox {\n  position: relative;\n  display: block;\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\n.radio label,\n.checkbox label {\n  min-height: 20px;\n  padding-left: 20px;\n  margin-bottom: 0;\n  font-weight: normal;\n  cursor: pointer;\n}\n.radio input[type=\"radio\"],\n.radio-inline input[type=\"radio\"],\n.checkbox input[type=\"checkbox\"],\n.checkbox-inline input[type=\"checkbox\"] {\n  position: absolute;\n  margin-top: 4px \\9;\n  margin-left: -20px;\n}\n.radio + .radio,\n.checkbox + .checkbox {\n  margin-top: -5px;\n}\n.radio-inline,\n.checkbox-inline {\n  position: relative;\n  display: inline-block;\n  padding-left: 20px;\n  margin-bottom: 0;\n  font-weight: normal;\n  vertical-align: middle;\n  cursor: pointer;\n}\n.radio-inline + .radio-inline,\n.checkbox-inline + .checkbox-inline {\n  margin-top: 0;\n  margin-left: 10px;\n}\ninput[type=\"radio\"][disabled],\ninput[type=\"checkbox\"][disabled],\ninput[type=\"radio\"].disabled,\ninput[type=\"checkbox\"].disabled,\nfieldset[disabled] input[type=\"radio\"],\nfieldset[disabled] input[type=\"checkbox\"] {\n  cursor: not-allowed;\n}\n.radio-inline.disabled,\n.checkbox-inline.disabled,\nfieldset[disabled] .radio-inline,\nfieldset[disabled] .checkbox-inline {\n  cursor: not-allowed;\n}\n.radio.disabled label,\n.checkbox.disabled label,\nfieldset[disabled] .radio label,\nfieldset[disabled] .checkbox label {\n  cursor: not-allowed;\n}\n.form-control-static {\n  min-height: 34px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  margin-bottom: 0;\n}\n.form-control-static.input-lg,\n.form-control-static.input-sm {\n  padding-right: 0;\n  padding-left: 0;\n}\n.input-sm {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\nselect.input-sm {\n  height: 30px;\n  line-height: 30px;\n}\ntextarea.input-sm,\nselect[multiple].input-sm {\n  height: auto;\n}\n.form-group-sm .form-control {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n.form-group-sm select.form-control {\n  height: 30px;\n  line-height: 30px;\n}\n.form-group-sm textarea.form-control,\n.form-group-sm select[multiple].form-control {\n  height: auto;\n}\n.form-group-sm .form-control-static {\n  height: 30px;\n  min-height: 32px;\n  padding: 6px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n}\n.input-lg {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\nselect.input-lg {\n  height: 46px;\n  line-height: 46px;\n}\ntextarea.input-lg,\nselect[multiple].input-lg {\n  height: auto;\n}\n.form-group-lg .form-control {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\n.form-group-lg select.form-control {\n  height: 46px;\n  line-height: 46px;\n}\n.form-group-lg textarea.form-control,\n.form-group-lg select[multiple].form-control {\n  height: auto;\n}\n.form-group-lg .form-control-static {\n  height: 46px;\n  min-height: 38px;\n  padding: 11px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n}\n.has-feedback {\n  position: relative;\n}\n.has-feedback .form-control {\n  padding-right: 42.5px;\n}\n.form-control-feedback {\n  position: absolute;\n  top: 0;\n  right: 0;\n  z-index: 2;\n  display: block;\n  width: 34px;\n  height: 34px;\n  line-height: 34px;\n  text-align: center;\n  pointer-events: none;\n}\n.input-lg + .form-control-feedback,\n.input-group-lg + .form-control-feedback,\n.form-group-lg .form-control + .form-control-feedback {\n  width: 46px;\n  height: 46px;\n  line-height: 46px;\n}\n.input-sm + .form-control-feedback,\n.input-group-sm + .form-control-feedback,\n.form-group-sm .form-control + .form-control-feedback {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n}\n.has-success .help-block,\n.has-success .control-label,\n.has-success .radio,\n.has-success .checkbox,\n.has-success .radio-inline,\n.has-success .checkbox-inline,\n.has-success.radio label,\n.has-success.checkbox label,\n.has-success.radio-inline label,\n.has-success.checkbox-inline label {\n  color: #3c763d;\n}\n.has-success .form-control {\n  border-color: #3c763d;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n}\n.has-success .form-control:focus {\n  border-color: #2b542c;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;\n}\n.has-success .input-group-addon {\n  color: #3c763d;\n  background-color: #dff0d8;\n  border-color: #3c763d;\n}\n.has-success .form-control-feedback {\n  color: #3c763d;\n}\n.has-warning .help-block,\n.has-warning .control-label,\n.has-warning .radio,\n.has-warning .checkbox,\n.has-warning .radio-inline,\n.has-warning .checkbox-inline,\n.has-warning.radio label,\n.has-warning.checkbox label,\n.has-warning.radio-inline label,\n.has-warning.checkbox-inline label {\n  color: #8a6d3b;\n}\n.has-warning .form-control {\n  border-color: #8a6d3b;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n}\n.has-warning .form-control:focus {\n  border-color: #66512c;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;\n}\n.has-warning .input-group-addon {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n  border-color: #8a6d3b;\n}\n.has-warning .form-control-feedback {\n  color: #8a6d3b;\n}\n.has-error .help-block,\n.has-error .control-label,\n.has-error .radio,\n.has-error .checkbox,\n.has-error .radio-inline,\n.has-error .checkbox-inline,\n.has-error.radio label,\n.has-error.checkbox label,\n.has-error.radio-inline label,\n.has-error.checkbox-inline label {\n  color: #a94442;\n}\n.has-error .form-control {\n  border-color: #a94442;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n}\n.has-error .form-control:focus {\n  border-color: #843534;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;\n}\n.has-error .input-group-addon {\n  color: #a94442;\n  background-color: #f2dede;\n  border-color: #a94442;\n}\n.has-error .form-control-feedback {\n  color: #a94442;\n}\n.has-feedback label ~ .form-control-feedback {\n  top: 25px;\n}\n.has-feedback label.sr-only ~ .form-control-feedback {\n  top: 0;\n}\n.help-block {\n  display: block;\n  margin-top: 5px;\n  margin-bottom: 10px;\n  color: #737373;\n}\n@media (min-width: 768px) {\n  .form-inline .form-group {\n    display: inline-block;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .form-inline .form-control {\n    display: inline-block;\n    width: auto;\n    vertical-align: middle;\n  }\n  .form-inline .form-control-static {\n    display: inline-block;\n  }\n  .form-inline .input-group {\n    display: inline-table;\n    vertical-align: middle;\n  }\n  .form-inline .input-group .input-group-addon,\n  .form-inline .input-group .input-group-btn,\n  .form-inline .input-group .form-control {\n    width: auto;\n  }\n  .form-inline .input-group > .form-control {\n    width: 100%;\n  }\n  .form-inline .control-label {\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .form-inline .radio,\n  .form-inline .checkbox {\n    display: inline-block;\n    margin-top: 0;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .form-inline .radio label,\n  .form-inline .checkbox label {\n    padding-left: 0;\n  }\n  .form-inline .radio input[type=\"radio\"],\n  .form-inline .checkbox input[type=\"checkbox\"] {\n    position: relative;\n    margin-left: 0;\n  }\n  .form-inline .has-feedback .form-control-feedback {\n    top: 0;\n  }\n}\n.form-horizontal .radio,\n.form-horizontal .checkbox,\n.form-horizontal .radio-inline,\n.form-horizontal .checkbox-inline {\n  padding-top: 7px;\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-horizontal .radio,\n.form-horizontal .checkbox {\n  min-height: 27px;\n}\n.form-horizontal .form-group {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n@media (min-width: 768px) {\n  .form-horizontal .control-label {\n    padding-top: 7px;\n    margin-bottom: 0;\n    text-align: right;\n  }\n}\n.form-horizontal .has-feedback .form-control-feedback {\n  right: 15px;\n}\n@media (min-width: 768px) {\n  .form-horizontal .form-group-lg .control-label {\n    padding-top: 11px;\n    font-size: 18px;\n  }\n}\n@media (min-width: 768px) {\n  .form-horizontal .form-group-sm .control-label {\n    padding-top: 6px;\n    font-size: 12px;\n  }\n}\n.btn {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n      touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background-image: none;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.btn:focus,\n.btn:active:focus,\n.btn.active:focus,\n.btn.focus,\n.btn:active.focus,\n.btn.active.focus {\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px;\n}\n.btn:hover,\n.btn:focus,\n.btn.focus {\n  color: #333;\n  text-decoration: none;\n}\n.btn:active,\n.btn.active {\n  background-image: none;\n  outline: 0;\n  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}\n.btn.disabled,\n.btn[disabled],\nfieldset[disabled] .btn {\n  cursor: not-allowed;\n  filter: alpha(opacity=65);\n  -webkit-box-shadow: none;\n          box-shadow: none;\n  opacity: .65;\n}\na.btn.disabled,\nfieldset[disabled] a.btn {\n  pointer-events: none;\n}\n.btn-default {\n  color: #333;\n  background-color: #fff;\n  border-color: #ccc;\n}\n.btn-default:focus,\n.btn-default.focus {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #8c8c8c;\n}\n.btn-default:hover {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.btn-default:active,\n.btn-default.active,\n.open > .dropdown-toggle.btn-default {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.btn-default:active:hover,\n.btn-default.active:hover,\n.open > .dropdown-toggle.btn-default:hover,\n.btn-default:active:focus,\n.btn-default.active:focus,\n.open > .dropdown-toggle.btn-default:focus,\n.btn-default:active.focus,\n.btn-default.active.focus,\n.open > .dropdown-toggle.btn-default.focus {\n  color: #333;\n  background-color: #d4d4d4;\n  border-color: #8c8c8c;\n}\n.btn-default:active,\n.btn-default.active,\n.open > .dropdown-toggle.btn-default {\n  background-image: none;\n}\n.btn-default.disabled:hover,\n.btn-default[disabled]:hover,\nfieldset[disabled] .btn-default:hover,\n.btn-default.disabled:focus,\n.btn-default[disabled]:focus,\nfieldset[disabled] .btn-default:focus,\n.btn-default.disabled.focus,\n.btn-default[disabled].focus,\nfieldset[disabled] .btn-default.focus {\n  background-color: #fff;\n  border-color: #ccc;\n}\n.btn-default .badge {\n  color: #fff;\n  background-color: #333;\n}\n.btn-primary {\n  color: #fff;\n  background-color: #337ab7;\n  border-color: #2e6da4;\n}\n.btn-primary:focus,\n.btn-primary.focus {\n  color: #fff;\n  background-color: #286090;\n  border-color: #122b40;\n}\n.btn-primary:hover {\n  color: #fff;\n  background-color: #286090;\n  border-color: #204d74;\n}\n.btn-primary:active,\n.btn-primary.active,\n.open > .dropdown-toggle.btn-primary {\n  color: #fff;\n  background-color: #286090;\n  border-color: #204d74;\n}\n.btn-primary:active:hover,\n.btn-primary.active:hover,\n.open > .dropdown-toggle.btn-primary:hover,\n.btn-primary:active:focus,\n.btn-primary.active:focus,\n.open > .dropdown-toggle.btn-primary:focus,\n.btn-primary:active.focus,\n.btn-primary.active.focus,\n.open > .dropdown-toggle.btn-primary.focus {\n  color: #fff;\n  background-color: #204d74;\n  border-color: #122b40;\n}\n.btn-primary:active,\n.btn-primary.active,\n.open > .dropdown-toggle.btn-primary {\n  background-image: none;\n}\n.btn-primary.disabled:hover,\n.btn-primary[disabled]:hover,\nfieldset[disabled] .btn-primary:hover,\n.btn-primary.disabled:focus,\n.btn-primary[disabled]:focus,\nfieldset[disabled] .btn-primary:focus,\n.btn-primary.disabled.focus,\n.btn-primary[disabled].focus,\nfieldset[disabled] .btn-primary.focus {\n  background-color: #337ab7;\n  border-color: #2e6da4;\n}\n.btn-primary .badge {\n  color: #337ab7;\n  background-color: #fff;\n}\n.btn-success {\n  color: #fff;\n  background-color: #5cb85c;\n  border-color: #4cae4c;\n}\n.btn-success:focus,\n.btn-success.focus {\n  color: #fff;\n  background-color: #449d44;\n  border-color: #255625;\n}\n.btn-success:hover {\n  color: #fff;\n  background-color: #449d44;\n  border-color: #398439;\n}\n.btn-success:active,\n.btn-success.active,\n.open > .dropdown-toggle.btn-success {\n  color: #fff;\n  background-color: #449d44;\n  border-color: #398439;\n}\n.btn-success:active:hover,\n.btn-success.active:hover,\n.open > .dropdown-toggle.btn-success:hover,\n.btn-success:active:focus,\n.btn-success.active:focus,\n.open > .dropdown-toggle.btn-success:focus,\n.btn-success:active.focus,\n.btn-success.active.focus,\n.open > .dropdown-toggle.btn-success.focus {\n  color: #fff;\n  background-color: #398439;\n  border-color: #255625;\n}\n.btn-success:active,\n.btn-success.active,\n.open > .dropdown-toggle.btn-success {\n  background-image: none;\n}\n.btn-success.disabled:hover,\n.btn-success[disabled]:hover,\nfieldset[disabled] .btn-success:hover,\n.btn-success.disabled:focus,\n.btn-success[disabled]:focus,\nfieldset[disabled] .btn-success:focus,\n.btn-success.disabled.focus,\n.btn-success[disabled].focus,\nfieldset[disabled] .btn-success.focus {\n  background-color: #5cb85c;\n  border-color: #4cae4c;\n}\n.btn-success .badge {\n  color: #5cb85c;\n  background-color: #fff;\n}\n.btn-info {\n  color: #fff;\n  background-color: #5bc0de;\n  border-color: #46b8da;\n}\n.btn-info:focus,\n.btn-info.focus {\n  color: #fff;\n  background-color: #31b0d5;\n  border-color: #1b6d85;\n}\n.btn-info:hover {\n  color: #fff;\n  background-color: #31b0d5;\n  border-color: #269abc;\n}\n.btn-info:active,\n.btn-info.active,\n.open > .dropdown-toggle.btn-info {\n  color: #fff;\n  background-color: #31b0d5;\n  border-color: #269abc;\n}\n.btn-info:active:hover,\n.btn-info.active:hover,\n.open > .dropdown-toggle.btn-info:hover,\n.btn-info:active:focus,\n.btn-info.active:focus,\n.open > .dropdown-toggle.btn-info:focus,\n.btn-info:active.focus,\n.btn-info.active.focus,\n.open > .dropdown-toggle.btn-info.focus {\n  color: #fff;\n  background-color: #269abc;\n  border-color: #1b6d85;\n}\n.btn-info:active,\n.btn-info.active,\n.open > .dropdown-toggle.btn-info {\n  background-image: none;\n}\n.btn-info.disabled:hover,\n.btn-info[disabled]:hover,\nfieldset[disabled] .btn-info:hover,\n.btn-info.disabled:focus,\n.btn-info[disabled]:focus,\nfieldset[disabled] .btn-info:focus,\n.btn-info.disabled.focus,\n.btn-info[disabled].focus,\nfieldset[disabled] .btn-info.focus {\n  background-color: #5bc0de;\n  border-color: #46b8da;\n}\n.btn-info .badge {\n  color: #5bc0de;\n  background-color: #fff;\n}\n.btn-warning {\n  color: #fff;\n  background-color: #f0ad4e;\n  border-color: #eea236;\n}\n.btn-warning:focus,\n.btn-warning.focus {\n  color: #fff;\n  background-color: #ec971f;\n  border-color: #985f0d;\n}\n.btn-warning:hover {\n  color: #fff;\n  background-color: #ec971f;\n  border-color: #d58512;\n}\n.btn-warning:active,\n.btn-warning.active,\n.open > .dropdown-toggle.btn-warning {\n  color: #fff;\n  background-color: #ec971f;\n  border-color: #d58512;\n}\n.btn-warning:active:hover,\n.btn-warning.active:hover,\n.open > .dropdown-toggle.btn-warning:hover,\n.btn-warning:active:focus,\n.btn-warning.active:focus,\n.open > .dropdown-toggle.btn-warning:focus,\n.btn-warning:active.focus,\n.btn-warning.active.focus,\n.open > .dropdown-toggle.btn-warning.focus {\n  color: #fff;\n  background-color: #d58512;\n  border-color: #985f0d;\n}\n.btn-warning:active,\n.btn-warning.active,\n.open > .dropdown-toggle.btn-warning {\n  background-image: none;\n}\n.btn-warning.disabled:hover,\n.btn-warning[disabled]:hover,\nfieldset[disabled] .btn-warning:hover,\n.btn-warning.disabled:focus,\n.btn-warning[disabled]:focus,\nfieldset[disabled] .btn-warning:focus,\n.btn-warning.disabled.focus,\n.btn-warning[disabled].focus,\nfieldset[disabled] .btn-warning.focus {\n  background-color: #f0ad4e;\n  border-color: #eea236;\n}\n.btn-warning .badge {\n  color: #f0ad4e;\n  background-color: #fff;\n}\n.btn-danger {\n  color: #fff;\n  background-color: #d9534f;\n  border-color: #d43f3a;\n}\n.btn-danger:focus,\n.btn-danger.focus {\n  color: #fff;\n  background-color: #c9302c;\n  border-color: #761c19;\n}\n.btn-danger:hover {\n  color: #fff;\n  background-color: #c9302c;\n  border-color: #ac2925;\n}\n.btn-danger:active,\n.btn-danger.active,\n.open > .dropdown-toggle.btn-danger {\n  color: #fff;\n  background-color: #c9302c;\n  border-color: #ac2925;\n}\n.btn-danger:active:hover,\n.btn-danger.active:hover,\n.open > .dropdown-toggle.btn-danger:hover,\n.btn-danger:active:focus,\n.btn-danger.active:focus,\n.open > .dropdown-toggle.btn-danger:focus,\n.btn-danger:active.focus,\n.btn-danger.active.focus,\n.open > .dropdown-toggle.btn-danger.focus {\n  color: #fff;\n  background-color: #ac2925;\n  border-color: #761c19;\n}\n.btn-danger:active,\n.btn-danger.active,\n.open > .dropdown-toggle.btn-danger {\n  background-image: none;\n}\n.btn-danger.disabled:hover,\n.btn-danger[disabled]:hover,\nfieldset[disabled] .btn-danger:hover,\n.btn-danger.disabled:focus,\n.btn-danger[disabled]:focus,\nfieldset[disabled] .btn-danger:focus,\n.btn-danger.disabled.focus,\n.btn-danger[disabled].focus,\nfieldset[disabled] .btn-danger.focus {\n  background-color: #d9534f;\n  border-color: #d43f3a;\n}\n.btn-danger .badge {\n  color: #d9534f;\n  background-color: #fff;\n}\n.btn-link {\n  font-weight: normal;\n  color: #337ab7;\n  border-radius: 0;\n}\n.btn-link,\n.btn-link:active,\n.btn-link.active,\n.btn-link[disabled],\nfieldset[disabled] .btn-link {\n  background-color: transparent;\n  -webkit-box-shadow: none;\n          box-shadow: none;\n}\n.btn-link,\n.btn-link:hover,\n.btn-link:focus,\n.btn-link:active {\n  border-color: transparent;\n}\n.btn-link:hover,\n.btn-link:focus {\n  color: #23527c;\n  text-decoration: underline;\n  background-color: transparent;\n}\n.btn-link[disabled]:hover,\nfieldset[disabled] .btn-link:hover,\n.btn-link[disabled]:focus,\nfieldset[disabled] .btn-link:focus {\n  color: #777;\n  text-decoration: none;\n}\n.btn-lg,\n.btn-group-lg > .btn {\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\n.btn-sm,\n.btn-group-sm > .btn {\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n.btn-xs,\n.btn-group-xs > .btn {\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n.btn-block {\n  display: block;\n  width: 100%;\n}\n.btn-block + .btn-block {\n  margin-top: 5px;\n}\ninput[type=\"submit\"].btn-block,\ninput[type=\"reset\"].btn-block,\ninput[type=\"button\"].btn-block {\n  width: 100%;\n}\n.fade {\n  opacity: 0;\n  -webkit-transition: opacity .15s linear;\n       -o-transition: opacity .15s linear;\n          transition: opacity .15s linear;\n}\n.fade.in {\n  opacity: 1;\n}\n.collapse {\n  display: none;\n}\n.collapse.in {\n  display: block;\n}\ntr.collapse.in {\n  display: table-row;\n}\ntbody.collapse.in {\n  display: table-row-group;\n}\n.collapsing {\n  position: relative;\n  height: 0;\n  overflow: hidden;\n  -webkit-transition-timing-function: ease;\n       -o-transition-timing-function: ease;\n          transition-timing-function: ease;\n  -webkit-transition-duration: .35s;\n       -o-transition-duration: .35s;\n          transition-duration: .35s;\n  -webkit-transition-property: height, visibility;\n       -o-transition-property: height, visibility;\n          transition-property: height, visibility;\n}\n.caret {\n  display: inline-block;\n  width: 0;\n  height: 0;\n  margin-left: 2px;\n  vertical-align: middle;\n  border-top: 4px dashed;\n  border-top: 4px solid \\9;\n  border-right: 4px solid transparent;\n  border-left: 4px solid transparent;\n}\n.dropup,\n.dropdown {\n  position: relative;\n}\n.dropdown-toggle:focus {\n  outline: 0;\n}\n.dropdown-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  font-size: 14px;\n  text-align: left;\n  list-style: none;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n          background-clip: padding-box;\n  border: 1px solid #ccc;\n  border: 1px solid rgba(0, 0, 0, .15);\n  border-radius: 4px;\n  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);\n          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);\n}\n.dropdown-menu.pull-right {\n  right: 0;\n  left: auto;\n}\n.dropdown-menu .divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n.dropdown-menu > li > a {\n  display: block;\n  padding: 3px 20px;\n  clear: both;\n  font-weight: normal;\n  line-height: 1.42857143;\n  color: #333;\n  white-space: nowrap;\n}\n.dropdown-menu > li > a:hover,\n.dropdown-menu > li > a:focus {\n  color: #262626;\n  text-decoration: none;\n  background-color: #f5f5f5;\n}\n.dropdown-menu > .active > a,\n.dropdown-menu > .active > a:hover,\n.dropdown-menu > .active > a:focus {\n  color: #fff;\n  text-decoration: none;\n  background-color: #337ab7;\n  outline: 0;\n}\n.dropdown-menu > .disabled > a,\n.dropdown-menu > .disabled > a:hover,\n.dropdown-menu > .disabled > a:focus {\n  color: #777;\n}\n.dropdown-menu > .disabled > a:hover,\n.dropdown-menu > .disabled > a:focus {\n  text-decoration: none;\n  cursor: not-allowed;\n  background-color: transparent;\n  background-image: none;\n  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);\n}\n.open > .dropdown-menu {\n  display: block;\n}\n.open > a {\n  outline: 0;\n}\n.dropdown-menu-right {\n  right: 0;\n  left: auto;\n}\n.dropdown-menu-left {\n  right: auto;\n  left: 0;\n}\n.dropdown-header {\n  display: block;\n  padding: 3px 20px;\n  font-size: 12px;\n  line-height: 1.42857143;\n  color: #777;\n  white-space: nowrap;\n}\n.dropdown-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 990;\n}\n.pull-right > .dropdown-menu {\n  right: 0;\n  left: auto;\n}\n.dropup .caret,\n.navbar-fixed-bottom .dropdown .caret {\n  content: \"\";\n  border-top: 0;\n  border-bottom: 4px dashed;\n  border-bottom: 4px solid \\9;\n}\n.dropup .dropdown-menu,\n.navbar-fixed-bottom .dropdown .dropdown-menu {\n  top: auto;\n  bottom: 100%;\n  margin-bottom: 2px;\n}\n@media (min-width: 768px) {\n  .navbar-right .dropdown-menu {\n    right: 0;\n    left: auto;\n  }\n  .navbar-right .dropdown-menu-left {\n    right: auto;\n    left: 0;\n  }\n}\n.btn-group,\n.btn-group-vertical {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n}\n.btn-group > .btn,\n.btn-group-vertical > .btn {\n  position: relative;\n  float: left;\n}\n.btn-group > .btn:hover,\n.btn-group-vertical > .btn:hover,\n.btn-group > .btn:focus,\n.btn-group-vertical > .btn:focus,\n.btn-group > .btn:active,\n.btn-group-vertical > .btn:active,\n.btn-group > .btn.active,\n.btn-group-vertical > .btn.active {\n  z-index: 2;\n}\n.btn-group .btn + .btn,\n.btn-group .btn + .btn-group,\n.btn-group .btn-group + .btn,\n.btn-group .btn-group + .btn-group {\n  margin-left: -1px;\n}\n.btn-toolbar {\n  margin-left: -5px;\n}\n.btn-toolbar .btn,\n.btn-toolbar .btn-group,\n.btn-toolbar .input-group {\n  float: left;\n}\n.btn-toolbar > .btn,\n.btn-toolbar > .btn-group,\n.btn-toolbar > .input-group {\n  margin-left: 5px;\n}\n.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {\n  border-radius: 0;\n}\n.btn-group > .btn:first-child {\n  margin-left: 0;\n}\n.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.btn-group > .btn:last-child:not(:first-child),\n.btn-group > .dropdown-toggle:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group > .btn-group {\n  float: left;\n}\n.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {\n  border-radius: 0;\n}\n.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,\n.btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group .dropdown-toggle:active,\n.btn-group.open .dropdown-toggle {\n  outline: 0;\n}\n.btn-group > .btn + .dropdown-toggle {\n  padding-right: 8px;\n  padding-left: 8px;\n}\n.btn-group > .btn-lg + .dropdown-toggle {\n  padding-right: 12px;\n  padding-left: 12px;\n}\n.btn-group.open .dropdown-toggle {\n  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}\n.btn-group.open .dropdown-toggle.btn-link {\n  -webkit-box-shadow: none;\n          box-shadow: none;\n}\n.btn .caret {\n  margin-left: 0;\n}\n.btn-lg .caret {\n  border-width: 5px 5px 0;\n  border-bottom-width: 0;\n}\n.dropup .btn-lg .caret {\n  border-width: 0 5px 5px;\n}\n.btn-group-vertical > .btn,\n.btn-group-vertical > .btn-group,\n.btn-group-vertical > .btn-group > .btn {\n  display: block;\n  float: none;\n  width: 100%;\n  max-width: 100%;\n}\n.btn-group-vertical > .btn-group > .btn {\n  float: none;\n}\n.btn-group-vertical > .btn + .btn,\n.btn-group-vertical > .btn + .btn-group,\n.btn-group-vertical > .btn-group + .btn,\n.btn-group-vertical > .btn-group + .btn-group {\n  margin-top: -1px;\n  margin-left: 0;\n}\n.btn-group-vertical > .btn:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n.btn-group-vertical > .btn:first-child:not(:last-child) {\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group-vertical > .btn:last-child:not(:first-child) {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\n.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {\n  border-radius: 0;\n}\n.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child,\n.btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.btn-group-justified {\n  display: table;\n  width: 100%;\n  table-layout: fixed;\n  border-collapse: separate;\n}\n.btn-group-justified > .btn,\n.btn-group-justified > .btn-group {\n  display: table-cell;\n  float: none;\n  width: 1%;\n}\n.btn-group-justified > .btn-group .btn {\n  width: 100%;\n}\n.btn-group-justified > .btn-group .dropdown-menu {\n  left: auto;\n}\n[data-toggle=\"buttons\"] > .btn input[type=\"radio\"],\n[data-toggle=\"buttons\"] > .btn-group > .btn input[type=\"radio\"],\n[data-toggle=\"buttons\"] > .btn input[type=\"checkbox\"],\n[data-toggle=\"buttons\"] > .btn-group > .btn input[type=\"checkbox\"] {\n  position: absolute;\n  clip: rect(0, 0, 0, 0);\n  pointer-events: none;\n}\n.input-group {\n  position: relative;\n  display: table;\n  border-collapse: separate;\n}\n.input-group[class*=\"col-\"] {\n  float: none;\n  padding-right: 0;\n  padding-left: 0;\n}\n.input-group .form-control {\n  position: relative;\n  z-index: 2;\n  float: left;\n  width: 100%;\n  margin-bottom: 0;\n}\n.input-group .form-control:focus {\n  z-index: 3;\n}\n.input-group-lg > .form-control,\n.input-group-lg > .input-group-addon,\n.input-group-lg > .input-group-btn > .btn {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\nselect.input-group-lg > .form-control,\nselect.input-group-lg > .input-group-addon,\nselect.input-group-lg > .input-group-btn > .btn {\n  height: 46px;\n  line-height: 46px;\n}\ntextarea.input-group-lg > .form-control,\ntextarea.input-group-lg > .input-group-addon,\ntextarea.input-group-lg > .input-group-btn > .btn,\nselect[multiple].input-group-lg > .form-control,\nselect[multiple].input-group-lg > .input-group-addon,\nselect[multiple].input-group-lg > .input-group-btn > .btn {\n  height: auto;\n}\n.input-group-sm > .form-control,\n.input-group-sm > .input-group-addon,\n.input-group-sm > .input-group-btn > .btn {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\nselect.input-group-sm > .form-control,\nselect.input-group-sm > .input-group-addon,\nselect.input-group-sm > .input-group-btn > .btn {\n  height: 30px;\n  line-height: 30px;\n}\ntextarea.input-group-sm > .form-control,\ntextarea.input-group-sm > .input-group-addon,\ntextarea.input-group-sm > .input-group-btn > .btn,\nselect[multiple].input-group-sm > .form-control,\nselect[multiple].input-group-sm > .input-group-addon,\nselect[multiple].input-group-sm > .input-group-btn > .btn {\n  height: auto;\n}\n.input-group-addon,\n.input-group-btn,\n.input-group .form-control {\n  display: table-cell;\n}\n.input-group-addon:not(:first-child):not(:last-child),\n.input-group-btn:not(:first-child):not(:last-child),\n.input-group .form-control:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n.input-group-addon,\n.input-group-btn {\n  width: 1%;\n  white-space: nowrap;\n  vertical-align: middle;\n}\n.input-group-addon {\n  padding: 6px 12px;\n  font-size: 14px;\n  font-weight: normal;\n  line-height: 1;\n  color: #555;\n  text-align: center;\n  background-color: #eee;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n}\n.input-group-addon.input-sm {\n  padding: 5px 10px;\n  font-size: 12px;\n  border-radius: 3px;\n}\n.input-group-addon.input-lg {\n  padding: 10px 16px;\n  font-size: 18px;\n  border-radius: 6px;\n}\n.input-group-addon input[type=\"radio\"],\n.input-group-addon input[type=\"checkbox\"] {\n  margin-top: 0;\n}\n.input-group .form-control:first-child,\n.input-group-addon:first-child,\n.input-group-btn:first-child > .btn,\n.input-group-btn:first-child > .btn-group > .btn,\n.input-group-btn:first-child > .dropdown-toggle,\n.input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle),\n.input-group-btn:last-child > .btn-group:not(:last-child) > .btn {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group-addon:first-child {\n  border-right: 0;\n}\n.input-group .form-control:last-child,\n.input-group-addon:last-child,\n.input-group-btn:last-child > .btn,\n.input-group-btn:last-child > .btn-group > .btn,\n.input-group-btn:last-child > .dropdown-toggle,\n.input-group-btn:first-child > .btn:not(:first-child),\n.input-group-btn:first-child > .btn-group:not(:first-child) > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.input-group-addon:last-child {\n  border-left: 0;\n}\n.input-group-btn {\n  position: relative;\n  font-size: 0;\n  white-space: nowrap;\n}\n.input-group-btn > .btn {\n  position: relative;\n}\n.input-group-btn > .btn + .btn {\n  margin-left: -1px;\n}\n.input-group-btn > .btn:hover,\n.input-group-btn > .btn:focus,\n.input-group-btn > .btn:active {\n  z-index: 2;\n}\n.input-group-btn:first-child > .btn,\n.input-group-btn:first-child > .btn-group {\n  margin-right: -1px;\n}\n.input-group-btn:last-child > .btn,\n.input-group-btn:last-child > .btn-group {\n  z-index: 2;\n  margin-left: -1px;\n}\n.nav {\n  padding-left: 0;\n  margin-bottom: 0;\n  list-style: none;\n}\n.nav > li {\n  position: relative;\n  display: block;\n}\n.nav > li > a {\n  position: relative;\n  display: block;\n  padding: 10px 15px;\n}\n.nav > li > a:hover,\n.nav > li > a:focus {\n  text-decoration: none;\n  background-color: #eee;\n}\n.nav > li.disabled > a {\n  color: #777;\n}\n.nav > li.disabled > a:hover,\n.nav > li.disabled > a:focus {\n  color: #777;\n  text-decoration: none;\n  cursor: not-allowed;\n  background-color: transparent;\n}\n.nav .open > a,\n.nav .open > a:hover,\n.nav .open > a:focus {\n  background-color: #eee;\n  border-color: #337ab7;\n}\n.nav .nav-divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n.nav > li > a > img {\n  max-width: none;\n}\n.nav-tabs {\n  border-bottom: 1px solid #ddd;\n}\n.nav-tabs > li {\n  float: left;\n  margin-bottom: -1px;\n}\n.nav-tabs > li > a {\n  margin-right: 2px;\n  line-height: 1.42857143;\n  border: 1px solid transparent;\n  border-radius: 4px 4px 0 0;\n}\n.nav-tabs > li > a:hover {\n  border-color: #eee #eee #ddd;\n}\n.nav-tabs > li.active > a,\n.nav-tabs > li.active > a:hover,\n.nav-tabs > li.active > a:focus {\n  color: #555;\n  cursor: default;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-bottom-color: transparent;\n}\n.nav-tabs.nav-justified {\n  width: 100%;\n  border-bottom: 0;\n}\n.nav-tabs.nav-justified > li {\n  float: none;\n}\n.nav-tabs.nav-justified > li > a {\n  margin-bottom: 5px;\n  text-align: center;\n}\n.nav-tabs.nav-justified > .dropdown .dropdown-menu {\n  top: auto;\n  left: auto;\n}\n@media (min-width: 768px) {\n  .nav-tabs.nav-justified > li {\n    display: table-cell;\n    width: 1%;\n  }\n  .nav-tabs.nav-justified > li > a {\n    margin-bottom: 0;\n  }\n}\n.nav-tabs.nav-justified > li > a {\n  margin-right: 0;\n  border-radius: 4px;\n}\n.nav-tabs.nav-justified > .active > a,\n.nav-tabs.nav-justified > .active > a:hover,\n.nav-tabs.nav-justified > .active > a:focus {\n  border: 1px solid #ddd;\n}\n@media (min-width: 768px) {\n  .nav-tabs.nav-justified > li > a {\n    border-bottom: 1px solid #ddd;\n    border-radius: 4px 4px 0 0;\n  }\n  .nav-tabs.nav-justified > .active > a,\n  .nav-tabs.nav-justified > .active > a:hover,\n  .nav-tabs.nav-justified > .active > a:focus {\n    border-bottom-color: #fff;\n  }\n}\n.nav-pills > li {\n  float: left;\n}\n.nav-pills > li > a {\n  border-radius: 4px;\n}\n.nav-pills > li + li {\n  margin-left: 2px;\n}\n.nav-pills > li.active > a,\n.nav-pills > li.active > a:hover,\n.nav-pills > li.active > a:focus {\n  color: #fff;\n  background-color: #337ab7;\n}\n.nav-stacked > li {\n  float: none;\n}\n.nav-stacked > li + li {\n  margin-top: 2px;\n  margin-left: 0;\n}\n.nav-justified {\n  width: 100%;\n}\n.nav-justified > li {\n  float: none;\n}\n.nav-justified > li > a {\n  margin-bottom: 5px;\n  text-align: center;\n}\n.nav-justified > .dropdown .dropdown-menu {\n  top: auto;\n  left: auto;\n}\n@media (min-width: 768px) {\n  .nav-justified > li {\n    display: table-cell;\n    width: 1%;\n  }\n  .nav-justified > li > a {\n    margin-bottom: 0;\n  }\n}\n.nav-tabs-justified {\n  border-bottom: 0;\n}\n.nav-tabs-justified > li > a {\n  margin-right: 0;\n  border-radius: 4px;\n}\n.nav-tabs-justified > .active > a,\n.nav-tabs-justified > .active > a:hover,\n.nav-tabs-justified > .active > a:focus {\n  border: 1px solid #ddd;\n}\n@media (min-width: 768px) {\n  .nav-tabs-justified > li > a {\n    border-bottom: 1px solid #ddd;\n    border-radius: 4px 4px 0 0;\n  }\n  .nav-tabs-justified > .active > a,\n  .nav-tabs-justified > .active > a:hover,\n  .nav-tabs-justified > .active > a:focus {\n    border-bottom-color: #fff;\n  }\n}\n.tab-content > .tab-pane {\n  display: none;\n}\n.tab-content > .active {\n  display: block;\n}\n.nav-tabs .dropdown-menu {\n  margin-top: -1px;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.navbar {\n  position: relative;\n  min-height: 50px;\n  margin-bottom: 20px;\n  border: 1px solid transparent;\n}\n@media (min-width: 768px) {\n  .navbar {\n    border-radius: 4px;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-header {\n    float: left;\n  }\n}\n.navbar-collapse {\n  padding-right: 15px;\n  padding-left: 15px;\n  overflow-x: visible;\n  -webkit-overflow-scrolling: touch;\n  border-top: 1px solid transparent;\n  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);\n          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);\n}\n.navbar-collapse.in {\n  overflow-y: auto;\n}\n@media (min-width: 768px) {\n  .navbar-collapse {\n    width: auto;\n    border-top: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n  .navbar-collapse.collapse {\n    display: block !important;\n    height: auto !important;\n    padding-bottom: 0;\n    overflow: visible !important;\n  }\n  .navbar-collapse.in {\n    overflow-y: visible;\n  }\n  .navbar-fixed-top .navbar-collapse,\n  .navbar-static-top .navbar-collapse,\n  .navbar-fixed-bottom .navbar-collapse {\n    padding-right: 0;\n    padding-left: 0;\n  }\n}\n.navbar-fixed-top .navbar-collapse,\n.navbar-fixed-bottom .navbar-collapse {\n  max-height: 340px;\n}\n@media (max-device-width: 480px) and (orientation: landscape) {\n  .navbar-fixed-top .navbar-collapse,\n  .navbar-fixed-bottom .navbar-collapse {\n    max-height: 200px;\n  }\n}\n.container > .navbar-header,\n.container-fluid > .navbar-header,\n.container > .navbar-collapse,\n.container-fluid > .navbar-collapse {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n@media (min-width: 768px) {\n  .container > .navbar-header,\n  .container-fluid > .navbar-header,\n  .container > .navbar-collapse,\n  .container-fluid > .navbar-collapse {\n    margin-right: 0;\n    margin-left: 0;\n  }\n}\n.navbar-static-top {\n  z-index: 1000;\n  border-width: 0 0 1px;\n}\n@media (min-width: 768px) {\n  .navbar-static-top {\n    border-radius: 0;\n  }\n}\n.navbar-fixed-top,\n.navbar-fixed-bottom {\n  position: fixed;\n  right: 0;\n  left: 0;\n  z-index: 1030;\n}\n@media (min-width: 768px) {\n  .navbar-fixed-top,\n  .navbar-fixed-bottom {\n    border-radius: 0;\n  }\n}\n.navbar-fixed-top {\n  top: 0;\n  border-width: 0 0 1px;\n}\n.navbar-fixed-bottom {\n  bottom: 0;\n  margin-bottom: 0;\n  border-width: 1px 0 0;\n}\n.navbar-brand {\n  float: left;\n  height: 50px;\n  padding: 15px 15px;\n  font-size: 18px;\n  line-height: 20px;\n}\n.navbar-brand:hover,\n.navbar-brand:focus {\n  text-decoration: none;\n}\n.navbar-brand > img {\n  display: block;\n}\n@media (min-width: 768px) {\n  .navbar > .container .navbar-brand,\n  .navbar > .container-fluid .navbar-brand {\n    margin-left: -15px;\n  }\n}\n.navbar-toggle {\n  position: relative;\n  float: right;\n  padding: 9px 10px;\n  margin-top: 8px;\n  margin-right: 15px;\n  margin-bottom: 8px;\n  background-color: transparent;\n  background-image: none;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.navbar-toggle:focus {\n  outline: 0;\n}\n.navbar-toggle .icon-bar {\n  display: block;\n  width: 22px;\n  height: 2px;\n  border-radius: 1px;\n}\n.navbar-toggle .icon-bar + .icon-bar {\n  margin-top: 4px;\n}\n@media (min-width: 768px) {\n  .navbar-toggle {\n    display: none;\n  }\n}\n.navbar-nav {\n  margin: 7.5px -15px;\n}\n.navbar-nav > li > a {\n  padding-top: 10px;\n  padding-bottom: 10px;\n  line-height: 20px;\n}\n@media (max-width: 767px) {\n  .navbar-nav .open .dropdown-menu {\n    position: static;\n    float: none;\n    width: auto;\n    margin-top: 0;\n    background-color: transparent;\n    border: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n  .navbar-nav .open .dropdown-menu > li > a,\n  .navbar-nav .open .dropdown-menu .dropdown-header {\n    padding: 5px 15px 5px 25px;\n  }\n  .navbar-nav .open .dropdown-menu > li > a {\n    line-height: 20px;\n  }\n  .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-nav .open .dropdown-menu > li > a:focus {\n    background-image: none;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-nav {\n    float: left;\n    margin: 0;\n  }\n  .navbar-nav > li {\n    float: left;\n  }\n  .navbar-nav > li > a {\n    padding-top: 15px;\n    padding-bottom: 15px;\n  }\n}\n.navbar-form {\n  padding: 10px 15px;\n  margin-top: 8px;\n  margin-right: -15px;\n  margin-bottom: 8px;\n  margin-left: -15px;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 0 rgba(255, 255, 255, .1);\n          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 0 rgba(255, 255, 255, .1);\n}\n@media (min-width: 768px) {\n  .navbar-form .form-group {\n    display: inline-block;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .form-control {\n    display: inline-block;\n    width: auto;\n    vertical-align: middle;\n  }\n  .navbar-form .form-control-static {\n    display: inline-block;\n  }\n  .navbar-form .input-group {\n    display: inline-table;\n    vertical-align: middle;\n  }\n  .navbar-form .input-group .input-group-addon,\n  .navbar-form .input-group .input-group-btn,\n  .navbar-form .input-group .form-control {\n    width: auto;\n  }\n  .navbar-form .input-group > .form-control {\n    width: 100%;\n  }\n  .navbar-form .control-label {\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .radio,\n  .navbar-form .checkbox {\n    display: inline-block;\n    margin-top: 0;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .radio label,\n  .navbar-form .checkbox label {\n    padding-left: 0;\n  }\n  .navbar-form .radio input[type=\"radio\"],\n  .navbar-form .checkbox input[type=\"checkbox\"] {\n    position: relative;\n    margin-left: 0;\n  }\n  .navbar-form .has-feedback .form-control-feedback {\n    top: 0;\n  }\n}\n@media (max-width: 767px) {\n  .navbar-form .form-group {\n    margin-bottom: 5px;\n  }\n  .navbar-form .form-group:last-child {\n    margin-bottom: 0;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-form {\n    width: auto;\n    padding-top: 0;\n    padding-bottom: 0;\n    margin-right: 0;\n    margin-left: 0;\n    border: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n}\n.navbar-nav > li > .dropdown-menu {\n  margin-top: 0;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {\n  margin-bottom: 0;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.navbar-btn {\n  margin-top: 8px;\n  margin-bottom: 8px;\n}\n.navbar-btn.btn-sm {\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\n.navbar-btn.btn-xs {\n  margin-top: 14px;\n  margin-bottom: 14px;\n}\n.navbar-text {\n  margin-top: 15px;\n  margin-bottom: 15px;\n}\n@media (min-width: 768px) {\n  .navbar-text {\n    float: left;\n    margin-right: 15px;\n    margin-left: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-left {\n    float: left !important;\n  }\n  .navbar-right {\n    float: right !important;\n    margin-right: -15px;\n  }\n  .navbar-right ~ .navbar-right {\n    margin-right: 0;\n  }\n}\n.navbar-default {\n  background-color: #f8f8f8;\n  border-color: #e7e7e7;\n}\n.navbar-default .navbar-brand {\n  color: #777;\n}\n.navbar-default .navbar-brand:hover,\n.navbar-default .navbar-brand:focus {\n  color: #5e5e5e;\n  background-color: transparent;\n}\n.navbar-default .navbar-text {\n  color: #777;\n}\n.navbar-default .navbar-nav > li > a {\n  color: #777;\n}\n.navbar-default .navbar-nav > li > a:hover,\n.navbar-default .navbar-nav > li > a:focus {\n  color: #333;\n  background-color: transparent;\n}\n.navbar-default .navbar-nav > .active > a,\n.navbar-default .navbar-nav > .active > a:hover,\n.navbar-default .navbar-nav > .active > a:focus {\n  color: #555;\n  background-color: #e7e7e7;\n}\n.navbar-default .navbar-nav > .disabled > a,\n.navbar-default .navbar-nav > .disabled > a:hover,\n.navbar-default .navbar-nav > .disabled > a:focus {\n  color: #ccc;\n  background-color: transparent;\n}\n.navbar-default .navbar-toggle {\n  border-color: #ddd;\n}\n.navbar-default .navbar-toggle:hover,\n.navbar-default .navbar-toggle:focus {\n  background-color: #ddd;\n}\n.navbar-default .navbar-toggle .icon-bar {\n  background-color: #888;\n}\n.navbar-default .navbar-collapse,\n.navbar-default .navbar-form {\n  border-color: #e7e7e7;\n}\n.navbar-default .navbar-nav > .open > a,\n.navbar-default .navbar-nav > .open > a:hover,\n.navbar-default .navbar-nav > .open > a:focus {\n  color: #555;\n  background-color: #e7e7e7;\n}\n@media (max-width: 767px) {\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a {\n    color: #777;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {\n    color: #333;\n    background-color: transparent;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {\n    color: #555;\n    background-color: #e7e7e7;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {\n    color: #ccc;\n    background-color: transparent;\n  }\n}\n.navbar-default .navbar-link {\n  color: #777;\n}\n.navbar-default .navbar-link:hover {\n  color: #333;\n}\n.navbar-default .btn-link {\n  color: #777;\n}\n.navbar-default .btn-link:hover,\n.navbar-default .btn-link:focus {\n  color: #333;\n}\n.navbar-default .btn-link[disabled]:hover,\nfieldset[disabled] .navbar-default .btn-link:hover,\n.navbar-default .btn-link[disabled]:focus,\nfieldset[disabled] .navbar-default .btn-link:focus {\n  color: #ccc;\n}\n.navbar-inverse {\n  background-color: #222;\n  border-color: #080808;\n}\n.navbar-inverse .navbar-brand {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-brand:hover,\n.navbar-inverse .navbar-brand:focus {\n  color: #fff;\n  background-color: transparent;\n}\n.navbar-inverse .navbar-text {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-nav > li > a {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-nav > li > a:hover,\n.navbar-inverse .navbar-nav > li > a:focus {\n  color: #fff;\n  background-color: transparent;\n}\n.navbar-inverse .navbar-nav > .active > a,\n.navbar-inverse .navbar-nav > .active > a:hover,\n.navbar-inverse .navbar-nav > .active > a:focus {\n  color: #fff;\n  background-color: #080808;\n}\n.navbar-inverse .navbar-nav > .disabled > a,\n.navbar-inverse .navbar-nav > .disabled > a:hover,\n.navbar-inverse .navbar-nav > .disabled > a:focus {\n  color: #444;\n  background-color: transparent;\n}\n.navbar-inverse .navbar-toggle {\n  border-color: #333;\n}\n.navbar-inverse .navbar-toggle:hover,\n.navbar-inverse .navbar-toggle:focus {\n  background-color: #333;\n}\n.navbar-inverse .navbar-toggle .icon-bar {\n  background-color: #fff;\n}\n.navbar-inverse .navbar-collapse,\n.navbar-inverse .navbar-form {\n  border-color: #101010;\n}\n.navbar-inverse .navbar-nav > .open > a,\n.navbar-inverse .navbar-nav > .open > a:hover,\n.navbar-inverse .navbar-nav > .open > a:focus {\n  color: #fff;\n  background-color: #080808;\n}\n@media (max-width: 767px) {\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {\n    border-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu .divider {\n    background-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {\n    color: #9d9d9d;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {\n    color: #fff;\n    background-color: transparent;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {\n    color: #fff;\n    background-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {\n    color: #444;\n    background-color: transparent;\n  }\n}\n.navbar-inverse .navbar-link {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-link:hover {\n  color: #fff;\n}\n.navbar-inverse .btn-link {\n  color: #9d9d9d;\n}\n.navbar-inverse .btn-link:hover,\n.navbar-inverse .btn-link:focus {\n  color: #fff;\n}\n.navbar-inverse .btn-link[disabled]:hover,\nfieldset[disabled] .navbar-inverse .btn-link:hover,\n.navbar-inverse .btn-link[disabled]:focus,\nfieldset[disabled] .navbar-inverse .btn-link:focus {\n  color: #444;\n}\n.breadcrumb {\n  padding: 8px 15px;\n  margin-bottom: 20px;\n  list-style: none;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n}\n.breadcrumb > li {\n  display: inline-block;\n}\n.breadcrumb > li + li:before {\n  padding: 0 5px;\n  color: #ccc;\n  content: \"/\\A0\";\n}\n.breadcrumb > .active {\n  color: #777;\n}\n.pagination {\n  display: inline-block;\n  padding-left: 0;\n  margin: 20px 0;\n  border-radius: 4px;\n}\n.pagination > li {\n  display: inline;\n}\n.pagination > li > a,\n.pagination > li > span {\n  position: relative;\n  float: left;\n  padding: 6px 12px;\n  margin-left: -1px;\n  line-height: 1.42857143;\n  color: #337ab7;\n  text-decoration: none;\n  background-color: #fff;\n  border: 1px solid #ddd;\n}\n.pagination > li:first-child > a,\n.pagination > li:first-child > span {\n  margin-left: 0;\n  border-top-left-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\n.pagination > li:last-child > a,\n.pagination > li:last-child > span {\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n.pagination > li > a:hover,\n.pagination > li > span:hover,\n.pagination > li > a:focus,\n.pagination > li > span:focus {\n  z-index: 2;\n  color: #23527c;\n  background-color: #eee;\n  border-color: #ddd;\n}\n.pagination > .active > a,\n.pagination > .active > span,\n.pagination > .active > a:hover,\n.pagination > .active > span:hover,\n.pagination > .active > a:focus,\n.pagination > .active > span:focus {\n  z-index: 3;\n  color: #fff;\n  cursor: default;\n  background-color: #337ab7;\n  border-color: #337ab7;\n}\n.pagination > .disabled > span,\n.pagination > .disabled > span:hover,\n.pagination > .disabled > span:focus,\n.pagination > .disabled > a,\n.pagination > .disabled > a:hover,\n.pagination > .disabled > a:focus {\n  color: #777;\n  cursor: not-allowed;\n  background-color: #fff;\n  border-color: #ddd;\n}\n.pagination-lg > li > a,\n.pagination-lg > li > span {\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n}\n.pagination-lg > li:first-child > a,\n.pagination-lg > li:first-child > span {\n  border-top-left-radius: 6px;\n  border-bottom-left-radius: 6px;\n}\n.pagination-lg > li:last-child > a,\n.pagination-lg > li:last-child > span {\n  border-top-right-radius: 6px;\n  border-bottom-right-radius: 6px;\n}\n.pagination-sm > li > a,\n.pagination-sm > li > span {\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n}\n.pagination-sm > li:first-child > a,\n.pagination-sm > li:first-child > span {\n  border-top-left-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.pagination-sm > li:last-child > a,\n.pagination-sm > li:last-child > span {\n  border-top-right-radius: 3px;\n  border-bottom-right-radius: 3px;\n}\n.pager {\n  padding-left: 0;\n  margin: 20px 0;\n  text-align: center;\n  list-style: none;\n}\n.pager li {\n  display: inline;\n}\n.pager li > a,\n.pager li > span {\n  display: inline-block;\n  padding: 5px 14px;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-radius: 15px;\n}\n.pager li > a:hover,\n.pager li > a:focus {\n  text-decoration: none;\n  background-color: #eee;\n}\n.pager .next > a,\n.pager .next > span {\n  float: right;\n}\n.pager .previous > a,\n.pager .previous > span {\n  float: left;\n}\n.pager .disabled > a,\n.pager .disabled > a:hover,\n.pager .disabled > a:focus,\n.pager .disabled > span {\n  color: #777;\n  cursor: not-allowed;\n  background-color: #fff;\n}\n.label {\n  display: inline;\n  padding: .2em .6em .3em;\n  font-size: 75%;\n  font-weight: bold;\n  line-height: 1;\n  color: #fff;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: baseline;\n  border-radius: .25em;\n}\na.label:hover,\na.label:focus {\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer;\n}\n.label:empty {\n  display: none;\n}\n.btn .label {\n  position: relative;\n  top: -1px;\n}\n.label-default {\n  background-color: #777;\n}\n.label-default[href]:hover,\n.label-default[href]:focus {\n  background-color: #5e5e5e;\n}\n.label-primary {\n  background-color: #337ab7;\n}\n.label-primary[href]:hover,\n.label-primary[href]:focus {\n  background-color: #286090;\n}\n.label-success {\n  background-color: #5cb85c;\n}\n.label-success[href]:hover,\n.label-success[href]:focus {\n  background-color: #449d44;\n}\n.label-info {\n  background-color: #5bc0de;\n}\n.label-info[href]:hover,\n.label-info[href]:focus {\n  background-color: #31b0d5;\n}\n.label-warning {\n  background-color: #f0ad4e;\n}\n.label-warning[href]:hover,\n.label-warning[href]:focus {\n  background-color: #ec971f;\n}\n.label-danger {\n  background-color: #d9534f;\n}\n.label-danger[href]:hover,\n.label-danger[href]:focus {\n  background-color: #c9302c;\n}\n.badge {\n  display: inline-block;\n  min-width: 10px;\n  padding: 3px 7px;\n  font-size: 12px;\n  font-weight: bold;\n  line-height: 1;\n  color: #fff;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  background-color: #777;\n  border-radius: 10px;\n}\n.badge:empty {\n  display: none;\n}\n.btn .badge {\n  position: relative;\n  top: -1px;\n}\n.btn-xs .badge,\n.btn-group-xs > .btn .badge {\n  top: 0;\n  padding: 1px 5px;\n}\na.badge:hover,\na.badge:focus {\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer;\n}\n.list-group-item.active > .badge,\n.nav-pills > .active > a > .badge {\n  color: #337ab7;\n  background-color: #fff;\n}\n.list-group-item > .badge {\n  float: right;\n}\n.list-group-item > .badge + .badge {\n  margin-right: 5px;\n}\n.nav-pills > li > a > .badge {\n  margin-left: 3px;\n}\n.jumbotron {\n  padding-top: 30px;\n  padding-bottom: 30px;\n  margin-bottom: 30px;\n  color: inherit;\n  background-color: #eee;\n}\n.jumbotron h1,\n.jumbotron .h1 {\n  color: inherit;\n}\n.jumbotron p {\n  margin-bottom: 15px;\n  font-size: 21px;\n  font-weight: 200;\n}\n.jumbotron > hr {\n  border-top-color: #d5d5d5;\n}\n.container .jumbotron,\n.container-fluid .jumbotron {\n  padding-right: 15px;\n  padding-left: 15px;\n  border-radius: 6px;\n}\n.jumbotron .container {\n  max-width: 100%;\n}\n@media screen and (min-width: 768px) {\n  .jumbotron {\n    padding-top: 48px;\n    padding-bottom: 48px;\n  }\n  .container .jumbotron,\n  .container-fluid .jumbotron {\n    padding-right: 60px;\n    padding-left: 60px;\n  }\n  .jumbotron h1,\n  .jumbotron .h1 {\n    font-size: 63px;\n  }\n}\n.thumbnail {\n  display: block;\n  padding: 4px;\n  margin-bottom: 20px;\n  line-height: 1.42857143;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-radius: 4px;\n  -webkit-transition: border .2s ease-in-out;\n       -o-transition: border .2s ease-in-out;\n          transition: border .2s ease-in-out;\n}\n.thumbnail > img,\n.thumbnail a > img {\n  margin-right: auto;\n  margin-left: auto;\n}\na.thumbnail:hover,\na.thumbnail:focus,\na.thumbnail.active {\n  border-color: #337ab7;\n}\n.thumbnail .caption {\n  padding: 9px;\n  color: #333;\n}\n.alert {\n  padding: 15px;\n  margin-bottom: 20px;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.alert h4 {\n  margin-top: 0;\n  color: inherit;\n}\n.alert .alert-link {\n  font-weight: bold;\n}\n.alert > p,\n.alert > ul {\n  margin-bottom: 0;\n}\n.alert > p + p {\n  margin-top: 5px;\n}\n.alert-dismissable,\n.alert-dismissible {\n  padding-right: 35px;\n}\n.alert-dismissable .close,\n.alert-dismissible .close {\n  position: relative;\n  top: -2px;\n  right: -21px;\n  color: inherit;\n}\n.alert-success {\n  color: #3c763d;\n  background-color: #dff0d8;\n  border-color: #d6e9c6;\n}\n.alert-success hr {\n  border-top-color: #c9e2b3;\n}\n.alert-success .alert-link {\n  color: #2b542c;\n}\n.alert-info {\n  color: #31708f;\n  background-color: #d9edf7;\n  border-color: #bce8f1;\n}\n.alert-info hr {\n  border-top-color: #a6e1ec;\n}\n.alert-info .alert-link {\n  color: #245269;\n}\n.alert-warning {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n  border-color: #faebcc;\n}\n.alert-warning hr {\n  border-top-color: #f7e1b5;\n}\n.alert-warning .alert-link {\n  color: #66512c;\n}\n.alert-danger {\n  color: #a94442;\n  background-color: #f2dede;\n  border-color: #ebccd1;\n}\n.alert-danger hr {\n  border-top-color: #e4b9c0;\n}\n.alert-danger .alert-link {\n  color: #843534;\n}\n@-webkit-keyframes progress-bar-stripes {\n  from {\n    background-position: 40px 0;\n  }\n  to {\n    background-position: 0 0;\n  }\n}\n@-o-keyframes progress-bar-stripes {\n  from {\n    background-position: 40px 0;\n  }\n  to {\n    background-position: 0 0;\n  }\n}\n@keyframes progress-bar-stripes {\n  from {\n    background-position: 40px 0;\n  }\n  to {\n    background-position: 0 0;\n  }\n}\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);\n          box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);\n}\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #337ab7;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);\n          box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);\n  -webkit-transition: width .6s ease;\n       -o-transition: width .6s ease;\n          transition: width .6s ease;\n}\n.progress-striped .progress-bar,\n.progress-bar-striped {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  -webkit-background-size: 40px 40px;\n          background-size: 40px 40px;\n}\n.progress.active .progress-bar,\n.progress-bar.active {\n  -webkit-animation: progress-bar-stripes 2s linear infinite;\n       -o-animation: progress-bar-stripes 2s linear infinite;\n          animation: progress-bar-stripes 2s linear infinite;\n}\n.progress-bar-success {\n  background-color: #5cb85c;\n}\n.progress-striped .progress-bar-success {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.progress-bar-info {\n  background-color: #5bc0de;\n}\n.progress-striped .progress-bar-info {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.progress-bar-warning {\n  background-color: #f0ad4e;\n}\n.progress-striped .progress-bar-warning {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.progress-bar-danger {\n  background-color: #d9534f;\n}\n.progress-striped .progress-bar-danger {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.media {\n  margin-top: 15px;\n}\n.media:first-child {\n  margin-top: 0;\n}\n.media,\n.media-body {\n  overflow: hidden;\n  zoom: 1;\n}\n.media-body {\n  width: 10000px;\n}\n.media-object {\n  display: block;\n}\n.media-object.img-thumbnail {\n  max-width: none;\n}\n.media-right,\n.media > .pull-right {\n  padding-left: 10px;\n}\n.media-left,\n.media > .pull-left {\n  padding-right: 10px;\n}\n.media-left,\n.media-right,\n.media-body {\n  display: table-cell;\n  vertical-align: top;\n}\n.media-middle {\n  vertical-align: middle;\n}\n.media-bottom {\n  vertical-align: bottom;\n}\n.media-heading {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n.media-list {\n  padding-left: 0;\n  list-style: none;\n}\n.list-group {\n  padding-left: 0;\n  margin-bottom: 20px;\n}\n.list-group-item {\n  position: relative;\n  display: block;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  background-color: #fff;\n  border: 1px solid #ddd;\n}\n.list-group-item:first-child {\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n.list-group-item:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\na.list-group-item,\nbutton.list-group-item {\n  color: #555;\n}\na.list-group-item .list-group-item-heading,\nbutton.list-group-item .list-group-item-heading {\n  color: #333;\n}\na.list-group-item:hover,\nbutton.list-group-item:hover,\na.list-group-item:focus,\nbutton.list-group-item:focus {\n  color: #555;\n  text-decoration: none;\n  background-color: #f5f5f5;\n}\nbutton.list-group-item {\n  width: 100%;\n  text-align: left;\n}\n.list-group-item.disabled,\n.list-group-item.disabled:hover,\n.list-group-item.disabled:focus {\n  color: #777;\n  cursor: not-allowed;\n  background-color: #eee;\n}\n.list-group-item.disabled .list-group-item-heading,\n.list-group-item.disabled:hover .list-group-item-heading,\n.list-group-item.disabled:focus .list-group-item-heading {\n  color: inherit;\n}\n.list-group-item.disabled .list-group-item-text,\n.list-group-item.disabled:hover .list-group-item-text,\n.list-group-item.disabled:focus .list-group-item-text {\n  color: #777;\n}\n.list-group-item.active,\n.list-group-item.active:hover,\n.list-group-item.active:focus {\n  z-index: 2;\n  color: #fff;\n  background-color: #337ab7;\n  border-color: #337ab7;\n}\n.list-group-item.active .list-group-item-heading,\n.list-group-item.active:hover .list-group-item-heading,\n.list-group-item.active:focus .list-group-item-heading,\n.list-group-item.active .list-group-item-heading > small,\n.list-group-item.active:hover .list-group-item-heading > small,\n.list-group-item.active:focus .list-group-item-heading > small,\n.list-group-item.active .list-group-item-heading > .small,\n.list-group-item.active:hover .list-group-item-heading > .small,\n.list-group-item.active:focus .list-group-item-heading > .small {\n  color: inherit;\n}\n.list-group-item.active .list-group-item-text,\n.list-group-item.active:hover .list-group-item-text,\n.list-group-item.active:focus .list-group-item-text {\n  color: #c7ddef;\n}\n.list-group-item-success {\n  color: #3c763d;\n  background-color: #dff0d8;\n}\na.list-group-item-success,\nbutton.list-group-item-success {\n  color: #3c763d;\n}\na.list-group-item-success .list-group-item-heading,\nbutton.list-group-item-success .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-success:hover,\nbutton.list-group-item-success:hover,\na.list-group-item-success:focus,\nbutton.list-group-item-success:focus {\n  color: #3c763d;\n  background-color: #d0e9c6;\n}\na.list-group-item-success.active,\nbutton.list-group-item-success.active,\na.list-group-item-success.active:hover,\nbutton.list-group-item-success.active:hover,\na.list-group-item-success.active:focus,\nbutton.list-group-item-success.active:focus {\n  color: #fff;\n  background-color: #3c763d;\n  border-color: #3c763d;\n}\n.list-group-item-info {\n  color: #31708f;\n  background-color: #d9edf7;\n}\na.list-group-item-info,\nbutton.list-group-item-info {\n  color: #31708f;\n}\na.list-group-item-info .list-group-item-heading,\nbutton.list-group-item-info .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-info:hover,\nbutton.list-group-item-info:hover,\na.list-group-item-info:focus,\nbutton.list-group-item-info:focus {\n  color: #31708f;\n  background-color: #c4e3f3;\n}\na.list-group-item-info.active,\nbutton.list-group-item-info.active,\na.list-group-item-info.active:hover,\nbutton.list-group-item-info.active:hover,\na.list-group-item-info.active:focus,\nbutton.list-group-item-info.active:focus {\n  color: #fff;\n  background-color: #31708f;\n  border-color: #31708f;\n}\n.list-group-item-warning {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n}\na.list-group-item-warning,\nbutton.list-group-item-warning {\n  color: #8a6d3b;\n}\na.list-group-item-warning .list-group-item-heading,\nbutton.list-group-item-warning .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-warning:hover,\nbutton.list-group-item-warning:hover,\na.list-group-item-warning:focus,\nbutton.list-group-item-warning:focus {\n  color: #8a6d3b;\n  background-color: #faf2cc;\n}\na.list-group-item-warning.active,\nbutton.list-group-item-warning.active,\na.list-group-item-warning.active:hover,\nbutton.list-group-item-warning.active:hover,\na.list-group-item-warning.active:focus,\nbutton.list-group-item-warning.active:focus {\n  color: #fff;\n  background-color: #8a6d3b;\n  border-color: #8a6d3b;\n}\n.list-group-item-danger {\n  color: #a94442;\n  background-color: #f2dede;\n}\na.list-group-item-danger,\nbutton.list-group-item-danger {\n  color: #a94442;\n}\na.list-group-item-danger .list-group-item-heading,\nbutton.list-group-item-danger .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-danger:hover,\nbutton.list-group-item-danger:hover,\na.list-group-item-danger:focus,\nbutton.list-group-item-danger:focus {\n  color: #a94442;\n  background-color: #ebcccc;\n}\na.list-group-item-danger.active,\nbutton.list-group-item-danger.active,\na.list-group-item-danger.active:hover,\nbutton.list-group-item-danger.active:hover,\na.list-group-item-danger.active:focus,\nbutton.list-group-item-danger.active:focus {\n  color: #fff;\n  background-color: #a94442;\n  border-color: #a94442;\n}\n.list-group-item-heading {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n.list-group-item-text {\n  margin-bottom: 0;\n  line-height: 1.3;\n}\n.panel {\n  margin-bottom: 20px;\n  background-color: #fff;\n  border: 1px solid transparent;\n  border-radius: 4px;\n  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);\n          box-shadow: 0 1px 1px rgba(0, 0, 0, .05);\n}\n.panel-body {\n  padding: 15px;\n}\n.panel-heading {\n  padding: 10px 15px;\n  border-bottom: 1px solid transparent;\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel-heading > .dropdown .dropdown-toggle {\n  color: inherit;\n}\n.panel-title {\n  margin-top: 0;\n  margin-bottom: 0;\n  font-size: 16px;\n  color: inherit;\n}\n.panel-title > a,\n.panel-title > small,\n.panel-title > .small,\n.panel-title > small > a,\n.panel-title > .small > a {\n  color: inherit;\n}\n.panel-footer {\n  padding: 10px 15px;\n  background-color: #f5f5f5;\n  border-top: 1px solid #ddd;\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .list-group,\n.panel > .panel-collapse > .list-group {\n  margin-bottom: 0;\n}\n.panel > .list-group .list-group-item,\n.panel > .panel-collapse > .list-group .list-group-item {\n  border-width: 1px 0;\n  border-radius: 0;\n}\n.panel > .list-group:first-child .list-group-item:first-child,\n.panel > .panel-collapse > .list-group:first-child .list-group-item:first-child {\n  border-top: 0;\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel > .list-group:last-child .list-group-item:last-child,\n.panel > .panel-collapse > .list-group:last-child .list-group-item:last-child {\n  border-bottom: 0;\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.panel-heading + .list-group .list-group-item:first-child {\n  border-top-width: 0;\n}\n.list-group + .panel-footer {\n  border-top-width: 0;\n}\n.panel > .table,\n.panel > .table-responsive > .table,\n.panel > .panel-collapse > .table {\n  margin-bottom: 0;\n}\n.panel > .table caption,\n.panel > .table-responsive > .table caption,\n.panel > .panel-collapse > .table caption {\n  padding-right: 15px;\n  padding-left: 15px;\n}\n.panel > .table:first-child,\n.panel > .table-responsive:first-child > .table:first-child {\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel > .table:first-child > thead:first-child > tr:first-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel > .table:first-child > thead:first-child > tr:first-child td:first-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,\n.panel > .table:first-child > thead:first-child > tr:first-child th:first-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {\n  border-top-left-radius: 3px;\n}\n.panel > .table:first-child > thead:first-child > tr:first-child td:last-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,\n.panel > .table:first-child > thead:first-child > tr:first-child th:last-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {\n  border-top-right-radius: 3px;\n}\n.panel > .table:last-child,\n.panel > .table-responsive:last-child > .table:last-child {\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .table:last-child > tbody:last-child > tr:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .table:last-child > tbody:last-child > tr:last-child td:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,\n.panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {\n  border-bottom-left-radius: 3px;\n}\n.panel > .table:last-child > tbody:last-child > tr:last-child td:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,\n.panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {\n  border-bottom-right-radius: 3px;\n}\n.panel > .panel-body + .table,\n.panel > .panel-body + .table-responsive,\n.panel > .table + .panel-body,\n.panel > .table-responsive + .panel-body {\n  border-top: 1px solid #ddd;\n}\n.panel > .table > tbody:first-child > tr:first-child th,\n.panel > .table > tbody:first-child > tr:first-child td {\n  border-top: 0;\n}\n.panel > .table-bordered,\n.panel > .table-responsive > .table-bordered {\n  border: 0;\n}\n.panel > .table-bordered > thead > tr > th:first-child,\n.panel > .table-responsive > .table-bordered > thead > tr > th:first-child,\n.panel > .table-bordered > tbody > tr > th:first-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,\n.panel > .table-bordered > tfoot > tr > th:first-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,\n.panel > .table-bordered > thead > tr > td:first-child,\n.panel > .table-responsive > .table-bordered > thead > tr > td:first-child,\n.panel > .table-bordered > tbody > tr > td:first-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,\n.panel > .table-bordered > tfoot > tr > td:first-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child {\n  border-left: 0;\n}\n.panel > .table-bordered > thead > tr > th:last-child,\n.panel > .table-responsive > .table-bordered > thead > tr > th:last-child,\n.panel > .table-bordered > tbody > tr > th:last-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,\n.panel > .table-bordered > tfoot > tr > th:last-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,\n.panel > .table-bordered > thead > tr > td:last-child,\n.panel > .table-responsive > .table-bordered > thead > tr > td:last-child,\n.panel > .table-bordered > tbody > tr > td:last-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,\n.panel > .table-bordered > tfoot > tr > td:last-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child {\n  border-right: 0;\n}\n.panel > .table-bordered > thead > tr:first-child > td,\n.panel > .table-responsive > .table-bordered > thead > tr:first-child > td,\n.panel > .table-bordered > tbody > tr:first-child > td,\n.panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,\n.panel > .table-bordered > thead > tr:first-child > th,\n.panel > .table-responsive > .table-bordered > thead > tr:first-child > th,\n.panel > .table-bordered > tbody > tr:first-child > th,\n.panel > .table-responsive > .table-bordered > tbody > tr:first-child > th {\n  border-bottom: 0;\n}\n.panel > .table-bordered > tbody > tr:last-child > td,\n.panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,\n.panel > .table-bordered > tfoot > tr:last-child > td,\n.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,\n.panel > .table-bordered > tbody > tr:last-child > th,\n.panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,\n.panel > .table-bordered > tfoot > tr:last-child > th,\n.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {\n  border-bottom: 0;\n}\n.panel > .table-responsive {\n  margin-bottom: 0;\n  border: 0;\n}\n.panel-group {\n  margin-bottom: 20px;\n}\n.panel-group .panel {\n  margin-bottom: 0;\n  border-radius: 4px;\n}\n.panel-group .panel + .panel {\n  margin-top: 5px;\n}\n.panel-group .panel-heading {\n  border-bottom: 0;\n}\n.panel-group .panel-heading + .panel-collapse > .panel-body,\n.panel-group .panel-heading + .panel-collapse > .list-group {\n  border-top: 1px solid #ddd;\n}\n.panel-group .panel-footer {\n  border-top: 0;\n}\n.panel-group .panel-footer + .panel-collapse .panel-body {\n  border-bottom: 1px solid #ddd;\n}\n.panel-default {\n  border-color: #ddd;\n}\n.panel-default > .panel-heading {\n  color: #333;\n  background-color: #f5f5f5;\n  border-color: #ddd;\n}\n.panel-default > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #ddd;\n}\n.panel-default > .panel-heading .badge {\n  color: #f5f5f5;\n  background-color: #333;\n}\n.panel-default > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #ddd;\n}\n.panel-primary {\n  border-color: #337ab7;\n}\n.panel-primary > .panel-heading {\n  color: #fff;\n  background-color: #337ab7;\n  border-color: #337ab7;\n}\n.panel-primary > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #337ab7;\n}\n.panel-primary > .panel-heading .badge {\n  color: #337ab7;\n  background-color: #fff;\n}\n.panel-primary > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #337ab7;\n}\n.panel-success {\n  border-color: #d6e9c6;\n}\n.panel-success > .panel-heading {\n  color: #3c763d;\n  background-color: #dff0d8;\n  border-color: #d6e9c6;\n}\n.panel-success > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #d6e9c6;\n}\n.panel-success > .panel-heading .badge {\n  color: #dff0d8;\n  background-color: #3c763d;\n}\n.panel-success > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #d6e9c6;\n}\n.panel-info {\n  border-color: #bce8f1;\n}\n.panel-info > .panel-heading {\n  color: #31708f;\n  background-color: #d9edf7;\n  border-color: #bce8f1;\n}\n.panel-info > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #bce8f1;\n}\n.panel-info > .panel-heading .badge {\n  color: #d9edf7;\n  background-color: #31708f;\n}\n.panel-info > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #bce8f1;\n}\n.panel-warning {\n  border-color: #faebcc;\n}\n.panel-warning > .panel-heading {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n  border-color: #faebcc;\n}\n.panel-warning > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #faebcc;\n}\n.panel-warning > .panel-heading .badge {\n  color: #fcf8e3;\n  background-color: #8a6d3b;\n}\n.panel-warning > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #faebcc;\n}\n.panel-danger {\n  border-color: #ebccd1;\n}\n.panel-danger > .panel-heading {\n  color: #a94442;\n  background-color: #f2dede;\n  border-color: #ebccd1;\n}\n.panel-danger > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #ebccd1;\n}\n.panel-danger > .panel-heading .badge {\n  color: #f2dede;\n  background-color: #a94442;\n}\n.panel-danger > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #ebccd1;\n}\n.embed-responsive {\n  position: relative;\n  display: block;\n  height: 0;\n  padding: 0;\n  overflow: hidden;\n}\n.embed-responsive .embed-responsive-item,\n.embed-responsive iframe,\n.embed-responsive embed,\n.embed-responsive object,\n.embed-responsive video {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  border: 0;\n}\n.embed-responsive-16by9 {\n  padding-bottom: 56.25%;\n}\n.embed-responsive-4by3 {\n  padding-bottom: 75%;\n}\n.well {\n  min-height: 20px;\n  padding: 19px;\n  margin-bottom: 20px;\n  background-color: #f5f5f5;\n  border: 1px solid #e3e3e3;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);\n}\n.well blockquote {\n  border-color: #ddd;\n  border-color: rgba(0, 0, 0, .15);\n}\n.well-lg {\n  padding: 24px;\n  border-radius: 6px;\n}\n.well-sm {\n  padding: 9px;\n  border-radius: 3px;\n}\n.close {\n  float: right;\n  font-size: 21px;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  filter: alpha(opacity=20);\n  opacity: .2;\n}\n.close:hover,\n.close:focus {\n  color: #000;\n  text-decoration: none;\n  cursor: pointer;\n  filter: alpha(opacity=50);\n  opacity: .5;\n}\nbutton.close {\n  -webkit-appearance: none;\n  padding: 0;\n  cursor: pointer;\n  background: transparent;\n  border: 0;\n}\n.modal-open {\n  overflow: hidden;\n}\n.modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: none;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  outline: 0;\n}\n.modal.fade .modal-dialog {\n  -webkit-transition: -webkit-transform .3s ease-out;\n       -o-transition:      -o-transform .3s ease-out;\n          transition:         transform .3s ease-out;\n  -webkit-transform: translate(0, -25%);\n      -ms-transform: translate(0, -25%);\n       -o-transform: translate(0, -25%);\n          transform: translate(0, -25%);\n}\n.modal.in .modal-dialog {\n  -webkit-transform: translate(0, 0);\n      -ms-transform: translate(0, 0);\n       -o-transform: translate(0, 0);\n          transform: translate(0, 0);\n}\n.modal-open .modal {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.modal-dialog {\n  position: relative;\n  width: auto;\n  margin: 10px;\n}\n.modal-content {\n  position: relative;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n          background-clip: padding-box;\n  border: 1px solid #999;\n  border: 1px solid rgba(0, 0, 0, .2);\n  border-radius: 6px;\n  outline: 0;\n  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);\n          box-shadow: 0 3px 9px rgba(0, 0, 0, .5);\n}\n.modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1040;\n  background-color: #000;\n}\n.modal-backdrop.fade {\n  filter: alpha(opacity=0);\n  opacity: 0;\n}\n.modal-backdrop.in {\n  filter: alpha(opacity=50);\n  opacity: .5;\n}\n.modal-header {\n  padding: 15px;\n  border-bottom: 1px solid #e5e5e5;\n}\n.modal-header .close {\n  margin-top: -2px;\n}\n.modal-title {\n  margin: 0;\n  line-height: 1.42857143;\n}\n.modal-body {\n  position: relative;\n  padding: 15px;\n}\n.modal-footer {\n  padding: 15px;\n  text-align: right;\n  border-top: 1px solid #e5e5e5;\n}\n.modal-footer .btn + .btn {\n  margin-bottom: 0;\n  margin-left: 5px;\n}\n.modal-footer .btn-group .btn + .btn {\n  margin-left: -1px;\n}\n.modal-footer .btn-block + .btn-block {\n  margin-left: 0;\n}\n.modal-scrollbar-measure {\n  position: absolute;\n  top: -9999px;\n  width: 50px;\n  height: 50px;\n  overflow: scroll;\n}\n@media (min-width: 768px) {\n  .modal-dialog {\n    width: 600px;\n    margin: 30px auto;\n  }\n  .modal-content {\n    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);\n            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);\n  }\n  .modal-sm {\n    width: 300px;\n  }\n}\n@media (min-width: 992px) {\n  .modal-lg {\n    width: 900px;\n  }\n}\n.tooltip {\n  position: absolute;\n  z-index: 1070;\n  display: block;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 12px;\n  font-style: normal;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: left;\n  text-align: start;\n  text-decoration: none;\n  text-shadow: none;\n  text-transform: none;\n  letter-spacing: normal;\n  word-break: normal;\n  word-spacing: normal;\n  word-wrap: normal;\n  white-space: normal;\n  filter: alpha(opacity=0);\n  opacity: 0;\n\n  line-break: auto;\n}\n.tooltip.in {\n  filter: alpha(opacity=90);\n  opacity: .9;\n}\n.tooltip.top {\n  padding: 5px 0;\n  margin-top: -3px;\n}\n.tooltip.right {\n  padding: 0 5px;\n  margin-left: 3px;\n}\n.tooltip.bottom {\n  padding: 5px 0;\n  margin-top: 3px;\n}\n.tooltip.left {\n  padding: 0 5px;\n  margin-left: -3px;\n}\n.tooltip-inner {\n  max-width: 200px;\n  padding: 3px 8px;\n  color: #fff;\n  text-align: center;\n  background-color: #000;\n  border-radius: 4px;\n}\n.tooltip-arrow {\n  position: absolute;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.tooltip.top .tooltip-arrow {\n  bottom: 0;\n  left: 50%;\n  margin-left: -5px;\n  border-width: 5px 5px 0;\n  border-top-color: #000;\n}\n.tooltip.top-left .tooltip-arrow {\n  right: 5px;\n  bottom: 0;\n  margin-bottom: -5px;\n  border-width: 5px 5px 0;\n  border-top-color: #000;\n}\n.tooltip.top-right .tooltip-arrow {\n  bottom: 0;\n  left: 5px;\n  margin-bottom: -5px;\n  border-width: 5px 5px 0;\n  border-top-color: #000;\n}\n.tooltip.right .tooltip-arrow {\n  top: 50%;\n  left: 0;\n  margin-top: -5px;\n  border-width: 5px 5px 5px 0;\n  border-right-color: #000;\n}\n.tooltip.left .tooltip-arrow {\n  top: 50%;\n  right: 0;\n  margin-top: -5px;\n  border-width: 5px 0 5px 5px;\n  border-left-color: #000;\n}\n.tooltip.bottom .tooltip-arrow {\n  top: 0;\n  left: 50%;\n  margin-left: -5px;\n  border-width: 0 5px 5px;\n  border-bottom-color: #000;\n}\n.tooltip.bottom-left .tooltip-arrow {\n  top: 0;\n  right: 5px;\n  margin-top: -5px;\n  border-width: 0 5px 5px;\n  border-bottom-color: #000;\n}\n.tooltip.bottom-right .tooltip-arrow {\n  top: 0;\n  left: 5px;\n  margin-top: -5px;\n  border-width: 0 5px 5px;\n  border-bottom-color: #000;\n}\n.popover {\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 1060;\n  display: none;\n  max-width: 276px;\n  padding: 1px;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  font-style: normal;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: left;\n  text-align: start;\n  text-decoration: none;\n  text-shadow: none;\n  text-transform: none;\n  letter-spacing: normal;\n  word-break: normal;\n  word-spacing: normal;\n  word-wrap: normal;\n  white-space: normal;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n          background-clip: padding-box;\n  border: 1px solid #ccc;\n  border: 1px solid rgba(0, 0, 0, .2);\n  border-radius: 6px;\n  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);\n          box-shadow: 0 5px 10px rgba(0, 0, 0, .2);\n\n  line-break: auto;\n}\n.popover.top {\n  margin-top: -10px;\n}\n.popover.right {\n  margin-left: 10px;\n}\n.popover.bottom {\n  margin-top: 10px;\n}\n.popover.left {\n  margin-left: -10px;\n}\n.popover-title {\n  padding: 8px 14px;\n  margin: 0;\n  font-size: 14px;\n  background-color: #f7f7f7;\n  border-bottom: 1px solid #ebebeb;\n  border-radius: 5px 5px 0 0;\n}\n.popover-content {\n  padding: 9px 14px;\n}\n.popover > .arrow,\n.popover > .arrow:after {\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.popover > .arrow {\n  border-width: 11px;\n}\n.popover > .arrow:after {\n  content: \"\";\n  border-width: 10px;\n}\n.popover.top > .arrow {\n  bottom: -11px;\n  left: 50%;\n  margin-left: -11px;\n  border-top-color: #999;\n  border-top-color: rgba(0, 0, 0, .25);\n  border-bottom-width: 0;\n}\n.popover.top > .arrow:after {\n  bottom: 1px;\n  margin-left: -10px;\n  content: \" \";\n  border-top-color: #fff;\n  border-bottom-width: 0;\n}\n.popover.right > .arrow {\n  top: 50%;\n  left: -11px;\n  margin-top: -11px;\n  border-right-color: #999;\n  border-right-color: rgba(0, 0, 0, .25);\n  border-left-width: 0;\n}\n.popover.right > .arrow:after {\n  bottom: -10px;\n  left: 1px;\n  content: \" \";\n  border-right-color: #fff;\n  border-left-width: 0;\n}\n.popover.bottom > .arrow {\n  top: -11px;\n  left: 50%;\n  margin-left: -11px;\n  border-top-width: 0;\n  border-bottom-color: #999;\n  border-bottom-color: rgba(0, 0, 0, .25);\n}\n.popover.bottom > .arrow:after {\n  top: 1px;\n  margin-left: -10px;\n  content: \" \";\n  border-top-width: 0;\n  border-bottom-color: #fff;\n}\n.popover.left > .arrow {\n  top: 50%;\n  right: -11px;\n  margin-top: -11px;\n  border-right-width: 0;\n  border-left-color: #999;\n  border-left-color: rgba(0, 0, 0, .25);\n}\n.popover.left > .arrow:after {\n  right: 1px;\n  bottom: -10px;\n  content: \" \";\n  border-right-width: 0;\n  border-left-color: #fff;\n}\n.carousel {\n  position: relative;\n}\n.carousel-inner {\n  position: relative;\n  width: 100%;\n  overflow: hidden;\n}\n.carousel-inner > .item {\n  position: relative;\n  display: none;\n  -webkit-transition: .6s ease-in-out left;\n       -o-transition: .6s ease-in-out left;\n          transition: .6s ease-in-out left;\n}\n.carousel-inner > .item > img,\n.carousel-inner > .item > a > img {\n  line-height: 1;\n}\n@media all and (transform-3d), (-webkit-transform-3d) {\n  .carousel-inner > .item {\n    -webkit-transition: -webkit-transform .6s ease-in-out;\n         -o-transition:      -o-transform .6s ease-in-out;\n            transition:         transform .6s ease-in-out;\n\n    -webkit-backface-visibility: hidden;\n            backface-visibility: hidden;\n    -webkit-perspective: 1000px;\n            perspective: 1000px;\n  }\n  .carousel-inner > .item.next,\n  .carousel-inner > .item.active.right {\n    left: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n  }\n  .carousel-inner > .item.prev,\n  .carousel-inner > .item.active.left {\n    left: 0;\n    -webkit-transform: translate3d(-100%, 0, 0);\n            transform: translate3d(-100%, 0, 0);\n  }\n  .carousel-inner > .item.next.left,\n  .carousel-inner > .item.prev.right,\n  .carousel-inner > .item.active {\n    left: 0;\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n  }\n}\n.carousel-inner > .active,\n.carousel-inner > .next,\n.carousel-inner > .prev {\n  display: block;\n}\n.carousel-inner > .active {\n  left: 0;\n}\n.carousel-inner > .next,\n.carousel-inner > .prev {\n  position: absolute;\n  top: 0;\n  width: 100%;\n}\n.carousel-inner > .next {\n  left: 100%;\n}\n.carousel-inner > .prev {\n  left: -100%;\n}\n.carousel-inner > .next.left,\n.carousel-inner > .prev.right {\n  left: 0;\n}\n.carousel-inner > .active.left {\n  left: -100%;\n}\n.carousel-inner > .active.right {\n  left: 100%;\n}\n.carousel-control {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 15%;\n  font-size: 20px;\n  color: #fff;\n  text-align: center;\n  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);\n  background-color: rgba(0, 0, 0, 0);\n  filter: alpha(opacity=50);\n  opacity: .5;\n}\n.carousel-control.left {\n  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);\n  background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);\n  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .0001)));\n  background-image:         linear-gradient(to right, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);\n  background-repeat: repeat-x;\n}\n.carousel-control.right {\n  right: 0;\n  left: auto;\n  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);\n  background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);\n  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .0001)), to(rgba(0, 0, 0, .5)));\n  background-image:         linear-gradient(to right, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);\n  background-repeat: repeat-x;\n}\n.carousel-control:hover,\n.carousel-control:focus {\n  color: #fff;\n  text-decoration: none;\n  filter: alpha(opacity=90);\n  outline: 0;\n  opacity: .9;\n}\n.carousel-control .icon-prev,\n.carousel-control .icon-next,\n.carousel-control .glyphicon-chevron-left,\n.carousel-control .glyphicon-chevron-right {\n  position: absolute;\n  top: 50%;\n  z-index: 5;\n  display: inline-block;\n  margin-top: -10px;\n}\n.carousel-control .icon-prev,\n.carousel-control .glyphicon-chevron-left {\n  left: 50%;\n  margin-left: -10px;\n}\n.carousel-control .icon-next,\n.carousel-control .glyphicon-chevron-right {\n  right: 50%;\n  margin-right: -10px;\n}\n.carousel-control .icon-prev,\n.carousel-control .icon-next {\n  width: 20px;\n  height: 20px;\n  font-family: serif;\n  line-height: 1;\n}\n.carousel-control .icon-prev:before {\n  content: '\\2039';\n}\n.carousel-control .icon-next:before {\n  content: '\\203A';\n}\n.carousel-indicators {\n  position: absolute;\n  bottom: 10px;\n  left: 50%;\n  z-index: 15;\n  width: 60%;\n  padding-left: 0;\n  margin-left: -30%;\n  text-align: center;\n  list-style: none;\n}\n.carousel-indicators li {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  margin: 1px;\n  text-indent: -999px;\n  cursor: pointer;\n  background-color: #000 \\9;\n  background-color: rgba(0, 0, 0, 0);\n  border: 1px solid #fff;\n  border-radius: 10px;\n}\n.carousel-indicators .active {\n  width: 12px;\n  height: 12px;\n  margin: 0;\n  background-color: #fff;\n}\n.carousel-caption {\n  position: absolute;\n  right: 15%;\n  bottom: 20px;\n  left: 15%;\n  z-index: 10;\n  padding-top: 20px;\n  padding-bottom: 20px;\n  color: #fff;\n  text-align: center;\n  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);\n}\n.carousel-caption .btn {\n  text-shadow: none;\n}\n@media screen and (min-width: 768px) {\n  .carousel-control .glyphicon-chevron-left,\n  .carousel-control .glyphicon-chevron-right,\n  .carousel-control .icon-prev,\n  .carousel-control .icon-next {\n    width: 30px;\n    height: 30px;\n    margin-top: -10px;\n    font-size: 30px;\n  }\n  .carousel-control .glyphicon-chevron-left,\n  .carousel-control .icon-prev {\n    margin-left: -10px;\n  }\n  .carousel-control .glyphicon-chevron-right,\n  .carousel-control .icon-next {\n    margin-right: -10px;\n  }\n  .carousel-caption {\n    right: 20%;\n    left: 20%;\n    padding-bottom: 30px;\n  }\n  .carousel-indicators {\n    bottom: 20px;\n  }\n}\n.clearfix:before,\n.clearfix:after,\n.dl-horizontal dd:before,\n.dl-horizontal dd:after,\n.container:before,\n.container:after,\n.container-fluid:before,\n.container-fluid:after,\n.row:before,\n.row:after,\n.form-horizontal .form-group:before,\n.form-horizontal .form-group:after,\n.btn-toolbar:before,\n.btn-toolbar:after,\n.btn-group-vertical > .btn-group:before,\n.btn-group-vertical > .btn-group:after,\n.nav:before,\n.nav:after,\n.navbar:before,\n.navbar:after,\n.navbar-header:before,\n.navbar-header:after,\n.navbar-collapse:before,\n.navbar-collapse:after,\n.pager:before,\n.pager:after,\n.panel-body:before,\n.panel-body:after,\n.modal-header:before,\n.modal-header:after,\n.modal-footer:before,\n.modal-footer:after {\n  display: table;\n  content: \" \";\n}\n.clearfix:after,\n.dl-horizontal dd:after,\n.container:after,\n.container-fluid:after,\n.row:after,\n.form-horizontal .form-group:after,\n.btn-toolbar:after,\n.btn-group-vertical > .btn-group:after,\n.nav:after,\n.navbar:after,\n.navbar-header:after,\n.navbar-collapse:after,\n.pager:after,\n.panel-body:after,\n.modal-header:after,\n.modal-footer:after {\n  clear: both;\n}\n.center-block {\n  display: block;\n  margin-right: auto;\n  margin-left: auto;\n}\n.pull-right {\n  float: right !important;\n}\n.pull-left {\n  float: left !important;\n}\n.hide {\n  display: none !important;\n}\n.show {\n  display: block !important;\n}\n.invisible {\n  visibility: hidden;\n}\n.text-hide {\n  font: 0/0 a;\n  color: transparent;\n  text-shadow: none;\n  background-color: transparent;\n  border: 0;\n}\n.hidden {\n  display: none !important;\n}\n.affix {\n  position: fixed;\n}\n@-ms-viewport {\n  width: device-width;\n}\n.visible-xs,\n.visible-sm,\n.visible-md,\n.visible-lg {\n  display: none !important;\n}\n.visible-xs-block,\n.visible-xs-inline,\n.visible-xs-inline-block,\n.visible-sm-block,\n.visible-sm-inline,\n.visible-sm-inline-block,\n.visible-md-block,\n.visible-md-inline,\n.visible-md-inline-block,\n.visible-lg-block,\n.visible-lg-inline,\n.visible-lg-inline-block {\n  display: none !important;\n}\n@media (max-width: 767px) {\n  .visible-xs {\n    display: block !important;\n  }\n  table.visible-xs {\n    display: table !important;\n  }\n  tr.visible-xs {\n    display: table-row !important;\n  }\n  th.visible-xs,\n  td.visible-xs {\n    display: table-cell !important;\n  }\n}\n@media (max-width: 767px) {\n  .visible-xs-block {\n    display: block !important;\n  }\n}\n@media (max-width: 767px) {\n  .visible-xs-inline {\n    display: inline !important;\n  }\n}\n@media (max-width: 767px) {\n  .visible-xs-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm {\n    display: block !important;\n  }\n  table.visible-sm {\n    display: table !important;\n  }\n  tr.visible-sm {\n    display: table-row !important;\n  }\n  th.visible-sm,\n  td.visible-sm {\n    display: table-cell !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm-block {\n    display: block !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm-inline {\n    display: inline !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md {\n    display: block !important;\n  }\n  table.visible-md {\n    display: table !important;\n  }\n  tr.visible-md {\n    display: table-row !important;\n  }\n  th.visible-md,\n  td.visible-md {\n    display: table-cell !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md-block {\n    display: block !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md-inline {\n    display: inline !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg {\n    display: block !important;\n  }\n  table.visible-lg {\n    display: table !important;\n  }\n  tr.visible-lg {\n    display: table-row !important;\n  }\n  th.visible-lg,\n  td.visible-lg {\n    display: table-cell !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg-block {\n    display: block !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg-inline {\n    display: inline !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (max-width: 767px) {\n  .hidden-xs {\n    display: none !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .hidden-sm {\n    display: none !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .hidden-md {\n    display: none !important;\n  }\n}\n@media (min-width: 1200px) {\n  .hidden-lg {\n    display: none !important;\n  }\n}\n.visible-print {\n  display: none !important;\n}\n@media print {\n  .visible-print {\n    display: block !important;\n  }\n  table.visible-print {\n    display: table !important;\n  }\n  tr.visible-print {\n    display: table-row !important;\n  }\n  th.visible-print,\n  td.visible-print {\n    display: table-cell !important;\n  }\n}\n.visible-print-block {\n  display: none !important;\n}\n@media print {\n  .visible-print-block {\n    display: block !important;\n  }\n}\n.visible-print-inline {\n  display: none !important;\n}\n@media print {\n  .visible-print-inline {\n    display: inline !important;\n  }\n}\n.visible-print-inline-block {\n  display: none !important;\n}\n@media print {\n  .visible-print-inline-block {\n    display: inline-block !important;\n  }\n}\n@media print {\n  .hidden-print {\n    display: none !important;\n  }\n}\n", ""]);
+exports.push([module.i, "/*!\n * Bootstrap v3.3.7 (http://getbootstrap.com)\n * Copyright 2011-2016 Twitter, Inc.\n * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)\n */\n/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */\nhtml {\n  font-family: sans-serif;\n  -webkit-text-size-adjust: 100%;\n      -ms-text-size-adjust: 100%;\n}\nbody {\n  margin: 0;\n}\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block;\n}\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n  vertical-align: baseline;\n}\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n[hidden],\ntemplate {\n  display: none;\n}\na {\n  background-color: transparent;\n}\na:active,\na:hover {\n  outline: 0;\n}\nabbr[title] {\n  border-bottom: 1px dotted;\n}\nb,\nstrong {\n  font-weight: bold;\n}\ndfn {\n  font-style: italic;\n}\nh1 {\n  margin: .67em 0;\n  font-size: 2em;\n}\nmark {\n  color: #000;\n  background: #ff0;\n}\nsmall {\n  font-size: 80%;\n}\nsub,\nsup {\n  position: relative;\n  font-size: 75%;\n  line-height: 0;\n  vertical-align: baseline;\n}\nsup {\n  top: -.5em;\n}\nsub {\n  bottom: -.25em;\n}\nimg {\n  border: 0;\n}\nsvg:not(:root) {\n  overflow: hidden;\n}\nfigure {\n  margin: 1em 40px;\n}\nhr {\n  height: 0;\n  -webkit-box-sizing: content-box;\n     -moz-box-sizing: content-box;\n          box-sizing: content-box;\n}\npre {\n  overflow: auto;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em;\n}\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  margin: 0;\n  font: inherit;\n  color: inherit;\n}\nbutton {\n  overflow: visible;\n}\nbutton,\nselect {\n  text-transform: none;\n}\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  cursor: pointer;\n}\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default;\n}\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  padding: 0;\n  border: 0;\n}\ninput {\n  line-height: normal;\n}\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: 0;\n}\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\ninput[type=\"search\"] {\n  -webkit-box-sizing: content-box;\n     -moz-box-sizing: content-box;\n          box-sizing: content-box;\n  -webkit-appearance: textfield;\n}\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\nfieldset {\n  padding: .35em .625em .75em;\n  margin: 0 2px;\n  border: 1px solid #c0c0c0;\n}\nlegend {\n  padding: 0;\n  border: 0;\n}\ntextarea {\n  overflow: auto;\n}\noptgroup {\n  font-weight: bold;\n}\ntable {\n  border-spacing: 0;\n  border-collapse: collapse;\n}\ntd,\nth {\n  padding: 0;\n}\n/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */\n@media print {\n  *,\n  *:before,\n  *:after {\n    color: #000 !important;\n    text-shadow: none !important;\n    background: transparent !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n  }\n  a,\n  a:visited {\n    text-decoration: underline;\n  }\n  a[href]:after {\n    content: \" (\" attr(href) \")\";\n  }\n  abbr[title]:after {\n    content: \" (\" attr(title) \")\";\n  }\n  a[href^=\"#\"]:after,\n  a[href^=\"javascript:\"]:after {\n    content: \"\";\n  }\n  pre,\n  blockquote {\n    border: 1px solid #999;\n\n    page-break-inside: avoid;\n  }\n  thead {\n    display: table-header-group;\n  }\n  tr,\n  img {\n    page-break-inside: avoid;\n  }\n  img {\n    max-width: 100% !important;\n  }\n  p,\n  h2,\n  h3 {\n    orphans: 3;\n    widows: 3;\n  }\n  h2,\n  h3 {\n    page-break-after: avoid;\n  }\n  .navbar {\n    display: none;\n  }\n  .btn > .caret,\n  .dropup > .btn > .caret {\n    border-top-color: #000 !important;\n  }\n  .label {\n    border: 1px solid #000;\n  }\n  .table {\n    border-collapse: collapse !important;\n  }\n  .table td,\n  .table th {\n    background-color: #fff !important;\n  }\n  .table-bordered th,\n  .table-bordered td {\n    border: 1px solid #ddd !important;\n  }\n}\n@font-face {\n  font-family: 'Glyphicons Halflings';\n\n  src: url(" + __webpack_require__(22) + ");\n  src: url(" + __webpack_require__(22) + "?#iefix) format('embedded-opentype'), url(" + __webpack_require__(231) + ") format('woff2'), url(" + __webpack_require__(232) + ") format('woff'), url(" + __webpack_require__(233) + ") format('truetype'), url(" + __webpack_require__(234) + "#glyphicons_halflingsregular) format('svg');\n}\n.glyphicon {\n  position: relative;\n  top: 1px;\n  display: inline-block;\n  font-family: 'Glyphicons Halflings';\n  font-style: normal;\n  font-weight: normal;\n  line-height: 1;\n\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n.glyphicon-asterisk:before {\n  content: \"*\";\n}\n.glyphicon-plus:before {\n  content: \"+\";\n}\n.glyphicon-euro:before,\n.glyphicon-eur:before {\n  content: \"\\20AC\";\n}\n.glyphicon-minus:before {\n  content: \"\\2212\";\n}\n.glyphicon-cloud:before {\n  content: \"\\2601\";\n}\n.glyphicon-envelope:before {\n  content: \"\\2709\";\n}\n.glyphicon-pencil:before {\n  content: \"\\270F\";\n}\n.glyphicon-glass:before {\n  content: \"\\E001\";\n}\n.glyphicon-music:before {\n  content: \"\\E002\";\n}\n.glyphicon-search:before {\n  content: \"\\E003\";\n}\n.glyphicon-heart:before {\n  content: \"\\E005\";\n}\n.glyphicon-star:before {\n  content: \"\\E006\";\n}\n.glyphicon-star-empty:before {\n  content: \"\\E007\";\n}\n.glyphicon-user:before {\n  content: \"\\E008\";\n}\n.glyphicon-film:before {\n  content: \"\\E009\";\n}\n.glyphicon-th-large:before {\n  content: \"\\E010\";\n}\n.glyphicon-th:before {\n  content: \"\\E011\";\n}\n.glyphicon-th-list:before {\n  content: \"\\E012\";\n}\n.glyphicon-ok:before {\n  content: \"\\E013\";\n}\n.glyphicon-remove:before {\n  content: \"\\E014\";\n}\n.glyphicon-zoom-in:before {\n  content: \"\\E015\";\n}\n.glyphicon-zoom-out:before {\n  content: \"\\E016\";\n}\n.glyphicon-off:before {\n  content: \"\\E017\";\n}\n.glyphicon-signal:before {\n  content: \"\\E018\";\n}\n.glyphicon-cog:before {\n  content: \"\\E019\";\n}\n.glyphicon-trash:before {\n  content: \"\\E020\";\n}\n.glyphicon-home:before {\n  content: \"\\E021\";\n}\n.glyphicon-file:before {\n  content: \"\\E022\";\n}\n.glyphicon-time:before {\n  content: \"\\E023\";\n}\n.glyphicon-road:before {\n  content: \"\\E024\";\n}\n.glyphicon-download-alt:before {\n  content: \"\\E025\";\n}\n.glyphicon-download:before {\n  content: \"\\E026\";\n}\n.glyphicon-upload:before {\n  content: \"\\E027\";\n}\n.glyphicon-inbox:before {\n  content: \"\\E028\";\n}\n.glyphicon-play-circle:before {\n  content: \"\\E029\";\n}\n.glyphicon-repeat:before {\n  content: \"\\E030\";\n}\n.glyphicon-refresh:before {\n  content: \"\\E031\";\n}\n.glyphicon-list-alt:before {\n  content: \"\\E032\";\n}\n.glyphicon-lock:before {\n  content: \"\\E033\";\n}\n.glyphicon-flag:before {\n  content: \"\\E034\";\n}\n.glyphicon-headphones:before {\n  content: \"\\E035\";\n}\n.glyphicon-volume-off:before {\n  content: \"\\E036\";\n}\n.glyphicon-volume-down:before {\n  content: \"\\E037\";\n}\n.glyphicon-volume-up:before {\n  content: \"\\E038\";\n}\n.glyphicon-qrcode:before {\n  content: \"\\E039\";\n}\n.glyphicon-barcode:before {\n  content: \"\\E040\";\n}\n.glyphicon-tag:before {\n  content: \"\\E041\";\n}\n.glyphicon-tags:before {\n  content: \"\\E042\";\n}\n.glyphicon-book:before {\n  content: \"\\E043\";\n}\n.glyphicon-bookmark:before {\n  content: \"\\E044\";\n}\n.glyphicon-print:before {\n  content: \"\\E045\";\n}\n.glyphicon-camera:before {\n  content: \"\\E046\";\n}\n.glyphicon-font:before {\n  content: \"\\E047\";\n}\n.glyphicon-bold:before {\n  content: \"\\E048\";\n}\n.glyphicon-italic:before {\n  content: \"\\E049\";\n}\n.glyphicon-text-height:before {\n  content: \"\\E050\";\n}\n.glyphicon-text-width:before {\n  content: \"\\E051\";\n}\n.glyphicon-align-left:before {\n  content: \"\\E052\";\n}\n.glyphicon-align-center:before {\n  content: \"\\E053\";\n}\n.glyphicon-align-right:before {\n  content: \"\\E054\";\n}\n.glyphicon-align-justify:before {\n  content: \"\\E055\";\n}\n.glyphicon-list:before {\n  content: \"\\E056\";\n}\n.glyphicon-indent-left:before {\n  content: \"\\E057\";\n}\n.glyphicon-indent-right:before {\n  content: \"\\E058\";\n}\n.glyphicon-facetime-video:before {\n  content: \"\\E059\";\n}\n.glyphicon-picture:before {\n  content: \"\\E060\";\n}\n.glyphicon-map-marker:before {\n  content: \"\\E062\";\n}\n.glyphicon-adjust:before {\n  content: \"\\E063\";\n}\n.glyphicon-tint:before {\n  content: \"\\E064\";\n}\n.glyphicon-edit:before {\n  content: \"\\E065\";\n}\n.glyphicon-share:before {\n  content: \"\\E066\";\n}\n.glyphicon-check:before {\n  content: \"\\E067\";\n}\n.glyphicon-move:before {\n  content: \"\\E068\";\n}\n.glyphicon-step-backward:before {\n  content: \"\\E069\";\n}\n.glyphicon-fast-backward:before {\n  content: \"\\E070\";\n}\n.glyphicon-backward:before {\n  content: \"\\E071\";\n}\n.glyphicon-play:before {\n  content: \"\\E072\";\n}\n.glyphicon-pause:before {\n  content: \"\\E073\";\n}\n.glyphicon-stop:before {\n  content: \"\\E074\";\n}\n.glyphicon-forward:before {\n  content: \"\\E075\";\n}\n.glyphicon-fast-forward:before {\n  content: \"\\E076\";\n}\n.glyphicon-step-forward:before {\n  content: \"\\E077\";\n}\n.glyphicon-eject:before {\n  content: \"\\E078\";\n}\n.glyphicon-chevron-left:before {\n  content: \"\\E079\";\n}\n.glyphicon-chevron-right:before {\n  content: \"\\E080\";\n}\n.glyphicon-plus-sign:before {\n  content: \"\\E081\";\n}\n.glyphicon-minus-sign:before {\n  content: \"\\E082\";\n}\n.glyphicon-remove-sign:before {\n  content: \"\\E083\";\n}\n.glyphicon-ok-sign:before {\n  content: \"\\E084\";\n}\n.glyphicon-question-sign:before {\n  content: \"\\E085\";\n}\n.glyphicon-info-sign:before {\n  content: \"\\E086\";\n}\n.glyphicon-screenshot:before {\n  content: \"\\E087\";\n}\n.glyphicon-remove-circle:before {\n  content: \"\\E088\";\n}\n.glyphicon-ok-circle:before {\n  content: \"\\E089\";\n}\n.glyphicon-ban-circle:before {\n  content: \"\\E090\";\n}\n.glyphicon-arrow-left:before {\n  content: \"\\E091\";\n}\n.glyphicon-arrow-right:before {\n  content: \"\\E092\";\n}\n.glyphicon-arrow-up:before {\n  content: \"\\E093\";\n}\n.glyphicon-arrow-down:before {\n  content: \"\\E094\";\n}\n.glyphicon-share-alt:before {\n  content: \"\\E095\";\n}\n.glyphicon-resize-full:before {\n  content: \"\\E096\";\n}\n.glyphicon-resize-small:before {\n  content: \"\\E097\";\n}\n.glyphicon-exclamation-sign:before {\n  content: \"\\E101\";\n}\n.glyphicon-gift:before {\n  content: \"\\E102\";\n}\n.glyphicon-leaf:before {\n  content: \"\\E103\";\n}\n.glyphicon-fire:before {\n  content: \"\\E104\";\n}\n.glyphicon-eye-open:before {\n  content: \"\\E105\";\n}\n.glyphicon-eye-close:before {\n  content: \"\\E106\";\n}\n.glyphicon-warning-sign:before {\n  content: \"\\E107\";\n}\n.glyphicon-plane:before {\n  content: \"\\E108\";\n}\n.glyphicon-calendar:before {\n  content: \"\\E109\";\n}\n.glyphicon-random:before {\n  content: \"\\E110\";\n}\n.glyphicon-comment:before {\n  content: \"\\E111\";\n}\n.glyphicon-magnet:before {\n  content: \"\\E112\";\n}\n.glyphicon-chevron-up:before {\n  content: \"\\E113\";\n}\n.glyphicon-chevron-down:before {\n  content: \"\\E114\";\n}\n.glyphicon-retweet:before {\n  content: \"\\E115\";\n}\n.glyphicon-shopping-cart:before {\n  content: \"\\E116\";\n}\n.glyphicon-folder-close:before {\n  content: \"\\E117\";\n}\n.glyphicon-folder-open:before {\n  content: \"\\E118\";\n}\n.glyphicon-resize-vertical:before {\n  content: \"\\E119\";\n}\n.glyphicon-resize-horizontal:before {\n  content: \"\\E120\";\n}\n.glyphicon-hdd:before {\n  content: \"\\E121\";\n}\n.glyphicon-bullhorn:before {\n  content: \"\\E122\";\n}\n.glyphicon-bell:before {\n  content: \"\\E123\";\n}\n.glyphicon-certificate:before {\n  content: \"\\E124\";\n}\n.glyphicon-thumbs-up:before {\n  content: \"\\E125\";\n}\n.glyphicon-thumbs-down:before {\n  content: \"\\E126\";\n}\n.glyphicon-hand-right:before {\n  content: \"\\E127\";\n}\n.glyphicon-hand-left:before {\n  content: \"\\E128\";\n}\n.glyphicon-hand-up:before {\n  content: \"\\E129\";\n}\n.glyphicon-hand-down:before {\n  content: \"\\E130\";\n}\n.glyphicon-circle-arrow-right:before {\n  content: \"\\E131\";\n}\n.glyphicon-circle-arrow-left:before {\n  content: \"\\E132\";\n}\n.glyphicon-circle-arrow-up:before {\n  content: \"\\E133\";\n}\n.glyphicon-circle-arrow-down:before {\n  content: \"\\E134\";\n}\n.glyphicon-globe:before {\n  content: \"\\E135\";\n}\n.glyphicon-wrench:before {\n  content: \"\\E136\";\n}\n.glyphicon-tasks:before {\n  content: \"\\E137\";\n}\n.glyphicon-filter:before {\n  content: \"\\E138\";\n}\n.glyphicon-briefcase:before {\n  content: \"\\E139\";\n}\n.glyphicon-fullscreen:before {\n  content: \"\\E140\";\n}\n.glyphicon-dashboard:before {\n  content: \"\\E141\";\n}\n.glyphicon-paperclip:before {\n  content: \"\\E142\";\n}\n.glyphicon-heart-empty:before {\n  content: \"\\E143\";\n}\n.glyphicon-link:before {\n  content: \"\\E144\";\n}\n.glyphicon-phone:before {\n  content: \"\\E145\";\n}\n.glyphicon-pushpin:before {\n  content: \"\\E146\";\n}\n.glyphicon-usd:before {\n  content: \"\\E148\";\n}\n.glyphicon-gbp:before {\n  content: \"\\E149\";\n}\n.glyphicon-sort:before {\n  content: \"\\E150\";\n}\n.glyphicon-sort-by-alphabet:before {\n  content: \"\\E151\";\n}\n.glyphicon-sort-by-alphabet-alt:before {\n  content: \"\\E152\";\n}\n.glyphicon-sort-by-order:before {\n  content: \"\\E153\";\n}\n.glyphicon-sort-by-order-alt:before {\n  content: \"\\E154\";\n}\n.glyphicon-sort-by-attributes:before {\n  content: \"\\E155\";\n}\n.glyphicon-sort-by-attributes-alt:before {\n  content: \"\\E156\";\n}\n.glyphicon-unchecked:before {\n  content: \"\\E157\";\n}\n.glyphicon-expand:before {\n  content: \"\\E158\";\n}\n.glyphicon-collapse-down:before {\n  content: \"\\E159\";\n}\n.glyphicon-collapse-up:before {\n  content: \"\\E160\";\n}\n.glyphicon-log-in:before {\n  content: \"\\E161\";\n}\n.glyphicon-flash:before {\n  content: \"\\E162\";\n}\n.glyphicon-log-out:before {\n  content: \"\\E163\";\n}\n.glyphicon-new-window:before {\n  content: \"\\E164\";\n}\n.glyphicon-record:before {\n  content: \"\\E165\";\n}\n.glyphicon-save:before {\n  content: \"\\E166\";\n}\n.glyphicon-open:before {\n  content: \"\\E167\";\n}\n.glyphicon-saved:before {\n  content: \"\\E168\";\n}\n.glyphicon-import:before {\n  content: \"\\E169\";\n}\n.glyphicon-export:before {\n  content: \"\\E170\";\n}\n.glyphicon-send:before {\n  content: \"\\E171\";\n}\n.glyphicon-floppy-disk:before {\n  content: \"\\E172\";\n}\n.glyphicon-floppy-saved:before {\n  content: \"\\E173\";\n}\n.glyphicon-floppy-remove:before {\n  content: \"\\E174\";\n}\n.glyphicon-floppy-save:before {\n  content: \"\\E175\";\n}\n.glyphicon-floppy-open:before {\n  content: \"\\E176\";\n}\n.glyphicon-credit-card:before {\n  content: \"\\E177\";\n}\n.glyphicon-transfer:before {\n  content: \"\\E178\";\n}\n.glyphicon-cutlery:before {\n  content: \"\\E179\";\n}\n.glyphicon-header:before {\n  content: \"\\E180\";\n}\n.glyphicon-compressed:before {\n  content: \"\\E181\";\n}\n.glyphicon-earphone:before {\n  content: \"\\E182\";\n}\n.glyphicon-phone-alt:before {\n  content: \"\\E183\";\n}\n.glyphicon-tower:before {\n  content: \"\\E184\";\n}\n.glyphicon-stats:before {\n  content: \"\\E185\";\n}\n.glyphicon-sd-video:before {\n  content: \"\\E186\";\n}\n.glyphicon-hd-video:before {\n  content: \"\\E187\";\n}\n.glyphicon-subtitles:before {\n  content: \"\\E188\";\n}\n.glyphicon-sound-stereo:before {\n  content: \"\\E189\";\n}\n.glyphicon-sound-dolby:before {\n  content: \"\\E190\";\n}\n.glyphicon-sound-5-1:before {\n  content: \"\\E191\";\n}\n.glyphicon-sound-6-1:before {\n  content: \"\\E192\";\n}\n.glyphicon-sound-7-1:before {\n  content: \"\\E193\";\n}\n.glyphicon-copyright-mark:before {\n  content: \"\\E194\";\n}\n.glyphicon-registration-mark:before {\n  content: \"\\E195\";\n}\n.glyphicon-cloud-download:before {\n  content: \"\\E197\";\n}\n.glyphicon-cloud-upload:before {\n  content: \"\\E198\";\n}\n.glyphicon-tree-conifer:before {\n  content: \"\\E199\";\n}\n.glyphicon-tree-deciduous:before {\n  content: \"\\E200\";\n}\n.glyphicon-cd:before {\n  content: \"\\E201\";\n}\n.glyphicon-save-file:before {\n  content: \"\\E202\";\n}\n.glyphicon-open-file:before {\n  content: \"\\E203\";\n}\n.glyphicon-level-up:before {\n  content: \"\\E204\";\n}\n.glyphicon-copy:before {\n  content: \"\\E205\";\n}\n.glyphicon-paste:before {\n  content: \"\\E206\";\n}\n.glyphicon-alert:before {\n  content: \"\\E209\";\n}\n.glyphicon-equalizer:before {\n  content: \"\\E210\";\n}\n.glyphicon-king:before {\n  content: \"\\E211\";\n}\n.glyphicon-queen:before {\n  content: \"\\E212\";\n}\n.glyphicon-pawn:before {\n  content: \"\\E213\";\n}\n.glyphicon-bishop:before {\n  content: \"\\E214\";\n}\n.glyphicon-knight:before {\n  content: \"\\E215\";\n}\n.glyphicon-baby-formula:before {\n  content: \"\\E216\";\n}\n.glyphicon-tent:before {\n  content: \"\\26FA\";\n}\n.glyphicon-blackboard:before {\n  content: \"\\E218\";\n}\n.glyphicon-bed:before {\n  content: \"\\E219\";\n}\n.glyphicon-apple:before {\n  content: \"\\F8FF\";\n}\n.glyphicon-erase:before {\n  content: \"\\E221\";\n}\n.glyphicon-hourglass:before {\n  content: \"\\231B\";\n}\n.glyphicon-lamp:before {\n  content: \"\\E223\";\n}\n.glyphicon-duplicate:before {\n  content: \"\\E224\";\n}\n.glyphicon-piggy-bank:before {\n  content: \"\\E225\";\n}\n.glyphicon-scissors:before {\n  content: \"\\E226\";\n}\n.glyphicon-bitcoin:before {\n  content: \"\\E227\";\n}\n.glyphicon-btc:before {\n  content: \"\\E227\";\n}\n.glyphicon-xbt:before {\n  content: \"\\E227\";\n}\n.glyphicon-yen:before {\n  content: \"\\A5\";\n}\n.glyphicon-jpy:before {\n  content: \"\\A5\";\n}\n.glyphicon-ruble:before {\n  content: \"\\20BD\";\n}\n.glyphicon-rub:before {\n  content: \"\\20BD\";\n}\n.glyphicon-scale:before {\n  content: \"\\E230\";\n}\n.glyphicon-ice-lolly:before {\n  content: \"\\E231\";\n}\n.glyphicon-ice-lolly-tasted:before {\n  content: \"\\E232\";\n}\n.glyphicon-education:before {\n  content: \"\\E233\";\n}\n.glyphicon-option-horizontal:before {\n  content: \"\\E234\";\n}\n.glyphicon-option-vertical:before {\n  content: \"\\E235\";\n}\n.glyphicon-menu-hamburger:before {\n  content: \"\\E236\";\n}\n.glyphicon-modal-window:before {\n  content: \"\\E237\";\n}\n.glyphicon-oil:before {\n  content: \"\\E238\";\n}\n.glyphicon-grain:before {\n  content: \"\\E239\";\n}\n.glyphicon-sunglasses:before {\n  content: \"\\E240\";\n}\n.glyphicon-text-size:before {\n  content: \"\\E241\";\n}\n.glyphicon-text-color:before {\n  content: \"\\E242\";\n}\n.glyphicon-text-background:before {\n  content: \"\\E243\";\n}\n.glyphicon-object-align-top:before {\n  content: \"\\E244\";\n}\n.glyphicon-object-align-bottom:before {\n  content: \"\\E245\";\n}\n.glyphicon-object-align-horizontal:before {\n  content: \"\\E246\";\n}\n.glyphicon-object-align-left:before {\n  content: \"\\E247\";\n}\n.glyphicon-object-align-vertical:before {\n  content: \"\\E248\";\n}\n.glyphicon-object-align-right:before {\n  content: \"\\E249\";\n}\n.glyphicon-triangle-right:before {\n  content: \"\\E250\";\n}\n.glyphicon-triangle-left:before {\n  content: \"\\E251\";\n}\n.glyphicon-triangle-bottom:before {\n  content: \"\\E252\";\n}\n.glyphicon-triangle-top:before {\n  content: \"\\E253\";\n}\n.glyphicon-console:before {\n  content: \"\\E254\";\n}\n.glyphicon-superscript:before {\n  content: \"\\E255\";\n}\n.glyphicon-subscript:before {\n  content: \"\\E256\";\n}\n.glyphicon-menu-left:before {\n  content: \"\\E257\";\n}\n.glyphicon-menu-right:before {\n  content: \"\\E258\";\n}\n.glyphicon-menu-down:before {\n  content: \"\\E259\";\n}\n.glyphicon-menu-up:before {\n  content: \"\\E260\";\n}\n* {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\n*:before,\n*:after {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\nhtml {\n  font-size: 10px;\n\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n}\nbody {\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #333;\n  background-color: #fff;\n}\ninput,\nbutton,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n}\na {\n  color: #337ab7;\n  text-decoration: none;\n}\na:hover,\na:focus {\n  color: #23527c;\n  text-decoration: underline;\n}\na:focus {\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px;\n}\nfigure {\n  margin: 0;\n}\nimg {\n  vertical-align: middle;\n}\n.img-responsive,\n.thumbnail > img,\n.thumbnail a > img,\n.carousel-inner > .item > img,\n.carousel-inner > .item > a > img {\n  display: block;\n  max-width: 100%;\n  height: auto;\n}\n.img-rounded {\n  border-radius: 6px;\n}\n.img-thumbnail {\n  display: inline-block;\n  max-width: 100%;\n  height: auto;\n  padding: 4px;\n  line-height: 1.42857143;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-radius: 4px;\n  -webkit-transition: all .2s ease-in-out;\n       -o-transition: all .2s ease-in-out;\n          transition: all .2s ease-in-out;\n}\n.img-circle {\n  border-radius: 50%;\n}\nhr {\n  margin-top: 20px;\n  margin-bottom: 20px;\n  border: 0;\n  border-top: 1px solid #eee;\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n.sr-only-focusable:active,\n.sr-only-focusable:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto;\n}\n[role=\"button\"] {\n  cursor: pointer;\n}\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\n.h1,\n.h2,\n.h3,\n.h4,\n.h5,\n.h6 {\n  font-family: inherit;\n  font-weight: 500;\n  line-height: 1.1;\n  color: inherit;\n}\nh1 small,\nh2 small,\nh3 small,\nh4 small,\nh5 small,\nh6 small,\n.h1 small,\n.h2 small,\n.h3 small,\n.h4 small,\n.h5 small,\n.h6 small,\nh1 .small,\nh2 .small,\nh3 .small,\nh4 .small,\nh5 .small,\nh6 .small,\n.h1 .small,\n.h2 .small,\n.h3 .small,\n.h4 .small,\n.h5 .small,\n.h6 .small {\n  font-weight: normal;\n  line-height: 1;\n  color: #777;\n}\nh1,\n.h1,\nh2,\n.h2,\nh3,\n.h3 {\n  margin-top: 20px;\n  margin-bottom: 10px;\n}\nh1 small,\n.h1 small,\nh2 small,\n.h2 small,\nh3 small,\n.h3 small,\nh1 .small,\n.h1 .small,\nh2 .small,\n.h2 .small,\nh3 .small,\n.h3 .small {\n  font-size: 65%;\n}\nh4,\n.h4,\nh5,\n.h5,\nh6,\n.h6 {\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\nh4 small,\n.h4 small,\nh5 small,\n.h5 small,\nh6 small,\n.h6 small,\nh4 .small,\n.h4 .small,\nh5 .small,\n.h5 .small,\nh6 .small,\n.h6 .small {\n  font-size: 75%;\n}\nh1,\n.h1 {\n  font-size: 36px;\n}\nh2,\n.h2 {\n  font-size: 30px;\n}\nh3,\n.h3 {\n  font-size: 24px;\n}\nh4,\n.h4 {\n  font-size: 18px;\n}\nh5,\n.h5 {\n  font-size: 14px;\n}\nh6,\n.h6 {\n  font-size: 12px;\n}\np {\n  margin: 0 0 10px;\n}\n.lead {\n  margin-bottom: 20px;\n  font-size: 16px;\n  font-weight: 300;\n  line-height: 1.4;\n}\n@media (min-width: 768px) {\n  .lead {\n    font-size: 21px;\n  }\n}\nsmall,\n.small {\n  font-size: 85%;\n}\nmark,\n.mark {\n  padding: .2em;\n  background-color: #fcf8e3;\n}\n.text-left {\n  text-align: left;\n}\n.text-right {\n  text-align: right;\n}\n.text-center {\n  text-align: center;\n}\n.text-justify {\n  text-align: justify;\n}\n.text-nowrap {\n  white-space: nowrap;\n}\n.text-lowercase {\n  text-transform: lowercase;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-muted {\n  color: #777;\n}\n.text-primary {\n  color: #337ab7;\n}\na.text-primary:hover,\na.text-primary:focus {\n  color: #286090;\n}\n.text-success {\n  color: #3c763d;\n}\na.text-success:hover,\na.text-success:focus {\n  color: #2b542c;\n}\n.text-info {\n  color: #31708f;\n}\na.text-info:hover,\na.text-info:focus {\n  color: #245269;\n}\n.text-warning {\n  color: #8a6d3b;\n}\na.text-warning:hover,\na.text-warning:focus {\n  color: #66512c;\n}\n.text-danger {\n  color: #a94442;\n}\na.text-danger:hover,\na.text-danger:focus {\n  color: #843534;\n}\n.bg-primary {\n  color: #fff;\n  background-color: #337ab7;\n}\na.bg-primary:hover,\na.bg-primary:focus {\n  background-color: #286090;\n}\n.bg-success {\n  background-color: #dff0d8;\n}\na.bg-success:hover,\na.bg-success:focus {\n  background-color: #c1e2b3;\n}\n.bg-info {\n  background-color: #d9edf7;\n}\na.bg-info:hover,\na.bg-info:focus {\n  background-color: #afd9ee;\n}\n.bg-warning {\n  background-color: #fcf8e3;\n}\na.bg-warning:hover,\na.bg-warning:focus {\n  background-color: #f7ecb5;\n}\n.bg-danger {\n  background-color: #f2dede;\n}\na.bg-danger:hover,\na.bg-danger:focus {\n  background-color: #e4b9b9;\n}\n.page-header {\n  padding-bottom: 9px;\n  margin: 40px 0 20px;\n  border-bottom: 1px solid #eee;\n}\nul,\nol {\n  margin-top: 0;\n  margin-bottom: 10px;\n}\nul ul,\nol ul,\nul ol,\nol ol {\n  margin-bottom: 0;\n}\n.list-unstyled {\n  padding-left: 0;\n  list-style: none;\n}\n.list-inline {\n  padding-left: 0;\n  margin-left: -5px;\n  list-style: none;\n}\n.list-inline > li {\n  display: inline-block;\n  padding-right: 5px;\n  padding-left: 5px;\n}\ndl {\n  margin-top: 0;\n  margin-bottom: 20px;\n}\ndt,\ndd {\n  line-height: 1.42857143;\n}\ndt {\n  font-weight: bold;\n}\ndd {\n  margin-left: 0;\n}\n@media (min-width: 768px) {\n  .dl-horizontal dt {\n    float: left;\n    width: 160px;\n    overflow: hidden;\n    clear: left;\n    text-align: right;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n  .dl-horizontal dd {\n    margin-left: 180px;\n  }\n}\nabbr[title],\nabbr[data-original-title] {\n  cursor: help;\n  border-bottom: 1px dotted #777;\n}\n.initialism {\n  font-size: 90%;\n  text-transform: uppercase;\n}\nblockquote {\n  padding: 10px 20px;\n  margin: 0 0 20px;\n  font-size: 17.5px;\n  border-left: 5px solid #eee;\n}\nblockquote p:last-child,\nblockquote ul:last-child,\nblockquote ol:last-child {\n  margin-bottom: 0;\n}\nblockquote footer,\nblockquote small,\nblockquote .small {\n  display: block;\n  font-size: 80%;\n  line-height: 1.42857143;\n  color: #777;\n}\nblockquote footer:before,\nblockquote small:before,\nblockquote .small:before {\n  content: '\\2014   \\A0';\n}\n.blockquote-reverse,\nblockquote.pull-right {\n  padding-right: 15px;\n  padding-left: 0;\n  text-align: right;\n  border-right: 5px solid #eee;\n  border-left: 0;\n}\n.blockquote-reverse footer:before,\nblockquote.pull-right footer:before,\n.blockquote-reverse small:before,\nblockquote.pull-right small:before,\n.blockquote-reverse .small:before,\nblockquote.pull-right .small:before {\n  content: '';\n}\n.blockquote-reverse footer:after,\nblockquote.pull-right footer:after,\n.blockquote-reverse small:after,\nblockquote.pull-right small:after,\n.blockquote-reverse .small:after,\nblockquote.pull-right .small:after {\n  content: '\\A0   \\2014';\n}\naddress {\n  margin-bottom: 20px;\n  font-style: normal;\n  line-height: 1.42857143;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: Menlo, Monaco, Consolas, \"Courier New\", monospace;\n}\ncode {\n  padding: 2px 4px;\n  font-size: 90%;\n  color: #c7254e;\n  background-color: #f9f2f4;\n  border-radius: 4px;\n}\nkbd {\n  padding: 2px 4px;\n  font-size: 90%;\n  color: #fff;\n  background-color: #333;\n  border-radius: 3px;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);\n          box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);\n}\nkbd kbd {\n  padding: 0;\n  font-size: 100%;\n  font-weight: bold;\n  -webkit-box-shadow: none;\n          box-shadow: none;\n}\npre {\n  display: block;\n  padding: 9.5px;\n  margin: 0 0 10px;\n  font-size: 13px;\n  line-height: 1.42857143;\n  color: #333;\n  word-break: break-all;\n  word-wrap: break-word;\n  background-color: #f5f5f5;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n}\npre code {\n  padding: 0;\n  font-size: inherit;\n  color: inherit;\n  white-space: pre-wrap;\n  background-color: transparent;\n  border-radius: 0;\n}\n.pre-scrollable {\n  max-height: 340px;\n  overflow-y: scroll;\n}\n.container {\n  padding-right: 15px;\n  padding-left: 15px;\n  margin-right: auto;\n  margin-left: auto;\n}\n@media (min-width: 768px) {\n  .container {\n    width: 750px;\n  }\n}\n@media (min-width: 992px) {\n  .container {\n    width: 970px;\n  }\n}\n@media (min-width: 1200px) {\n  .container {\n    width: 1170px;\n  }\n}\n.container-fluid {\n  padding-right: 15px;\n  padding-left: 15px;\n  margin-right: auto;\n  margin-left: auto;\n}\n.row {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {\n  position: relative;\n  min-height: 1px;\n  padding-right: 15px;\n  padding-left: 15px;\n}\n.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {\n  float: left;\n}\n.col-xs-12 {\n  width: 100%;\n}\n.col-xs-11 {\n  width: 91.66666667%;\n}\n.col-xs-10 {\n  width: 83.33333333%;\n}\n.col-xs-9 {\n  width: 75%;\n}\n.col-xs-8 {\n  width: 66.66666667%;\n}\n.col-xs-7 {\n  width: 58.33333333%;\n}\n.col-xs-6 {\n  width: 50%;\n}\n.col-xs-5 {\n  width: 41.66666667%;\n}\n.col-xs-4 {\n  width: 33.33333333%;\n}\n.col-xs-3 {\n  width: 25%;\n}\n.col-xs-2 {\n  width: 16.66666667%;\n}\n.col-xs-1 {\n  width: 8.33333333%;\n}\n.col-xs-pull-12 {\n  right: 100%;\n}\n.col-xs-pull-11 {\n  right: 91.66666667%;\n}\n.col-xs-pull-10 {\n  right: 83.33333333%;\n}\n.col-xs-pull-9 {\n  right: 75%;\n}\n.col-xs-pull-8 {\n  right: 66.66666667%;\n}\n.col-xs-pull-7 {\n  right: 58.33333333%;\n}\n.col-xs-pull-6 {\n  right: 50%;\n}\n.col-xs-pull-5 {\n  right: 41.66666667%;\n}\n.col-xs-pull-4 {\n  right: 33.33333333%;\n}\n.col-xs-pull-3 {\n  right: 25%;\n}\n.col-xs-pull-2 {\n  right: 16.66666667%;\n}\n.col-xs-pull-1 {\n  right: 8.33333333%;\n}\n.col-xs-pull-0 {\n  right: auto;\n}\n.col-xs-push-12 {\n  left: 100%;\n}\n.col-xs-push-11 {\n  left: 91.66666667%;\n}\n.col-xs-push-10 {\n  left: 83.33333333%;\n}\n.col-xs-push-9 {\n  left: 75%;\n}\n.col-xs-push-8 {\n  left: 66.66666667%;\n}\n.col-xs-push-7 {\n  left: 58.33333333%;\n}\n.col-xs-push-6 {\n  left: 50%;\n}\n.col-xs-push-5 {\n  left: 41.66666667%;\n}\n.col-xs-push-4 {\n  left: 33.33333333%;\n}\n.col-xs-push-3 {\n  left: 25%;\n}\n.col-xs-push-2 {\n  left: 16.66666667%;\n}\n.col-xs-push-1 {\n  left: 8.33333333%;\n}\n.col-xs-push-0 {\n  left: auto;\n}\n.col-xs-offset-12 {\n  margin-left: 100%;\n}\n.col-xs-offset-11 {\n  margin-left: 91.66666667%;\n}\n.col-xs-offset-10 {\n  margin-left: 83.33333333%;\n}\n.col-xs-offset-9 {\n  margin-left: 75%;\n}\n.col-xs-offset-8 {\n  margin-left: 66.66666667%;\n}\n.col-xs-offset-7 {\n  margin-left: 58.33333333%;\n}\n.col-xs-offset-6 {\n  margin-left: 50%;\n}\n.col-xs-offset-5 {\n  margin-left: 41.66666667%;\n}\n.col-xs-offset-4 {\n  margin-left: 33.33333333%;\n}\n.col-xs-offset-3 {\n  margin-left: 25%;\n}\n.col-xs-offset-2 {\n  margin-left: 16.66666667%;\n}\n.col-xs-offset-1 {\n  margin-left: 8.33333333%;\n}\n.col-xs-offset-0 {\n  margin-left: 0;\n}\n@media (min-width: 768px) {\n  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {\n    float: left;\n  }\n  .col-sm-12 {\n    width: 100%;\n  }\n  .col-sm-11 {\n    width: 91.66666667%;\n  }\n  .col-sm-10 {\n    width: 83.33333333%;\n  }\n  .col-sm-9 {\n    width: 75%;\n  }\n  .col-sm-8 {\n    width: 66.66666667%;\n  }\n  .col-sm-7 {\n    width: 58.33333333%;\n  }\n  .col-sm-6 {\n    width: 50%;\n  }\n  .col-sm-5 {\n    width: 41.66666667%;\n  }\n  .col-sm-4 {\n    width: 33.33333333%;\n  }\n  .col-sm-3 {\n    width: 25%;\n  }\n  .col-sm-2 {\n    width: 16.66666667%;\n  }\n  .col-sm-1 {\n    width: 8.33333333%;\n  }\n  .col-sm-pull-12 {\n    right: 100%;\n  }\n  .col-sm-pull-11 {\n    right: 91.66666667%;\n  }\n  .col-sm-pull-10 {\n    right: 83.33333333%;\n  }\n  .col-sm-pull-9 {\n    right: 75%;\n  }\n  .col-sm-pull-8 {\n    right: 66.66666667%;\n  }\n  .col-sm-pull-7 {\n    right: 58.33333333%;\n  }\n  .col-sm-pull-6 {\n    right: 50%;\n  }\n  .col-sm-pull-5 {\n    right: 41.66666667%;\n  }\n  .col-sm-pull-4 {\n    right: 33.33333333%;\n  }\n  .col-sm-pull-3 {\n    right: 25%;\n  }\n  .col-sm-pull-2 {\n    right: 16.66666667%;\n  }\n  .col-sm-pull-1 {\n    right: 8.33333333%;\n  }\n  .col-sm-pull-0 {\n    right: auto;\n  }\n  .col-sm-push-12 {\n    left: 100%;\n  }\n  .col-sm-push-11 {\n    left: 91.66666667%;\n  }\n  .col-sm-push-10 {\n    left: 83.33333333%;\n  }\n  .col-sm-push-9 {\n    left: 75%;\n  }\n  .col-sm-push-8 {\n    left: 66.66666667%;\n  }\n  .col-sm-push-7 {\n    left: 58.33333333%;\n  }\n  .col-sm-push-6 {\n    left: 50%;\n  }\n  .col-sm-push-5 {\n    left: 41.66666667%;\n  }\n  .col-sm-push-4 {\n    left: 33.33333333%;\n  }\n  .col-sm-push-3 {\n    left: 25%;\n  }\n  .col-sm-push-2 {\n    left: 16.66666667%;\n  }\n  .col-sm-push-1 {\n    left: 8.33333333%;\n  }\n  .col-sm-push-0 {\n    left: auto;\n  }\n  .col-sm-offset-12 {\n    margin-left: 100%;\n  }\n  .col-sm-offset-11 {\n    margin-left: 91.66666667%;\n  }\n  .col-sm-offset-10 {\n    margin-left: 83.33333333%;\n  }\n  .col-sm-offset-9 {\n    margin-left: 75%;\n  }\n  .col-sm-offset-8 {\n    margin-left: 66.66666667%;\n  }\n  .col-sm-offset-7 {\n    margin-left: 58.33333333%;\n  }\n  .col-sm-offset-6 {\n    margin-left: 50%;\n  }\n  .col-sm-offset-5 {\n    margin-left: 41.66666667%;\n  }\n  .col-sm-offset-4 {\n    margin-left: 33.33333333%;\n  }\n  .col-sm-offset-3 {\n    margin-left: 25%;\n  }\n  .col-sm-offset-2 {\n    margin-left: 16.66666667%;\n  }\n  .col-sm-offset-1 {\n    margin-left: 8.33333333%;\n  }\n  .col-sm-offset-0 {\n    margin-left: 0;\n  }\n}\n@media (min-width: 992px) {\n  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {\n    float: left;\n  }\n  .col-md-12 {\n    width: 100%;\n  }\n  .col-md-11 {\n    width: 91.66666667%;\n  }\n  .col-md-10 {\n    width: 83.33333333%;\n  }\n  .col-md-9 {\n    width: 75%;\n  }\n  .col-md-8 {\n    width: 66.66666667%;\n  }\n  .col-md-7 {\n    width: 58.33333333%;\n  }\n  .col-md-6 {\n    width: 50%;\n  }\n  .col-md-5 {\n    width: 41.66666667%;\n  }\n  .col-md-4 {\n    width: 33.33333333%;\n  }\n  .col-md-3 {\n    width: 25%;\n  }\n  .col-md-2 {\n    width: 16.66666667%;\n  }\n  .col-md-1 {\n    width: 8.33333333%;\n  }\n  .col-md-pull-12 {\n    right: 100%;\n  }\n  .col-md-pull-11 {\n    right: 91.66666667%;\n  }\n  .col-md-pull-10 {\n    right: 83.33333333%;\n  }\n  .col-md-pull-9 {\n    right: 75%;\n  }\n  .col-md-pull-8 {\n    right: 66.66666667%;\n  }\n  .col-md-pull-7 {\n    right: 58.33333333%;\n  }\n  .col-md-pull-6 {\n    right: 50%;\n  }\n  .col-md-pull-5 {\n    right: 41.66666667%;\n  }\n  .col-md-pull-4 {\n    right: 33.33333333%;\n  }\n  .col-md-pull-3 {\n    right: 25%;\n  }\n  .col-md-pull-2 {\n    right: 16.66666667%;\n  }\n  .col-md-pull-1 {\n    right: 8.33333333%;\n  }\n  .col-md-pull-0 {\n    right: auto;\n  }\n  .col-md-push-12 {\n    left: 100%;\n  }\n  .col-md-push-11 {\n    left: 91.66666667%;\n  }\n  .col-md-push-10 {\n    left: 83.33333333%;\n  }\n  .col-md-push-9 {\n    left: 75%;\n  }\n  .col-md-push-8 {\n    left: 66.66666667%;\n  }\n  .col-md-push-7 {\n    left: 58.33333333%;\n  }\n  .col-md-push-6 {\n    left: 50%;\n  }\n  .col-md-push-5 {\n    left: 41.66666667%;\n  }\n  .col-md-push-4 {\n    left: 33.33333333%;\n  }\n  .col-md-push-3 {\n    left: 25%;\n  }\n  .col-md-push-2 {\n    left: 16.66666667%;\n  }\n  .col-md-push-1 {\n    left: 8.33333333%;\n  }\n  .col-md-push-0 {\n    left: auto;\n  }\n  .col-md-offset-12 {\n    margin-left: 100%;\n  }\n  .col-md-offset-11 {\n    margin-left: 91.66666667%;\n  }\n  .col-md-offset-10 {\n    margin-left: 83.33333333%;\n  }\n  .col-md-offset-9 {\n    margin-left: 75%;\n  }\n  .col-md-offset-8 {\n    margin-left: 66.66666667%;\n  }\n  .col-md-offset-7 {\n    margin-left: 58.33333333%;\n  }\n  .col-md-offset-6 {\n    margin-left: 50%;\n  }\n  .col-md-offset-5 {\n    margin-left: 41.66666667%;\n  }\n  .col-md-offset-4 {\n    margin-left: 33.33333333%;\n  }\n  .col-md-offset-3 {\n    margin-left: 25%;\n  }\n  .col-md-offset-2 {\n    margin-left: 16.66666667%;\n  }\n  .col-md-offset-1 {\n    margin-left: 8.33333333%;\n  }\n  .col-md-offset-0 {\n    margin-left: 0;\n  }\n}\n@media (min-width: 1200px) {\n  .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {\n    float: left;\n  }\n  .col-lg-12 {\n    width: 100%;\n  }\n  .col-lg-11 {\n    width: 91.66666667%;\n  }\n  .col-lg-10 {\n    width: 83.33333333%;\n  }\n  .col-lg-9 {\n    width: 75%;\n  }\n  .col-lg-8 {\n    width: 66.66666667%;\n  }\n  .col-lg-7 {\n    width: 58.33333333%;\n  }\n  .col-lg-6 {\n    width: 50%;\n  }\n  .col-lg-5 {\n    width: 41.66666667%;\n  }\n  .col-lg-4 {\n    width: 33.33333333%;\n  }\n  .col-lg-3 {\n    width: 25%;\n  }\n  .col-lg-2 {\n    width: 16.66666667%;\n  }\n  .col-lg-1 {\n    width: 8.33333333%;\n  }\n  .col-lg-pull-12 {\n    right: 100%;\n  }\n  .col-lg-pull-11 {\n    right: 91.66666667%;\n  }\n  .col-lg-pull-10 {\n    right: 83.33333333%;\n  }\n  .col-lg-pull-9 {\n    right: 75%;\n  }\n  .col-lg-pull-8 {\n    right: 66.66666667%;\n  }\n  .col-lg-pull-7 {\n    right: 58.33333333%;\n  }\n  .col-lg-pull-6 {\n    right: 50%;\n  }\n  .col-lg-pull-5 {\n    right: 41.66666667%;\n  }\n  .col-lg-pull-4 {\n    right: 33.33333333%;\n  }\n  .col-lg-pull-3 {\n    right: 25%;\n  }\n  .col-lg-pull-2 {\n    right: 16.66666667%;\n  }\n  .col-lg-pull-1 {\n    right: 8.33333333%;\n  }\n  .col-lg-pull-0 {\n    right: auto;\n  }\n  .col-lg-push-12 {\n    left: 100%;\n  }\n  .col-lg-push-11 {\n    left: 91.66666667%;\n  }\n  .col-lg-push-10 {\n    left: 83.33333333%;\n  }\n  .col-lg-push-9 {\n    left: 75%;\n  }\n  .col-lg-push-8 {\n    left: 66.66666667%;\n  }\n  .col-lg-push-7 {\n    left: 58.33333333%;\n  }\n  .col-lg-push-6 {\n    left: 50%;\n  }\n  .col-lg-push-5 {\n    left: 41.66666667%;\n  }\n  .col-lg-push-4 {\n    left: 33.33333333%;\n  }\n  .col-lg-push-3 {\n    left: 25%;\n  }\n  .col-lg-push-2 {\n    left: 16.66666667%;\n  }\n  .col-lg-push-1 {\n    left: 8.33333333%;\n  }\n  .col-lg-push-0 {\n    left: auto;\n  }\n  .col-lg-offset-12 {\n    margin-left: 100%;\n  }\n  .col-lg-offset-11 {\n    margin-left: 91.66666667%;\n  }\n  .col-lg-offset-10 {\n    margin-left: 83.33333333%;\n  }\n  .col-lg-offset-9 {\n    margin-left: 75%;\n  }\n  .col-lg-offset-8 {\n    margin-left: 66.66666667%;\n  }\n  .col-lg-offset-7 {\n    margin-left: 58.33333333%;\n  }\n  .col-lg-offset-6 {\n    margin-left: 50%;\n  }\n  .col-lg-offset-5 {\n    margin-left: 41.66666667%;\n  }\n  .col-lg-offset-4 {\n    margin-left: 33.33333333%;\n  }\n  .col-lg-offset-3 {\n    margin-left: 25%;\n  }\n  .col-lg-offset-2 {\n    margin-left: 16.66666667%;\n  }\n  .col-lg-offset-1 {\n    margin-left: 8.33333333%;\n  }\n  .col-lg-offset-0 {\n    margin-left: 0;\n  }\n}\ntable {\n  background-color: transparent;\n}\ncaption {\n  padding-top: 8px;\n  padding-bottom: 8px;\n  color: #777;\n  text-align: left;\n}\nth {\n  text-align: left;\n}\n.table {\n  width: 100%;\n  max-width: 100%;\n  margin-bottom: 20px;\n}\n.table > thead > tr > th,\n.table > tbody > tr > th,\n.table > tfoot > tr > th,\n.table > thead > tr > td,\n.table > tbody > tr > td,\n.table > tfoot > tr > td {\n  padding: 8px;\n  line-height: 1.42857143;\n  vertical-align: top;\n  border-top: 1px solid #ddd;\n}\n.table > thead > tr > th {\n  vertical-align: bottom;\n  border-bottom: 2px solid #ddd;\n}\n.table > caption + thead > tr:first-child > th,\n.table > colgroup + thead > tr:first-child > th,\n.table > thead:first-child > tr:first-child > th,\n.table > caption + thead > tr:first-child > td,\n.table > colgroup + thead > tr:first-child > td,\n.table > thead:first-child > tr:first-child > td {\n  border-top: 0;\n}\n.table > tbody + tbody {\n  border-top: 2px solid #ddd;\n}\n.table .table {\n  background-color: #fff;\n}\n.table-condensed > thead > tr > th,\n.table-condensed > tbody > tr > th,\n.table-condensed > tfoot > tr > th,\n.table-condensed > thead > tr > td,\n.table-condensed > tbody > tr > td,\n.table-condensed > tfoot > tr > td {\n  padding: 5px;\n}\n.table-bordered {\n  border: 1px solid #ddd;\n}\n.table-bordered > thead > tr > th,\n.table-bordered > tbody > tr > th,\n.table-bordered > tfoot > tr > th,\n.table-bordered > thead > tr > td,\n.table-bordered > tbody > tr > td,\n.table-bordered > tfoot > tr > td {\n  border: 1px solid #ddd;\n}\n.table-bordered > thead > tr > th,\n.table-bordered > thead > tr > td {\n  border-bottom-width: 2px;\n}\n.table-striped > tbody > tr:nth-of-type(odd) {\n  background-color: #f9f9f9;\n}\n.table-hover > tbody > tr:hover {\n  background-color: #f5f5f5;\n}\ntable col[class*=\"col-\"] {\n  position: static;\n  display: table-column;\n  float: none;\n}\ntable td[class*=\"col-\"],\ntable th[class*=\"col-\"] {\n  position: static;\n  display: table-cell;\n  float: none;\n}\n.table > thead > tr > td.active,\n.table > tbody > tr > td.active,\n.table > tfoot > tr > td.active,\n.table > thead > tr > th.active,\n.table > tbody > tr > th.active,\n.table > tfoot > tr > th.active,\n.table > thead > tr.active > td,\n.table > tbody > tr.active > td,\n.table > tfoot > tr.active > td,\n.table > thead > tr.active > th,\n.table > tbody > tr.active > th,\n.table > tfoot > tr.active > th {\n  background-color: #f5f5f5;\n}\n.table-hover > tbody > tr > td.active:hover,\n.table-hover > tbody > tr > th.active:hover,\n.table-hover > tbody > tr.active:hover > td,\n.table-hover > tbody > tr:hover > .active,\n.table-hover > tbody > tr.active:hover > th {\n  background-color: #e8e8e8;\n}\n.table > thead > tr > td.success,\n.table > tbody > tr > td.success,\n.table > tfoot > tr > td.success,\n.table > thead > tr > th.success,\n.table > tbody > tr > th.success,\n.table > tfoot > tr > th.success,\n.table > thead > tr.success > td,\n.table > tbody > tr.success > td,\n.table > tfoot > tr.success > td,\n.table > thead > tr.success > th,\n.table > tbody > tr.success > th,\n.table > tfoot > tr.success > th {\n  background-color: #dff0d8;\n}\n.table-hover > tbody > tr > td.success:hover,\n.table-hover > tbody > tr > th.success:hover,\n.table-hover > tbody > tr.success:hover > td,\n.table-hover > tbody > tr:hover > .success,\n.table-hover > tbody > tr.success:hover > th {\n  background-color: #d0e9c6;\n}\n.table > thead > tr > td.info,\n.table > tbody > tr > td.info,\n.table > tfoot > tr > td.info,\n.table > thead > tr > th.info,\n.table > tbody > tr > th.info,\n.table > tfoot > tr > th.info,\n.table > thead > tr.info > td,\n.table > tbody > tr.info > td,\n.table > tfoot > tr.info > td,\n.table > thead > tr.info > th,\n.table > tbody > tr.info > th,\n.table > tfoot > tr.info > th {\n  background-color: #d9edf7;\n}\n.table-hover > tbody > tr > td.info:hover,\n.table-hover > tbody > tr > th.info:hover,\n.table-hover > tbody > tr.info:hover > td,\n.table-hover > tbody > tr:hover > .info,\n.table-hover > tbody > tr.info:hover > th {\n  background-color: #c4e3f3;\n}\n.table > thead > tr > td.warning,\n.table > tbody > tr > td.warning,\n.table > tfoot > tr > td.warning,\n.table > thead > tr > th.warning,\n.table > tbody > tr > th.warning,\n.table > tfoot > tr > th.warning,\n.table > thead > tr.warning > td,\n.table > tbody > tr.warning > td,\n.table > tfoot > tr.warning > td,\n.table > thead > tr.warning > th,\n.table > tbody > tr.warning > th,\n.table > tfoot > tr.warning > th {\n  background-color: #fcf8e3;\n}\n.table-hover > tbody > tr > td.warning:hover,\n.table-hover > tbody > tr > th.warning:hover,\n.table-hover > tbody > tr.warning:hover > td,\n.table-hover > tbody > tr:hover > .warning,\n.table-hover > tbody > tr.warning:hover > th {\n  background-color: #faf2cc;\n}\n.table > thead > tr > td.danger,\n.table > tbody > tr > td.danger,\n.table > tfoot > tr > td.danger,\n.table > thead > tr > th.danger,\n.table > tbody > tr > th.danger,\n.table > tfoot > tr > th.danger,\n.table > thead > tr.danger > td,\n.table > tbody > tr.danger > td,\n.table > tfoot > tr.danger > td,\n.table > thead > tr.danger > th,\n.table > tbody > tr.danger > th,\n.table > tfoot > tr.danger > th {\n  background-color: #f2dede;\n}\n.table-hover > tbody > tr > td.danger:hover,\n.table-hover > tbody > tr > th.danger:hover,\n.table-hover > tbody > tr.danger:hover > td,\n.table-hover > tbody > tr:hover > .danger,\n.table-hover > tbody > tr.danger:hover > th {\n  background-color: #ebcccc;\n}\n.table-responsive {\n  min-height: .01%;\n  overflow-x: auto;\n}\n@media screen and (max-width: 767px) {\n  .table-responsive {\n    width: 100%;\n    margin-bottom: 15px;\n    overflow-y: hidden;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n    border: 1px solid #ddd;\n  }\n  .table-responsive > .table {\n    margin-bottom: 0;\n  }\n  .table-responsive > .table > thead > tr > th,\n  .table-responsive > .table > tbody > tr > th,\n  .table-responsive > .table > tfoot > tr > th,\n  .table-responsive > .table > thead > tr > td,\n  .table-responsive > .table > tbody > tr > td,\n  .table-responsive > .table > tfoot > tr > td {\n    white-space: nowrap;\n  }\n  .table-responsive > .table-bordered {\n    border: 0;\n  }\n  .table-responsive > .table-bordered > thead > tr > th:first-child,\n  .table-responsive > .table-bordered > tbody > tr > th:first-child,\n  .table-responsive > .table-bordered > tfoot > tr > th:first-child,\n  .table-responsive > .table-bordered > thead > tr > td:first-child,\n  .table-responsive > .table-bordered > tbody > tr > td:first-child,\n  .table-responsive > .table-bordered > tfoot > tr > td:first-child {\n    border-left: 0;\n  }\n  .table-responsive > .table-bordered > thead > tr > th:last-child,\n  .table-responsive > .table-bordered > tbody > tr > th:last-child,\n  .table-responsive > .table-bordered > tfoot > tr > th:last-child,\n  .table-responsive > .table-bordered > thead > tr > td:last-child,\n  .table-responsive > .table-bordered > tbody > tr > td:last-child,\n  .table-responsive > .table-bordered > tfoot > tr > td:last-child {\n    border-right: 0;\n  }\n  .table-responsive > .table-bordered > tbody > tr:last-child > th,\n  .table-responsive > .table-bordered > tfoot > tr:last-child > th,\n  .table-responsive > .table-bordered > tbody > tr:last-child > td,\n  .table-responsive > .table-bordered > tfoot > tr:last-child > td {\n    border-bottom: 0;\n  }\n}\nfieldset {\n  min-width: 0;\n  padding: 0;\n  margin: 0;\n  border: 0;\n}\nlegend {\n  display: block;\n  width: 100%;\n  padding: 0;\n  margin-bottom: 20px;\n  font-size: 21px;\n  line-height: inherit;\n  color: #333;\n  border: 0;\n  border-bottom: 1px solid #e5e5e5;\n}\nlabel {\n  display: inline-block;\n  max-width: 100%;\n  margin-bottom: 5px;\n  font-weight: bold;\n}\ninput[type=\"search\"] {\n  -webkit-box-sizing: border-box;\n     -moz-box-sizing: border-box;\n          box-sizing: border-box;\n}\ninput[type=\"radio\"],\ninput[type=\"checkbox\"] {\n  margin: 4px 0 0;\n  margin-top: 1px \\9;\n  line-height: normal;\n}\ninput[type=\"file\"] {\n  display: block;\n}\ninput[type=\"range\"] {\n  display: block;\n  width: 100%;\n}\nselect[multiple],\nselect[size] {\n  height: auto;\n}\ninput[type=\"file\"]:focus,\ninput[type=\"radio\"]:focus,\ninput[type=\"checkbox\"]:focus {\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px;\n}\noutput {\n  display: block;\n  padding-top: 7px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n}\n.form-control {\n  display: block;\n  width: 100%;\n  height: 34px;\n  padding: 6px 12px;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #555;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;\n       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n.form-control:focus {\n  border-color: #66afe9;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);\n          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);\n}\n.form-control::-moz-placeholder {\n  color: #999;\n  opacity: 1;\n}\n.form-control:-ms-input-placeholder {\n  color: #999;\n}\n.form-control::-webkit-input-placeholder {\n  color: #999;\n}\n.form-control::-ms-expand {\n  background-color: transparent;\n  border: 0;\n}\n.form-control[disabled],\n.form-control[readonly],\nfieldset[disabled] .form-control {\n  background-color: #eee;\n  opacity: 1;\n}\n.form-control[disabled],\nfieldset[disabled] .form-control {\n  cursor: not-allowed;\n}\ntextarea.form-control {\n  height: auto;\n}\ninput[type=\"search\"] {\n  -webkit-appearance: none;\n}\n@media screen and (-webkit-min-device-pixel-ratio: 0) {\n  input[type=\"date\"].form-control,\n  input[type=\"time\"].form-control,\n  input[type=\"datetime-local\"].form-control,\n  input[type=\"month\"].form-control {\n    line-height: 34px;\n  }\n  input[type=\"date\"].input-sm,\n  input[type=\"time\"].input-sm,\n  input[type=\"datetime-local\"].input-sm,\n  input[type=\"month\"].input-sm,\n  .input-group-sm input[type=\"date\"],\n  .input-group-sm input[type=\"time\"],\n  .input-group-sm input[type=\"datetime-local\"],\n  .input-group-sm input[type=\"month\"] {\n    line-height: 30px;\n  }\n  input[type=\"date\"].input-lg,\n  input[type=\"time\"].input-lg,\n  input[type=\"datetime-local\"].input-lg,\n  input[type=\"month\"].input-lg,\n  .input-group-lg input[type=\"date\"],\n  .input-group-lg input[type=\"time\"],\n  .input-group-lg input[type=\"datetime-local\"],\n  .input-group-lg input[type=\"month\"] {\n    line-height: 46px;\n  }\n}\n.form-group {\n  margin-bottom: 15px;\n}\n.radio,\n.checkbox {\n  position: relative;\n  display: block;\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\n.radio label,\n.checkbox label {\n  min-height: 20px;\n  padding-left: 20px;\n  margin-bottom: 0;\n  font-weight: normal;\n  cursor: pointer;\n}\n.radio input[type=\"radio\"],\n.radio-inline input[type=\"radio\"],\n.checkbox input[type=\"checkbox\"],\n.checkbox-inline input[type=\"checkbox\"] {\n  position: absolute;\n  margin-top: 4px \\9;\n  margin-left: -20px;\n}\n.radio + .radio,\n.checkbox + .checkbox {\n  margin-top: -5px;\n}\n.radio-inline,\n.checkbox-inline {\n  position: relative;\n  display: inline-block;\n  padding-left: 20px;\n  margin-bottom: 0;\n  font-weight: normal;\n  vertical-align: middle;\n  cursor: pointer;\n}\n.radio-inline + .radio-inline,\n.checkbox-inline + .checkbox-inline {\n  margin-top: 0;\n  margin-left: 10px;\n}\ninput[type=\"radio\"][disabled],\ninput[type=\"checkbox\"][disabled],\ninput[type=\"radio\"].disabled,\ninput[type=\"checkbox\"].disabled,\nfieldset[disabled] input[type=\"radio\"],\nfieldset[disabled] input[type=\"checkbox\"] {\n  cursor: not-allowed;\n}\n.radio-inline.disabled,\n.checkbox-inline.disabled,\nfieldset[disabled] .radio-inline,\nfieldset[disabled] .checkbox-inline {\n  cursor: not-allowed;\n}\n.radio.disabled label,\n.checkbox.disabled label,\nfieldset[disabled] .radio label,\nfieldset[disabled] .checkbox label {\n  cursor: not-allowed;\n}\n.form-control-static {\n  min-height: 34px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  margin-bottom: 0;\n}\n.form-control-static.input-lg,\n.form-control-static.input-sm {\n  padding-right: 0;\n  padding-left: 0;\n}\n.input-sm {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\nselect.input-sm {\n  height: 30px;\n  line-height: 30px;\n}\ntextarea.input-sm,\nselect[multiple].input-sm {\n  height: auto;\n}\n.form-group-sm .form-control {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n.form-group-sm select.form-control {\n  height: 30px;\n  line-height: 30px;\n}\n.form-group-sm textarea.form-control,\n.form-group-sm select[multiple].form-control {\n  height: auto;\n}\n.form-group-sm .form-control-static {\n  height: 30px;\n  min-height: 32px;\n  padding: 6px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n}\n.input-lg {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\nselect.input-lg {\n  height: 46px;\n  line-height: 46px;\n}\ntextarea.input-lg,\nselect[multiple].input-lg {\n  height: auto;\n}\n.form-group-lg .form-control {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\n.form-group-lg select.form-control {\n  height: 46px;\n  line-height: 46px;\n}\n.form-group-lg textarea.form-control,\n.form-group-lg select[multiple].form-control {\n  height: auto;\n}\n.form-group-lg .form-control-static {\n  height: 46px;\n  min-height: 38px;\n  padding: 11px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n}\n.has-feedback {\n  position: relative;\n}\n.has-feedback .form-control {\n  padding-right: 42.5px;\n}\n.form-control-feedback {\n  position: absolute;\n  top: 0;\n  right: 0;\n  z-index: 2;\n  display: block;\n  width: 34px;\n  height: 34px;\n  line-height: 34px;\n  text-align: center;\n  pointer-events: none;\n}\n.input-lg + .form-control-feedback,\n.input-group-lg + .form-control-feedback,\n.form-group-lg .form-control + .form-control-feedback {\n  width: 46px;\n  height: 46px;\n  line-height: 46px;\n}\n.input-sm + .form-control-feedback,\n.input-group-sm + .form-control-feedback,\n.form-group-sm .form-control + .form-control-feedback {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n}\n.has-success .help-block,\n.has-success .control-label,\n.has-success .radio,\n.has-success .checkbox,\n.has-success .radio-inline,\n.has-success .checkbox-inline,\n.has-success.radio label,\n.has-success.checkbox label,\n.has-success.radio-inline label,\n.has-success.checkbox-inline label {\n  color: #3c763d;\n}\n.has-success .form-control {\n  border-color: #3c763d;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n}\n.has-success .form-control:focus {\n  border-color: #2b542c;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;\n}\n.has-success .input-group-addon {\n  color: #3c763d;\n  background-color: #dff0d8;\n  border-color: #3c763d;\n}\n.has-success .form-control-feedback {\n  color: #3c763d;\n}\n.has-warning .help-block,\n.has-warning .control-label,\n.has-warning .radio,\n.has-warning .checkbox,\n.has-warning .radio-inline,\n.has-warning .checkbox-inline,\n.has-warning.radio label,\n.has-warning.checkbox label,\n.has-warning.radio-inline label,\n.has-warning.checkbox-inline label {\n  color: #8a6d3b;\n}\n.has-warning .form-control {\n  border-color: #8a6d3b;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n}\n.has-warning .form-control:focus {\n  border-color: #66512c;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;\n}\n.has-warning .input-group-addon {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n  border-color: #8a6d3b;\n}\n.has-warning .form-control-feedback {\n  color: #8a6d3b;\n}\n.has-error .help-block,\n.has-error .control-label,\n.has-error .radio,\n.has-error .checkbox,\n.has-error .radio-inline,\n.has-error .checkbox-inline,\n.has-error.radio label,\n.has-error.checkbox label,\n.has-error.radio-inline label,\n.has-error.checkbox-inline label {\n  color: #a94442;\n}\n.has-error .form-control {\n  border-color: #a94442;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);\n}\n.has-error .form-control:focus {\n  border-color: #843534;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;\n}\n.has-error .input-group-addon {\n  color: #a94442;\n  background-color: #f2dede;\n  border-color: #a94442;\n}\n.has-error .form-control-feedback {\n  color: #a94442;\n}\n.has-feedback label ~ .form-control-feedback {\n  top: 25px;\n}\n.has-feedback label.sr-only ~ .form-control-feedback {\n  top: 0;\n}\n.help-block {\n  display: block;\n  margin-top: 5px;\n  margin-bottom: 10px;\n  color: #737373;\n}\n@media (min-width: 768px) {\n  .form-inline .form-group {\n    display: inline-block;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .form-inline .form-control {\n    display: inline-block;\n    width: auto;\n    vertical-align: middle;\n  }\n  .form-inline .form-control-static {\n    display: inline-block;\n  }\n  .form-inline .input-group {\n    display: inline-table;\n    vertical-align: middle;\n  }\n  .form-inline .input-group .input-group-addon,\n  .form-inline .input-group .input-group-btn,\n  .form-inline .input-group .form-control {\n    width: auto;\n  }\n  .form-inline .input-group > .form-control {\n    width: 100%;\n  }\n  .form-inline .control-label {\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .form-inline .radio,\n  .form-inline .checkbox {\n    display: inline-block;\n    margin-top: 0;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .form-inline .radio label,\n  .form-inline .checkbox label {\n    padding-left: 0;\n  }\n  .form-inline .radio input[type=\"radio\"],\n  .form-inline .checkbox input[type=\"checkbox\"] {\n    position: relative;\n    margin-left: 0;\n  }\n  .form-inline .has-feedback .form-control-feedback {\n    top: 0;\n  }\n}\n.form-horizontal .radio,\n.form-horizontal .checkbox,\n.form-horizontal .radio-inline,\n.form-horizontal .checkbox-inline {\n  padding-top: 7px;\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-horizontal .radio,\n.form-horizontal .checkbox {\n  min-height: 27px;\n}\n.form-horizontal .form-group {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n@media (min-width: 768px) {\n  .form-horizontal .control-label {\n    padding-top: 7px;\n    margin-bottom: 0;\n    text-align: right;\n  }\n}\n.form-horizontal .has-feedback .form-control-feedback {\n  right: 15px;\n}\n@media (min-width: 768px) {\n  .form-horizontal .form-group-lg .control-label {\n    padding-top: 11px;\n    font-size: 18px;\n  }\n}\n@media (min-width: 768px) {\n  .form-horizontal .form-group-sm .control-label {\n    padding-top: 6px;\n    font-size: 12px;\n  }\n}\n.btn {\n  display: inline-block;\n  padding: 6px 12px;\n  margin-bottom: 0;\n  font-size: 14px;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -ms-touch-action: manipulation;\n      touch-action: manipulation;\n  cursor: pointer;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  background-image: none;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.btn:focus,\n.btn:active:focus,\n.btn.active:focus,\n.btn.focus,\n.btn:active.focus,\n.btn.active.focus {\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px;\n}\n.btn:hover,\n.btn:focus,\n.btn.focus {\n  color: #333;\n  text-decoration: none;\n}\n.btn:active,\n.btn.active {\n  background-image: none;\n  outline: 0;\n  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}\n.btn.disabled,\n.btn[disabled],\nfieldset[disabled] .btn {\n  cursor: not-allowed;\n  filter: alpha(opacity=65);\n  -webkit-box-shadow: none;\n          box-shadow: none;\n  opacity: .65;\n}\na.btn.disabled,\nfieldset[disabled] a.btn {\n  pointer-events: none;\n}\n.btn-default {\n  color: #333;\n  background-color: #fff;\n  border-color: #ccc;\n}\n.btn-default:focus,\n.btn-default.focus {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #8c8c8c;\n}\n.btn-default:hover {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.btn-default:active,\n.btn-default.active,\n.open > .dropdown-toggle.btn-default {\n  color: #333;\n  background-color: #e6e6e6;\n  border-color: #adadad;\n}\n.btn-default:active:hover,\n.btn-default.active:hover,\n.open > .dropdown-toggle.btn-default:hover,\n.btn-default:active:focus,\n.btn-default.active:focus,\n.open > .dropdown-toggle.btn-default:focus,\n.btn-default:active.focus,\n.btn-default.active.focus,\n.open > .dropdown-toggle.btn-default.focus {\n  color: #333;\n  background-color: #d4d4d4;\n  border-color: #8c8c8c;\n}\n.btn-default:active,\n.btn-default.active,\n.open > .dropdown-toggle.btn-default {\n  background-image: none;\n}\n.btn-default.disabled:hover,\n.btn-default[disabled]:hover,\nfieldset[disabled] .btn-default:hover,\n.btn-default.disabled:focus,\n.btn-default[disabled]:focus,\nfieldset[disabled] .btn-default:focus,\n.btn-default.disabled.focus,\n.btn-default[disabled].focus,\nfieldset[disabled] .btn-default.focus {\n  background-color: #fff;\n  border-color: #ccc;\n}\n.btn-default .badge {\n  color: #fff;\n  background-color: #333;\n}\n.btn-primary {\n  color: #fff;\n  background-color: #337ab7;\n  border-color: #2e6da4;\n}\n.btn-primary:focus,\n.btn-primary.focus {\n  color: #fff;\n  background-color: #286090;\n  border-color: #122b40;\n}\n.btn-primary:hover {\n  color: #fff;\n  background-color: #286090;\n  border-color: #204d74;\n}\n.btn-primary:active,\n.btn-primary.active,\n.open > .dropdown-toggle.btn-primary {\n  color: #fff;\n  background-color: #286090;\n  border-color: #204d74;\n}\n.btn-primary:active:hover,\n.btn-primary.active:hover,\n.open > .dropdown-toggle.btn-primary:hover,\n.btn-primary:active:focus,\n.btn-primary.active:focus,\n.open > .dropdown-toggle.btn-primary:focus,\n.btn-primary:active.focus,\n.btn-primary.active.focus,\n.open > .dropdown-toggle.btn-primary.focus {\n  color: #fff;\n  background-color: #204d74;\n  border-color: #122b40;\n}\n.btn-primary:active,\n.btn-primary.active,\n.open > .dropdown-toggle.btn-primary {\n  background-image: none;\n}\n.btn-primary.disabled:hover,\n.btn-primary[disabled]:hover,\nfieldset[disabled] .btn-primary:hover,\n.btn-primary.disabled:focus,\n.btn-primary[disabled]:focus,\nfieldset[disabled] .btn-primary:focus,\n.btn-primary.disabled.focus,\n.btn-primary[disabled].focus,\nfieldset[disabled] .btn-primary.focus {\n  background-color: #337ab7;\n  border-color: #2e6da4;\n}\n.btn-primary .badge {\n  color: #337ab7;\n  background-color: #fff;\n}\n.btn-success {\n  color: #fff;\n  background-color: #5cb85c;\n  border-color: #4cae4c;\n}\n.btn-success:focus,\n.btn-success.focus {\n  color: #fff;\n  background-color: #449d44;\n  border-color: #255625;\n}\n.btn-success:hover {\n  color: #fff;\n  background-color: #449d44;\n  border-color: #398439;\n}\n.btn-success:active,\n.btn-success.active,\n.open > .dropdown-toggle.btn-success {\n  color: #fff;\n  background-color: #449d44;\n  border-color: #398439;\n}\n.btn-success:active:hover,\n.btn-success.active:hover,\n.open > .dropdown-toggle.btn-success:hover,\n.btn-success:active:focus,\n.btn-success.active:focus,\n.open > .dropdown-toggle.btn-success:focus,\n.btn-success:active.focus,\n.btn-success.active.focus,\n.open > .dropdown-toggle.btn-success.focus {\n  color: #fff;\n  background-color: #398439;\n  border-color: #255625;\n}\n.btn-success:active,\n.btn-success.active,\n.open > .dropdown-toggle.btn-success {\n  background-image: none;\n}\n.btn-success.disabled:hover,\n.btn-success[disabled]:hover,\nfieldset[disabled] .btn-success:hover,\n.btn-success.disabled:focus,\n.btn-success[disabled]:focus,\nfieldset[disabled] .btn-success:focus,\n.btn-success.disabled.focus,\n.btn-success[disabled].focus,\nfieldset[disabled] .btn-success.focus {\n  background-color: #5cb85c;\n  border-color: #4cae4c;\n}\n.btn-success .badge {\n  color: #5cb85c;\n  background-color: #fff;\n}\n.btn-info {\n  color: #fff;\n  background-color: #5bc0de;\n  border-color: #46b8da;\n}\n.btn-info:focus,\n.btn-info.focus {\n  color: #fff;\n  background-color: #31b0d5;\n  border-color: #1b6d85;\n}\n.btn-info:hover {\n  color: #fff;\n  background-color: #31b0d5;\n  border-color: #269abc;\n}\n.btn-info:active,\n.btn-info.active,\n.open > .dropdown-toggle.btn-info {\n  color: #fff;\n  background-color: #31b0d5;\n  border-color: #269abc;\n}\n.btn-info:active:hover,\n.btn-info.active:hover,\n.open > .dropdown-toggle.btn-info:hover,\n.btn-info:active:focus,\n.btn-info.active:focus,\n.open > .dropdown-toggle.btn-info:focus,\n.btn-info:active.focus,\n.btn-info.active.focus,\n.open > .dropdown-toggle.btn-info.focus {\n  color: #fff;\n  background-color: #269abc;\n  border-color: #1b6d85;\n}\n.btn-info:active,\n.btn-info.active,\n.open > .dropdown-toggle.btn-info {\n  background-image: none;\n}\n.btn-info.disabled:hover,\n.btn-info[disabled]:hover,\nfieldset[disabled] .btn-info:hover,\n.btn-info.disabled:focus,\n.btn-info[disabled]:focus,\nfieldset[disabled] .btn-info:focus,\n.btn-info.disabled.focus,\n.btn-info[disabled].focus,\nfieldset[disabled] .btn-info.focus {\n  background-color: #5bc0de;\n  border-color: #46b8da;\n}\n.btn-info .badge {\n  color: #5bc0de;\n  background-color: #fff;\n}\n.btn-warning {\n  color: #fff;\n  background-color: #f0ad4e;\n  border-color: #eea236;\n}\n.btn-warning:focus,\n.btn-warning.focus {\n  color: #fff;\n  background-color: #ec971f;\n  border-color: #985f0d;\n}\n.btn-warning:hover {\n  color: #fff;\n  background-color: #ec971f;\n  border-color: #d58512;\n}\n.btn-warning:active,\n.btn-warning.active,\n.open > .dropdown-toggle.btn-warning {\n  color: #fff;\n  background-color: #ec971f;\n  border-color: #d58512;\n}\n.btn-warning:active:hover,\n.btn-warning.active:hover,\n.open > .dropdown-toggle.btn-warning:hover,\n.btn-warning:active:focus,\n.btn-warning.active:focus,\n.open > .dropdown-toggle.btn-warning:focus,\n.btn-warning:active.focus,\n.btn-warning.active.focus,\n.open > .dropdown-toggle.btn-warning.focus {\n  color: #fff;\n  background-color: #d58512;\n  border-color: #985f0d;\n}\n.btn-warning:active,\n.btn-warning.active,\n.open > .dropdown-toggle.btn-warning {\n  background-image: none;\n}\n.btn-warning.disabled:hover,\n.btn-warning[disabled]:hover,\nfieldset[disabled] .btn-warning:hover,\n.btn-warning.disabled:focus,\n.btn-warning[disabled]:focus,\nfieldset[disabled] .btn-warning:focus,\n.btn-warning.disabled.focus,\n.btn-warning[disabled].focus,\nfieldset[disabled] .btn-warning.focus {\n  background-color: #f0ad4e;\n  border-color: #eea236;\n}\n.btn-warning .badge {\n  color: #f0ad4e;\n  background-color: #fff;\n}\n.btn-danger {\n  color: #fff;\n  background-color: #d9534f;\n  border-color: #d43f3a;\n}\n.btn-danger:focus,\n.btn-danger.focus {\n  color: #fff;\n  background-color: #c9302c;\n  border-color: #761c19;\n}\n.btn-danger:hover {\n  color: #fff;\n  background-color: #c9302c;\n  border-color: #ac2925;\n}\n.btn-danger:active,\n.btn-danger.active,\n.open > .dropdown-toggle.btn-danger {\n  color: #fff;\n  background-color: #c9302c;\n  border-color: #ac2925;\n}\n.btn-danger:active:hover,\n.btn-danger.active:hover,\n.open > .dropdown-toggle.btn-danger:hover,\n.btn-danger:active:focus,\n.btn-danger.active:focus,\n.open > .dropdown-toggle.btn-danger:focus,\n.btn-danger:active.focus,\n.btn-danger.active.focus,\n.open > .dropdown-toggle.btn-danger.focus {\n  color: #fff;\n  background-color: #ac2925;\n  border-color: #761c19;\n}\n.btn-danger:active,\n.btn-danger.active,\n.open > .dropdown-toggle.btn-danger {\n  background-image: none;\n}\n.btn-danger.disabled:hover,\n.btn-danger[disabled]:hover,\nfieldset[disabled] .btn-danger:hover,\n.btn-danger.disabled:focus,\n.btn-danger[disabled]:focus,\nfieldset[disabled] .btn-danger:focus,\n.btn-danger.disabled.focus,\n.btn-danger[disabled].focus,\nfieldset[disabled] .btn-danger.focus {\n  background-color: #d9534f;\n  border-color: #d43f3a;\n}\n.btn-danger .badge {\n  color: #d9534f;\n  background-color: #fff;\n}\n.btn-link {\n  font-weight: normal;\n  color: #337ab7;\n  border-radius: 0;\n}\n.btn-link,\n.btn-link:active,\n.btn-link.active,\n.btn-link[disabled],\nfieldset[disabled] .btn-link {\n  background-color: transparent;\n  -webkit-box-shadow: none;\n          box-shadow: none;\n}\n.btn-link,\n.btn-link:hover,\n.btn-link:focus,\n.btn-link:active {\n  border-color: transparent;\n}\n.btn-link:hover,\n.btn-link:focus {\n  color: #23527c;\n  text-decoration: underline;\n  background-color: transparent;\n}\n.btn-link[disabled]:hover,\nfieldset[disabled] .btn-link:hover,\n.btn-link[disabled]:focus,\nfieldset[disabled] .btn-link:focus {\n  color: #777;\n  text-decoration: none;\n}\n.btn-lg,\n.btn-group-lg > .btn {\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\n.btn-sm,\n.btn-group-sm > .btn {\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n.btn-xs,\n.btn-group-xs > .btn {\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\n.btn-block {\n  display: block;\n  width: 100%;\n}\n.btn-block + .btn-block {\n  margin-top: 5px;\n}\ninput[type=\"submit\"].btn-block,\ninput[type=\"reset\"].btn-block,\ninput[type=\"button\"].btn-block {\n  width: 100%;\n}\n.fade {\n  opacity: 0;\n  -webkit-transition: opacity .15s linear;\n       -o-transition: opacity .15s linear;\n          transition: opacity .15s linear;\n}\n.fade.in {\n  opacity: 1;\n}\n.collapse {\n  display: none;\n}\n.collapse.in {\n  display: block;\n}\ntr.collapse.in {\n  display: table-row;\n}\ntbody.collapse.in {\n  display: table-row-group;\n}\n.collapsing {\n  position: relative;\n  height: 0;\n  overflow: hidden;\n  -webkit-transition-timing-function: ease;\n       -o-transition-timing-function: ease;\n          transition-timing-function: ease;\n  -webkit-transition-duration: .35s;\n       -o-transition-duration: .35s;\n          transition-duration: .35s;\n  -webkit-transition-property: height, visibility;\n       -o-transition-property: height, visibility;\n          transition-property: height, visibility;\n}\n.caret {\n  display: inline-block;\n  width: 0;\n  height: 0;\n  margin-left: 2px;\n  vertical-align: middle;\n  border-top: 4px dashed;\n  border-top: 4px solid \\9;\n  border-right: 4px solid transparent;\n  border-left: 4px solid transparent;\n}\n.dropup,\n.dropdown {\n  position: relative;\n}\n.dropdown-toggle:focus {\n  outline: 0;\n}\n.dropdown-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  font-size: 14px;\n  text-align: left;\n  list-style: none;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n          background-clip: padding-box;\n  border: 1px solid #ccc;\n  border: 1px solid rgba(0, 0, 0, .15);\n  border-radius: 4px;\n  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);\n          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);\n}\n.dropdown-menu.pull-right {\n  right: 0;\n  left: auto;\n}\n.dropdown-menu .divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n.dropdown-menu > li > a {\n  display: block;\n  padding: 3px 20px;\n  clear: both;\n  font-weight: normal;\n  line-height: 1.42857143;\n  color: #333;\n  white-space: nowrap;\n}\n.dropdown-menu > li > a:hover,\n.dropdown-menu > li > a:focus {\n  color: #262626;\n  text-decoration: none;\n  background-color: #f5f5f5;\n}\n.dropdown-menu > .active > a,\n.dropdown-menu > .active > a:hover,\n.dropdown-menu > .active > a:focus {\n  color: #fff;\n  text-decoration: none;\n  background-color: #337ab7;\n  outline: 0;\n}\n.dropdown-menu > .disabled > a,\n.dropdown-menu > .disabled > a:hover,\n.dropdown-menu > .disabled > a:focus {\n  color: #777;\n}\n.dropdown-menu > .disabled > a:hover,\n.dropdown-menu > .disabled > a:focus {\n  text-decoration: none;\n  cursor: not-allowed;\n  background-color: transparent;\n  background-image: none;\n  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);\n}\n.open > .dropdown-menu {\n  display: block;\n}\n.open > a {\n  outline: 0;\n}\n.dropdown-menu-right {\n  right: 0;\n  left: auto;\n}\n.dropdown-menu-left {\n  right: auto;\n  left: 0;\n}\n.dropdown-header {\n  display: block;\n  padding: 3px 20px;\n  font-size: 12px;\n  line-height: 1.42857143;\n  color: #777;\n  white-space: nowrap;\n}\n.dropdown-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 990;\n}\n.pull-right > .dropdown-menu {\n  right: 0;\n  left: auto;\n}\n.dropup .caret,\n.navbar-fixed-bottom .dropdown .caret {\n  content: \"\";\n  border-top: 0;\n  border-bottom: 4px dashed;\n  border-bottom: 4px solid \\9;\n}\n.dropup .dropdown-menu,\n.navbar-fixed-bottom .dropdown .dropdown-menu {\n  top: auto;\n  bottom: 100%;\n  margin-bottom: 2px;\n}\n@media (min-width: 768px) {\n  .navbar-right .dropdown-menu {\n    right: 0;\n    left: auto;\n  }\n  .navbar-right .dropdown-menu-left {\n    right: auto;\n    left: 0;\n  }\n}\n.btn-group,\n.btn-group-vertical {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n}\n.btn-group > .btn,\n.btn-group-vertical > .btn {\n  position: relative;\n  float: left;\n}\n.btn-group > .btn:hover,\n.btn-group-vertical > .btn:hover,\n.btn-group > .btn:focus,\n.btn-group-vertical > .btn:focus,\n.btn-group > .btn:active,\n.btn-group-vertical > .btn:active,\n.btn-group > .btn.active,\n.btn-group-vertical > .btn.active {\n  z-index: 2;\n}\n.btn-group .btn + .btn,\n.btn-group .btn + .btn-group,\n.btn-group .btn-group + .btn,\n.btn-group .btn-group + .btn-group {\n  margin-left: -1px;\n}\n.btn-toolbar {\n  margin-left: -5px;\n}\n.btn-toolbar .btn,\n.btn-toolbar .btn-group,\n.btn-toolbar .input-group {\n  float: left;\n}\n.btn-toolbar > .btn,\n.btn-toolbar > .btn-group,\n.btn-toolbar > .input-group {\n  margin-left: 5px;\n}\n.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {\n  border-radius: 0;\n}\n.btn-group > .btn:first-child {\n  margin-left: 0;\n}\n.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.btn-group > .btn:last-child:not(:first-child),\n.btn-group > .dropdown-toggle:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group > .btn-group {\n  float: left;\n}\n.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {\n  border-radius: 0;\n}\n.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,\n.btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group .dropdown-toggle:active,\n.btn-group.open .dropdown-toggle {\n  outline: 0;\n}\n.btn-group > .btn + .dropdown-toggle {\n  padding-right: 8px;\n  padding-left: 8px;\n}\n.btn-group > .btn-lg + .dropdown-toggle {\n  padding-right: 12px;\n  padding-left: 12px;\n}\n.btn-group.open .dropdown-toggle {\n  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}\n.btn-group.open .dropdown-toggle.btn-link {\n  -webkit-box-shadow: none;\n          box-shadow: none;\n}\n.btn .caret {\n  margin-left: 0;\n}\n.btn-lg .caret {\n  border-width: 5px 5px 0;\n  border-bottom-width: 0;\n}\n.dropup .btn-lg .caret {\n  border-width: 0 5px 5px;\n}\n.btn-group-vertical > .btn,\n.btn-group-vertical > .btn-group,\n.btn-group-vertical > .btn-group > .btn {\n  display: block;\n  float: none;\n  width: 100%;\n  max-width: 100%;\n}\n.btn-group-vertical > .btn-group > .btn {\n  float: none;\n}\n.btn-group-vertical > .btn + .btn,\n.btn-group-vertical > .btn + .btn-group,\n.btn-group-vertical > .btn-group + .btn,\n.btn-group-vertical > .btn-group + .btn-group {\n  margin-top: -1px;\n  margin-left: 0;\n}\n.btn-group-vertical > .btn:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n.btn-group-vertical > .btn:first-child:not(:last-child) {\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group-vertical > .btn:last-child:not(:first-child) {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\n.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {\n  border-radius: 0;\n}\n.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child,\n.btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.btn-group-justified {\n  display: table;\n  width: 100%;\n  table-layout: fixed;\n  border-collapse: separate;\n}\n.btn-group-justified > .btn,\n.btn-group-justified > .btn-group {\n  display: table-cell;\n  float: none;\n  width: 1%;\n}\n.btn-group-justified > .btn-group .btn {\n  width: 100%;\n}\n.btn-group-justified > .btn-group .dropdown-menu {\n  left: auto;\n}\n[data-toggle=\"buttons\"] > .btn input[type=\"radio\"],\n[data-toggle=\"buttons\"] > .btn-group > .btn input[type=\"radio\"],\n[data-toggle=\"buttons\"] > .btn input[type=\"checkbox\"],\n[data-toggle=\"buttons\"] > .btn-group > .btn input[type=\"checkbox\"] {\n  position: absolute;\n  clip: rect(0, 0, 0, 0);\n  pointer-events: none;\n}\n.input-group {\n  position: relative;\n  display: table;\n  border-collapse: separate;\n}\n.input-group[class*=\"col-\"] {\n  float: none;\n  padding-right: 0;\n  padding-left: 0;\n}\n.input-group .form-control {\n  position: relative;\n  z-index: 2;\n  float: left;\n  width: 100%;\n  margin-bottom: 0;\n}\n.input-group .form-control:focus {\n  z-index: 3;\n}\n.input-group-lg > .form-control,\n.input-group-lg > .input-group-addon,\n.input-group-lg > .input-group-btn > .btn {\n  height: 46px;\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n  border-radius: 6px;\n}\nselect.input-group-lg > .form-control,\nselect.input-group-lg > .input-group-addon,\nselect.input-group-lg > .input-group-btn > .btn {\n  height: 46px;\n  line-height: 46px;\n}\ntextarea.input-group-lg > .form-control,\ntextarea.input-group-lg > .input-group-addon,\ntextarea.input-group-lg > .input-group-btn > .btn,\nselect[multiple].input-group-lg > .form-control,\nselect[multiple].input-group-lg > .input-group-addon,\nselect[multiple].input-group-lg > .input-group-btn > .btn {\n  height: auto;\n}\n.input-group-sm > .form-control,\n.input-group-sm > .input-group-addon,\n.input-group-sm > .input-group-btn > .btn {\n  height: 30px;\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n  border-radius: 3px;\n}\nselect.input-group-sm > .form-control,\nselect.input-group-sm > .input-group-addon,\nselect.input-group-sm > .input-group-btn > .btn {\n  height: 30px;\n  line-height: 30px;\n}\ntextarea.input-group-sm > .form-control,\ntextarea.input-group-sm > .input-group-addon,\ntextarea.input-group-sm > .input-group-btn > .btn,\nselect[multiple].input-group-sm > .form-control,\nselect[multiple].input-group-sm > .input-group-addon,\nselect[multiple].input-group-sm > .input-group-btn > .btn {\n  height: auto;\n}\n.input-group-addon,\n.input-group-btn,\n.input-group .form-control {\n  display: table-cell;\n}\n.input-group-addon:not(:first-child):not(:last-child),\n.input-group-btn:not(:first-child):not(:last-child),\n.input-group .form-control:not(:first-child):not(:last-child) {\n  border-radius: 0;\n}\n.input-group-addon,\n.input-group-btn {\n  width: 1%;\n  white-space: nowrap;\n  vertical-align: middle;\n}\n.input-group-addon {\n  padding: 6px 12px;\n  font-size: 14px;\n  font-weight: normal;\n  line-height: 1;\n  color: #555;\n  text-align: center;\n  background-color: #eee;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n}\n.input-group-addon.input-sm {\n  padding: 5px 10px;\n  font-size: 12px;\n  border-radius: 3px;\n}\n.input-group-addon.input-lg {\n  padding: 10px 16px;\n  font-size: 18px;\n  border-radius: 6px;\n}\n.input-group-addon input[type=\"radio\"],\n.input-group-addon input[type=\"checkbox\"] {\n  margin-top: 0;\n}\n.input-group .form-control:first-child,\n.input-group-addon:first-child,\n.input-group-btn:first-child > .btn,\n.input-group-btn:first-child > .btn-group > .btn,\n.input-group-btn:first-child > .dropdown-toggle,\n.input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle),\n.input-group-btn:last-child > .btn-group:not(:last-child) > .btn {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.input-group-addon:first-child {\n  border-right: 0;\n}\n.input-group .form-control:last-child,\n.input-group-addon:last-child,\n.input-group-btn:last-child > .btn,\n.input-group-btn:last-child > .btn-group > .btn,\n.input-group-btn:last-child > .dropdown-toggle,\n.input-group-btn:first-child > .btn:not(:first-child),\n.input-group-btn:first-child > .btn-group:not(:first-child) > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.input-group-addon:last-child {\n  border-left: 0;\n}\n.input-group-btn {\n  position: relative;\n  font-size: 0;\n  white-space: nowrap;\n}\n.input-group-btn > .btn {\n  position: relative;\n}\n.input-group-btn > .btn + .btn {\n  margin-left: -1px;\n}\n.input-group-btn > .btn:hover,\n.input-group-btn > .btn:focus,\n.input-group-btn > .btn:active {\n  z-index: 2;\n}\n.input-group-btn:first-child > .btn,\n.input-group-btn:first-child > .btn-group {\n  margin-right: -1px;\n}\n.input-group-btn:last-child > .btn,\n.input-group-btn:last-child > .btn-group {\n  z-index: 2;\n  margin-left: -1px;\n}\n.nav {\n  padding-left: 0;\n  margin-bottom: 0;\n  list-style: none;\n}\n.nav > li {\n  position: relative;\n  display: block;\n}\n.nav > li > a {\n  position: relative;\n  display: block;\n  padding: 10px 15px;\n}\n.nav > li > a:hover,\n.nav > li > a:focus {\n  text-decoration: none;\n  background-color: #eee;\n}\n.nav > li.disabled > a {\n  color: #777;\n}\n.nav > li.disabled > a:hover,\n.nav > li.disabled > a:focus {\n  color: #777;\n  text-decoration: none;\n  cursor: not-allowed;\n  background-color: transparent;\n}\n.nav .open > a,\n.nav .open > a:hover,\n.nav .open > a:focus {\n  background-color: #eee;\n  border-color: #337ab7;\n}\n.nav .nav-divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5;\n}\n.nav > li > a > img {\n  max-width: none;\n}\n.nav-tabs {\n  border-bottom: 1px solid #ddd;\n}\n.nav-tabs > li {\n  float: left;\n  margin-bottom: -1px;\n}\n.nav-tabs > li > a {\n  margin-right: 2px;\n  line-height: 1.42857143;\n  border: 1px solid transparent;\n  border-radius: 4px 4px 0 0;\n}\n.nav-tabs > li > a:hover {\n  border-color: #eee #eee #ddd;\n}\n.nav-tabs > li.active > a,\n.nav-tabs > li.active > a:hover,\n.nav-tabs > li.active > a:focus {\n  color: #555;\n  cursor: default;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-bottom-color: transparent;\n}\n.nav-tabs.nav-justified {\n  width: 100%;\n  border-bottom: 0;\n}\n.nav-tabs.nav-justified > li {\n  float: none;\n}\n.nav-tabs.nav-justified > li > a {\n  margin-bottom: 5px;\n  text-align: center;\n}\n.nav-tabs.nav-justified > .dropdown .dropdown-menu {\n  top: auto;\n  left: auto;\n}\n@media (min-width: 768px) {\n  .nav-tabs.nav-justified > li {\n    display: table-cell;\n    width: 1%;\n  }\n  .nav-tabs.nav-justified > li > a {\n    margin-bottom: 0;\n  }\n}\n.nav-tabs.nav-justified > li > a {\n  margin-right: 0;\n  border-radius: 4px;\n}\n.nav-tabs.nav-justified > .active > a,\n.nav-tabs.nav-justified > .active > a:hover,\n.nav-tabs.nav-justified > .active > a:focus {\n  border: 1px solid #ddd;\n}\n@media (min-width: 768px) {\n  .nav-tabs.nav-justified > li > a {\n    border-bottom: 1px solid #ddd;\n    border-radius: 4px 4px 0 0;\n  }\n  .nav-tabs.nav-justified > .active > a,\n  .nav-tabs.nav-justified > .active > a:hover,\n  .nav-tabs.nav-justified > .active > a:focus {\n    border-bottom-color: #fff;\n  }\n}\n.nav-pills > li {\n  float: left;\n}\n.nav-pills > li > a {\n  border-radius: 4px;\n}\n.nav-pills > li + li {\n  margin-left: 2px;\n}\n.nav-pills > li.active > a,\n.nav-pills > li.active > a:hover,\n.nav-pills > li.active > a:focus {\n  color: #fff;\n  background-color: #337ab7;\n}\n.nav-stacked > li {\n  float: none;\n}\n.nav-stacked > li + li {\n  margin-top: 2px;\n  margin-left: 0;\n}\n.nav-justified {\n  width: 100%;\n}\n.nav-justified > li {\n  float: none;\n}\n.nav-justified > li > a {\n  margin-bottom: 5px;\n  text-align: center;\n}\n.nav-justified > .dropdown .dropdown-menu {\n  top: auto;\n  left: auto;\n}\n@media (min-width: 768px) {\n  .nav-justified > li {\n    display: table-cell;\n    width: 1%;\n  }\n  .nav-justified > li > a {\n    margin-bottom: 0;\n  }\n}\n.nav-tabs-justified {\n  border-bottom: 0;\n}\n.nav-tabs-justified > li > a {\n  margin-right: 0;\n  border-radius: 4px;\n}\n.nav-tabs-justified > .active > a,\n.nav-tabs-justified > .active > a:hover,\n.nav-tabs-justified > .active > a:focus {\n  border: 1px solid #ddd;\n}\n@media (min-width: 768px) {\n  .nav-tabs-justified > li > a {\n    border-bottom: 1px solid #ddd;\n    border-radius: 4px 4px 0 0;\n  }\n  .nav-tabs-justified > .active > a,\n  .nav-tabs-justified > .active > a:hover,\n  .nav-tabs-justified > .active > a:focus {\n    border-bottom-color: #fff;\n  }\n}\n.tab-content > .tab-pane {\n  display: none;\n}\n.tab-content > .active {\n  display: block;\n}\n.nav-tabs .dropdown-menu {\n  margin-top: -1px;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.navbar {\n  position: relative;\n  min-height: 50px;\n  margin-bottom: 20px;\n  border: 1px solid transparent;\n}\n@media (min-width: 768px) {\n  .navbar {\n    border-radius: 4px;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-header {\n    float: left;\n  }\n}\n.navbar-collapse {\n  padding-right: 15px;\n  padding-left: 15px;\n  overflow-x: visible;\n  -webkit-overflow-scrolling: touch;\n  border-top: 1px solid transparent;\n  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);\n          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);\n}\n.navbar-collapse.in {\n  overflow-y: auto;\n}\n@media (min-width: 768px) {\n  .navbar-collapse {\n    width: auto;\n    border-top: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n  .navbar-collapse.collapse {\n    display: block !important;\n    height: auto !important;\n    padding-bottom: 0;\n    overflow: visible !important;\n  }\n  .navbar-collapse.in {\n    overflow-y: visible;\n  }\n  .navbar-fixed-top .navbar-collapse,\n  .navbar-static-top .navbar-collapse,\n  .navbar-fixed-bottom .navbar-collapse {\n    padding-right: 0;\n    padding-left: 0;\n  }\n}\n.navbar-fixed-top .navbar-collapse,\n.navbar-fixed-bottom .navbar-collapse {\n  max-height: 340px;\n}\n@media (max-device-width: 480px) and (orientation: landscape) {\n  .navbar-fixed-top .navbar-collapse,\n  .navbar-fixed-bottom .navbar-collapse {\n    max-height: 200px;\n  }\n}\n.container > .navbar-header,\n.container-fluid > .navbar-header,\n.container > .navbar-collapse,\n.container-fluid > .navbar-collapse {\n  margin-right: -15px;\n  margin-left: -15px;\n}\n@media (min-width: 768px) {\n  .container > .navbar-header,\n  .container-fluid > .navbar-header,\n  .container > .navbar-collapse,\n  .container-fluid > .navbar-collapse {\n    margin-right: 0;\n    margin-left: 0;\n  }\n}\n.navbar-static-top {\n  z-index: 1000;\n  border-width: 0 0 1px;\n}\n@media (min-width: 768px) {\n  .navbar-static-top {\n    border-radius: 0;\n  }\n}\n.navbar-fixed-top,\n.navbar-fixed-bottom {\n  position: fixed;\n  right: 0;\n  left: 0;\n  z-index: 1030;\n}\n@media (min-width: 768px) {\n  .navbar-fixed-top,\n  .navbar-fixed-bottom {\n    border-radius: 0;\n  }\n}\n.navbar-fixed-top {\n  top: 0;\n  border-width: 0 0 1px;\n}\n.navbar-fixed-bottom {\n  bottom: 0;\n  margin-bottom: 0;\n  border-width: 1px 0 0;\n}\n.navbar-brand {\n  float: left;\n  height: 50px;\n  padding: 15px 15px;\n  font-size: 18px;\n  line-height: 20px;\n}\n.navbar-brand:hover,\n.navbar-brand:focus {\n  text-decoration: none;\n}\n.navbar-brand > img {\n  display: block;\n}\n@media (min-width: 768px) {\n  .navbar > .container .navbar-brand,\n  .navbar > .container-fluid .navbar-brand {\n    margin-left: -15px;\n  }\n}\n.navbar-toggle {\n  position: relative;\n  float: right;\n  padding: 9px 10px;\n  margin-top: 8px;\n  margin-right: 15px;\n  margin-bottom: 8px;\n  background-color: transparent;\n  background-image: none;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.navbar-toggle:focus {\n  outline: 0;\n}\n.navbar-toggle .icon-bar {\n  display: block;\n  width: 22px;\n  height: 2px;\n  border-radius: 1px;\n}\n.navbar-toggle .icon-bar + .icon-bar {\n  margin-top: 4px;\n}\n@media (min-width: 768px) {\n  .navbar-toggle {\n    display: none;\n  }\n}\n.navbar-nav {\n  margin: 7.5px -15px;\n}\n.navbar-nav > li > a {\n  padding-top: 10px;\n  padding-bottom: 10px;\n  line-height: 20px;\n}\n@media (max-width: 767px) {\n  .navbar-nav .open .dropdown-menu {\n    position: static;\n    float: none;\n    width: auto;\n    margin-top: 0;\n    background-color: transparent;\n    border: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n  .navbar-nav .open .dropdown-menu > li > a,\n  .navbar-nav .open .dropdown-menu .dropdown-header {\n    padding: 5px 15px 5px 25px;\n  }\n  .navbar-nav .open .dropdown-menu > li > a {\n    line-height: 20px;\n  }\n  .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-nav .open .dropdown-menu > li > a:focus {\n    background-image: none;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-nav {\n    float: left;\n    margin: 0;\n  }\n  .navbar-nav > li {\n    float: left;\n  }\n  .navbar-nav > li > a {\n    padding-top: 15px;\n    padding-bottom: 15px;\n  }\n}\n.navbar-form {\n  padding: 10px 15px;\n  margin-top: 8px;\n  margin-right: -15px;\n  margin-bottom: 8px;\n  margin-left: -15px;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 0 rgba(255, 255, 255, .1);\n          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 0 rgba(255, 255, 255, .1);\n}\n@media (min-width: 768px) {\n  .navbar-form .form-group {\n    display: inline-block;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .form-control {\n    display: inline-block;\n    width: auto;\n    vertical-align: middle;\n  }\n  .navbar-form .form-control-static {\n    display: inline-block;\n  }\n  .navbar-form .input-group {\n    display: inline-table;\n    vertical-align: middle;\n  }\n  .navbar-form .input-group .input-group-addon,\n  .navbar-form .input-group .input-group-btn,\n  .navbar-form .input-group .form-control {\n    width: auto;\n  }\n  .navbar-form .input-group > .form-control {\n    width: 100%;\n  }\n  .navbar-form .control-label {\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .radio,\n  .navbar-form .checkbox {\n    display: inline-block;\n    margin-top: 0;\n    margin-bottom: 0;\n    vertical-align: middle;\n  }\n  .navbar-form .radio label,\n  .navbar-form .checkbox label {\n    padding-left: 0;\n  }\n  .navbar-form .radio input[type=\"radio\"],\n  .navbar-form .checkbox input[type=\"checkbox\"] {\n    position: relative;\n    margin-left: 0;\n  }\n  .navbar-form .has-feedback .form-control-feedback {\n    top: 0;\n  }\n}\n@media (max-width: 767px) {\n  .navbar-form .form-group {\n    margin-bottom: 5px;\n  }\n  .navbar-form .form-group:last-child {\n    margin-bottom: 0;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-form {\n    width: auto;\n    padding-top: 0;\n    padding-bottom: 0;\n    margin-right: 0;\n    margin-left: 0;\n    border: 0;\n    -webkit-box-shadow: none;\n            box-shadow: none;\n  }\n}\n.navbar-nav > li > .dropdown-menu {\n  margin-top: 0;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {\n  margin-bottom: 0;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.navbar-btn {\n  margin-top: 8px;\n  margin-bottom: 8px;\n}\n.navbar-btn.btn-sm {\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\n.navbar-btn.btn-xs {\n  margin-top: 14px;\n  margin-bottom: 14px;\n}\n.navbar-text {\n  margin-top: 15px;\n  margin-bottom: 15px;\n}\n@media (min-width: 768px) {\n  .navbar-text {\n    float: left;\n    margin-right: 15px;\n    margin-left: 15px;\n  }\n}\n@media (min-width: 768px) {\n  .navbar-left {\n    float: left !important;\n  }\n  .navbar-right {\n    float: right !important;\n    margin-right: -15px;\n  }\n  .navbar-right ~ .navbar-right {\n    margin-right: 0;\n  }\n}\n.navbar-default {\n  background-color: #f8f8f8;\n  border-color: #e7e7e7;\n}\n.navbar-default .navbar-brand {\n  color: #777;\n}\n.navbar-default .navbar-brand:hover,\n.navbar-default .navbar-brand:focus {\n  color: #5e5e5e;\n  background-color: transparent;\n}\n.navbar-default .navbar-text {\n  color: #777;\n}\n.navbar-default .navbar-nav > li > a {\n  color: #777;\n}\n.navbar-default .navbar-nav > li > a:hover,\n.navbar-default .navbar-nav > li > a:focus {\n  color: #333;\n  background-color: transparent;\n}\n.navbar-default .navbar-nav > .active > a,\n.navbar-default .navbar-nav > .active > a:hover,\n.navbar-default .navbar-nav > .active > a:focus {\n  color: #555;\n  background-color: #e7e7e7;\n}\n.navbar-default .navbar-nav > .disabled > a,\n.navbar-default .navbar-nav > .disabled > a:hover,\n.navbar-default .navbar-nav > .disabled > a:focus {\n  color: #ccc;\n  background-color: transparent;\n}\n.navbar-default .navbar-toggle {\n  border-color: #ddd;\n}\n.navbar-default .navbar-toggle:hover,\n.navbar-default .navbar-toggle:focus {\n  background-color: #ddd;\n}\n.navbar-default .navbar-toggle .icon-bar {\n  background-color: #888;\n}\n.navbar-default .navbar-collapse,\n.navbar-default .navbar-form {\n  border-color: #e7e7e7;\n}\n.navbar-default .navbar-nav > .open > a,\n.navbar-default .navbar-nav > .open > a:hover,\n.navbar-default .navbar-nav > .open > a:focus {\n  color: #555;\n  background-color: #e7e7e7;\n}\n@media (max-width: 767px) {\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a {\n    color: #777;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {\n    color: #333;\n    background-color: transparent;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {\n    color: #555;\n    background-color: #e7e7e7;\n  }\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,\n  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {\n    color: #ccc;\n    background-color: transparent;\n  }\n}\n.navbar-default .navbar-link {\n  color: #777;\n}\n.navbar-default .navbar-link:hover {\n  color: #333;\n}\n.navbar-default .btn-link {\n  color: #777;\n}\n.navbar-default .btn-link:hover,\n.navbar-default .btn-link:focus {\n  color: #333;\n}\n.navbar-default .btn-link[disabled]:hover,\nfieldset[disabled] .navbar-default .btn-link:hover,\n.navbar-default .btn-link[disabled]:focus,\nfieldset[disabled] .navbar-default .btn-link:focus {\n  color: #ccc;\n}\n.navbar-inverse {\n  background-color: #222;\n  border-color: #080808;\n}\n.navbar-inverse .navbar-brand {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-brand:hover,\n.navbar-inverse .navbar-brand:focus {\n  color: #fff;\n  background-color: transparent;\n}\n.navbar-inverse .navbar-text {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-nav > li > a {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-nav > li > a:hover,\n.navbar-inverse .navbar-nav > li > a:focus {\n  color: #fff;\n  background-color: transparent;\n}\n.navbar-inverse .navbar-nav > .active > a,\n.navbar-inverse .navbar-nav > .active > a:hover,\n.navbar-inverse .navbar-nav > .active > a:focus {\n  color: #fff;\n  background-color: #080808;\n}\n.navbar-inverse .navbar-nav > .disabled > a,\n.navbar-inverse .navbar-nav > .disabled > a:hover,\n.navbar-inverse .navbar-nav > .disabled > a:focus {\n  color: #444;\n  background-color: transparent;\n}\n.navbar-inverse .navbar-toggle {\n  border-color: #333;\n}\n.navbar-inverse .navbar-toggle:hover,\n.navbar-inverse .navbar-toggle:focus {\n  background-color: #333;\n}\n.navbar-inverse .navbar-toggle .icon-bar {\n  background-color: #fff;\n}\n.navbar-inverse .navbar-collapse,\n.navbar-inverse .navbar-form {\n  border-color: #101010;\n}\n.navbar-inverse .navbar-nav > .open > a,\n.navbar-inverse .navbar-nav > .open > a:hover,\n.navbar-inverse .navbar-nav > .open > a:focus {\n  color: #fff;\n  background-color: #080808;\n}\n@media (max-width: 767px) {\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {\n    border-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu .divider {\n    background-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {\n    color: #9d9d9d;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {\n    color: #fff;\n    background-color: transparent;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {\n    color: #fff;\n    background-color: #080808;\n  }\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,\n  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {\n    color: #444;\n    background-color: transparent;\n  }\n}\n.navbar-inverse .navbar-link {\n  color: #9d9d9d;\n}\n.navbar-inverse .navbar-link:hover {\n  color: #fff;\n}\n.navbar-inverse .btn-link {\n  color: #9d9d9d;\n}\n.navbar-inverse .btn-link:hover,\n.navbar-inverse .btn-link:focus {\n  color: #fff;\n}\n.navbar-inverse .btn-link[disabled]:hover,\nfieldset[disabled] .navbar-inverse .btn-link:hover,\n.navbar-inverse .btn-link[disabled]:focus,\nfieldset[disabled] .navbar-inverse .btn-link:focus {\n  color: #444;\n}\n.breadcrumb {\n  padding: 8px 15px;\n  margin-bottom: 20px;\n  list-style: none;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n}\n.breadcrumb > li {\n  display: inline-block;\n}\n.breadcrumb > li + li:before {\n  padding: 0 5px;\n  color: #ccc;\n  content: \"/\\A0\";\n}\n.breadcrumb > .active {\n  color: #777;\n}\n.pagination {\n  display: inline-block;\n  padding-left: 0;\n  margin: 20px 0;\n  border-radius: 4px;\n}\n.pagination > li {\n  display: inline;\n}\n.pagination > li > a,\n.pagination > li > span {\n  position: relative;\n  float: left;\n  padding: 6px 12px;\n  margin-left: -1px;\n  line-height: 1.42857143;\n  color: #337ab7;\n  text-decoration: none;\n  background-color: #fff;\n  border: 1px solid #ddd;\n}\n.pagination > li:first-child > a,\n.pagination > li:first-child > span {\n  margin-left: 0;\n  border-top-left-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\n.pagination > li:last-child > a,\n.pagination > li:last-child > span {\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n.pagination > li > a:hover,\n.pagination > li > span:hover,\n.pagination > li > a:focus,\n.pagination > li > span:focus {\n  z-index: 2;\n  color: #23527c;\n  background-color: #eee;\n  border-color: #ddd;\n}\n.pagination > .active > a,\n.pagination > .active > span,\n.pagination > .active > a:hover,\n.pagination > .active > span:hover,\n.pagination > .active > a:focus,\n.pagination > .active > span:focus {\n  z-index: 3;\n  color: #fff;\n  cursor: default;\n  background-color: #337ab7;\n  border-color: #337ab7;\n}\n.pagination > .disabled > span,\n.pagination > .disabled > span:hover,\n.pagination > .disabled > span:focus,\n.pagination > .disabled > a,\n.pagination > .disabled > a:hover,\n.pagination > .disabled > a:focus {\n  color: #777;\n  cursor: not-allowed;\n  background-color: #fff;\n  border-color: #ddd;\n}\n.pagination-lg > li > a,\n.pagination-lg > li > span {\n  padding: 10px 16px;\n  font-size: 18px;\n  line-height: 1.3333333;\n}\n.pagination-lg > li:first-child > a,\n.pagination-lg > li:first-child > span {\n  border-top-left-radius: 6px;\n  border-bottom-left-radius: 6px;\n}\n.pagination-lg > li:last-child > a,\n.pagination-lg > li:last-child > span {\n  border-top-right-radius: 6px;\n  border-bottom-right-radius: 6px;\n}\n.pagination-sm > li > a,\n.pagination-sm > li > span {\n  padding: 5px 10px;\n  font-size: 12px;\n  line-height: 1.5;\n}\n.pagination-sm > li:first-child > a,\n.pagination-sm > li:first-child > span {\n  border-top-left-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.pagination-sm > li:last-child > a,\n.pagination-sm > li:last-child > span {\n  border-top-right-radius: 3px;\n  border-bottom-right-radius: 3px;\n}\n.pager {\n  padding-left: 0;\n  margin: 20px 0;\n  text-align: center;\n  list-style: none;\n}\n.pager li {\n  display: inline;\n}\n.pager li > a,\n.pager li > span {\n  display: inline-block;\n  padding: 5px 14px;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-radius: 15px;\n}\n.pager li > a:hover,\n.pager li > a:focus {\n  text-decoration: none;\n  background-color: #eee;\n}\n.pager .next > a,\n.pager .next > span {\n  float: right;\n}\n.pager .previous > a,\n.pager .previous > span {\n  float: left;\n}\n.pager .disabled > a,\n.pager .disabled > a:hover,\n.pager .disabled > a:focus,\n.pager .disabled > span {\n  color: #777;\n  cursor: not-allowed;\n  background-color: #fff;\n}\n.label {\n  display: inline;\n  padding: .2em .6em .3em;\n  font-size: 75%;\n  font-weight: bold;\n  line-height: 1;\n  color: #fff;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: baseline;\n  border-radius: .25em;\n}\na.label:hover,\na.label:focus {\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer;\n}\n.label:empty {\n  display: none;\n}\n.btn .label {\n  position: relative;\n  top: -1px;\n}\n.label-default {\n  background-color: #777;\n}\n.label-default[href]:hover,\n.label-default[href]:focus {\n  background-color: #5e5e5e;\n}\n.label-primary {\n  background-color: #337ab7;\n}\n.label-primary[href]:hover,\n.label-primary[href]:focus {\n  background-color: #286090;\n}\n.label-success {\n  background-color: #5cb85c;\n}\n.label-success[href]:hover,\n.label-success[href]:focus {\n  background-color: #449d44;\n}\n.label-info {\n  background-color: #5bc0de;\n}\n.label-info[href]:hover,\n.label-info[href]:focus {\n  background-color: #31b0d5;\n}\n.label-warning {\n  background-color: #f0ad4e;\n}\n.label-warning[href]:hover,\n.label-warning[href]:focus {\n  background-color: #ec971f;\n}\n.label-danger {\n  background-color: #d9534f;\n}\n.label-danger[href]:hover,\n.label-danger[href]:focus {\n  background-color: #c9302c;\n}\n.badge {\n  display: inline-block;\n  min-width: 10px;\n  padding: 3px 7px;\n  font-size: 12px;\n  font-weight: bold;\n  line-height: 1;\n  color: #fff;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  background-color: #777;\n  border-radius: 10px;\n}\n.badge:empty {\n  display: none;\n}\n.btn .badge {\n  position: relative;\n  top: -1px;\n}\n.btn-xs .badge,\n.btn-group-xs > .btn .badge {\n  top: 0;\n  padding: 1px 5px;\n}\na.badge:hover,\na.badge:focus {\n  color: #fff;\n  text-decoration: none;\n  cursor: pointer;\n}\n.list-group-item.active > .badge,\n.nav-pills > .active > a > .badge {\n  color: #337ab7;\n  background-color: #fff;\n}\n.list-group-item > .badge {\n  float: right;\n}\n.list-group-item > .badge + .badge {\n  margin-right: 5px;\n}\n.nav-pills > li > a > .badge {\n  margin-left: 3px;\n}\n.jumbotron {\n  padding-top: 30px;\n  padding-bottom: 30px;\n  margin-bottom: 30px;\n  color: inherit;\n  background-color: #eee;\n}\n.jumbotron h1,\n.jumbotron .h1 {\n  color: inherit;\n}\n.jumbotron p {\n  margin-bottom: 15px;\n  font-size: 21px;\n  font-weight: 200;\n}\n.jumbotron > hr {\n  border-top-color: #d5d5d5;\n}\n.container .jumbotron,\n.container-fluid .jumbotron {\n  padding-right: 15px;\n  padding-left: 15px;\n  border-radius: 6px;\n}\n.jumbotron .container {\n  max-width: 100%;\n}\n@media screen and (min-width: 768px) {\n  .jumbotron {\n    padding-top: 48px;\n    padding-bottom: 48px;\n  }\n  .container .jumbotron,\n  .container-fluid .jumbotron {\n    padding-right: 60px;\n    padding-left: 60px;\n  }\n  .jumbotron h1,\n  .jumbotron .h1 {\n    font-size: 63px;\n  }\n}\n.thumbnail {\n  display: block;\n  padding: 4px;\n  margin-bottom: 20px;\n  line-height: 1.42857143;\n  background-color: #fff;\n  border: 1px solid #ddd;\n  border-radius: 4px;\n  -webkit-transition: border .2s ease-in-out;\n       -o-transition: border .2s ease-in-out;\n          transition: border .2s ease-in-out;\n}\n.thumbnail > img,\n.thumbnail a > img {\n  margin-right: auto;\n  margin-left: auto;\n}\na.thumbnail:hover,\na.thumbnail:focus,\na.thumbnail.active {\n  border-color: #337ab7;\n}\n.thumbnail .caption {\n  padding: 9px;\n  color: #333;\n}\n.alert {\n  padding: 15px;\n  margin-bottom: 20px;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.alert h4 {\n  margin-top: 0;\n  color: inherit;\n}\n.alert .alert-link {\n  font-weight: bold;\n}\n.alert > p,\n.alert > ul {\n  margin-bottom: 0;\n}\n.alert > p + p {\n  margin-top: 5px;\n}\n.alert-dismissable,\n.alert-dismissible {\n  padding-right: 35px;\n}\n.alert-dismissable .close,\n.alert-dismissible .close {\n  position: relative;\n  top: -2px;\n  right: -21px;\n  color: inherit;\n}\n.alert-success {\n  color: #3c763d;\n  background-color: #dff0d8;\n  border-color: #d6e9c6;\n}\n.alert-success hr {\n  border-top-color: #c9e2b3;\n}\n.alert-success .alert-link {\n  color: #2b542c;\n}\n.alert-info {\n  color: #31708f;\n  background-color: #d9edf7;\n  border-color: #bce8f1;\n}\n.alert-info hr {\n  border-top-color: #a6e1ec;\n}\n.alert-info .alert-link {\n  color: #245269;\n}\n.alert-warning {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n  border-color: #faebcc;\n}\n.alert-warning hr {\n  border-top-color: #f7e1b5;\n}\n.alert-warning .alert-link {\n  color: #66512c;\n}\n.alert-danger {\n  color: #a94442;\n  background-color: #f2dede;\n  border-color: #ebccd1;\n}\n.alert-danger hr {\n  border-top-color: #e4b9c0;\n}\n.alert-danger .alert-link {\n  color: #843534;\n}\n@-webkit-keyframes progress-bar-stripes {\n  from {\n    background-position: 40px 0;\n  }\n  to {\n    background-position: 0 0;\n  }\n}\n@-o-keyframes progress-bar-stripes {\n  from {\n    background-position: 40px 0;\n  }\n  to {\n    background-position: 0 0;\n  }\n}\n@keyframes progress-bar-stripes {\n  from {\n    background-position: 40px 0;\n  }\n  to {\n    background-position: 0 0;\n  }\n}\n.progress {\n  height: 20px;\n  margin-bottom: 20px;\n  overflow: hidden;\n  background-color: #f5f5f5;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);\n          box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);\n}\n.progress-bar {\n  float: left;\n  width: 0;\n  height: 100%;\n  font-size: 12px;\n  line-height: 20px;\n  color: #fff;\n  text-align: center;\n  background-color: #337ab7;\n  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);\n          box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);\n  -webkit-transition: width .6s ease;\n       -o-transition: width .6s ease;\n          transition: width .6s ease;\n}\n.progress-striped .progress-bar,\n.progress-bar-striped {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  -webkit-background-size: 40px 40px;\n          background-size: 40px 40px;\n}\n.progress.active .progress-bar,\n.progress-bar.active {\n  -webkit-animation: progress-bar-stripes 2s linear infinite;\n       -o-animation: progress-bar-stripes 2s linear infinite;\n          animation: progress-bar-stripes 2s linear infinite;\n}\n.progress-bar-success {\n  background-color: #5cb85c;\n}\n.progress-striped .progress-bar-success {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.progress-bar-info {\n  background-color: #5bc0de;\n}\n.progress-striped .progress-bar-info {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.progress-bar-warning {\n  background-color: #f0ad4e;\n}\n.progress-striped .progress-bar-warning {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.progress-bar-danger {\n  background-color: #d9534f;\n}\n.progress-striped .progress-bar-danger {\n  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:      -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n  background-image:         linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);\n}\n.media {\n  margin-top: 15px;\n}\n.media:first-child {\n  margin-top: 0;\n}\n.media,\n.media-body {\n  overflow: hidden;\n  zoom: 1;\n}\n.media-body {\n  width: 10000px;\n}\n.media-object {\n  display: block;\n}\n.media-object.img-thumbnail {\n  max-width: none;\n}\n.media-right,\n.media > .pull-right {\n  padding-left: 10px;\n}\n.media-left,\n.media > .pull-left {\n  padding-right: 10px;\n}\n.media-left,\n.media-right,\n.media-body {\n  display: table-cell;\n  vertical-align: top;\n}\n.media-middle {\n  vertical-align: middle;\n}\n.media-bottom {\n  vertical-align: bottom;\n}\n.media-heading {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n.media-list {\n  padding-left: 0;\n  list-style: none;\n}\n.list-group {\n  padding-left: 0;\n  margin-bottom: 20px;\n}\n.list-group-item {\n  position: relative;\n  display: block;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  background-color: #fff;\n  border: 1px solid #ddd;\n}\n.list-group-item:first-child {\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n.list-group-item:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\na.list-group-item,\nbutton.list-group-item {\n  color: #555;\n}\na.list-group-item .list-group-item-heading,\nbutton.list-group-item .list-group-item-heading {\n  color: #333;\n}\na.list-group-item:hover,\nbutton.list-group-item:hover,\na.list-group-item:focus,\nbutton.list-group-item:focus {\n  color: #555;\n  text-decoration: none;\n  background-color: #f5f5f5;\n}\nbutton.list-group-item {\n  width: 100%;\n  text-align: left;\n}\n.list-group-item.disabled,\n.list-group-item.disabled:hover,\n.list-group-item.disabled:focus {\n  color: #777;\n  cursor: not-allowed;\n  background-color: #eee;\n}\n.list-group-item.disabled .list-group-item-heading,\n.list-group-item.disabled:hover .list-group-item-heading,\n.list-group-item.disabled:focus .list-group-item-heading {\n  color: inherit;\n}\n.list-group-item.disabled .list-group-item-text,\n.list-group-item.disabled:hover .list-group-item-text,\n.list-group-item.disabled:focus .list-group-item-text {\n  color: #777;\n}\n.list-group-item.active,\n.list-group-item.active:hover,\n.list-group-item.active:focus {\n  z-index: 2;\n  color: #fff;\n  background-color: #337ab7;\n  border-color: #337ab7;\n}\n.list-group-item.active .list-group-item-heading,\n.list-group-item.active:hover .list-group-item-heading,\n.list-group-item.active:focus .list-group-item-heading,\n.list-group-item.active .list-group-item-heading > small,\n.list-group-item.active:hover .list-group-item-heading > small,\n.list-group-item.active:focus .list-group-item-heading > small,\n.list-group-item.active .list-group-item-heading > .small,\n.list-group-item.active:hover .list-group-item-heading > .small,\n.list-group-item.active:focus .list-group-item-heading > .small {\n  color: inherit;\n}\n.list-group-item.active .list-group-item-text,\n.list-group-item.active:hover .list-group-item-text,\n.list-group-item.active:focus .list-group-item-text {\n  color: #c7ddef;\n}\n.list-group-item-success {\n  color: #3c763d;\n  background-color: #dff0d8;\n}\na.list-group-item-success,\nbutton.list-group-item-success {\n  color: #3c763d;\n}\na.list-group-item-success .list-group-item-heading,\nbutton.list-group-item-success .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-success:hover,\nbutton.list-group-item-success:hover,\na.list-group-item-success:focus,\nbutton.list-group-item-success:focus {\n  color: #3c763d;\n  background-color: #d0e9c6;\n}\na.list-group-item-success.active,\nbutton.list-group-item-success.active,\na.list-group-item-success.active:hover,\nbutton.list-group-item-success.active:hover,\na.list-group-item-success.active:focus,\nbutton.list-group-item-success.active:focus {\n  color: #fff;\n  background-color: #3c763d;\n  border-color: #3c763d;\n}\n.list-group-item-info {\n  color: #31708f;\n  background-color: #d9edf7;\n}\na.list-group-item-info,\nbutton.list-group-item-info {\n  color: #31708f;\n}\na.list-group-item-info .list-group-item-heading,\nbutton.list-group-item-info .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-info:hover,\nbutton.list-group-item-info:hover,\na.list-group-item-info:focus,\nbutton.list-group-item-info:focus {\n  color: #31708f;\n  background-color: #c4e3f3;\n}\na.list-group-item-info.active,\nbutton.list-group-item-info.active,\na.list-group-item-info.active:hover,\nbutton.list-group-item-info.active:hover,\na.list-group-item-info.active:focus,\nbutton.list-group-item-info.active:focus {\n  color: #fff;\n  background-color: #31708f;\n  border-color: #31708f;\n}\n.list-group-item-warning {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n}\na.list-group-item-warning,\nbutton.list-group-item-warning {\n  color: #8a6d3b;\n}\na.list-group-item-warning .list-group-item-heading,\nbutton.list-group-item-warning .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-warning:hover,\nbutton.list-group-item-warning:hover,\na.list-group-item-warning:focus,\nbutton.list-group-item-warning:focus {\n  color: #8a6d3b;\n  background-color: #faf2cc;\n}\na.list-group-item-warning.active,\nbutton.list-group-item-warning.active,\na.list-group-item-warning.active:hover,\nbutton.list-group-item-warning.active:hover,\na.list-group-item-warning.active:focus,\nbutton.list-group-item-warning.active:focus {\n  color: #fff;\n  background-color: #8a6d3b;\n  border-color: #8a6d3b;\n}\n.list-group-item-danger {\n  color: #a94442;\n  background-color: #f2dede;\n}\na.list-group-item-danger,\nbutton.list-group-item-danger {\n  color: #a94442;\n}\na.list-group-item-danger .list-group-item-heading,\nbutton.list-group-item-danger .list-group-item-heading {\n  color: inherit;\n}\na.list-group-item-danger:hover,\nbutton.list-group-item-danger:hover,\na.list-group-item-danger:focus,\nbutton.list-group-item-danger:focus {\n  color: #a94442;\n  background-color: #ebcccc;\n}\na.list-group-item-danger.active,\nbutton.list-group-item-danger.active,\na.list-group-item-danger.active:hover,\nbutton.list-group-item-danger.active:hover,\na.list-group-item-danger.active:focus,\nbutton.list-group-item-danger.active:focus {\n  color: #fff;\n  background-color: #a94442;\n  border-color: #a94442;\n}\n.list-group-item-heading {\n  margin-top: 0;\n  margin-bottom: 5px;\n}\n.list-group-item-text {\n  margin-bottom: 0;\n  line-height: 1.3;\n}\n.panel {\n  margin-bottom: 20px;\n  background-color: #fff;\n  border: 1px solid transparent;\n  border-radius: 4px;\n  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);\n          box-shadow: 0 1px 1px rgba(0, 0, 0, .05);\n}\n.panel-body {\n  padding: 15px;\n}\n.panel-heading {\n  padding: 10px 15px;\n  border-bottom: 1px solid transparent;\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel-heading > .dropdown .dropdown-toggle {\n  color: inherit;\n}\n.panel-title {\n  margin-top: 0;\n  margin-bottom: 0;\n  font-size: 16px;\n  color: inherit;\n}\n.panel-title > a,\n.panel-title > small,\n.panel-title > .small,\n.panel-title > small > a,\n.panel-title > .small > a {\n  color: inherit;\n}\n.panel-footer {\n  padding: 10px 15px;\n  background-color: #f5f5f5;\n  border-top: 1px solid #ddd;\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .list-group,\n.panel > .panel-collapse > .list-group {\n  margin-bottom: 0;\n}\n.panel > .list-group .list-group-item,\n.panel > .panel-collapse > .list-group .list-group-item {\n  border-width: 1px 0;\n  border-radius: 0;\n}\n.panel > .list-group:first-child .list-group-item:first-child,\n.panel > .panel-collapse > .list-group:first-child .list-group-item:first-child {\n  border-top: 0;\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel > .list-group:last-child .list-group-item:last-child,\n.panel > .panel-collapse > .list-group:last-child .list-group-item:last-child {\n  border-bottom: 0;\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child {\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n}\n.panel-heading + .list-group .list-group-item:first-child {\n  border-top-width: 0;\n}\n.list-group + .panel-footer {\n  border-top-width: 0;\n}\n.panel > .table,\n.panel > .table-responsive > .table,\n.panel > .panel-collapse > .table {\n  margin-bottom: 0;\n}\n.panel > .table caption,\n.panel > .table-responsive > .table caption,\n.panel > .panel-collapse > .table caption {\n  padding-right: 15px;\n  padding-left: 15px;\n}\n.panel > .table:first-child,\n.panel > .table-responsive:first-child > .table:first-child {\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel > .table:first-child > thead:first-child > tr:first-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n}\n.panel > .table:first-child > thead:first-child > tr:first-child td:first-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,\n.panel > .table:first-child > thead:first-child > tr:first-child th:first-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {\n  border-top-left-radius: 3px;\n}\n.panel > .table:first-child > thead:first-child > tr:first-child td:last-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,\n.panel > .table:first-child > thead:first-child > tr:first-child th:last-child,\n.panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,\n.panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,\n.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {\n  border-top-right-radius: 3px;\n}\n.panel > .table:last-child,\n.panel > .table-responsive:last-child > .table:last-child {\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .table:last-child > tbody:last-child > tr:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n}\n.panel > .table:last-child > tbody:last-child > tr:last-child td:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,\n.panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {\n  border-bottom-left-radius: 3px;\n}\n.panel > .table:last-child > tbody:last-child > tr:last-child td:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,\n.panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,\n.panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,\n.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {\n  border-bottom-right-radius: 3px;\n}\n.panel > .panel-body + .table,\n.panel > .panel-body + .table-responsive,\n.panel > .table + .panel-body,\n.panel > .table-responsive + .panel-body {\n  border-top: 1px solid #ddd;\n}\n.panel > .table > tbody:first-child > tr:first-child th,\n.panel > .table > tbody:first-child > tr:first-child td {\n  border-top: 0;\n}\n.panel > .table-bordered,\n.panel > .table-responsive > .table-bordered {\n  border: 0;\n}\n.panel > .table-bordered > thead > tr > th:first-child,\n.panel > .table-responsive > .table-bordered > thead > tr > th:first-child,\n.panel > .table-bordered > tbody > tr > th:first-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,\n.panel > .table-bordered > tfoot > tr > th:first-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,\n.panel > .table-bordered > thead > tr > td:first-child,\n.panel > .table-responsive > .table-bordered > thead > tr > td:first-child,\n.panel > .table-bordered > tbody > tr > td:first-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,\n.panel > .table-bordered > tfoot > tr > td:first-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child {\n  border-left: 0;\n}\n.panel > .table-bordered > thead > tr > th:last-child,\n.panel > .table-responsive > .table-bordered > thead > tr > th:last-child,\n.panel > .table-bordered > tbody > tr > th:last-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,\n.panel > .table-bordered > tfoot > tr > th:last-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,\n.panel > .table-bordered > thead > tr > td:last-child,\n.panel > .table-responsive > .table-bordered > thead > tr > td:last-child,\n.panel > .table-bordered > tbody > tr > td:last-child,\n.panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,\n.panel > .table-bordered > tfoot > tr > td:last-child,\n.panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child {\n  border-right: 0;\n}\n.panel > .table-bordered > thead > tr:first-child > td,\n.panel > .table-responsive > .table-bordered > thead > tr:first-child > td,\n.panel > .table-bordered > tbody > tr:first-child > td,\n.panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,\n.panel > .table-bordered > thead > tr:first-child > th,\n.panel > .table-responsive > .table-bordered > thead > tr:first-child > th,\n.panel > .table-bordered > tbody > tr:first-child > th,\n.panel > .table-responsive > .table-bordered > tbody > tr:first-child > th {\n  border-bottom: 0;\n}\n.panel > .table-bordered > tbody > tr:last-child > td,\n.panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,\n.panel > .table-bordered > tfoot > tr:last-child > td,\n.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,\n.panel > .table-bordered > tbody > tr:last-child > th,\n.panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,\n.panel > .table-bordered > tfoot > tr:last-child > th,\n.panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {\n  border-bottom: 0;\n}\n.panel > .table-responsive {\n  margin-bottom: 0;\n  border: 0;\n}\n.panel-group {\n  margin-bottom: 20px;\n}\n.panel-group .panel {\n  margin-bottom: 0;\n  border-radius: 4px;\n}\n.panel-group .panel + .panel {\n  margin-top: 5px;\n}\n.panel-group .panel-heading {\n  border-bottom: 0;\n}\n.panel-group .panel-heading + .panel-collapse > .panel-body,\n.panel-group .panel-heading + .panel-collapse > .list-group {\n  border-top: 1px solid #ddd;\n}\n.panel-group .panel-footer {\n  border-top: 0;\n}\n.panel-group .panel-footer + .panel-collapse .panel-body {\n  border-bottom: 1px solid #ddd;\n}\n.panel-default {\n  border-color: #ddd;\n}\n.panel-default > .panel-heading {\n  color: #333;\n  background-color: #f5f5f5;\n  border-color: #ddd;\n}\n.panel-default > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #ddd;\n}\n.panel-default > .panel-heading .badge {\n  color: #f5f5f5;\n  background-color: #333;\n}\n.panel-default > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #ddd;\n}\n.panel-primary {\n  border-color: #337ab7;\n}\n.panel-primary > .panel-heading {\n  color: #fff;\n  background-color: #337ab7;\n  border-color: #337ab7;\n}\n.panel-primary > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #337ab7;\n}\n.panel-primary > .panel-heading .badge {\n  color: #337ab7;\n  background-color: #fff;\n}\n.panel-primary > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #337ab7;\n}\n.panel-success {\n  border-color: #d6e9c6;\n}\n.panel-success > .panel-heading {\n  color: #3c763d;\n  background-color: #dff0d8;\n  border-color: #d6e9c6;\n}\n.panel-success > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #d6e9c6;\n}\n.panel-success > .panel-heading .badge {\n  color: #dff0d8;\n  background-color: #3c763d;\n}\n.panel-success > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #d6e9c6;\n}\n.panel-info {\n  border-color: #bce8f1;\n}\n.panel-info > .panel-heading {\n  color: #31708f;\n  background-color: #d9edf7;\n  border-color: #bce8f1;\n}\n.panel-info > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #bce8f1;\n}\n.panel-info > .panel-heading .badge {\n  color: #d9edf7;\n  background-color: #31708f;\n}\n.panel-info > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #bce8f1;\n}\n.panel-warning {\n  border-color: #faebcc;\n}\n.panel-warning > .panel-heading {\n  color: #8a6d3b;\n  background-color: #fcf8e3;\n  border-color: #faebcc;\n}\n.panel-warning > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #faebcc;\n}\n.panel-warning > .panel-heading .badge {\n  color: #fcf8e3;\n  background-color: #8a6d3b;\n}\n.panel-warning > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #faebcc;\n}\n.panel-danger {\n  border-color: #ebccd1;\n}\n.panel-danger > .panel-heading {\n  color: #a94442;\n  background-color: #f2dede;\n  border-color: #ebccd1;\n}\n.panel-danger > .panel-heading + .panel-collapse > .panel-body {\n  border-top-color: #ebccd1;\n}\n.panel-danger > .panel-heading .badge {\n  color: #f2dede;\n  background-color: #a94442;\n}\n.panel-danger > .panel-footer + .panel-collapse > .panel-body {\n  border-bottom-color: #ebccd1;\n}\n.embed-responsive {\n  position: relative;\n  display: block;\n  height: 0;\n  padding: 0;\n  overflow: hidden;\n}\n.embed-responsive .embed-responsive-item,\n.embed-responsive iframe,\n.embed-responsive embed,\n.embed-responsive object,\n.embed-responsive video {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  border: 0;\n}\n.embed-responsive-16by9 {\n  padding-bottom: 56.25%;\n}\n.embed-responsive-4by3 {\n  padding-bottom: 75%;\n}\n.well {\n  min-height: 20px;\n  padding: 19px;\n  margin-bottom: 20px;\n  background-color: #f5f5f5;\n  border: 1px solid #e3e3e3;\n  border-radius: 4px;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);\n          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);\n}\n.well blockquote {\n  border-color: #ddd;\n  border-color: rgba(0, 0, 0, .15);\n}\n.well-lg {\n  padding: 24px;\n  border-radius: 6px;\n}\n.well-sm {\n  padding: 9px;\n  border-radius: 3px;\n}\n.close {\n  float: right;\n  font-size: 21px;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  filter: alpha(opacity=20);\n  opacity: .2;\n}\n.close:hover,\n.close:focus {\n  color: #000;\n  text-decoration: none;\n  cursor: pointer;\n  filter: alpha(opacity=50);\n  opacity: .5;\n}\nbutton.close {\n  -webkit-appearance: none;\n  padding: 0;\n  cursor: pointer;\n  background: transparent;\n  border: 0;\n}\n.modal-open {\n  overflow: hidden;\n}\n.modal {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1050;\n  display: none;\n  overflow: hidden;\n  -webkit-overflow-scrolling: touch;\n  outline: 0;\n}\n.modal.fade .modal-dialog {\n  -webkit-transition: -webkit-transform .3s ease-out;\n       -o-transition:      -o-transform .3s ease-out;\n          transition:         transform .3s ease-out;\n  -webkit-transform: translate(0, -25%);\n      -ms-transform: translate(0, -25%);\n       -o-transform: translate(0, -25%);\n          transform: translate(0, -25%);\n}\n.modal.in .modal-dialog {\n  -webkit-transform: translate(0, 0);\n      -ms-transform: translate(0, 0);\n       -o-transform: translate(0, 0);\n          transform: translate(0, 0);\n}\n.modal-open .modal {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.modal-dialog {\n  position: relative;\n  width: auto;\n  margin: 10px;\n}\n.modal-content {\n  position: relative;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n          background-clip: padding-box;\n  border: 1px solid #999;\n  border: 1px solid rgba(0, 0, 0, .2);\n  border-radius: 6px;\n  outline: 0;\n  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);\n          box-shadow: 0 3px 9px rgba(0, 0, 0, .5);\n}\n.modal-backdrop {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1040;\n  background-color: #000;\n}\n.modal-backdrop.fade {\n  filter: alpha(opacity=0);\n  opacity: 0;\n}\n.modal-backdrop.in {\n  filter: alpha(opacity=50);\n  opacity: .5;\n}\n.modal-header {\n  padding: 15px;\n  border-bottom: 1px solid #e5e5e5;\n}\n.modal-header .close {\n  margin-top: -2px;\n}\n.modal-title {\n  margin: 0;\n  line-height: 1.42857143;\n}\n.modal-body {\n  position: relative;\n  padding: 15px;\n}\n.modal-footer {\n  padding: 15px;\n  text-align: right;\n  border-top: 1px solid #e5e5e5;\n}\n.modal-footer .btn + .btn {\n  margin-bottom: 0;\n  margin-left: 5px;\n}\n.modal-footer .btn-group .btn + .btn {\n  margin-left: -1px;\n}\n.modal-footer .btn-block + .btn-block {\n  margin-left: 0;\n}\n.modal-scrollbar-measure {\n  position: absolute;\n  top: -9999px;\n  width: 50px;\n  height: 50px;\n  overflow: scroll;\n}\n@media (min-width: 768px) {\n  .modal-dialog {\n    width: 600px;\n    margin: 30px auto;\n  }\n  .modal-content {\n    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);\n            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);\n  }\n  .modal-sm {\n    width: 300px;\n  }\n}\n@media (min-width: 992px) {\n  .modal-lg {\n    width: 900px;\n  }\n}\n.tooltip {\n  position: absolute;\n  z-index: 1070;\n  display: block;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 12px;\n  font-style: normal;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: left;\n  text-align: start;\n  text-decoration: none;\n  text-shadow: none;\n  text-transform: none;\n  letter-spacing: normal;\n  word-break: normal;\n  word-spacing: normal;\n  word-wrap: normal;\n  white-space: normal;\n  filter: alpha(opacity=0);\n  opacity: 0;\n\n  line-break: auto;\n}\n.tooltip.in {\n  filter: alpha(opacity=90);\n  opacity: .9;\n}\n.tooltip.top {\n  padding: 5px 0;\n  margin-top: -3px;\n}\n.tooltip.right {\n  padding: 0 5px;\n  margin-left: 3px;\n}\n.tooltip.bottom {\n  padding: 5px 0;\n  margin-top: 3px;\n}\n.tooltip.left {\n  padding: 0 5px;\n  margin-left: -3px;\n}\n.tooltip-inner {\n  max-width: 200px;\n  padding: 3px 8px;\n  color: #fff;\n  text-align: center;\n  background-color: #000;\n  border-radius: 4px;\n}\n.tooltip-arrow {\n  position: absolute;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.tooltip.top .tooltip-arrow {\n  bottom: 0;\n  left: 50%;\n  margin-left: -5px;\n  border-width: 5px 5px 0;\n  border-top-color: #000;\n}\n.tooltip.top-left .tooltip-arrow {\n  right: 5px;\n  bottom: 0;\n  margin-bottom: -5px;\n  border-width: 5px 5px 0;\n  border-top-color: #000;\n}\n.tooltip.top-right .tooltip-arrow {\n  bottom: 0;\n  left: 5px;\n  margin-bottom: -5px;\n  border-width: 5px 5px 0;\n  border-top-color: #000;\n}\n.tooltip.right .tooltip-arrow {\n  top: 50%;\n  left: 0;\n  margin-top: -5px;\n  border-width: 5px 5px 5px 0;\n  border-right-color: #000;\n}\n.tooltip.left .tooltip-arrow {\n  top: 50%;\n  right: 0;\n  margin-top: -5px;\n  border-width: 5px 0 5px 5px;\n  border-left-color: #000;\n}\n.tooltip.bottom .tooltip-arrow {\n  top: 0;\n  left: 50%;\n  margin-left: -5px;\n  border-width: 0 5px 5px;\n  border-bottom-color: #000;\n}\n.tooltip.bottom-left .tooltip-arrow {\n  top: 0;\n  right: 5px;\n  margin-top: -5px;\n  border-width: 0 5px 5px;\n  border-bottom-color: #000;\n}\n.tooltip.bottom-right .tooltip-arrow {\n  top: 0;\n  left: 5px;\n  margin-top: -5px;\n  border-width: 0 5px 5px;\n  border-bottom-color: #000;\n}\n.popover {\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 1060;\n  display: none;\n  max-width: 276px;\n  padding: 1px;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  font-style: normal;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: left;\n  text-align: start;\n  text-decoration: none;\n  text-shadow: none;\n  text-transform: none;\n  letter-spacing: normal;\n  word-break: normal;\n  word-spacing: normal;\n  word-wrap: normal;\n  white-space: normal;\n  background-color: #fff;\n  -webkit-background-clip: padding-box;\n          background-clip: padding-box;\n  border: 1px solid #ccc;\n  border: 1px solid rgba(0, 0, 0, .2);\n  border-radius: 6px;\n  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);\n          box-shadow: 0 5px 10px rgba(0, 0, 0, .2);\n\n  line-break: auto;\n}\n.popover.top {\n  margin-top: -10px;\n}\n.popover.right {\n  margin-left: 10px;\n}\n.popover.bottom {\n  margin-top: 10px;\n}\n.popover.left {\n  margin-left: -10px;\n}\n.popover-title {\n  padding: 8px 14px;\n  margin: 0;\n  font-size: 14px;\n  background-color: #f7f7f7;\n  border-bottom: 1px solid #ebebeb;\n  border-radius: 5px 5px 0 0;\n}\n.popover-content {\n  padding: 9px 14px;\n}\n.popover > .arrow,\n.popover > .arrow:after {\n  position: absolute;\n  display: block;\n  width: 0;\n  height: 0;\n  border-color: transparent;\n  border-style: solid;\n}\n.popover > .arrow {\n  border-width: 11px;\n}\n.popover > .arrow:after {\n  content: \"\";\n  border-width: 10px;\n}\n.popover.top > .arrow {\n  bottom: -11px;\n  left: 50%;\n  margin-left: -11px;\n  border-top-color: #999;\n  border-top-color: rgba(0, 0, 0, .25);\n  border-bottom-width: 0;\n}\n.popover.top > .arrow:after {\n  bottom: 1px;\n  margin-left: -10px;\n  content: \" \";\n  border-top-color: #fff;\n  border-bottom-width: 0;\n}\n.popover.right > .arrow {\n  top: 50%;\n  left: -11px;\n  margin-top: -11px;\n  border-right-color: #999;\n  border-right-color: rgba(0, 0, 0, .25);\n  border-left-width: 0;\n}\n.popover.right > .arrow:after {\n  bottom: -10px;\n  left: 1px;\n  content: \" \";\n  border-right-color: #fff;\n  border-left-width: 0;\n}\n.popover.bottom > .arrow {\n  top: -11px;\n  left: 50%;\n  margin-left: -11px;\n  border-top-width: 0;\n  border-bottom-color: #999;\n  border-bottom-color: rgba(0, 0, 0, .25);\n}\n.popover.bottom > .arrow:after {\n  top: 1px;\n  margin-left: -10px;\n  content: \" \";\n  border-top-width: 0;\n  border-bottom-color: #fff;\n}\n.popover.left > .arrow {\n  top: 50%;\n  right: -11px;\n  margin-top: -11px;\n  border-right-width: 0;\n  border-left-color: #999;\n  border-left-color: rgba(0, 0, 0, .25);\n}\n.popover.left > .arrow:after {\n  right: 1px;\n  bottom: -10px;\n  content: \" \";\n  border-right-width: 0;\n  border-left-color: #fff;\n}\n.carousel {\n  position: relative;\n}\n.carousel-inner {\n  position: relative;\n  width: 100%;\n  overflow: hidden;\n}\n.carousel-inner > .item {\n  position: relative;\n  display: none;\n  -webkit-transition: .6s ease-in-out left;\n       -o-transition: .6s ease-in-out left;\n          transition: .6s ease-in-out left;\n}\n.carousel-inner > .item > img,\n.carousel-inner > .item > a > img {\n  line-height: 1;\n}\n@media all and (transform-3d), (-webkit-transform-3d) {\n  .carousel-inner > .item {\n    -webkit-transition: -webkit-transform .6s ease-in-out;\n         -o-transition:      -o-transform .6s ease-in-out;\n            transition:         transform .6s ease-in-out;\n\n    -webkit-backface-visibility: hidden;\n            backface-visibility: hidden;\n    -webkit-perspective: 1000px;\n            perspective: 1000px;\n  }\n  .carousel-inner > .item.next,\n  .carousel-inner > .item.active.right {\n    left: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n  }\n  .carousel-inner > .item.prev,\n  .carousel-inner > .item.active.left {\n    left: 0;\n    -webkit-transform: translate3d(-100%, 0, 0);\n            transform: translate3d(-100%, 0, 0);\n  }\n  .carousel-inner > .item.next.left,\n  .carousel-inner > .item.prev.right,\n  .carousel-inner > .item.active {\n    left: 0;\n    -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n  }\n}\n.carousel-inner > .active,\n.carousel-inner > .next,\n.carousel-inner > .prev {\n  display: block;\n}\n.carousel-inner > .active {\n  left: 0;\n}\n.carousel-inner > .next,\n.carousel-inner > .prev {\n  position: absolute;\n  top: 0;\n  width: 100%;\n}\n.carousel-inner > .next {\n  left: 100%;\n}\n.carousel-inner > .prev {\n  left: -100%;\n}\n.carousel-inner > .next.left,\n.carousel-inner > .prev.right {\n  left: 0;\n}\n.carousel-inner > .active.left {\n  left: -100%;\n}\n.carousel-inner > .active.right {\n  left: 100%;\n}\n.carousel-control {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 15%;\n  font-size: 20px;\n  color: #fff;\n  text-align: center;\n  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);\n  background-color: rgba(0, 0, 0, 0);\n  filter: alpha(opacity=50);\n  opacity: .5;\n}\n.carousel-control.left {\n  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);\n  background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);\n  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .0001)));\n  background-image:         linear-gradient(to right, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);\n  background-repeat: repeat-x;\n}\n.carousel-control.right {\n  right: 0;\n  left: auto;\n  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);\n  background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);\n  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .0001)), to(rgba(0, 0, 0, .5)));\n  background-image:         linear-gradient(to right, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);\n  background-repeat: repeat-x;\n}\n.carousel-control:hover,\n.carousel-control:focus {\n  color: #fff;\n  text-decoration: none;\n  filter: alpha(opacity=90);\n  outline: 0;\n  opacity: .9;\n}\n.carousel-control .icon-prev,\n.carousel-control .icon-next,\n.carousel-control .glyphicon-chevron-left,\n.carousel-control .glyphicon-chevron-right {\n  position: absolute;\n  top: 50%;\n  z-index: 5;\n  display: inline-block;\n  margin-top: -10px;\n}\n.carousel-control .icon-prev,\n.carousel-control .glyphicon-chevron-left {\n  left: 50%;\n  margin-left: -10px;\n}\n.carousel-control .icon-next,\n.carousel-control .glyphicon-chevron-right {\n  right: 50%;\n  margin-right: -10px;\n}\n.carousel-control .icon-prev,\n.carousel-control .icon-next {\n  width: 20px;\n  height: 20px;\n  font-family: serif;\n  line-height: 1;\n}\n.carousel-control .icon-prev:before {\n  content: '\\2039';\n}\n.carousel-control .icon-next:before {\n  content: '\\203A';\n}\n.carousel-indicators {\n  position: absolute;\n  bottom: 10px;\n  left: 50%;\n  z-index: 15;\n  width: 60%;\n  padding-left: 0;\n  margin-left: -30%;\n  text-align: center;\n  list-style: none;\n}\n.carousel-indicators li {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  margin: 1px;\n  text-indent: -999px;\n  cursor: pointer;\n  background-color: #000 \\9;\n  background-color: rgba(0, 0, 0, 0);\n  border: 1px solid #fff;\n  border-radius: 10px;\n}\n.carousel-indicators .active {\n  width: 12px;\n  height: 12px;\n  margin: 0;\n  background-color: #fff;\n}\n.carousel-caption {\n  position: absolute;\n  right: 15%;\n  bottom: 20px;\n  left: 15%;\n  z-index: 10;\n  padding-top: 20px;\n  padding-bottom: 20px;\n  color: #fff;\n  text-align: center;\n  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);\n}\n.carousel-caption .btn {\n  text-shadow: none;\n}\n@media screen and (min-width: 768px) {\n  .carousel-control .glyphicon-chevron-left,\n  .carousel-control .glyphicon-chevron-right,\n  .carousel-control .icon-prev,\n  .carousel-control .icon-next {\n    width: 30px;\n    height: 30px;\n    margin-top: -10px;\n    font-size: 30px;\n  }\n  .carousel-control .glyphicon-chevron-left,\n  .carousel-control .icon-prev {\n    margin-left: -10px;\n  }\n  .carousel-control .glyphicon-chevron-right,\n  .carousel-control .icon-next {\n    margin-right: -10px;\n  }\n  .carousel-caption {\n    right: 20%;\n    left: 20%;\n    padding-bottom: 30px;\n  }\n  .carousel-indicators {\n    bottom: 20px;\n  }\n}\n.clearfix:before,\n.clearfix:after,\n.dl-horizontal dd:before,\n.dl-horizontal dd:after,\n.container:before,\n.container:after,\n.container-fluid:before,\n.container-fluid:after,\n.row:before,\n.row:after,\n.form-horizontal .form-group:before,\n.form-horizontal .form-group:after,\n.btn-toolbar:before,\n.btn-toolbar:after,\n.btn-group-vertical > .btn-group:before,\n.btn-group-vertical > .btn-group:after,\n.nav:before,\n.nav:after,\n.navbar:before,\n.navbar:after,\n.navbar-header:before,\n.navbar-header:after,\n.navbar-collapse:before,\n.navbar-collapse:after,\n.pager:before,\n.pager:after,\n.panel-body:before,\n.panel-body:after,\n.modal-header:before,\n.modal-header:after,\n.modal-footer:before,\n.modal-footer:after {\n  display: table;\n  content: \" \";\n}\n.clearfix:after,\n.dl-horizontal dd:after,\n.container:after,\n.container-fluid:after,\n.row:after,\n.form-horizontal .form-group:after,\n.btn-toolbar:after,\n.btn-group-vertical > .btn-group:after,\n.nav:after,\n.navbar:after,\n.navbar-header:after,\n.navbar-collapse:after,\n.pager:after,\n.panel-body:after,\n.modal-header:after,\n.modal-footer:after {\n  clear: both;\n}\n.center-block {\n  display: block;\n  margin-right: auto;\n  margin-left: auto;\n}\n.pull-right {\n  float: right !important;\n}\n.pull-left {\n  float: left !important;\n}\n.hide {\n  display: none !important;\n}\n.show {\n  display: block !important;\n}\n.invisible {\n  visibility: hidden;\n}\n.text-hide {\n  font: 0/0 a;\n  color: transparent;\n  text-shadow: none;\n  background-color: transparent;\n  border: 0;\n}\n.hidden {\n  display: none !important;\n}\n.affix {\n  position: fixed;\n}\n@-ms-viewport {\n  width: device-width;\n}\n.visible-xs,\n.visible-sm,\n.visible-md,\n.visible-lg {\n  display: none !important;\n}\n.visible-xs-block,\n.visible-xs-inline,\n.visible-xs-inline-block,\n.visible-sm-block,\n.visible-sm-inline,\n.visible-sm-inline-block,\n.visible-md-block,\n.visible-md-inline,\n.visible-md-inline-block,\n.visible-lg-block,\n.visible-lg-inline,\n.visible-lg-inline-block {\n  display: none !important;\n}\n@media (max-width: 767px) {\n  .visible-xs {\n    display: block !important;\n  }\n  table.visible-xs {\n    display: table !important;\n  }\n  tr.visible-xs {\n    display: table-row !important;\n  }\n  th.visible-xs,\n  td.visible-xs {\n    display: table-cell !important;\n  }\n}\n@media (max-width: 767px) {\n  .visible-xs-block {\n    display: block !important;\n  }\n}\n@media (max-width: 767px) {\n  .visible-xs-inline {\n    display: inline !important;\n  }\n}\n@media (max-width: 767px) {\n  .visible-xs-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm {\n    display: block !important;\n  }\n  table.visible-sm {\n    display: table !important;\n  }\n  tr.visible-sm {\n    display: table-row !important;\n  }\n  th.visible-sm,\n  td.visible-sm {\n    display: table-cell !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm-block {\n    display: block !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm-inline {\n    display: inline !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .visible-sm-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md {\n    display: block !important;\n  }\n  table.visible-md {\n    display: table !important;\n  }\n  tr.visible-md {\n    display: table-row !important;\n  }\n  th.visible-md,\n  td.visible-md {\n    display: table-cell !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md-block {\n    display: block !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md-inline {\n    display: inline !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .visible-md-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg {\n    display: block !important;\n  }\n  table.visible-lg {\n    display: table !important;\n  }\n  tr.visible-lg {\n    display: table-row !important;\n  }\n  th.visible-lg,\n  td.visible-lg {\n    display: table-cell !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg-block {\n    display: block !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg-inline {\n    display: inline !important;\n  }\n}\n@media (min-width: 1200px) {\n  .visible-lg-inline-block {\n    display: inline-block !important;\n  }\n}\n@media (max-width: 767px) {\n  .hidden-xs {\n    display: none !important;\n  }\n}\n@media (min-width: 768px) and (max-width: 991px) {\n  .hidden-sm {\n    display: none !important;\n  }\n}\n@media (min-width: 992px) and (max-width: 1199px) {\n  .hidden-md {\n    display: none !important;\n  }\n}\n@media (min-width: 1200px) {\n  .hidden-lg {\n    display: none !important;\n  }\n}\n.visible-print {\n  display: none !important;\n}\n@media print {\n  .visible-print {\n    display: block !important;\n  }\n  table.visible-print {\n    display: table !important;\n  }\n  tr.visible-print {\n    display: table-row !important;\n  }\n  th.visible-print,\n  td.visible-print {\n    display: table-cell !important;\n  }\n}\n.visible-print-block {\n  display: none !important;\n}\n@media print {\n  .visible-print-block {\n    display: block !important;\n  }\n}\n.visible-print-inline {\n  display: none !important;\n}\n@media print {\n  .visible-print-inline {\n    display: inline !important;\n  }\n}\n.visible-print-inline-block {\n  display: none !important;\n}\n@media print {\n  .visible-print-inline-block {\n    display: inline-block !important;\n  }\n}\n@media print {\n  .hidden-print {\n    display: none !important;\n  }\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 178 */
+/* 231 */
 /***/ (function(module, exports) {
 
 module.exports = "/fonts/vendor/bootstrap/dist/glyphicons-halflings-regular.woff2?448c34a56d699c29117adc64c43affeb";
 
 /***/ }),
-/* 179 */
+/* 232 */
 /***/ (function(module, exports) {
 
 module.exports = "/fonts/vendor/bootstrap/dist/glyphicons-halflings-regular.woff?fa2772327f55d8198301fdb8bcfc8158";
 
 /***/ }),
-/* 180 */
+/* 233 */
 /***/ (function(module, exports) {
 
 module.exports = "/fonts/vendor/bootstrap/dist/glyphicons-halflings-regular.ttf?e18bbf611f2a2e43afc071aa2f4e1512";
 
 /***/ }),
-/* 181 */
+/* 234 */
 /***/ (function(module, exports) {
 
 module.exports = "/fonts/vendor/bootstrap/dist/glyphicons-halflings-regular.svg?89889688147bd7575d6327160d64e760";
 
 /***/ }),
-/* 182 */
+/* 235 */
 /***/ (function(module, exports) {
 
 
@@ -31925,13 +34580,13 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 183 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(184);
+var content = __webpack_require__(237);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -31939,7 +34594,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(16)(content, options);
+var update = __webpack_require__(23)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -31956,32 +34611,32 @@ if(false) {
 }
 
 /***/ }),
-/* 184 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(0)(undefined);
+exports = module.exports = __webpack_require__(2)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "/*!\n\n =========================================================\n * Paper Dashboard - v1.1.2\n =========================================================\n\n * Product Page: http://www.creative-tim.com/product/paper-dashboard\n * Copyright 2017 Creative Tim (http://www.creative-tim.com)\n * Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard/blob/master/LICENSE.md)\n\n =========================================================\n\n * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n */\n/*      light colors - used for select dropdown         */\n.ct-blue {\n  stroke: #7A9E9F !important; }\n\n.ct-azure {\n  stroke: #68B3C8 !important; }\n\n.ct-green {\n  stroke: #41B883 !important; }\n\n.ct-orange {\n  stroke: #F3BB45 !important; }\n\n.ct-red {\n  stroke: #EB5E28 !important; }\n\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td {\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  font-family: 'Muli', \"Helvetica\", Arial, sans-serif; }\n\nh1, .h1, h2, .h2, h3, .h3, h4, .h4 {\n  font-weight: 400;\n  margin: 30px 0 15px; }\n\nh1, .h1 {\n  font-size: 3.2em; }\n\nh2, .h2 {\n  font-size: 2.6em; }\n\nh3, .h3 {\n  font-size: 1.825em;\n  line-height: 1.4;\n  margin: 20px 0 10px; }\n\nh4, .h4 {\n  font-size: 1.5em;\n  font-weight: 600;\n  line-height: 1.2em; }\n\nh5, .h5 {\n  font-size: 1.25em;\n  font-weight: 400;\n  line-height: 1.4em;\n  margin-bottom: 15px; }\n\nh6, .h6 {\n  font-size: 0.9em;\n  font-weight: 600;\n  text-transform: uppercase; }\n\np {\n  font-size: 16px;\n  line-height: 1.4em; }\n\nh1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {\n  color: #9A9A9A;\n  font-weight: 300;\n  line-height: 1.4em; }\n\nh1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {\n  font-size: 60%; }\n\n.title-uppercase {\n  text-transform: uppercase; }\n\nblockquote {\n  font-style: italic; }\n\nblockquote small {\n  font-style: normal; }\n\n.text-muted {\n  color: #DDDDDD; }\n\n.text-primary, .text-primary:hover {\n  color: #427C89; }\n\n.text-info, .text-info:hover {\n  color: #3091B2; }\n\n.text-success, .text-success:hover {\n  color: #229863; }\n\n.text-warning, .text-warning:hover {\n  color: #BB992F; }\n\n.text-danger, .text-danger:hover {\n  color: #B33C12; }\n\n.glyphicon {\n  line-height: 1; }\n\nstrong {\n  color: #403D39; }\n\n.icon-primary {\n  color: #7A9E9F; }\n\n.icon-info {\n  color: #68B3C8; }\n\n.icon-success {\n  color: #41B883; }\n\n.icon-warning {\n  color: #F3BB45; }\n\n.icon-danger {\n  color: #EB5E28; }\n\n.chart-legend .text-primary, .chart-legend .text-primary:hover {\n  color: #7A9E9F; }\n\n.chart-legend .text-info, .chart-legend .text-info:hover {\n  color: #68B3C8; }\n\n.chart-legend .text-success, .chart-legend .text-success:hover {\n  color: #41B883; }\n\n.chart-legend .text-warning, .chart-legend .text-warning:hover {\n  color: #F3BB45; }\n\n.chart-legend .text-danger, .chart-legend .text-danger:hover {\n  color: #EB5E28; }\n\n/*     General overwrite     */\nbody {\n  color: #66615b;\n  font-size: 14px;\n  font-family: 'Muli', Arial, sans-serif; }\n  body .wrapper {\n    min-height: 100vh;\n    position: relative; }\n\na {\n  color: #68B3C8; }\n  a:hover, a:focus {\n    color: #3091B2;\n    text-decoration: none; }\n\na:focus, a:active,\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner,\nselect::-moz-focus-inner,\ninput[type=\"file\"] > input[type=\"button\"]::-moz-focus-inner {\n  outline: 0 !important; }\n\n.ui-slider-handle:focus,\n.navbar-toggle,\ninput:focus,\nbutton:focus {\n  outline: 0 !important; }\n\n.navbar.navbar-default {\n  z-index: 2; }\n\n/*           Animations              */\n.form-control,\n.input-group-addon,\n.tagsinput,\n.navbar,\n.navbar .alert {\n  -webkit-transition: all 300ms linear;\n  -moz-transition: all 300ms linear;\n  -o-transition: all 300ms linear;\n  -ms-transition: all 300ms linear;\n  transition: all 300ms linear; }\n\n.sidebar .nav a,\n.table > tbody > tr .td-actions .btn {\n  -webkit-transition: all 150ms ease-in;\n  -moz-transition: all 150ms ease-in;\n  -o-transition: all 150ms ease-in;\n  -ms-transition: all 150ms ease-in;\n  transition: all 150ms ease-in; }\n\n.btn {\n  -webkit-transition: all 100ms ease-in;\n  -moz-transition: all 100ms ease-in;\n  -o-transition: all 100ms ease-in;\n  -ms-transition: all 100ms ease-in;\n  transition: all 100ms ease-in; }\n\n.fa {\n  width: 21px;\n  text-align: center; }\n\n.fa-base {\n  font-size: 1.25em !important; }\n\n.margin-top {\n  margin-top: 50px; }\n\nhr {\n  border-color: #F1EAE0; }\n\n.wrapper {\n  position: relative;\n  top: 0;\n  height: 100vh; }\n\n@media (min-width: 992px) {\n  .typo-line {\n    padding-left: 140px;\n    margin-bottom: 40px;\n    position: relative; }\n  .typo-line .category {\n    transform: translateY(-50%);\n    top: 50%;\n    left: 0px;\n    position: absolute; } }\n\n.icon-section {\n  margin: 0 0 3em;\n  clear: both;\n  overflow: hidden; }\n\n.icon-container {\n  width: 240px;\n  padding: .7em 0;\n  float: left;\n  position: relative;\n  text-align: left; }\n\n.icon-container [class^=\"ti-\"],\n.icon-container [class*=\" ti-\"] {\n  color: #000;\n  position: absolute;\n  margin-top: 3px;\n  transition: .3s; }\n\n.icon-container:hover [class^=\"ti-\"],\n.icon-container:hover [class*=\" ti-\"] {\n  font-size: 2.2em;\n  margin-top: -5px; }\n\n.icon-container:hover .icon-name {\n  color: #000; }\n\n.icon-name {\n  color: #aaa;\n  margin-left: 35px;\n  font-size: .8em;\n  transition: .3s; }\n\n.icon-container:hover .icon-name {\n  margin-left: 45px; }\n\n.places-buttons .btn {\n  margin-bottom: 30px; }\n\n.sidebar .nav > li.active-pro {\n  position: absolute;\n  width: 100%;\n  bottom: 10px; }\n\n.sidebar .nav > li.active-pro a {\n  background: rgba(255, 255, 255, 0.14);\n  opacity: 1;\n  color: #FFFFFF; }\n\n.table-upgrade td:nth-child(2),\n.table-upgrade td:nth-child(3) {\n  text-align: center; }\n\n.sidebar {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1;\n  background-size: cover;\n  background-position: center center; }\n  .sidebar .sidebar-wrapper {\n    position: relative;\n    height: 100%;\n    overflow-y: auto;\n    overflow-x: hidden;\n    width: 260px;\n    z-index: 4;\n    box-shadow: inset -1px 0px 0px 0px #DDDDDD; }\n  .sidebar .sidebar-background {\n    position: absolute;\n    z-index: 1;\n    height: 100%;\n    width: 100%;\n    display: block;\n    top: 0;\n    left: 0;\n    background-size: cover;\n    background-position: center center; }\n\n.sidebar,\n.off-canvas-sidebar {\n  width: 260px;\n  display: block;\n  font-weight: 200; }\n  .sidebar .logo,\n  .off-canvas-sidebar .logo {\n    padding: 13px 0;\n    margin: 0 20px; }\n    .sidebar .logo p,\n    .off-canvas-sidebar .logo p {\n      float: left;\n      font-size: 20px;\n      margin: 10px 10px;\n      line-height: 20px; }\n    .sidebar .logo .simple-text,\n    .off-canvas-sidebar .logo .simple-text {\n      padding: 4px 0px;\n      display: block;\n      font-size: 14px;\n      text-align: center;\n      font-weight: 600;\n      line-height: 40px;\n      text-align: left; }\n      .sidebar .logo .simple-text .logo-img,\n      .off-canvas-sidebar .logo .simple-text .logo-img {\n        width: 40px;\n        display: inline-block;\n        height: 40px;\n        margin-left: 0px;\n        margin-right: 10px;\n        background: white;\n        border-radius: 40px;\n        text-align: center; }\n        .sidebar .logo .simple-text .logo-img img,\n        .off-canvas-sidebar .logo .simple-text .logo-img img {\n          max-width: 21px; }\n  .sidebar .nav li > a,\n  .off-canvas-sidebar .nav li > a {\n    margin: 10px 0px;\n    padding-left: 25px;\n    padding-right: 25px;\n    opacity: .7; }\n  .sidebar .nav li:hover > a,\n  .off-canvas-sidebar .nav li:hover > a {\n    opacity: 1; }\n  .sidebar .nav li.active > a,\n  .off-canvas-sidebar .nav li.active > a {\n    color: #7A9E9F;\n    opacity: 1; }\n  .sidebar .nav p,\n  .off-canvas-sidebar .nav p {\n    margin: 0;\n    line-height: 30px;\n    font-size: 12px;\n    font-weight: 600;\n    text-transform: uppercase; }\n  .sidebar .nav i,\n  .off-canvas-sidebar .nav i {\n    font-size: 24px;\n    float: left;\n    margin-right: 15px;\n    line-height: 30px;\n    width: 30px;\n    text-align: center; }\n  .sidebar:after, .sidebar:before,\n  .off-canvas-sidebar:after,\n  .off-canvas-sidebar:before {\n    display: block;\n    content: \"\";\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    left: 0;\n    z-index: 2;\n    background: #FFFFFF; }\n  .sidebar:after, .sidebar:before, .sidebar[data-background-color=\"white\"]:after, .sidebar[data-background-color=\"white\"]:before,\n  .off-canvas-sidebar:after,\n  .off-canvas-sidebar:before,\n  .off-canvas-sidebar[data-background-color=\"white\"]:after,\n  .off-canvas-sidebar[data-background-color=\"white\"]:before {\n    background-color: #FFFFFF; }\n  .sidebar #style-3::-webkit-scrollbar-track, .sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px #FFFFFF;\n    background-color: #FFFFFF; }\n  .sidebar #style-3::-webkit-scrollbar, .sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar {\n    width: 6px;\n    background-color: #66615B; }\n  .sidebar #style-3::-webkit-scrollbar-thumb, .sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-thumb {\n    background-color: #FFFFFF; }\n  .sidebar .logo, .sidebar[data-background-color=\"white\"] .logo,\n  .off-canvas-sidebar .logo,\n  .off-canvas-sidebar[data-background-color=\"white\"] .logo {\n    border-bottom: 1px solid rgba(102, 97, 91, 0.3); }\n    .sidebar .logo p, .sidebar[data-background-color=\"white\"] .logo p,\n    .off-canvas-sidebar .logo p,\n    .off-canvas-sidebar[data-background-color=\"white\"] .logo p {\n      color: #66615B; }\n    .sidebar .logo .simple-text, .sidebar[data-background-color=\"white\"] .logo .simple-text,\n    .off-canvas-sidebar .logo .simple-text,\n    .off-canvas-sidebar[data-background-color=\"white\"] .logo .simple-text {\n      color: #66615B; }\n  .sidebar .nav li:not(.active) > a, .sidebar[data-background-color=\"white\"] .nav li:not(.active) > a,\n  .off-canvas-sidebar .nav li:not(.active) > a,\n  .off-canvas-sidebar[data-background-color=\"white\"] .nav li:not(.active) > a {\n    color: #66615B; }\n  .sidebar .nav .divider, .sidebar[data-background-color=\"white\"] .nav .divider,\n  .off-canvas-sidebar .nav .divider,\n  .off-canvas-sidebar[data-background-color=\"white\"] .nav .divider {\n    background-color: rgba(102, 97, 91, 0.2); }\n  .sidebar[data-background-color=\"black\"]:after, .sidebar[data-background-color=\"black\"]:before,\n  .off-canvas-sidebar[data-background-color=\"black\"]:after,\n  .off-canvas-sidebar[data-background-color=\"black\"]:before {\n    background-color: #212120; }\n  .sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px #212120;\n    background-color: #212120; }\n  .sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar {\n    width: 6px;\n    background-color: #FFFFFF; }\n  .sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-thumb {\n    background-color: #212120; }\n  .sidebar[data-background-color=\"black\"] .logo,\n  .off-canvas-sidebar[data-background-color=\"black\"] .logo {\n    border-bottom: 1px solid rgba(255, 255, 255, 0.3); }\n    .sidebar[data-background-color=\"black\"] .logo p,\n    .off-canvas-sidebar[data-background-color=\"black\"] .logo p {\n      color: #FFFFFF; }\n    .sidebar[data-background-color=\"black\"] .logo .simple-text,\n    .off-canvas-sidebar[data-background-color=\"black\"] .logo .simple-text {\n      color: #FFFFFF; }\n  .sidebar[data-background-color=\"black\"] .nav li:not(.active) > a,\n  .off-canvas-sidebar[data-background-color=\"black\"] .nav li:not(.active) > a {\n    color: #FFFFFF; }\n  .sidebar[data-background-color=\"black\"] .nav .divider,\n  .off-canvas-sidebar[data-background-color=\"black\"] .nav .divider {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .sidebar[data-background-color=\"darkblue\"]:after, .sidebar[data-background-color=\"darkblue\"]:before,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"]:after,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"]:before {\n    background-color: #35495E; }\n  .sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px #35495E;\n    background-color: #35495E; }\n  .sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar {\n    width: 6px;\n    background-color: #FFFFFF; }\n  .sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-thumb {\n    background-color: #35495E; }\n  .sidebar[data-background-color=\"darkblue\"] .logo,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] .logo {\n    border-bottom: 1px solid rgba(255, 255, 255, 0.3); }\n    .sidebar[data-background-color=\"darkblue\"] .logo p,\n    .off-canvas-sidebar[data-background-color=\"darkblue\"] .logo p {\n      color: #FFFFFF; }\n    .sidebar[data-background-color=\"darkblue\"] .logo .simple-text,\n    .off-canvas-sidebar[data-background-color=\"darkblue\"] .logo .simple-text {\n      color: #FFFFFF; }\n  .sidebar[data-background-color=\"darkblue\"] .nav li:not(.active) > a,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] .nav li:not(.active) > a {\n    color: #FFFFFF; }\n  .sidebar[data-background-color=\"darkblue\"] .nav .divider,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] .nav .divider {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .sidebar[data-active-color=\"primary\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"primary\"] .nav li.active > a {\n    color: #7A9E9F;\n    opacity: 1; }\n  .sidebar[data-active-color=\"info\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"info\"] .nav li.active > a {\n    color: #68B3C8;\n    opacity: 1; }\n  .sidebar[data-active-color=\"success\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"success\"] .nav li.active > a {\n    color: #41B883;\n    opacity: 1; }\n  .sidebar[data-active-color=\"warning\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"warning\"] .nav li.active > a {\n    color: #F3BB45;\n    opacity: 1; }\n  .sidebar[data-active-color=\"danger\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"danger\"] .nav li.active > a {\n    color: #EB5E28;\n    opacity: 1; }\n\n.main-panel {\n  background-color: #f4f3ef;\n  position: relative;\n  z-index: 2;\n  float: right;\n  width: calc(100% - 260px);\n  min-height: 100%; }\n  .main-panel > .content {\n    padding: 30px 15px;\n    min-height: calc(100% - 123px); }\n  .main-panel > .footer {\n    border-top: 1px solid rgba(0, 0, 0, 0.1); }\n  .main-panel .navbar {\n    margin-bottom: 0; }\n\n.sidebar,\n.main-panel {\n  overflow: auto;\n  max-height: 100%;\n  height: 100%;\n  -webkit-transition-property: top, bottom;\n  transition-property: top, bottom;\n  -webkit-transition-duration: .2s, .2s;\n  transition-duration: .2s, .2s;\n  -webkit-transition-timing-function: linear, linear;\n  transition-timing-function: linear, linear;\n  -webkit-overflow-scrolling: touch; }\n\n.sidebar {\n  position: absolute;\n  overflow: hidden;\n  overflow-y: hidden; }\n\n.btn,\n.navbar .navbar-nav > li > a.btn {\n  border-radius: 20px;\n  box-sizing: border-box;\n  border-width: 2px;\n  background-color: transparent;\n  font-size: 14px;\n  font-weight: 500;\n  padding: 7px 18px;\n  border-color: #66615B;\n  color: #66615B;\n  -webkit-transition: all 150ms linear;\n  -moz-transition: all 150ms linear;\n  -o-transition: all 150ms linear;\n  -ms-transition: all 150ms linear;\n  transition: all 150ms linear; }\n  .btn:hover, .btn:focus, .btn:active, .btn.active,\n  .open > .btn.dropdown-toggle,\n  .navbar .navbar-nav > li > a.btn:hover,\n  .navbar .navbar-nav > li > a.btn:focus,\n  .navbar .navbar-nav > li > a.btn:active,\n  .navbar .navbar-nav > li > a.btn.active,\n  .open >\n  .navbar .navbar-nav > li > a.btn.dropdown-toggle {\n    background-color: #66615B;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #66615B; }\n    .btn:hover .caret, .btn:focus .caret, .btn:active .caret, .btn.active .caret,\n    .open > .btn.dropdown-toggle .caret,\n    .navbar .navbar-nav > li > a.btn:hover .caret,\n    .navbar .navbar-nav > li > a.btn:focus .caret,\n    .navbar .navbar-nav > li > a.btn:active .caret,\n    .navbar .navbar-nav > li > a.btn.active .caret,\n    .open >\n    .navbar .navbar-nav > li > a.btn.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled.focus, .btn.disabled:active, .btn.disabled.active, .btn:disabled, .btn:disabled:hover, .btn:disabled:focus, .btn:disabled.focus, .btn:disabled:active, .btn:disabled.active, .btn[disabled], .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled].focus, .btn[disabled]:active, .btn[disabled].active,\n  fieldset[disabled] .btn,\n  fieldset[disabled] .btn:hover,\n  fieldset[disabled] .btn:focus,\n  fieldset[disabled] .btn.focus,\n  fieldset[disabled] .btn:active,\n  fieldset[disabled] .btn.active,\n  .navbar .navbar-nav > li > a.btn.disabled,\n  .navbar .navbar-nav > li > a.btn.disabled:hover,\n  .navbar .navbar-nav > li > a.btn.disabled:focus,\n  .navbar .navbar-nav > li > a.btn.disabled.focus,\n  .navbar .navbar-nav > li > a.btn.disabled:active,\n  .navbar .navbar-nav > li > a.btn.disabled.active,\n  .navbar .navbar-nav > li > a.btn:disabled,\n  .navbar .navbar-nav > li > a.btn:disabled:hover,\n  .navbar .navbar-nav > li > a.btn:disabled:focus,\n  .navbar .navbar-nav > li > a.btn:disabled.focus,\n  .navbar .navbar-nav > li > a.btn:disabled:active,\n  .navbar .navbar-nav > li > a.btn:disabled.active,\n  .navbar .navbar-nav > li > a.btn[disabled],\n  .navbar .navbar-nav > li > a.btn[disabled]:hover,\n  .navbar .navbar-nav > li > a.btn[disabled]:focus,\n  .navbar .navbar-nav > li > a.btn[disabled].focus,\n  .navbar .navbar-nav > li > a.btn[disabled]:active,\n  .navbar .navbar-nav > li > a.btn[disabled].active,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn:hover,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn:focus,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn.focus,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn:active,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn.active {\n    background-color: transparent;\n    border-color: #66615B; }\n  .btn.btn-fill,\n  .navbar .navbar-nav > li > a.btn.btn-fill {\n    color: #FFFFFF;\n    background-color: #66615B;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .btn.btn-fill:hover, .btn.btn-fill:focus, .btn.btn-fill:active, .btn.btn-fill.active,\n    .open > .btn.btn-fill.dropdown-toggle,\n    .navbar .navbar-nav > li > a.btn.btn-fill:hover,\n    .navbar .navbar-nav > li > a.btn.btn-fill:focus,\n    .navbar .navbar-nav > li > a.btn.btn-fill:active,\n    .navbar .navbar-nav > li > a.btn.btn-fill.active,\n    .open >\n    .navbar .navbar-nav > li > a.btn.btn-fill.dropdown-toggle {\n      background-color: #403D39;\n      color: #FFFFFF;\n      border-color: #403D39; }\n    .btn.btn-fill .caret,\n    .navbar .navbar-nav > li > a.btn.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .btn.btn-simple:hover, .btn.btn-simple:focus, .btn.btn-simple:active, .btn.btn-simple.active,\n  .open > .btn.btn-simple.dropdown-toggle,\n  .navbar .navbar-nav > li > a.btn.btn-simple:hover,\n  .navbar .navbar-nav > li > a.btn.btn-simple:focus,\n  .navbar .navbar-nav > li > a.btn.btn-simple:active,\n  .navbar .navbar-nav > li > a.btn.btn-simple.active,\n  .open >\n  .navbar .navbar-nav > li > a.btn.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #403D39; }\n  .btn.btn-simple .caret,\n  .navbar .navbar-nav > li > a.btn.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .btn .caret,\n  .navbar .navbar-nav > li > a.btn .caret {\n    border-top-color: #66615B; }\n  .btn:hover, .btn:focus,\n  .navbar .navbar-nav > li > a.btn:hover,\n  .navbar .navbar-nav > li > a.btn:focus {\n    outline: 0 !important; }\n  .btn:active, .btn.active,\n  .open > .btn.dropdown-toggle,\n  .navbar .navbar-nav > li > a.btn:active,\n  .navbar .navbar-nav > li > a.btn.active,\n  .open >\n  .navbar .navbar-nav > li > a.btn.dropdown-toggle {\n    -webkit-box-shadow: none;\n    box-shadow: none;\n    outline: 0 !important; }\n  .btn.btn-icon,\n  .navbar .navbar-nav > li > a.btn.btn-icon {\n    padding: 7px; }\n\n.btn-group .btn + .btn,\n.btn-group .btn + .btn-group,\n.btn-group .btn-group + .btn,\n.btn-group .btn-group + .btn-group {\n  margin-left: -2px; }\n\n.navbar .navbar-nav > li > a.btn-primary, .btn-primary {\n  border-color: #7A9E9F;\n  color: #7A9E9F; }\n  .navbar .navbar-nav > li > a.btn-primary:hover, .navbar .navbar-nav > li > a.btn-primary:focus, .navbar .navbar-nav > li > a.btn-primary:active, .navbar .navbar-nav > li > a.btn-primary.active,\n  .open > .navbar .navbar-nav > li > a.btn-primary.dropdown-toggle, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active,\n  .open > .btn-primary.dropdown-toggle {\n    background-color: #7A9E9F;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #7A9E9F; }\n    .navbar .navbar-nav > li > a.btn-primary:hover .caret, .navbar .navbar-nav > li > a.btn-primary:focus .caret, .navbar .navbar-nav > li > a.btn-primary:active .caret, .navbar .navbar-nav > li > a.btn-primary.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-primary.dropdown-toggle .caret, .btn-primary:hover .caret, .btn-primary:focus .caret, .btn-primary:active .caret, .btn-primary.active .caret,\n    .open > .btn-primary.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-primary.disabled, .navbar .navbar-nav > li > a.btn-primary.disabled:hover, .navbar .navbar-nav > li > a.btn-primary.disabled:focus, .navbar .navbar-nav > li > a.btn-primary.disabled.focus, .navbar .navbar-nav > li > a.btn-primary.disabled:active, .navbar .navbar-nav > li > a.btn-primary.disabled.active, .navbar .navbar-nav > li > a.btn-primary:disabled, .navbar .navbar-nav > li > a.btn-primary:disabled:hover, .navbar .navbar-nav > li > a.btn-primary:disabled:focus, .navbar .navbar-nav > li > a.btn-primary:disabled.focus, .navbar .navbar-nav > li > a.btn-primary:disabled:active, .navbar .navbar-nav > li > a.btn-primary:disabled.active, .navbar .navbar-nav > li > a.btn-primary[disabled], .navbar .navbar-nav > li > a.btn-primary[disabled]:hover, .navbar .navbar-nav > li > a.btn-primary[disabled]:focus, .navbar .navbar-nav > li > a.btn-primary[disabled].focus, .navbar .navbar-nav > li > a.btn-primary[disabled]:active, .navbar .navbar-nav > li > a.btn-primary[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary.active, .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary:disabled, .btn-primary:disabled:hover, .btn-primary:disabled:focus, .btn-primary:disabled.focus, .btn-primary:disabled:active, .btn-primary:disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled].active,\n  fieldset[disabled] .btn-primary,\n  fieldset[disabled] .btn-primary:hover,\n  fieldset[disabled] .btn-primary:focus,\n  fieldset[disabled] .btn-primary.focus,\n  fieldset[disabled] .btn-primary:active,\n  fieldset[disabled] .btn-primary.active {\n    background-color: transparent;\n    border-color: #7A9E9F; }\n  .navbar .navbar-nav > li > a.btn-primary.btn-fill, .btn-primary.btn-fill {\n    color: #FFFFFF;\n    background-color: #7A9E9F;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-primary.btn-fill:hover, .navbar .navbar-nav > li > a.btn-primary.btn-fill:focus, .navbar .navbar-nav > li > a.btn-primary.btn-fill:active, .navbar .navbar-nav > li > a.btn-primary.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-primary.btn-fill.dropdown-toggle, .btn-primary.btn-fill:hover, .btn-primary.btn-fill:focus, .btn-primary.btn-fill:active, .btn-primary.btn-fill.active,\n    .open > .btn-primary.btn-fill.dropdown-toggle {\n      background-color: #427C89;\n      color: #FFFFFF;\n      border-color: #427C89; }\n    .navbar .navbar-nav > li > a.btn-primary.btn-fill .caret, .btn-primary.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-primary.btn-simple:hover, .navbar .navbar-nav > li > a.btn-primary.btn-simple:focus, .navbar .navbar-nav > li > a.btn-primary.btn-simple:active, .navbar .navbar-nav > li > a.btn-primary.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-primary.btn-simple.dropdown-toggle, .btn-primary.btn-simple:hover, .btn-primary.btn-simple:focus, .btn-primary.btn-simple:active, .btn-primary.btn-simple.active,\n  .open > .btn-primary.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #427C89; }\n  .navbar .navbar-nav > li > a.btn-primary.btn-simple .caret, .btn-primary.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-primary .caret, .btn-primary .caret {\n    border-top-color: #7A9E9F; }\n\n.navbar .navbar-nav > li > a.btn-success, .btn-success {\n  border-color: #41B883;\n  color: #41B883; }\n  .navbar .navbar-nav > li > a.btn-success:hover, .navbar .navbar-nav > li > a.btn-success:focus, .navbar .navbar-nav > li > a.btn-success:active, .navbar .navbar-nav > li > a.btn-success.active,\n  .open > .navbar .navbar-nav > li > a.btn-success.dropdown-toggle, .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active,\n  .open > .btn-success.dropdown-toggle {\n    background-color: #41B883;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #41B883; }\n    .navbar .navbar-nav > li > a.btn-success:hover .caret, .navbar .navbar-nav > li > a.btn-success:focus .caret, .navbar .navbar-nav > li > a.btn-success:active .caret, .navbar .navbar-nav > li > a.btn-success.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-success.dropdown-toggle .caret, .btn-success:hover .caret, .btn-success:focus .caret, .btn-success:active .caret, .btn-success.active .caret,\n    .open > .btn-success.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-success.disabled, .navbar .navbar-nav > li > a.btn-success.disabled:hover, .navbar .navbar-nav > li > a.btn-success.disabled:focus, .navbar .navbar-nav > li > a.btn-success.disabled.focus, .navbar .navbar-nav > li > a.btn-success.disabled:active, .navbar .navbar-nav > li > a.btn-success.disabled.active, .navbar .navbar-nav > li > a.btn-success:disabled, .navbar .navbar-nav > li > a.btn-success:disabled:hover, .navbar .navbar-nav > li > a.btn-success:disabled:focus, .navbar .navbar-nav > li > a.btn-success:disabled.focus, .navbar .navbar-nav > li > a.btn-success:disabled:active, .navbar .navbar-nav > li > a.btn-success:disabled.active, .navbar .navbar-nav > li > a.btn-success[disabled], .navbar .navbar-nav > li > a.btn-success[disabled]:hover, .navbar .navbar-nav > li > a.btn-success[disabled]:focus, .navbar .navbar-nav > li > a.btn-success[disabled].focus, .navbar .navbar-nav > li > a.btn-success[disabled]:active, .navbar .navbar-nav > li > a.btn-success[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success.active, .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled.focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success:disabled, .btn-success:disabled:hover, .btn-success:disabled:focus, .btn-success:disabled.focus, .btn-success:disabled:active, .btn-success:disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled].focus, .btn-success[disabled]:active, .btn-success[disabled].active,\n  fieldset[disabled] .btn-success,\n  fieldset[disabled] .btn-success:hover,\n  fieldset[disabled] .btn-success:focus,\n  fieldset[disabled] .btn-success.focus,\n  fieldset[disabled] .btn-success:active,\n  fieldset[disabled] .btn-success.active {\n    background-color: transparent;\n    border-color: #41B883; }\n  .navbar .navbar-nav > li > a.btn-success.btn-fill, .btn-success.btn-fill {\n    color: #FFFFFF;\n    background-color: #41B883;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-success.btn-fill:hover, .navbar .navbar-nav > li > a.btn-success.btn-fill:focus, .navbar .navbar-nav > li > a.btn-success.btn-fill:active, .navbar .navbar-nav > li > a.btn-success.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-success.btn-fill.dropdown-toggle, .btn-success.btn-fill:hover, .btn-success.btn-fill:focus, .btn-success.btn-fill:active, .btn-success.btn-fill.active,\n    .open > .btn-success.btn-fill.dropdown-toggle {\n      background-color: #229863;\n      color: #FFFFFF;\n      border-color: #229863; }\n    .navbar .navbar-nav > li > a.btn-success.btn-fill .caret, .btn-success.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-success.btn-simple:hover, .navbar .navbar-nav > li > a.btn-success.btn-simple:focus, .navbar .navbar-nav > li > a.btn-success.btn-simple:active, .navbar .navbar-nav > li > a.btn-success.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-success.btn-simple.dropdown-toggle, .btn-success.btn-simple:hover, .btn-success.btn-simple:focus, .btn-success.btn-simple:active, .btn-success.btn-simple.active,\n  .open > .btn-success.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #229863; }\n  .navbar .navbar-nav > li > a.btn-success.btn-simple .caret, .btn-success.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-success .caret, .btn-success .caret {\n    border-top-color: #41B883; }\n\n.navbar .navbar-nav > li > a.btn-info, .btn-info {\n  border-color: #68B3C8;\n  color: #68B3C8; }\n  .navbar .navbar-nav > li > a.btn-info:hover, .navbar .navbar-nav > li > a.btn-info:focus, .navbar .navbar-nav > li > a.btn-info:active, .navbar .navbar-nav > li > a.btn-info.active,\n  .open > .navbar .navbar-nav > li > a.btn-info.dropdown-toggle, .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active,\n  .open > .btn-info.dropdown-toggle {\n    background-color: #68B3C8;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #68B3C8; }\n    .navbar .navbar-nav > li > a.btn-info:hover .caret, .navbar .navbar-nav > li > a.btn-info:focus .caret, .navbar .navbar-nav > li > a.btn-info:active .caret, .navbar .navbar-nav > li > a.btn-info.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-info.dropdown-toggle .caret, .btn-info:hover .caret, .btn-info:focus .caret, .btn-info:active .caret, .btn-info.active .caret,\n    .open > .btn-info.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-info.disabled, .navbar .navbar-nav > li > a.btn-info.disabled:hover, .navbar .navbar-nav > li > a.btn-info.disabled:focus, .navbar .navbar-nav > li > a.btn-info.disabled.focus, .navbar .navbar-nav > li > a.btn-info.disabled:active, .navbar .navbar-nav > li > a.btn-info.disabled.active, .navbar .navbar-nav > li > a.btn-info:disabled, .navbar .navbar-nav > li > a.btn-info:disabled:hover, .navbar .navbar-nav > li > a.btn-info:disabled:focus, .navbar .navbar-nav > li > a.btn-info:disabled.focus, .navbar .navbar-nav > li > a.btn-info:disabled:active, .navbar .navbar-nav > li > a.btn-info:disabled.active, .navbar .navbar-nav > li > a.btn-info[disabled], .navbar .navbar-nav > li > a.btn-info[disabled]:hover, .navbar .navbar-nav > li > a.btn-info[disabled]:focus, .navbar .navbar-nav > li > a.btn-info[disabled].focus, .navbar .navbar-nav > li > a.btn-info[disabled]:active, .navbar .navbar-nav > li > a.btn-info[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info.active, .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info:disabled, .btn-info:disabled:hover, .btn-info:disabled:focus, .btn-info:disabled.focus, .btn-info:disabled:active, .btn-info:disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus, .btn-info[disabled]:active, .btn-info[disabled].active,\n  fieldset[disabled] .btn-info,\n  fieldset[disabled] .btn-info:hover,\n  fieldset[disabled] .btn-info:focus,\n  fieldset[disabled] .btn-info.focus,\n  fieldset[disabled] .btn-info:active,\n  fieldset[disabled] .btn-info.active {\n    background-color: transparent;\n    border-color: #68B3C8; }\n  .navbar .navbar-nav > li > a.btn-info.btn-fill, .btn-info.btn-fill {\n    color: #FFFFFF;\n    background-color: #68B3C8;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-info.btn-fill:hover, .navbar .navbar-nav > li > a.btn-info.btn-fill:focus, .navbar .navbar-nav > li > a.btn-info.btn-fill:active, .navbar .navbar-nav > li > a.btn-info.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-info.btn-fill.dropdown-toggle, .btn-info.btn-fill:hover, .btn-info.btn-fill:focus, .btn-info.btn-fill:active, .btn-info.btn-fill.active,\n    .open > .btn-info.btn-fill.dropdown-toggle {\n      background-color: #3091B2;\n      color: #FFFFFF;\n      border-color: #3091B2; }\n    .navbar .navbar-nav > li > a.btn-info.btn-fill .caret, .btn-info.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-info.btn-simple:hover, .navbar .navbar-nav > li > a.btn-info.btn-simple:focus, .navbar .navbar-nav > li > a.btn-info.btn-simple:active, .navbar .navbar-nav > li > a.btn-info.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-info.btn-simple.dropdown-toggle, .btn-info.btn-simple:hover, .btn-info.btn-simple:focus, .btn-info.btn-simple:active, .btn-info.btn-simple.active,\n  .open > .btn-info.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #3091B2; }\n  .navbar .navbar-nav > li > a.btn-info.btn-simple .caret, .btn-info.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-info .caret, .btn-info .caret {\n    border-top-color: #68B3C8; }\n\n.navbar .navbar-nav > li > a.btn-warning, .btn-warning {\n  border-color: #F3BB45;\n  color: #F3BB45; }\n  .navbar .navbar-nav > li > a.btn-warning:hover, .navbar .navbar-nav > li > a.btn-warning:focus, .navbar .navbar-nav > li > a.btn-warning:active, .navbar .navbar-nav > li > a.btn-warning.active,\n  .open > .navbar .navbar-nav > li > a.btn-warning.dropdown-toggle, .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active,\n  .open > .btn-warning.dropdown-toggle {\n    background-color: #F3BB45;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #F3BB45; }\n    .navbar .navbar-nav > li > a.btn-warning:hover .caret, .navbar .navbar-nav > li > a.btn-warning:focus .caret, .navbar .navbar-nav > li > a.btn-warning:active .caret, .navbar .navbar-nav > li > a.btn-warning.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-warning.dropdown-toggle .caret, .btn-warning:hover .caret, .btn-warning:focus .caret, .btn-warning:active .caret, .btn-warning.active .caret,\n    .open > .btn-warning.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-warning.disabled, .navbar .navbar-nav > li > a.btn-warning.disabled:hover, .navbar .navbar-nav > li > a.btn-warning.disabled:focus, .navbar .navbar-nav > li > a.btn-warning.disabled.focus, .navbar .navbar-nav > li > a.btn-warning.disabled:active, .navbar .navbar-nav > li > a.btn-warning.disabled.active, .navbar .navbar-nav > li > a.btn-warning:disabled, .navbar .navbar-nav > li > a.btn-warning:disabled:hover, .navbar .navbar-nav > li > a.btn-warning:disabled:focus, .navbar .navbar-nav > li > a.btn-warning:disabled.focus, .navbar .navbar-nav > li > a.btn-warning:disabled:active, .navbar .navbar-nav > li > a.btn-warning:disabled.active, .navbar .navbar-nav > li > a.btn-warning[disabled], .navbar .navbar-nav > li > a.btn-warning[disabled]:hover, .navbar .navbar-nav > li > a.btn-warning[disabled]:focus, .navbar .navbar-nav > li > a.btn-warning[disabled].focus, .navbar .navbar-nav > li > a.btn-warning[disabled]:active, .navbar .navbar-nav > li > a.btn-warning[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning.active, .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled.focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning:disabled, .btn-warning:disabled:hover, .btn-warning:disabled:focus, .btn-warning:disabled.focus, .btn-warning:disabled:active, .btn-warning:disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled].focus, .btn-warning[disabled]:active, .btn-warning[disabled].active,\n  fieldset[disabled] .btn-warning,\n  fieldset[disabled] .btn-warning:hover,\n  fieldset[disabled] .btn-warning:focus,\n  fieldset[disabled] .btn-warning.focus,\n  fieldset[disabled] .btn-warning:active,\n  fieldset[disabled] .btn-warning.active {\n    background-color: transparent;\n    border-color: #F3BB45; }\n  .navbar .navbar-nav > li > a.btn-warning.btn-fill, .btn-warning.btn-fill {\n    color: #FFFFFF;\n    background-color: #F3BB45;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-warning.btn-fill:hover, .navbar .navbar-nav > li > a.btn-warning.btn-fill:focus, .navbar .navbar-nav > li > a.btn-warning.btn-fill:active, .navbar .navbar-nav > li > a.btn-warning.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-warning.btn-fill.dropdown-toggle, .btn-warning.btn-fill:hover, .btn-warning.btn-fill:focus, .btn-warning.btn-fill:active, .btn-warning.btn-fill.active,\n    .open > .btn-warning.btn-fill.dropdown-toggle {\n      background-color: #BB992F;\n      color: #FFFFFF;\n      border-color: #BB992F; }\n    .navbar .navbar-nav > li > a.btn-warning.btn-fill .caret, .btn-warning.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-warning.btn-simple:hover, .navbar .navbar-nav > li > a.btn-warning.btn-simple:focus, .navbar .navbar-nav > li > a.btn-warning.btn-simple:active, .navbar .navbar-nav > li > a.btn-warning.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-warning.btn-simple.dropdown-toggle, .btn-warning.btn-simple:hover, .btn-warning.btn-simple:focus, .btn-warning.btn-simple:active, .btn-warning.btn-simple.active,\n  .open > .btn-warning.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #BB992F; }\n  .navbar .navbar-nav > li > a.btn-warning.btn-simple .caret, .btn-warning.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-warning .caret, .btn-warning .caret {\n    border-top-color: #F3BB45; }\n\n.navbar .navbar-nav > li > a.btn-danger, .btn-danger {\n  border-color: #EB5E28;\n  color: #EB5E28; }\n  .navbar .navbar-nav > li > a.btn-danger:hover, .navbar .navbar-nav > li > a.btn-danger:focus, .navbar .navbar-nav > li > a.btn-danger:active, .navbar .navbar-nav > li > a.btn-danger.active,\n  .open > .navbar .navbar-nav > li > a.btn-danger.dropdown-toggle, .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active,\n  .open > .btn-danger.dropdown-toggle {\n    background-color: #EB5E28;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #EB5E28; }\n    .navbar .navbar-nav > li > a.btn-danger:hover .caret, .navbar .navbar-nav > li > a.btn-danger:focus .caret, .navbar .navbar-nav > li > a.btn-danger:active .caret, .navbar .navbar-nav > li > a.btn-danger.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-danger.dropdown-toggle .caret, .btn-danger:hover .caret, .btn-danger:focus .caret, .btn-danger:active .caret, .btn-danger.active .caret,\n    .open > .btn-danger.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-danger.disabled, .navbar .navbar-nav > li > a.btn-danger.disabled:hover, .navbar .navbar-nav > li > a.btn-danger.disabled:focus, .navbar .navbar-nav > li > a.btn-danger.disabled.focus, .navbar .navbar-nav > li > a.btn-danger.disabled:active, .navbar .navbar-nav > li > a.btn-danger.disabled.active, .navbar .navbar-nav > li > a.btn-danger:disabled, .navbar .navbar-nav > li > a.btn-danger:disabled:hover, .navbar .navbar-nav > li > a.btn-danger:disabled:focus, .navbar .navbar-nav > li > a.btn-danger:disabled.focus, .navbar .navbar-nav > li > a.btn-danger:disabled:active, .navbar .navbar-nav > li > a.btn-danger:disabled.active, .navbar .navbar-nav > li > a.btn-danger[disabled], .navbar .navbar-nav > li > a.btn-danger[disabled]:hover, .navbar .navbar-nav > li > a.btn-danger[disabled]:focus, .navbar .navbar-nav > li > a.btn-danger[disabled].focus, .navbar .navbar-nav > li > a.btn-danger[disabled]:active, .navbar .navbar-nav > li > a.btn-danger[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger.active, .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled.focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger:disabled, .btn-danger:disabled:hover, .btn-danger:disabled:focus, .btn-danger:disabled.focus, .btn-danger:disabled:active, .btn-danger:disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled].focus, .btn-danger[disabled]:active, .btn-danger[disabled].active,\n  fieldset[disabled] .btn-danger,\n  fieldset[disabled] .btn-danger:hover,\n  fieldset[disabled] .btn-danger:focus,\n  fieldset[disabled] .btn-danger.focus,\n  fieldset[disabled] .btn-danger:active,\n  fieldset[disabled] .btn-danger.active {\n    background-color: transparent;\n    border-color: #EB5E28; }\n  .navbar .navbar-nav > li > a.btn-danger.btn-fill, .btn-danger.btn-fill {\n    color: #FFFFFF;\n    background-color: #EB5E28;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-danger.btn-fill:hover, .navbar .navbar-nav > li > a.btn-danger.btn-fill:focus, .navbar .navbar-nav > li > a.btn-danger.btn-fill:active, .navbar .navbar-nav > li > a.btn-danger.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-danger.btn-fill.dropdown-toggle, .btn-danger.btn-fill:hover, .btn-danger.btn-fill:focus, .btn-danger.btn-fill:active, .btn-danger.btn-fill.active,\n    .open > .btn-danger.btn-fill.dropdown-toggle {\n      background-color: #B33C12;\n      color: #FFFFFF;\n      border-color: #B33C12; }\n    .navbar .navbar-nav > li > a.btn-danger.btn-fill .caret, .btn-danger.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-danger.btn-simple:hover, .navbar .navbar-nav > li > a.btn-danger.btn-simple:focus, .navbar .navbar-nav > li > a.btn-danger.btn-simple:active, .navbar .navbar-nav > li > a.btn-danger.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-danger.btn-simple.dropdown-toggle, .btn-danger.btn-simple:hover, .btn-danger.btn-simple:focus, .btn-danger.btn-simple:active, .btn-danger.btn-simple.active,\n  .open > .btn-danger.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #B33C12; }\n  .navbar .navbar-nav > li > a.btn-danger.btn-simple .caret, .btn-danger.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-danger .caret, .btn-danger .caret {\n    border-top-color: #EB5E28; }\n\n.btn-neutral {\n  border-color: #FFFFFF;\n  color: #FFFFFF; }\n  .btn-neutral:hover, .btn-neutral:focus, .btn-neutral:active, .btn-neutral.active,\n  .open > .btn-neutral.dropdown-toggle {\n    background-color: #FFFFFF;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #FFFFFF; }\n    .btn-neutral:hover .caret, .btn-neutral:focus .caret, .btn-neutral:active .caret, .btn-neutral.active .caret,\n    .open > .btn-neutral.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .btn-neutral.disabled, .btn-neutral.disabled:hover, .btn-neutral.disabled:focus, .btn-neutral.disabled.focus, .btn-neutral.disabled:active, .btn-neutral.disabled.active, .btn-neutral:disabled, .btn-neutral:disabled:hover, .btn-neutral:disabled:focus, .btn-neutral:disabled.focus, .btn-neutral:disabled:active, .btn-neutral:disabled.active, .btn-neutral[disabled], .btn-neutral[disabled]:hover, .btn-neutral[disabled]:focus, .btn-neutral[disabled].focus, .btn-neutral[disabled]:active, .btn-neutral[disabled].active,\n  fieldset[disabled] .btn-neutral,\n  fieldset[disabled] .btn-neutral:hover,\n  fieldset[disabled] .btn-neutral:focus,\n  fieldset[disabled] .btn-neutral.focus,\n  fieldset[disabled] .btn-neutral:active,\n  fieldset[disabled] .btn-neutral.active {\n    background-color: transparent;\n    border-color: #FFFFFF; }\n  .btn-neutral.btn-fill {\n    color: #FFFFFF;\n    background-color: #FFFFFF;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .btn-neutral.btn-fill:hover, .btn-neutral.btn-fill:focus, .btn-neutral.btn-fill:active, .btn-neutral.btn-fill.active,\n    .open > .btn-neutral.btn-fill.dropdown-toggle {\n      background-color: #FFFFFF;\n      color: #FFFFFF;\n      border-color: #FFFFFF; }\n    .btn-neutral.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .btn-neutral.btn-simple:hover, .btn-neutral.btn-simple:focus, .btn-neutral.btn-simple:active, .btn-neutral.btn-simple.active,\n  .open > .btn-neutral.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #FFFFFF; }\n  .btn-neutral.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .btn-neutral .caret {\n    border-top-color: #FFFFFF; }\n  .btn-neutral:hover, .btn-neutral:focus {\n    color: #66615B; }\n  .btn-neutral:active, .btn-neutral.active,\n  .open > .btn-neutral.dropdown-toggle {\n    background-color: #FFFFFF;\n    color: #66615B; }\n  .btn-neutral.btn-fill {\n    color: #66615B; }\n  .btn-neutral.btn-fill:hover, .btn-neutral.btn-fill:focus {\n    color: #403D39; }\n  .btn-neutral.btn-simple:active, .btn-neutral.btn-simple.active {\n    background-color: transparent; }\n\n.btn:disabled, .btn[disabled], .btn.disabled {\n  opacity: 0.5;\n  filter: alpha(opacity=50); }\n\n.btn-simple {\n  border: 0;\n  padding: 7px 18px; }\n  .btn-simple.btn-icon {\n    padding: 7px; }\n\n.btn-lg {\n  font-size: 18px;\n  border-radius: 50px;\n  padding: 11px 30px;\n  font-weight: 400; }\n  .btn-lg.btn-simple {\n    padding: 13px 30px; }\n\n.btn-sm {\n  font-size: 12px;\n  border-radius: 26px;\n  padding: 4px 10px; }\n  .btn-sm.btn-simple {\n    padding: 6px 10px; }\n\n.btn-xs {\n  font-size: 12px;\n  border-radius: 26px;\n  padding: 2px 5px; }\n  .btn-xs.btn-simple {\n    padding: 4px 5px; }\n\n.btn-wd {\n  min-width: 140px; }\n\n.btn-group.select {\n  width: 100%; }\n\n.btn-group.select .btn {\n  text-align: left; }\n\n.btn-group.select .caret {\n  position: absolute;\n  top: 50%;\n  margin-top: -1px;\n  right: 8px; }\n\n.form-control::-moz-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control:-moz-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control::-webkit-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control:-ms-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control {\n  background-color: #fffcf5;\n  border: medium none;\n  border-radius: 4px;\n  color: #66615b;\n  font-size: 14px;\n  transition: background-color 0.3s ease 0s;\n  padding: 7px 18px;\n  height: 40px;\n  -webkit-box-shadow: none;\n  box-shadow: none; }\n  .form-control:focus {\n    background-color: #FFFFFF;\n    -webkit-box-shadow: none;\n    box-shadow: none;\n    outline: 0 !important; }\n  .has-success .form-control,\n  .has-error .form-control,\n  .has-success .form-control:focus,\n  .has-error .form-control:focus {\n    -webkit-box-shadow: none;\n    box-shadow: none; }\n  .has-success .form-control {\n    background-color: #ABF3CB;\n    color: #41B883; }\n    .has-success .form-control.border-input {\n      border: 1px solid #41B883; }\n  .has-success .form-control:focus {\n    background-color: #FFFFFF; }\n  .has-error .form-control {\n    background-color: #FFC0A4;\n    color: #EB5E28; }\n    .has-error .form-control.border-input {\n      border: 1px solid #EB5E28; }\n  .has-error .form-control:focus {\n    background-color: #FFFFFF; }\n  .form-control + .form-control-feedback {\n    border-radius: 6px;\n    font-size: 14px;\n    margin-top: -7px;\n    position: absolute;\n    right: 10px;\n    top: 50%;\n    vertical-align: middle; }\n  .form-control.border-input {\n    border: 1px solid #CCC5B9; }\n  .open .form-control {\n    border-bottom-color: transparent; }\n\n.input-lg {\n  height: 55px;\n  padding: 11px 30px; }\n\n.has-error .form-control-feedback, .has-error .control-label {\n  color: #EB5E28; }\n\n.has-success .form-control-feedback, .has-success .control-label {\n  color: #41B883; }\n\n.input-group-addon {\n  background-color: #fffcf5;\n  border: medium none;\n  border-radius: 4px; }\n  .has-success .input-group-addon,\n  .has-error .input-group-addon {\n    background-color: #FFFFFF; }\n  .has-error .form-control:focus + .input-group-addon {\n    color: #EB5E28; }\n  .has-success .form-control:focus + .input-group-addon {\n    color: #41B883; }\n  .form-control:focus + .input-group-addon,\n  .form-control:focus ~ .input-group-addon {\n    background-color: #FFFFFF; }\n\n.border-input .input-group-addon {\n  border: solid 1px #CCC5B9; }\n\n.input-group {\n  margin-bottom: 15px; }\n\n.input-group[disabled] .input-group-addon {\n  background-color: #E3E3E3; }\n\n.input-group .form-control:first-child,\n.input-group-addon:first-child,\n.input-group-btn:first-child > .dropdown-toggle,\n.input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {\n  border-right: 0 none; }\n\n.input-group .form-control:last-child,\n.input-group-addon:last-child,\n.input-group-btn:last-child > .dropdown-toggle,\n.input-group-btn:first-child > .btn:not(:first-child) {\n  border-left: 0 none; }\n\n.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {\n  background-color: #E3E3E3;\n  cursor: not-allowed;\n  color: #9A9A9A;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]::-moz-placeholder {\n  color: #9A9A9A;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]:-moz-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]::-webkit-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]:-ms-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.input-group-btn .btn {\n  border-width: 1px;\n  padding: 9px 18px; }\n\n.input-group-btn .btn-default:not(.btn-fill) {\n  border-color: #DDDDDD; }\n\n.input-group-btn:last-child > .btn {\n  margin-left: 0; }\n\ntextarea.form-control {\n  max-width: 100%;\n  padding: 10px 18px;\n  resize: none; }\n\n.alert {\n  border: 0;\n  border-radius: 0;\n  color: #FFFFFF;\n  padding: 10px 15px;\n  font-size: 14px; }\n  .container .alert {\n    border-radius: 4px; }\n  .navbar .alert {\n    border-radius: 0;\n    left: 0;\n    position: absolute;\n    right: 0;\n    top: 85px;\n    width: 100%;\n    z-index: 3; }\n  .navbar:not(.navbar-transparent) .alert {\n    top: 70px; }\n  .alert span[data-notify=\"icon\"] {\n    font-size: 30px;\n    display: block;\n    left: 15px;\n    position: absolute;\n    top: 50%;\n    margin-top: -20px; }\n  .alert .close ~ span {\n    display: block;\n    max-width: 89%; }\n  .alert[data-notify=\"container\"] {\n    padding: 10px 10px 10px 20px;\n    border-radius: 4px; }\n  .alert.alert-with-icon {\n    padding-left: 65px; }\n\n.alert-info {\n  background-color: #7CE4FE;\n  color: #3091B2; }\n\n.alert-success {\n  background-color: #8EF3C5;\n  color: #229863; }\n\n.alert-warning {\n  background-color: #FFE28C;\n  color: #BB992F; }\n\n.alert-danger {\n  background-color: #FF8F5E;\n  color: #B33C12; }\n\n.table thead tr > th,\n.table thead tr > td,\n.table tbody tr > th,\n.table tbody tr > td,\n.table tfoot tr > th,\n.table tfoot tr > td {\n  border-top: 1px solid #CCC5B9; }\n\n.table > thead > tr > th {\n  border-bottom-width: 0;\n  font-size: 1.25em;\n  font-weight: 300; }\n\n.table .radio,\n.table .checkbox {\n  margin-top: 0;\n  margin-bottom: 22px;\n  padding: 0;\n  width: 15px; }\n\n.table > thead > tr > th,\n.table > tbody > tr > th,\n.table > tfoot > tr > th,\n.table > thead > tr > td,\n.table > tbody > tr > td,\n.table > tfoot > tr > td {\n  padding: 12px;\n  vertical-align: middle; }\n\n.table .th-description {\n  max-width: 150px; }\n\n.table .td-price {\n  font-size: 26px;\n  font-weight: 300;\n  margin-top: 5px;\n  text-align: right; }\n\n.table .td-total {\n  font-weight: 600;\n  font-size: 1.25em;\n  padding-top: 20px;\n  text-align: right; }\n\n.table .td-actions .btn.btn-sm, .table .td-actions .btn.btn-xs {\n  padding-left: 3px;\n  padding-right: 3px; }\n\n.table > tbody > tr {\n  position: relative; }\n\n.table-striped tbody > tr:nth-of-type(2n+1) {\n  background-color: #fff; }\n\n.table-striped tbody > tr:nth-of-type(2n) {\n  background-color: #FFFCF5; }\n\n.table-striped > thead > tr > th,\n.table-striped > tbody > tr > th,\n.table-striped > tfoot > tr > th,\n.table-striped > thead > tr > td,\n.table-striped > tbody > tr > td,\n.table-striped > tfoot > tr > td {\n  padding: 15px 8px; }\n\n/*      Checkbox and radio         */\n.checkbox,\n.radio {\n  margin-bottom: 12px;\n  padding-left: 30px;\n  position: relative;\n  -webkit-transition: color, opacity 0.25s linear;\n  transition: color, opacity 0.25s linear;\n  font-size: 14px;\n  font-weight: normal;\n  line-height: 1.5;\n  color: #66615b;\n  cursor: pointer; }\n  .checkbox .icons,\n  .radio .icons {\n    color: #66615b;\n    display: block;\n    height: 20px;\n    left: 0;\n    position: absolute;\n    top: 0;\n    width: 20px;\n    text-align: center;\n    line-height: 21px;\n    font-size: 20px;\n    cursor: pointer;\n    -webkit-transition: color, opacity 0.15s linear;\n    transition: color, opacity 0.15s linear;\n    opacity: .50; }\n  .checkbox.checked .icons,\n  .radio.checked .icons {\n    opacity: 1; }\n  .checkbox input,\n  .radio input {\n    outline: none !important;\n    display: none; }\n\n.checkbox label,\n.radio label {\n  padding-left: 10px; }\n\n.checkbox .icons .first-icon,\n.radio .icons .first-icon,\n.checkbox .icons .second-icon,\n.radio .icons .second-icon {\n  display: inline-table;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background-color: transparent;\n  margin: 0;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.checkbox .icons .second-icon,\n.radio .icons .second-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox:hover,\n.radio:hover {\n  -webkit-transition: color 0.2s linear;\n  transition: color 0.2s linear; }\n\n.checkbox:hover .first-icon,\n.radio:hover .first-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox:hover .second-icon,\n.radio:hover .second-icon {\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.checkbox.checked .first-icon,\n.radio.checked .first-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox.checked .second-icon,\n.radio.checked .second-icon {\n  opacity: 1;\n  filter: alpha(opacity=100);\n  -webkit-transition: color 0.2s linear;\n  transition: color 0.2s linear; }\n\n.checkbox.disabled,\n.radio.disabled {\n  cursor: default;\n  color: #DDDDDD; }\n\n.checkbox.disabled .icons,\n.radio.disabled .icons {\n  color: #DDDDDD; }\n\n.checkbox.disabled .first-icon,\n.radio.disabled .first-icon {\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.checkbox.disabled .second-icon,\n.radio.disabled .second-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox.disabled.checked .icons,\n.radio.disabled.checked .icons {\n  color: #DDDDDD; }\n\n.checkbox.disabled.checked .first-icon,\n.radio.disabled.checked .first-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox.disabled.checked .second-icon,\n.radio.disabled.checked .second-icon {\n  opacity: 1;\n  color: #DDDDDD;\n  filter: alpha(opacity=100); }\n\n.nav > li > a:hover,\n.nav > li > a:focus {\n  background-color: transparent; }\n\n.navbar {\n  border: 0;\n  border-radius: 0;\n  font-size: 16px;\n  z-index: 0; }\n  .navbar .navbar-brand {\n    font-weight: 600;\n    margin: 5px 0px;\n    padding: 20px 15px;\n    font-size: 20px; }\n  .navbar .navbar-nav > li > a {\n    line-height: 1.42857;\n    margin: 15px 0px;\n    padding: 10px 15px; }\n    .navbar .navbar-nav > li > a i,\n    .navbar .navbar-nav > li > a p {\n      display: inline-block;\n      margin: 0; }\n    .navbar .navbar-nav > li > a i {\n      position: relative;\n      top: 1px; }\n  .navbar .navbar-nav > li > a.btn {\n    margin: 15px 3px;\n    padding: 7px 18px; }\n  .navbar .btn {\n    margin: 15px 3px;\n    font-size: 14px; }\n  .navbar .btn-simple {\n    font-size: 16px; }\n\n.navbar-nav > li > .dropdown-menu {\n  border-radius: 6px;\n  margin-top: -5px; }\n\n.navbar-default {\n  background-color: #f4f3ef;\n  border-bottom: 1px solid #DDDDDD; }\n  .navbar-default .brand {\n    color: #66615b !important; }\n  .navbar-default .navbar-nav > li > a:not(.btn) {\n    color: #9A9A9A; }\n  .navbar-default .navbar-nav > .active > a,\n  .navbar-default .navbar-nav > .active > a:not(.btn):hover,\n  .navbar-default .navbar-nav > .active > a:not(.btn):focus,\n  .navbar-default .navbar-nav > li > a:not(.btn):hover,\n  .navbar-default .navbar-nav > li > a:not(.btn):focus {\n    background-color: transparent;\n    border-radius: 3px;\n    color: #68B3C8;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n  .navbar-default .navbar-nav > .dropdown > a:hover .caret,\n  .navbar-default .navbar-nav > .dropdown > a:focus .caret {\n    border-bottom-color: #68B3C8;\n    border-top-color: #68B3C8; }\n  .navbar-default .navbar-nav > .open > a,\n  .navbar-default .navbar-nav > .open > a:hover,\n  .navbar-default .navbar-nav > .open > a:focus {\n    background-color: transparent;\n    color: #68B3C8; }\n  .navbar-default .navbar-nav .navbar-toggle:hover, .navbar-default .navbar-nav .navbar-toggle:focus {\n    background-color: transparent; }\n  .navbar-default:not(.navbar-transparent) .btn-default:hover {\n    color: #68B3C8;\n    border-color: #68B3C8; }\n  .navbar-default:not(.navbar-transparent) .btn-neutral,\n  .navbar-default:not(.navbar-transparent) .btn-neutral:hover,\n  .navbar-default:not(.navbar-transparent) .btn-neutral:active {\n    color: #9A9A9A; }\n\n.navbar-form {\n  -webkit-box-shadow: none;\n  box-shadow: none; }\n  .navbar-form .form-control {\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    background-color: transparent;\n    height: 22px;\n    font-size: 16px;\n    line-height: 1.4em;\n    color: #E3E3E3; }\n  .navbar-transparent .navbar-form .form-control,\n  [class*=\"navbar-ct\"] .navbar-form .form-control {\n    color: #FFFFFF;\n    border: 0;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.6); }\n\n.navbar-ct-primary {\n  background-color: #8ECFD5; }\n\n.navbar-ct-info {\n  background-color: #7CE4FE; }\n\n.navbar-ct-success {\n  background-color: #8EF3C5; }\n\n.navbar-ct-warning {\n  background-color: #FFE28C; }\n\n.navbar-ct-danger {\n  background-color: #FF8F5E; }\n\n.navbar-transparent {\n  padding-top: 15px;\n  background-color: transparent;\n  border-bottom: 1px solid transparent; }\n\n.navbar-toggle {\n  margin-top: 19px;\n  margin-bottom: 19px;\n  border: 0; }\n  .navbar-toggle .icon-bar {\n    background-color: #FFFFFF; }\n  .navbar-toggle .navbar-collapse,\n  .navbar-toggle .navbar-form {\n    border-color: transparent; }\n  .navbar-toggle.navbar-default .navbar-toggle:hover,\n  .navbar-toggle.navbar-default .navbar-toggle:focus {\n    background-color: transparent; }\n\n.navbar-transparent .navbar-brand, [class*=\"navbar-ct\"] .navbar-brand {\n  opacity: 0.9;\n  filter: alpha(opacity=90); }\n  .navbar-transparent .navbar-brand:focus, .navbar-transparent .navbar-brand:hover, [class*=\"navbar-ct\"] .navbar-brand:focus, [class*=\"navbar-ct\"] .navbar-brand:hover {\n    background-color: transparent;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n\n.navbar-transparent .navbar-brand:not([class*=\"text\"]), [class*=\"navbar-ct\"] .navbar-brand:not([class*=\"text\"]) {\n  color: #FFFFFF; }\n\n.navbar-transparent .navbar-nav > li > a:not(.btn), [class*=\"navbar-ct\"] .navbar-nav > li > a:not(.btn) {\n  color: #FFFFFF;\n  border-color: #FFFFFF;\n  opacity: 0.8;\n  filter: alpha(opacity=80); }\n\n.navbar-transparent .navbar-nav > .active > a:not(.btn),\n.navbar-transparent .navbar-nav > .active > a:hover:not(.btn),\n.navbar-transparent .navbar-nav > .active > a:focus:not(.btn),\n.navbar-transparent .navbar-nav > li > a:hover:not(.btn),\n.navbar-transparent .navbar-nav > li > a:focus:not(.btn), [class*=\"navbar-ct\"] .navbar-nav > .active > a:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > .active > a:hover:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > .active > a:focus:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > li > a:hover:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > li > a:focus:not(.btn) {\n  background-color: transparent;\n  border-radius: 3px;\n  color: #FFFFFF;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.navbar-transparent .navbar-nav .nav > li > a.btn:hover, [class*=\"navbar-ct\"] .navbar-nav .nav > li > a.btn:hover {\n  background-color: transparent; }\n\n.navbar-transparent .navbar-nav > .dropdown > a .caret,\n.navbar-transparent .navbar-nav > .dropdown > a:hover .caret,\n.navbar-transparent .navbar-nav > .dropdown > a:focus .caret, [class*=\"navbar-ct\"] .navbar-nav > .dropdown > a .caret,\n[class*=\"navbar-ct\"] .navbar-nav > .dropdown > a:hover .caret,\n[class*=\"navbar-ct\"] .navbar-nav > .dropdown > a:focus .caret {\n  border-bottom-color: #FFFFFF;\n  border-top-color: #FFFFFF; }\n\n.navbar-transparent .navbar-nav > .open > a,\n.navbar-transparent .navbar-nav > .open > a:hover,\n.navbar-transparent .navbar-nav > .open > a:focus, [class*=\"navbar-ct\"] .navbar-nav > .open > a,\n[class*=\"navbar-ct\"] .navbar-nav > .open > a:hover,\n[class*=\"navbar-ct\"] .navbar-nav > .open > a:focus {\n  background-color: transparent;\n  color: #FFFFFF;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.navbar-transparent .btn-default, [class*=\"navbar-ct\"] .btn-default {\n  color: #FFFFFF;\n  border-color: #FFFFFF; }\n\n.navbar-transparent .btn-default.btn-fill, [class*=\"navbar-ct\"] .btn-default.btn-fill {\n  color: #9A9A9A;\n  background-color: #FFFFFF;\n  opacity: 0.9;\n  filter: alpha(opacity=90); }\n\n.navbar-transparent .btn-default.btn-fill:hover,\n.navbar-transparent .btn-default.btn-fill:focus,\n.navbar-transparent .btn-default.btn-fill:active,\n.navbar-transparent .btn-default.btn-fill.active,\n.navbar-transparent .open .dropdown-toggle.btn-fill.btn-default, [class*=\"navbar-ct\"] .btn-default.btn-fill:hover,\n[class*=\"navbar-ct\"] .btn-default.btn-fill:focus,\n[class*=\"navbar-ct\"] .btn-default.btn-fill:active,\n[class*=\"navbar-ct\"] .btn-default.btn-fill.active,\n[class*=\"navbar-ct\"] .open .dropdown-toggle.btn-fill.btn-default {\n  border-color: #FFFFFF;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.footer {\n  background-attachment: fixed;\n  position: relative;\n  line-height: 20px; }\n  .footer nav ul {\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    font-weight: normal; }\n    .footer nav ul li {\n      display: inline-block;\n      padding: 10px 15px;\n      margin: 15px 3px;\n      line-height: 20px;\n      text-align: center; }\n    .footer nav ul a:not(.btn) {\n      color: #66615b;\n      display: block;\n      margin-bottom: 3px; }\n      .footer nav ul a:not(.btn):focus, .footer nav ul a:not(.btn):hover {\n        color: #403D39; }\n  .footer .copyright {\n    color: #66615b;\n    padding: 10px 15px;\n    font-size: 14px;\n    white-space: nowrap;\n    margin: 15px 3px;\n    line-height: 20px;\n    text-align: center; }\n  .footer .heart {\n    color: #EB5E28; }\n\n.dropdown-menu {\n  background-color: #FFFCF5;\n  border: 0 none;\n  border-radius: 6px;\n  display: block;\n  margin-top: 10px;\n  padding: 0px;\n  position: absolute;\n  visibility: hidden;\n  z-index: 9000;\n  opacity: 0;\n  filter: alpha(opacity=0);\n  -webkit-box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1);\n  box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1); }\n  .open .dropdown-menu {\n    opacity: 1;\n    filter: alpha(opacity=100);\n    visibility: visible; }\n  .dropdown-menu .divider {\n    background-color: #F1EAE0;\n    margin: 0px; }\n  .dropdown-menu .dropdown-header {\n    color: #9A9A9A;\n    font-size: 12px;\n    padding: 10px 15px; }\n  .select .dropdown-menu {\n    border-radius: 0 0 10px 10px;\n    -webkit-box-shadow: none;\n    box-shadow: none;\n    -webkit-transform-origin: 50% -40px;\n    -moz-transform-origin: 50% -40px;\n    -o-transform-origin: 50% -40px;\n    -ms-transform-origin: 50% -40px;\n    transform-origin: 50% -40px;\n    -webkit-transform: scale(1);\n    -moz-transform: scale(1);\n    -o-transform: scale(1);\n    -ms-transform: scale(1);\n    transform: scale(1);\n    -webkit-transition: all 150ms linear;\n    -moz-transition: all 150ms linear;\n    -o-transition: all 150ms linear;\n    -ms-transition: all 150ms linear;\n    transition: all 150ms linear;\n    margin-top: -20px; }\n  .select.open .dropdown-menu {\n    margin-top: -1px; }\n  .dropdown-menu > li > a {\n    color: #66615b;\n    font-size: 14px;\n    padding: 10px 15px;\n    -webkit-transition: none;\n    -moz-transition: none;\n    -o-transition: none;\n    -ms-transition: none;\n    transition: none; }\n    .dropdown-menu > li > a img {\n      margin-top: -3px; }\n  .dropdown-menu > li > a:focus {\n    outline: 0 !important; }\n  .btn-group.select .dropdown-menu {\n    min-width: 100%; }\n  .dropdown-menu > li:first-child > a {\n    border-top-left-radius: 6px;\n    border-top-right-radius: 6px; }\n  .dropdown-menu > li:last-child > a {\n    border-bottom-left-radius: 6px;\n    border-bottom-right-radius: 6px; }\n  .select .dropdown-menu > li:first-child > a {\n    border-radius: 0;\n    border-bottom: 0 none; }\n  .dropdown-menu > li > a:hover,\n  .dropdown-menu > li > a:focus {\n    background-color: #66615B;\n    color: rgba(255, 255, 255, 0.7);\n    opacity: 1;\n    text-decoration: none; }\n  .dropdown-menu.dropdown-primary > li > a:hover,\n  .dropdown-menu.dropdown-primary > li > a:focus {\n    background-color: #7A9E9F; }\n  .dropdown-menu.dropdown-info > li > a:hover,\n  .dropdown-menu.dropdown-info > li > a:focus {\n    background-color: #68B3C8; }\n  .dropdown-menu.dropdown-success > li > a:hover,\n  .dropdown-menu.dropdown-success > li > a:focus {\n    background-color: #41B883; }\n  .dropdown-menu.dropdown-warning > li > a:hover,\n  .dropdown-menu.dropdown-warning > li > a:focus {\n    background-color: #F3BB45; }\n  .dropdown-menu.dropdown-danger > li > a:hover,\n  .dropdown-menu.dropdown-danger > li > a:focus {\n    background-color: #EB5E28; }\n\n.btn-group.select {\n  overflow: hidden; }\n\n.btn-group.select.open {\n  overflow: visible; }\n\n.card {\n  border-radius: 6px;\n  box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);\n  background-color: #FFFFFF;\n  color: #252422;\n  margin-bottom: 20px;\n  position: relative;\n  z-index: 1; }\n  .card .image {\n    width: 100%;\n    overflow: hidden;\n    height: 260px;\n    border-radius: 6px 6px 0 0;\n    position: relative;\n    -webkit-transform-style: preserve-3d;\n    -moz-transform-style: preserve-3d;\n    transform-style: preserve-3d; }\n    .card .image img {\n      width: 100%; }\n  .card .content {\n    padding: 15px 15px 10px 15px; }\n  .card .header {\n    padding: 20px 20px 0; }\n  .card .description {\n    font-size: 16px;\n    color: #66615b; }\n  .card h6 {\n    font-size: 12px;\n    margin: 0; }\n  .card .category,\n  .card label {\n    font-size: 14px;\n    font-weight: 400;\n    color: #9A9A9A;\n    margin-bottom: 0px; }\n    .card .category i,\n    .card label i {\n      font-size: 16px; }\n  .card label {\n    font-size: 15px;\n    margin-bottom: 5px; }\n  .card .title {\n    margin: 0;\n    color: #252422;\n    font-weight: 300; }\n  .card .avatar {\n    width: 50px;\n    height: 50px;\n    overflow: hidden;\n    border-radius: 50%;\n    margin-right: 5px; }\n  .card .footer {\n    padding: 0;\n    line-height: 30px; }\n    .card .footer .legend {\n      padding: 5px 0; }\n    .card .footer hr {\n      margin-top: 5px;\n      margin-bottom: 5px; }\n  .card .stats {\n    color: #a9a9a9;\n    font-weight: 300; }\n    .card .stats i {\n      margin-right: 2px;\n      min-width: 15px;\n      display: inline-block; }\n  .card .footer div {\n    display: inline-block; }\n  .card .author {\n    font-size: 12px;\n    font-weight: 600;\n    text-transform: uppercase; }\n  .card .author i {\n    font-size: 14px; }\n  .card.card-separator:after {\n    height: 100%;\n    right: -15px;\n    top: 0;\n    width: 1px;\n    background-color: #DDDDDD;\n    content: \"\";\n    position: absolute; }\n  .card .ct-chart {\n    margin: 30px 0 30px;\n    height: 245px; }\n  .card .table tbody td:first-child,\n  .card .table thead th:first-child {\n    padding-left: 15px; }\n  .card .table tbody td:last-child,\n  .card .table thead th:last-child {\n    padding-right: 15px; }\n  .card .alert {\n    border-radius: 4px;\n    position: relative; }\n    .card .alert.alert-with-icon {\n      padding-left: 65px; }\n  .card .icon-big {\n    font-size: 3em;\n    min-height: 64px; }\n  .card .numbers {\n    font-size: 2em;\n    text-align: right; }\n    .card .numbers p {\n      margin: 0; }\n  .card ul.team-members li {\n    padding: 10px 0px; }\n    .card ul.team-members li:not(:last-child) {\n      border-bottom: 1px solid #F1EAE0; }\n\n.card-user .image {\n  border-radius: 8px 8px 0 0;\n  height: 150px;\n  position: relative;\n  overflow: hidden; }\n  .card-user .image img {\n    width: 100%; }\n\n.card-user .image-plain {\n  height: 0;\n  margin-top: 110px; }\n\n.card-user .author {\n  text-align: center;\n  text-transform: none;\n  margin-top: -65px; }\n  .card-user .author .title {\n    color: #403D39; }\n    .card-user .author .title small {\n      color: #ccc5b9; }\n\n.card-user .avatar {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  position: relative;\n  margin-bottom: 15px; }\n  .card-user .avatar.border-white {\n    border: 5px solid #FFFFFF; }\n  .card-user .avatar.border-gray {\n    border: 5px solid #ccc5b9; }\n\n.card-user .title {\n  font-weight: 600;\n  line-height: 24px; }\n\n.card-user .description {\n  margin-top: 10px; }\n\n.card-user .content {\n  min-height: 200px; }\n\n.card-user.card-plain .avatar {\n  height: 190px;\n  width: 190px; }\n\n.card-map .map {\n  height: 500px;\n  padding-top: 20px; }\n  .card-map .map > div {\n    height: 100%; }\n\n.card-user .footer,\n.card-price .footer {\n  padding: 5px 15px 10px; }\n\n.card-user hr,\n.card-price hr {\n  margin: 5px 15px; }\n\n.card-plain {\n  background-color: transparent;\n  box-shadow: none;\n  border-radius: 0; }\n  .card-plain .image {\n    border-radius: 4px; }\n\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.9em;\n  line-height: 1; }\n\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex; }\n\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end; }\n\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start; }\n\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end; }\n\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px; }\n\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round; }\n\n.ct-line {\n  fill: none;\n  stroke-width: 4px; }\n\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.7; }\n\n.ct-bar {\n  fill: none;\n  stroke-width: 10px; }\n\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px; }\n\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #68B3C8; }\n\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-area {\n  fill: #68B3C8; }\n\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #F3BB45; }\n\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-area {\n  fill: #F3BB45; }\n\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #EB5E28; }\n\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-area {\n  fill: #EB5E28; }\n\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #41B883; }\n\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-area {\n  fill: #41B883; }\n\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #7A9E9F; }\n\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-area {\n  fill: #7A9E9F; }\n\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: rgba(104, 179, 200, 0.8); }\n\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-area {\n  fill: rgba(104, 179, 200, 0.8); }\n\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: rgba(65, 184, 131, 0.8); }\n\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-area {\n  fill: rgba(65, 184, 131, 0.8); }\n\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: rgba(243, 187, 69, 0.8); }\n\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-area {\n  fill: rgba(243, 187, 69, 0.8); }\n\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: rgba(235, 94, 40, 0.8); }\n\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-area {\n  fill: rgba(235, 94, 40, 0.8); }\n\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: rgba(122, 158, 159, 0.8); }\n\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-area {\n  fill: rgba(122, 158, 159, 0.8); }\n\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: rgba(104, 179, 200, 0.6); }\n\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-area {\n  fill: rgba(104, 179, 200, 0.6); }\n\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: rgba(65, 184, 131, 0.6); }\n\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-area {\n  fill: rgba(65, 184, 131, 0.6); }\n\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: rgba(243, 187, 69, 0.6); }\n\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-area {\n  fill: rgba(243, 187, 69, 0.6); }\n\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: rgba(235, 94, 40, 0.6); }\n\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-area {\n  fill: rgba(235, 94, 40, 0.6); }\n\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: rgba(122, 158, 159, 0.6); }\n\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-area {\n  fill: rgba(122, 158, 159, 0.6); }\n\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%; }\n  .ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%; }\n  .ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.88889%; }\n  .ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.33333%; }\n  .ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%; }\n  .ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%; }\n  .ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.66667%; }\n  .ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%; }\n  .ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.8047%; }\n  .ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%; }\n  .ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%; }\n  .ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.33333%; }\n  .ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%; }\n  .ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%; }\n  .ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%; }\n  .ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.33333%; }\n  .ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%; }\n  .ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n@media (min-width: 992px) {\n  .navbar {\n    min-height: 75px; }\n  .navbar-form {\n    margin-top: 21px;\n    margin-bottom: 21px;\n    padding-left: 5px;\n    padding-right: 5px; }\n  .navbar-search-form {\n    display: none; }\n  .navbar-nav > li > .dropdown-menu,\n  .dropdown .dropdown-menu {\n    transform: translate3d(0px, -40px, 0px);\n    transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s, opacity 0.3s ease 0s, height 0s linear 0.35s; }\n  .navbar-nav > li.open > .dropdown-menu, .dropdown.open .dropdown-menu {\n    transform: translate3d(0px, 0px, 0px); }\n  .navbar-nav > li > .dropdown-menu:before {\n    border-bottom: 11px solid #F1EAE0;\n    border-left: 11px solid transparent;\n    border-right: 11px solid transparent;\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    right: 12px;\n    top: -11px; }\n  .navbar-nav > li > .dropdown-menu:after {\n    border-bottom: 11px solid #FFFCF5;\n    border-left: 11px solid transparent;\n    border-right: 11px solid transparent;\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    right: 12px;\n    top: -10px; }\n  .navbar-nav.navbar-left > li > .dropdown-menu:before {\n    right: auto;\n    left: 12px; }\n  .navbar-nav.navbar-left > li > .dropdown-menu:after {\n    right: auto;\n    left: 12px; }\n  .navbar .navbar-header {\n    margin-left: 10px; }\n  .footer:not(.footer-big) nav > ul li:first-child {\n    margin-left: 0; }\n  body .navbar-collapse.collapse {\n    display: none !important; }\n  .card form [class*=\"col-\"] {\n    padding: 6px; }\n  .card form [class*=\"col-\"]:first-child {\n    padding-left: 15px; }\n  .card form [class*=\"col-\"]:last-child {\n    padding-right: 15px; } }\n\n/*          Changes for small display      */\n@media (max-width: 991px) {\n  .sidebar {\n    display: none; }\n  .main-panel {\n    width: 100%; }\n  .navbar-transparent {\n    padding-top: 15px;\n    background-color: rgba(0, 0, 0, 0.45); }\n  body {\n    position: relative; }\n  h6 {\n    font-size: 1em; }\n  .wrapper {\n    -webkit-transform: translate3d(0px, 0, 0);\n    -moz-transform: translate3d(0px, 0, 0);\n    -o-transform: translate3d(0px, 0, 0);\n    -ms-transform: translate3d(0px, 0, 0);\n    transform: translate3d(0px, 0, 0);\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    left: 0;\n    background-color: white; }\n  .navbar .container {\n    left: 0;\n    width: 100%;\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    position: relative; }\n  .navbar .navbar-right-menu,\n  .navbar .navbar-collapse.collapse,\n  .navbar .navbar-collapse.collapse.in,\n  .navbar .navbar-collapse.collapsing {\n    display: none !important; }\n  .navbar-nav > li {\n    float: none;\n    position: relative;\n    display: block; }\n  .off-canvas-sidebar {\n    position: fixed;\n    display: block;\n    top: 0;\n    height: 100%;\n    width: 230px;\n    right: 0;\n    z-index: 1032;\n    visibility: visible;\n    background-color: #999;\n    overflow-y: visible;\n    border-top: none;\n    text-align: left;\n    padding-right: 0px;\n    padding-left: 0;\n    -webkit-transform: translate3d(230px, 0, 0);\n    -moz-transform: translate3d(230px, 0, 0);\n    -o-transform: translate3d(230px, 0, 0);\n    -ms-transform: translate3d(230px, 0, 0);\n    transform: translate3d(230px, 0, 0);\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }\n    .off-canvas-sidebar .sidebar-wrapper {\n      position: relative;\n      z-index: 3;\n      overflow-y: scroll;\n      height: 100%;\n      box-shadow: inset 1px 0px 0px 0px #DDDDDD; }\n    .off-canvas-sidebar .nav {\n      margin-top: 0;\n      padding: 10px 15px 0; }\n      .off-canvas-sidebar .nav > li > a {\n        margin: 0px 0px;\n        color: #66615B;\n        text-transform: uppercase;\n        font-weight: 600;\n        font-size: 12px;\n        line-height: 1.4em;\n        padding: 10px 0; }\n        .off-canvas-sidebar .nav > li > a:hover, .off-canvas-sidebar .nav > li > a.active {\n          color: #403D39; }\n        .off-canvas-sidebar .nav > li > a p,\n        .off-canvas-sidebar .nav > li > a .notification,\n        .off-canvas-sidebar .nav > li > a .caret {\n          display: inline-block; }\n        .off-canvas-sidebar .nav > li > a .caret {\n          float: right;\n          position: relative;\n          top: 12px; }\n        .off-canvas-sidebar .nav > li > a i {\n          font-size: 18px;\n          margin-right: 10px;\n          line-height: 26px; }\n      .off-canvas-sidebar .nav > li.active > a:before {\n        border-right: none;\n        border-left: 12px solid #DDDDDD;\n        border-top: 12px solid transparent;\n        border-bottom: 12px solid transparent;\n        right: auto;\n        margin-left: -15px;\n        left: 0px;\n        top: 10px; }\n      .off-canvas-sidebar .nav > li.active > a:after {\n        border-right: none;\n        border-left: 12px solid #f4f3ef;\n        border-top: 12px solid transparent;\n        border-bottom: 12px solid transparent;\n        right: auto;\n        margin-left: -15px;\n        left: -1px;\n        top: 10px; }\n    .off-canvas-sidebar::after {\n      top: 0;\n      left: 0;\n      height: 100%;\n      width: 100%;\n      position: absolute;\n      background-color: #f4f3ef;\n      background-image: linear-gradient(to bottom, transparent 0%, rgba(112, 112, 112, 0) 60%, rgba(186, 186, 186, 0.15) 100%);\n      display: block;\n      content: \"\";\n      z-index: 1; }\n    .off-canvas-sidebar.has-image::after {\n      top: 0;\n      left: 0;\n      height: 100%;\n      width: 100%;\n      position: absolute;\n      background-color: rgba(17, 17, 17, 0.8);\n      display: block;\n      content: \"\";\n      z-index: 1; }\n    .off-canvas-sidebar .logo {\n      position: relative;\n      z-index: 4;\n      padding-top: 11px;\n      padding-bottom: 11px; }\n    .off-canvas-sidebar .divider {\n      height: 1px;\n      margin: 10px 0; }\n  .main-panel.push-left {\n    right: 230px; }\n  .nav-open .navbar-collapse {\n    -webkit-transform: translate3d(0px, 0, 0);\n    -moz-transform: translate3d(0px, 0, 0);\n    -o-transform: translate3d(0px, 0, 0);\n    -ms-transform: translate3d(0px, 0, 0);\n    transform: translate3d(0px, 0, 0); }\n  .nav-open .navbar .container {\n    left: -230px; }\n  .nav-open .wrapper {\n    left: 0;\n    -webkit-transform: translate3d(-230px, 0, 0);\n    -moz-transform: translate3d(-230px, 0, 0);\n    -o-transform: translate3d(-230px, 0, 0);\n    -ms-transform: translate3d(-230px, 0, 0);\n    transform: translate3d(-230px, 0, 0); }\n  .navbar-toggle .icon-bar {\n    display: block;\n    position: relative;\n    background: #fff;\n    width: 24px;\n    height: 2px;\n    border-radius: 1px;\n    margin: 0 auto; }\n  .navbar-header .navbar-toggle {\n    margin: 10px 15px 10px 0;\n    width: 40px;\n    height: 40px; }\n  .bar1,\n  .bar2,\n  .bar3 {\n    outline: 1px solid transparent; }\n  .bar1 {\n    top: 0px;\n    -webkit-animation: topbar-back 500ms linear 0s;\n    -moz-animation: topbar-back 500ms linear 0s;\n    animation: topbar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .bar2 {\n    opacity: 1; }\n  .bar3 {\n    bottom: 0px;\n    -webkit-animation: bottombar-back 500ms linear 0s;\n    -moz-animation: bottombar-back 500ms linear 0s;\n    animation: bottombar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .toggled .bar1 {\n    top: 6px;\n    -webkit-animation: topbar-x 500ms linear 0s;\n    -moz-animation: topbar-x 500ms linear 0s;\n    animation: topbar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .toggled .bar2 {\n    opacity: 0; }\n  .toggled .bar3 {\n    bottom: 6px;\n    -webkit-animation: bottombar-x 500ms linear 0s;\n    -moz-animation: bottombar-x 500ms linear 0s;\n    animation: bottombar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  @keyframes topbar-x {\n    0% {\n      top: 0px;\n      transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      transform: rotate(145deg); }\n    75% {\n      transform: rotate(130deg); }\n    100% {\n      transform: rotate(135deg); } }\n  @-webkit-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -webkit-transform: rotate(145deg); }\n    75% {\n      -webkit-transform: rotate(130deg); }\n    100% {\n      -webkit-transform: rotate(135deg); } }\n  @-moz-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -moz-transform: rotate(145deg); }\n    75% {\n      -moz-transform: rotate(130deg); }\n    100% {\n      -moz-transform: rotate(135deg); } }\n  @keyframes topbar-back {\n    0% {\n      top: 6px;\n      transform: rotate(135deg); }\n    45% {\n      transform: rotate(-10deg); }\n    75% {\n      transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -webkit-transform: rotate(135deg); }\n    45% {\n      -webkit-transform: rotate(-10deg); }\n    75% {\n      -webkit-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -moz-transform: rotate(135deg); }\n    45% {\n      -moz-transform: rotate(-10deg); }\n    75% {\n      -moz-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -moz-transform: rotate(0); } }\n  @keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      transform: rotate(-145deg); }\n    75% {\n      transform: rotate(-130deg); }\n    100% {\n      transform: rotate(-135deg); } }\n  @-webkit-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -webkit-transform: rotate(-145deg); }\n    75% {\n      -webkit-transform: rotate(-130deg); }\n    100% {\n      -webkit-transform: rotate(-135deg); } }\n  @-moz-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -moz-transform: rotate(-145deg); }\n    75% {\n      -moz-transform: rotate(-130deg); }\n    100% {\n      -moz-transform: rotate(-135deg); } }\n  @keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      transform: rotate(-135deg); }\n    45% {\n      transform: rotate(10deg); }\n    75% {\n      transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -webkit-transform: rotate(-135deg); }\n    45% {\n      -webkit-transform: rotate(10deg); }\n    75% {\n      -webkit-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -moz-transform: rotate(-135deg); }\n    45% {\n      -moz-transform: rotate(10deg); }\n    75% {\n      -moz-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -moz-transform: rotate(0); } }\n  @-webkit-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @-moz-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  .dropdown-menu .divider {\n    background-color: rgba(229, 229, 229, 0.15); }\n  .navbar-nav {\n    margin: 1px 0; }\n  .dropdown-menu {\n    display: none; }\n    .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {\n      background-color: transparent; }\n  .navbar-fixed-top {\n    -webkit-backface-visibility: hidden; }\n  #bodyClick {\n    height: 100%;\n    width: 100%;\n    position: fixed;\n    opacity: 0;\n    top: 0;\n    left: auto;\n    right: 230px;\n    content: \"\";\n    z-index: 9999;\n    overflow-x: hidden; }\n  .form-control + .form-control-feedback {\n    margin-top: -8px; }\n  .navbar-toggle:hover, .navbar-toggle:focus {\n    background-color: transparent !important; }\n  .btn.dropdown-toggle {\n    margin-bottom: 0; }\n  .media-post .author {\n    width: 20%;\n    float: none !important;\n    display: block;\n    margin: 0 auto 10px; }\n  .media-post .media-body {\n    width: 100%; }\n  .navbar-collapse.collapse {\n    height: 100% !important; }\n  .navbar-collapse.collapse.in {\n    display: block; }\n  .navbar-header .collapse, .navbar-toggle {\n    display: block !important; }\n  .navbar-header {\n    float: none; }\n  .navbar-nav .open .dropdown-menu {\n    position: static;\n    float: none;\n    width: auto;\n    margin-top: 0;\n    background-color: transparent;\n    border: 0;\n    -webkit-box-shadow: none;\n    box-shadow: none; }\n  .main-panel > .content {\n    padding-left: 0;\n    padding-right: 0; }\n  .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {\n    background-color: transparent; }\n  .footer .copyright {\n    padding: 0px 15px;\n    width: 100%; } }\n\n@media (min-width: 992px) {\n  .table-full-width {\n    margin-left: -15px;\n    margin-right: -15px; }\n  .table-responsive {\n    overflow: visible; } }\n\n@media (max-width: 991px) {\n  .table-responsive {\n    width: 100%;\n    margin-bottom: 15px;\n    border: 1px solid #dddddd;\n    overflow-x: scroll;\n    overflow-y: hidden;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n    -webkit-overflow-scrolling: touch; } }\n", ""]);
+exports.push([module.i, "/*!\n\n =========================================================\n * Paper Dashboard - v1.1.2\n =========================================================\n\n * Product Page: http://www.creative-tim.com/product/paper-dashboard\n * Copyright 2017 Creative Tim (http://www.creative-tim.com)\n * Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard/blob/master/LICENSE.md)\n\n =========================================================\n\n * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n */\n/*      light colors - used for select dropdown         */\n.ct-blue {\n  stroke: #7A9E9F !important; }\n\n.ct-azure {\n  stroke: #68B3C8 !important; }\n\n.ct-green {\n  stroke: #41B883 !important; }\n\n.ct-orange {\n  stroke: #F3BB45 !important; }\n\n.ct-red {\n  stroke: #EB5E28 !important; }\n\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td {\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  font-family: 'Muli', \"Helvetica\", Arial, sans-serif; }\n\nh1, .h1, h2, .h2, h3, .h3, h4, .h4 {\n  font-weight: 400;\n  margin: 30px 0 15px; }\n\nh1, .h1 {\n  font-size: 3.2em; }\n\nh2, .h2 {\n  font-size: 2.6em; }\n\nh3, .h3 {\n  font-size: 1.825em;\n  line-height: 1.4;\n  margin: 20px 0 10px; }\n\nh4, .h4 {\n  font-size: 1.5em;\n  font-weight: 600;\n  line-height: 1.2em; }\n\nh5, .h5 {\n  font-size: 1.25em;\n  font-weight: 400;\n  line-height: 1.4em;\n  margin-bottom: 15px; }\n\nh6, .h6 {\n  font-size: 0.9em;\n  font-weight: 600;\n  text-transform: uppercase; }\n\np {\n  font-size: 16px;\n  line-height: 1.4em; }\n\nh1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {\n  color: #9A9A9A;\n  font-weight: 300;\n  line-height: 1.4em; }\n\nh1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {\n  font-size: 60%; }\n\n.title-uppercase {\n  text-transform: uppercase; }\n\nblockquote {\n  font-style: italic; }\n\nblockquote small {\n  font-style: normal; }\n\n.text-muted {\n  color: #DDDDDD; }\n\n.text-primary, .text-primary:hover {\n  color: #427C89; }\n\n.text-info, .text-info:hover {\n  color: #3091B2; }\n\n.text-success, .text-success:hover {\n  color: #229863; }\n\n.text-warning, .text-warning:hover {\n  color: #BB992F; }\n\n.text-danger, .text-danger:hover {\n  color: #B33C12; }\n\n.glyphicon {\n  line-height: 1; }\n\nstrong {\n  color: #403D39; }\n\n.icon-primary {\n  color: #7A9E9F; }\n\n.icon-info {\n  color: #68B3C8; }\n\n.icon-success {\n  color: #41B883; }\n\n.icon-warning {\n  color: #F3BB45; }\n\n.icon-danger {\n  color: #EB5E28; }\n\n.chart-legend .text-primary, .chart-legend .text-primary:hover {\n  color: #7A9E9F; }\n\n.chart-legend .text-info, .chart-legend .text-info:hover {\n  color: #68B3C8; }\n\n.chart-legend .text-success, .chart-legend .text-success:hover {\n  color: #41B883; }\n\n.chart-legend .text-warning, .chart-legend .text-warning:hover {\n  color: #F3BB45; }\n\n.chart-legend .text-danger, .chart-legend .text-danger:hover {\n  color: #EB5E28; }\n\n/*     General overwrite     */\nbody {\n  color: #66615b;\n  font-size: 14px;\n  font-family: 'Muli', Arial, sans-serif; }\n  body .wrapper {\n    min-height: 100vh;\n    position: relative; }\n\na {\n  color: #68B3C8; }\n  a:hover, a:focus {\n    color: #3091B2;\n    text-decoration: none; }\n\na:focus, a:active,\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner,\nselect::-moz-focus-inner,\ninput[type=\"file\"] > input[type=\"button\"]::-moz-focus-inner {\n  outline: 0 !important; }\n\n.ui-slider-handle:focus,\n.navbar-toggle,\ninput:focus,\nbutton:focus {\n  outline: 0 !important; }\n\n.navbar.navbar-default {\n  z-index: 2; }\n\n/*           Animations              */\n.form-control,\n.input-group-addon,\n.tagsinput,\n.navbar,\n.navbar .alert {\n  -webkit-transition: all 300ms linear;\n  -moz-transition: all 300ms linear;\n  -o-transition: all 300ms linear;\n  -ms-transition: all 300ms linear;\n  transition: all 300ms linear; }\n\n.sidebar .nav a,\n.table > tbody > tr .td-actions .btn {\n  -webkit-transition: all 150ms ease-in;\n  -moz-transition: all 150ms ease-in;\n  -o-transition: all 150ms ease-in;\n  -ms-transition: all 150ms ease-in;\n  transition: all 150ms ease-in; }\n\n.btn {\n  -webkit-transition: all 100ms ease-in;\n  -moz-transition: all 100ms ease-in;\n  -o-transition: all 100ms ease-in;\n  -ms-transition: all 100ms ease-in;\n  transition: all 100ms ease-in; }\n\n.fa {\n  width: 21px;\n  text-align: center; }\n\n.fa-base {\n  font-size: 1.25em !important; }\n\n.margin-top {\n  margin-top: 50px; }\n\nhr {\n  border-color: #F1EAE0; }\n\n.wrapper {\n  position: relative;\n  top: 0;\n  height: 100vh; }\n\n@media (min-width: 992px) {\n  .typo-line {\n    padding-left: 140px;\n    margin-bottom: 40px;\n    position: relative; }\n  .typo-line .category {\n    transform: translateY(-50%);\n    top: 50%;\n    left: 0px;\n    position: absolute; } }\n\n.icon-section {\n  margin: 0 0 3em;\n  clear: both;\n  overflow: hidden; }\n\n.icon-container {\n  width: 240px;\n  padding: .7em 0;\n  float: left;\n  position: relative;\n  text-align: left; }\n\n.icon-container [class^=\"ti-\"],\n.icon-container [class*=\" ti-\"] {\n  color: #000;\n  position: absolute;\n  margin-top: 3px;\n  transition: .3s; }\n\n.icon-container:hover [class^=\"ti-\"],\n.icon-container:hover [class*=\" ti-\"] {\n  font-size: 2.2em;\n  margin-top: -5px; }\n\n.icon-container:hover .icon-name {\n  color: #000; }\n\n.icon-name {\n  color: #aaa;\n  margin-left: 35px;\n  font-size: .8em;\n  transition: .3s; }\n\n.icon-container:hover .icon-name {\n  margin-left: 45px; }\n\n.places-buttons .btn {\n  margin-bottom: 30px; }\n\n.sidebar .nav > li.active-pro {\n  position: absolute;\n  width: 100%;\n  bottom: 10px; }\n\n.sidebar .nav > li.active-pro a {\n  background: rgba(255, 255, 255, 0.14);\n  opacity: 1;\n  color: #FFFFFF; }\n\n.table-upgrade td:nth-child(2),\n.table-upgrade td:nth-child(3) {\n  text-align: center; }\n\n.sidebar {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1;\n  background-size: cover;\n  background-position: center center; }\n  .sidebar .sidebar-wrapper {\n    position: relative;\n    height: 100%;\n    overflow-y: auto;\n    overflow-x: hidden;\n    width: 260px;\n    z-index: 4;\n    box-shadow: inset -1px 0px 0px 0px #DDDDDD; }\n  .sidebar .sidebar-background {\n    position: absolute;\n    z-index: 1;\n    height: 100%;\n    width: 100%;\n    display: block;\n    top: 0;\n    left: 0;\n    background-size: cover;\n    background-position: center center; }\n\n.sidebar,\n.off-canvas-sidebar {\n  width: 260px;\n  display: block;\n  font-weight: 200; }\n  .sidebar .logo,\n  .off-canvas-sidebar .logo {\n    padding: 13px 0;\n    margin: 0 20px; }\n    .sidebar .logo p,\n    .off-canvas-sidebar .logo p {\n      float: left;\n      font-size: 20px;\n      margin: 10px 10px;\n      line-height: 20px; }\n    .sidebar .logo .simple-text,\n    .off-canvas-sidebar .logo .simple-text {\n      padding: 4px 0px;\n      display: block;\n      font-size: 14px;\n      text-align: center;\n      font-weight: 600;\n      line-height: 40px;\n      text-align: left; }\n      .sidebar .logo .simple-text .logo-img,\n      .off-canvas-sidebar .logo .simple-text .logo-img {\n        width: 40px;\n        display: inline-block;\n        height: 40px;\n        margin-left: 0px;\n        margin-right: 10px;\n        background: white;\n        border-radius: 40px;\n        text-align: center; }\n        .sidebar .logo .simple-text .logo-img img,\n        .off-canvas-sidebar .logo .simple-text .logo-img img {\n          max-width: 21px; }\n  .sidebar .nav li > a,\n  .off-canvas-sidebar .nav li > a {\n    margin: 10px 0px;\n    padding-left: 25px;\n    padding-right: 25px;\n    opacity: .7; }\n  .sidebar .nav li:hover > a,\n  .off-canvas-sidebar .nav li:hover > a {\n    opacity: 1; }\n  .sidebar .nav li.active > a,\n  .off-canvas-sidebar .nav li.active > a {\n    color: #7A9E9F;\n    opacity: 1; }\n  .sidebar .nav p,\n  .off-canvas-sidebar .nav p {\n    margin: 0;\n    line-height: 30px;\n    font-size: 12px;\n    font-weight: 600;\n    text-transform: uppercase; }\n  .sidebar .nav i,\n  .off-canvas-sidebar .nav i {\n    font-size: 24px;\n    float: left;\n    margin-right: 15px;\n    line-height: 30px;\n    width: 30px;\n    text-align: center; }\n  .sidebar:after, .sidebar:before,\n  .off-canvas-sidebar:after,\n  .off-canvas-sidebar:before {\n    display: block;\n    content: \"\";\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    left: 0;\n    z-index: 2;\n    background: #FFFFFF; }\n  .sidebar:after, .sidebar:before, .sidebar[data-background-color=\"white\"]:after, .sidebar[data-background-color=\"white\"]:before,\n  .off-canvas-sidebar:after,\n  .off-canvas-sidebar:before,\n  .off-canvas-sidebar[data-background-color=\"white\"]:after,\n  .off-canvas-sidebar[data-background-color=\"white\"]:before {\n    background-color: #FFFFFF; }\n  .sidebar #style-3::-webkit-scrollbar-track, .sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px #FFFFFF;\n    background-color: #FFFFFF; }\n  .sidebar #style-3::-webkit-scrollbar, .sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar {\n    width: 6px;\n    background-color: #66615B; }\n  .sidebar #style-3::-webkit-scrollbar-thumb, .sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar[data-background-color=\"white\"] #style-3::-webkit-scrollbar-thumb {\n    background-color: #FFFFFF; }\n  .sidebar .logo, .sidebar[data-background-color=\"white\"] .logo,\n  .off-canvas-sidebar .logo,\n  .off-canvas-sidebar[data-background-color=\"white\"] .logo {\n    border-bottom: 1px solid rgba(102, 97, 91, 0.3); }\n    .sidebar .logo p, .sidebar[data-background-color=\"white\"] .logo p,\n    .off-canvas-sidebar .logo p,\n    .off-canvas-sidebar[data-background-color=\"white\"] .logo p {\n      color: #66615B; }\n    .sidebar .logo .simple-text, .sidebar[data-background-color=\"white\"] .logo .simple-text,\n    .off-canvas-sidebar .logo .simple-text,\n    .off-canvas-sidebar[data-background-color=\"white\"] .logo .simple-text {\n      color: #66615B; }\n  .sidebar .nav li:not(.active) > a, .sidebar[data-background-color=\"white\"] .nav li:not(.active) > a,\n  .off-canvas-sidebar .nav li:not(.active) > a,\n  .off-canvas-sidebar[data-background-color=\"white\"] .nav li:not(.active) > a {\n    color: #66615B; }\n  .sidebar .nav .divider, .sidebar[data-background-color=\"white\"] .nav .divider,\n  .off-canvas-sidebar .nav .divider,\n  .off-canvas-sidebar[data-background-color=\"white\"] .nav .divider {\n    background-color: rgba(102, 97, 91, 0.2); }\n  .sidebar[data-background-color=\"black\"]:after, .sidebar[data-background-color=\"black\"]:before,\n  .off-canvas-sidebar[data-background-color=\"black\"]:after,\n  .off-canvas-sidebar[data-background-color=\"black\"]:before {\n    background-color: #212120; }\n  .sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px #212120;\n    background-color: #212120; }\n  .sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar {\n    width: 6px;\n    background-color: #FFFFFF; }\n  .sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar[data-background-color=\"black\"] #style-3::-webkit-scrollbar-thumb {\n    background-color: #212120; }\n  .sidebar[data-background-color=\"black\"] .logo,\n  .off-canvas-sidebar[data-background-color=\"black\"] .logo {\n    border-bottom: 1px solid rgba(255, 255, 255, 0.3); }\n    .sidebar[data-background-color=\"black\"] .logo p,\n    .off-canvas-sidebar[data-background-color=\"black\"] .logo p {\n      color: #FFFFFF; }\n    .sidebar[data-background-color=\"black\"] .logo .simple-text,\n    .off-canvas-sidebar[data-background-color=\"black\"] .logo .simple-text {\n      color: #FFFFFF; }\n  .sidebar[data-background-color=\"black\"] .nav li:not(.active) > a,\n  .off-canvas-sidebar[data-background-color=\"black\"] .nav li:not(.active) > a {\n    color: #FFFFFF; }\n  .sidebar[data-background-color=\"black\"] .nav .divider,\n  .off-canvas-sidebar[data-background-color=\"black\"] .nav .divider {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .sidebar[data-background-color=\"darkblue\"]:after, .sidebar[data-background-color=\"darkblue\"]:before,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"]:after,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"]:before {\n    background-color: #35495E; }\n  .sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-track,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px #35495E;\n    background-color: #35495E; }\n  .sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar {\n    width: 6px;\n    background-color: #FFFFFF; }\n  .sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-thumb,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] #style-3::-webkit-scrollbar-thumb {\n    background-color: #35495E; }\n  .sidebar[data-background-color=\"darkblue\"] .logo,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] .logo {\n    border-bottom: 1px solid rgba(255, 255, 255, 0.3); }\n    .sidebar[data-background-color=\"darkblue\"] .logo p,\n    .off-canvas-sidebar[data-background-color=\"darkblue\"] .logo p {\n      color: #FFFFFF; }\n    .sidebar[data-background-color=\"darkblue\"] .logo .simple-text,\n    .off-canvas-sidebar[data-background-color=\"darkblue\"] .logo .simple-text {\n      color: #FFFFFF; }\n  .sidebar[data-background-color=\"darkblue\"] .nav li:not(.active) > a,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] .nav li:not(.active) > a {\n    color: #FFFFFF; }\n  .sidebar[data-background-color=\"darkblue\"] .nav .divider,\n  .off-canvas-sidebar[data-background-color=\"darkblue\"] .nav .divider {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .sidebar[data-active-color=\"primary\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"primary\"] .nav li.active > a {\n    color: #7A9E9F;\n    opacity: 1; }\n  .sidebar[data-active-color=\"info\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"info\"] .nav li.active > a {\n    color: #68B3C8;\n    opacity: 1; }\n  .sidebar[data-active-color=\"success\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"success\"] .nav li.active > a {\n    color: #41B883;\n    opacity: 1; }\n  .sidebar[data-active-color=\"warning\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"warning\"] .nav li.active > a {\n    color: #F3BB45;\n    opacity: 1; }\n  .sidebar[data-active-color=\"danger\"] .nav li.active > a,\n  .off-canvas-sidebar[data-active-color=\"danger\"] .nav li.active > a {\n    color: #EB5E28;\n    opacity: 1; }\n\n.main-panel {\n  background-color: #f4f3ef;\n  position: relative;\n  z-index: 2;\n  float: right;\n  width: calc(100% - 260px);\n  min-height: 100%; }\n  .main-panel > .content {\n    padding: 30px 15px;\n    min-height: calc(100% - 123px); }\n  .main-panel > .footer {\n    border-top: 1px solid rgba(0, 0, 0, 0.1); }\n  .main-panel .navbar {\n    margin-bottom: 0; }\n\n.sidebar,\n.main-panel {\n  overflow: auto;\n  max-height: 100%;\n  height: 100%;\n  -webkit-transition-property: top, bottom;\n  transition-property: top, bottom;\n  -webkit-transition-duration: .2s, .2s;\n  transition-duration: .2s, .2s;\n  -webkit-transition-timing-function: linear, linear;\n  transition-timing-function: linear, linear;\n  -webkit-overflow-scrolling: touch; }\n\n.sidebar {\n  position: absolute;\n  overflow: hidden;\n  overflow-y: hidden; }\n\n.btn,\n.navbar .navbar-nav > li > a.btn {\n  border-radius: 20px;\n  box-sizing: border-box;\n  border-width: 2px;\n  background-color: transparent;\n  font-size: 14px;\n  font-weight: 500;\n  padding: 7px 18px;\n  border-color: #66615B;\n  color: #66615B;\n  -webkit-transition: all 150ms linear;\n  -moz-transition: all 150ms linear;\n  -o-transition: all 150ms linear;\n  -ms-transition: all 150ms linear;\n  transition: all 150ms linear; }\n  .btn:hover, .btn:focus, .btn:active, .btn.active,\n  .open > .btn.dropdown-toggle,\n  .navbar .navbar-nav > li > a.btn:hover,\n  .navbar .navbar-nav > li > a.btn:focus,\n  .navbar .navbar-nav > li > a.btn:active,\n  .navbar .navbar-nav > li > a.btn.active,\n  .open >\n  .navbar .navbar-nav > li > a.btn.dropdown-toggle {\n    background-color: #66615B;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #66615B; }\n    .btn:hover .caret, .btn:focus .caret, .btn:active .caret, .btn.active .caret,\n    .open > .btn.dropdown-toggle .caret,\n    .navbar .navbar-nav > li > a.btn:hover .caret,\n    .navbar .navbar-nav > li > a.btn:focus .caret,\n    .navbar .navbar-nav > li > a.btn:active .caret,\n    .navbar .navbar-nav > li > a.btn.active .caret,\n    .open >\n    .navbar .navbar-nav > li > a.btn.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled.focus, .btn.disabled:active, .btn.disabled.active, .btn:disabled, .btn:disabled:hover, .btn:disabled:focus, .btn:disabled.focus, .btn:disabled:active, .btn:disabled.active, .btn[disabled], .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled].focus, .btn[disabled]:active, .btn[disabled].active,\n  fieldset[disabled] .btn,\n  fieldset[disabled] .btn:hover,\n  fieldset[disabled] .btn:focus,\n  fieldset[disabled] .btn.focus,\n  fieldset[disabled] .btn:active,\n  fieldset[disabled] .btn.active,\n  .navbar .navbar-nav > li > a.btn.disabled,\n  .navbar .navbar-nav > li > a.btn.disabled:hover,\n  .navbar .navbar-nav > li > a.btn.disabled:focus,\n  .navbar .navbar-nav > li > a.btn.disabled.focus,\n  .navbar .navbar-nav > li > a.btn.disabled:active,\n  .navbar .navbar-nav > li > a.btn.disabled.active,\n  .navbar .navbar-nav > li > a.btn:disabled,\n  .navbar .navbar-nav > li > a.btn:disabled:hover,\n  .navbar .navbar-nav > li > a.btn:disabled:focus,\n  .navbar .navbar-nav > li > a.btn:disabled.focus,\n  .navbar .navbar-nav > li > a.btn:disabled:active,\n  .navbar .navbar-nav > li > a.btn:disabled.active,\n  .navbar .navbar-nav > li > a.btn[disabled],\n  .navbar .navbar-nav > li > a.btn[disabled]:hover,\n  .navbar .navbar-nav > li > a.btn[disabled]:focus,\n  .navbar .navbar-nav > li > a.btn[disabled].focus,\n  .navbar .navbar-nav > li > a.btn[disabled]:active,\n  .navbar .navbar-nav > li > a.btn[disabled].active,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn:hover,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn:focus,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn.focus,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn:active,\n  fieldset[disabled]\n  .navbar .navbar-nav > li > a.btn.active {\n    background-color: transparent;\n    border-color: #66615B; }\n  .btn.btn-fill,\n  .navbar .navbar-nav > li > a.btn.btn-fill {\n    color: #FFFFFF;\n    background-color: #66615B;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .btn.btn-fill:hover, .btn.btn-fill:focus, .btn.btn-fill:active, .btn.btn-fill.active,\n    .open > .btn.btn-fill.dropdown-toggle,\n    .navbar .navbar-nav > li > a.btn.btn-fill:hover,\n    .navbar .navbar-nav > li > a.btn.btn-fill:focus,\n    .navbar .navbar-nav > li > a.btn.btn-fill:active,\n    .navbar .navbar-nav > li > a.btn.btn-fill.active,\n    .open >\n    .navbar .navbar-nav > li > a.btn.btn-fill.dropdown-toggle {\n      background-color: #403D39;\n      color: #FFFFFF;\n      border-color: #403D39; }\n    .btn.btn-fill .caret,\n    .navbar .navbar-nav > li > a.btn.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .btn.btn-simple:hover, .btn.btn-simple:focus, .btn.btn-simple:active, .btn.btn-simple.active,\n  .open > .btn.btn-simple.dropdown-toggle,\n  .navbar .navbar-nav > li > a.btn.btn-simple:hover,\n  .navbar .navbar-nav > li > a.btn.btn-simple:focus,\n  .navbar .navbar-nav > li > a.btn.btn-simple:active,\n  .navbar .navbar-nav > li > a.btn.btn-simple.active,\n  .open >\n  .navbar .navbar-nav > li > a.btn.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #403D39; }\n  .btn.btn-simple .caret,\n  .navbar .navbar-nav > li > a.btn.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .btn .caret,\n  .navbar .navbar-nav > li > a.btn .caret {\n    border-top-color: #66615B; }\n  .btn:hover, .btn:focus,\n  .navbar .navbar-nav > li > a.btn:hover,\n  .navbar .navbar-nav > li > a.btn:focus {\n    outline: 0 !important; }\n  .btn:active, .btn.active,\n  .open > .btn.dropdown-toggle,\n  .navbar .navbar-nav > li > a.btn:active,\n  .navbar .navbar-nav > li > a.btn.active,\n  .open >\n  .navbar .navbar-nav > li > a.btn.dropdown-toggle {\n    -webkit-box-shadow: none;\n    box-shadow: none;\n    outline: 0 !important; }\n  .btn.btn-icon,\n  .navbar .navbar-nav > li > a.btn.btn-icon {\n    padding: 7px; }\n\n.btn-group .btn + .btn,\n.btn-group .btn + .btn-group,\n.btn-group .btn-group + .btn,\n.btn-group .btn-group + .btn-group {\n  margin-left: -2px; }\n\n.navbar .navbar-nav > li > a.btn-primary, .btn-primary {\n  border-color: #7A9E9F;\n  color: #7A9E9F; }\n  .navbar .navbar-nav > li > a.btn-primary:hover, .navbar .navbar-nav > li > a.btn-primary:focus, .navbar .navbar-nav > li > a.btn-primary:active, .navbar .navbar-nav > li > a.btn-primary.active,\n  .open > .navbar .navbar-nav > li > a.btn-primary.dropdown-toggle, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active,\n  .open > .btn-primary.dropdown-toggle {\n    background-color: #7A9E9F;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #7A9E9F; }\n    .navbar .navbar-nav > li > a.btn-primary:hover .caret, .navbar .navbar-nav > li > a.btn-primary:focus .caret, .navbar .navbar-nav > li > a.btn-primary:active .caret, .navbar .navbar-nav > li > a.btn-primary.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-primary.dropdown-toggle .caret, .btn-primary:hover .caret, .btn-primary:focus .caret, .btn-primary:active .caret, .btn-primary.active .caret,\n    .open > .btn-primary.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-primary.disabled, .navbar .navbar-nav > li > a.btn-primary.disabled:hover, .navbar .navbar-nav > li > a.btn-primary.disabled:focus, .navbar .navbar-nav > li > a.btn-primary.disabled.focus, .navbar .navbar-nav > li > a.btn-primary.disabled:active, .navbar .navbar-nav > li > a.btn-primary.disabled.active, .navbar .navbar-nav > li > a.btn-primary:disabled, .navbar .navbar-nav > li > a.btn-primary:disabled:hover, .navbar .navbar-nav > li > a.btn-primary:disabled:focus, .navbar .navbar-nav > li > a.btn-primary:disabled.focus, .navbar .navbar-nav > li > a.btn-primary:disabled:active, .navbar .navbar-nav > li > a.btn-primary:disabled.active, .navbar .navbar-nav > li > a.btn-primary[disabled], .navbar .navbar-nav > li > a.btn-primary[disabled]:hover, .navbar .navbar-nav > li > a.btn-primary[disabled]:focus, .navbar .navbar-nav > li > a.btn-primary[disabled].focus, .navbar .navbar-nav > li > a.btn-primary[disabled]:active, .navbar .navbar-nav > li > a.btn-primary[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-primary.active, .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary:disabled, .btn-primary:disabled:hover, .btn-primary:disabled:focus, .btn-primary:disabled.focus, .btn-primary:disabled:active, .btn-primary:disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled].active,\n  fieldset[disabled] .btn-primary,\n  fieldset[disabled] .btn-primary:hover,\n  fieldset[disabled] .btn-primary:focus,\n  fieldset[disabled] .btn-primary.focus,\n  fieldset[disabled] .btn-primary:active,\n  fieldset[disabled] .btn-primary.active {\n    background-color: transparent;\n    border-color: #7A9E9F; }\n  .navbar .navbar-nav > li > a.btn-primary.btn-fill, .btn-primary.btn-fill {\n    color: #FFFFFF;\n    background-color: #7A9E9F;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-primary.btn-fill:hover, .navbar .navbar-nav > li > a.btn-primary.btn-fill:focus, .navbar .navbar-nav > li > a.btn-primary.btn-fill:active, .navbar .navbar-nav > li > a.btn-primary.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-primary.btn-fill.dropdown-toggle, .btn-primary.btn-fill:hover, .btn-primary.btn-fill:focus, .btn-primary.btn-fill:active, .btn-primary.btn-fill.active,\n    .open > .btn-primary.btn-fill.dropdown-toggle {\n      background-color: #427C89;\n      color: #FFFFFF;\n      border-color: #427C89; }\n    .navbar .navbar-nav > li > a.btn-primary.btn-fill .caret, .btn-primary.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-primary.btn-simple:hover, .navbar .navbar-nav > li > a.btn-primary.btn-simple:focus, .navbar .navbar-nav > li > a.btn-primary.btn-simple:active, .navbar .navbar-nav > li > a.btn-primary.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-primary.btn-simple.dropdown-toggle, .btn-primary.btn-simple:hover, .btn-primary.btn-simple:focus, .btn-primary.btn-simple:active, .btn-primary.btn-simple.active,\n  .open > .btn-primary.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #427C89; }\n  .navbar .navbar-nav > li > a.btn-primary.btn-simple .caret, .btn-primary.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-primary .caret, .btn-primary .caret {\n    border-top-color: #7A9E9F; }\n\n.navbar .navbar-nav > li > a.btn-success, .btn-success {\n  border-color: #41B883;\n  color: #41B883; }\n  .navbar .navbar-nav > li > a.btn-success:hover, .navbar .navbar-nav > li > a.btn-success:focus, .navbar .navbar-nav > li > a.btn-success:active, .navbar .navbar-nav > li > a.btn-success.active,\n  .open > .navbar .navbar-nav > li > a.btn-success.dropdown-toggle, .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active,\n  .open > .btn-success.dropdown-toggle {\n    background-color: #41B883;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #41B883; }\n    .navbar .navbar-nav > li > a.btn-success:hover .caret, .navbar .navbar-nav > li > a.btn-success:focus .caret, .navbar .navbar-nav > li > a.btn-success:active .caret, .navbar .navbar-nav > li > a.btn-success.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-success.dropdown-toggle .caret, .btn-success:hover .caret, .btn-success:focus .caret, .btn-success:active .caret, .btn-success.active .caret,\n    .open > .btn-success.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-success.disabled, .navbar .navbar-nav > li > a.btn-success.disabled:hover, .navbar .navbar-nav > li > a.btn-success.disabled:focus, .navbar .navbar-nav > li > a.btn-success.disabled.focus, .navbar .navbar-nav > li > a.btn-success.disabled:active, .navbar .navbar-nav > li > a.btn-success.disabled.active, .navbar .navbar-nav > li > a.btn-success:disabled, .navbar .navbar-nav > li > a.btn-success:disabled:hover, .navbar .navbar-nav > li > a.btn-success:disabled:focus, .navbar .navbar-nav > li > a.btn-success:disabled.focus, .navbar .navbar-nav > li > a.btn-success:disabled:active, .navbar .navbar-nav > li > a.btn-success:disabled.active, .navbar .navbar-nav > li > a.btn-success[disabled], .navbar .navbar-nav > li > a.btn-success[disabled]:hover, .navbar .navbar-nav > li > a.btn-success[disabled]:focus, .navbar .navbar-nav > li > a.btn-success[disabled].focus, .navbar .navbar-nav > li > a.btn-success[disabled]:active, .navbar .navbar-nav > li > a.btn-success[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-success.active, .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled.focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success:disabled, .btn-success:disabled:hover, .btn-success:disabled:focus, .btn-success:disabled.focus, .btn-success:disabled:active, .btn-success:disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled].focus, .btn-success[disabled]:active, .btn-success[disabled].active,\n  fieldset[disabled] .btn-success,\n  fieldset[disabled] .btn-success:hover,\n  fieldset[disabled] .btn-success:focus,\n  fieldset[disabled] .btn-success.focus,\n  fieldset[disabled] .btn-success:active,\n  fieldset[disabled] .btn-success.active {\n    background-color: transparent;\n    border-color: #41B883; }\n  .navbar .navbar-nav > li > a.btn-success.btn-fill, .btn-success.btn-fill {\n    color: #FFFFFF;\n    background-color: #41B883;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-success.btn-fill:hover, .navbar .navbar-nav > li > a.btn-success.btn-fill:focus, .navbar .navbar-nav > li > a.btn-success.btn-fill:active, .navbar .navbar-nav > li > a.btn-success.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-success.btn-fill.dropdown-toggle, .btn-success.btn-fill:hover, .btn-success.btn-fill:focus, .btn-success.btn-fill:active, .btn-success.btn-fill.active,\n    .open > .btn-success.btn-fill.dropdown-toggle {\n      background-color: #229863;\n      color: #FFFFFF;\n      border-color: #229863; }\n    .navbar .navbar-nav > li > a.btn-success.btn-fill .caret, .btn-success.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-success.btn-simple:hover, .navbar .navbar-nav > li > a.btn-success.btn-simple:focus, .navbar .navbar-nav > li > a.btn-success.btn-simple:active, .navbar .navbar-nav > li > a.btn-success.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-success.btn-simple.dropdown-toggle, .btn-success.btn-simple:hover, .btn-success.btn-simple:focus, .btn-success.btn-simple:active, .btn-success.btn-simple.active,\n  .open > .btn-success.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #229863; }\n  .navbar .navbar-nav > li > a.btn-success.btn-simple .caret, .btn-success.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-success .caret, .btn-success .caret {\n    border-top-color: #41B883; }\n\n.navbar .navbar-nav > li > a.btn-info, .btn-info {\n  border-color: #68B3C8;\n  color: #68B3C8; }\n  .navbar .navbar-nav > li > a.btn-info:hover, .navbar .navbar-nav > li > a.btn-info:focus, .navbar .navbar-nav > li > a.btn-info:active, .navbar .navbar-nav > li > a.btn-info.active,\n  .open > .navbar .navbar-nav > li > a.btn-info.dropdown-toggle, .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active,\n  .open > .btn-info.dropdown-toggle {\n    background-color: #68B3C8;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #68B3C8; }\n    .navbar .navbar-nav > li > a.btn-info:hover .caret, .navbar .navbar-nav > li > a.btn-info:focus .caret, .navbar .navbar-nav > li > a.btn-info:active .caret, .navbar .navbar-nav > li > a.btn-info.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-info.dropdown-toggle .caret, .btn-info:hover .caret, .btn-info:focus .caret, .btn-info:active .caret, .btn-info.active .caret,\n    .open > .btn-info.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-info.disabled, .navbar .navbar-nav > li > a.btn-info.disabled:hover, .navbar .navbar-nav > li > a.btn-info.disabled:focus, .navbar .navbar-nav > li > a.btn-info.disabled.focus, .navbar .navbar-nav > li > a.btn-info.disabled:active, .navbar .navbar-nav > li > a.btn-info.disabled.active, .navbar .navbar-nav > li > a.btn-info:disabled, .navbar .navbar-nav > li > a.btn-info:disabled:hover, .navbar .navbar-nav > li > a.btn-info:disabled:focus, .navbar .navbar-nav > li > a.btn-info:disabled.focus, .navbar .navbar-nav > li > a.btn-info:disabled:active, .navbar .navbar-nav > li > a.btn-info:disabled.active, .navbar .navbar-nav > li > a.btn-info[disabled], .navbar .navbar-nav > li > a.btn-info[disabled]:hover, .navbar .navbar-nav > li > a.btn-info[disabled]:focus, .navbar .navbar-nav > li > a.btn-info[disabled].focus, .navbar .navbar-nav > li > a.btn-info[disabled]:active, .navbar .navbar-nav > li > a.btn-info[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-info.active, .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info:disabled, .btn-info:disabled:hover, .btn-info:disabled:focus, .btn-info:disabled.focus, .btn-info:disabled:active, .btn-info:disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus, .btn-info[disabled]:active, .btn-info[disabled].active,\n  fieldset[disabled] .btn-info,\n  fieldset[disabled] .btn-info:hover,\n  fieldset[disabled] .btn-info:focus,\n  fieldset[disabled] .btn-info.focus,\n  fieldset[disabled] .btn-info:active,\n  fieldset[disabled] .btn-info.active {\n    background-color: transparent;\n    border-color: #68B3C8; }\n  .navbar .navbar-nav > li > a.btn-info.btn-fill, .btn-info.btn-fill {\n    color: #FFFFFF;\n    background-color: #68B3C8;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-info.btn-fill:hover, .navbar .navbar-nav > li > a.btn-info.btn-fill:focus, .navbar .navbar-nav > li > a.btn-info.btn-fill:active, .navbar .navbar-nav > li > a.btn-info.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-info.btn-fill.dropdown-toggle, .btn-info.btn-fill:hover, .btn-info.btn-fill:focus, .btn-info.btn-fill:active, .btn-info.btn-fill.active,\n    .open > .btn-info.btn-fill.dropdown-toggle {\n      background-color: #3091B2;\n      color: #FFFFFF;\n      border-color: #3091B2; }\n    .navbar .navbar-nav > li > a.btn-info.btn-fill .caret, .btn-info.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-info.btn-simple:hover, .navbar .navbar-nav > li > a.btn-info.btn-simple:focus, .navbar .navbar-nav > li > a.btn-info.btn-simple:active, .navbar .navbar-nav > li > a.btn-info.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-info.btn-simple.dropdown-toggle, .btn-info.btn-simple:hover, .btn-info.btn-simple:focus, .btn-info.btn-simple:active, .btn-info.btn-simple.active,\n  .open > .btn-info.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #3091B2; }\n  .navbar .navbar-nav > li > a.btn-info.btn-simple .caret, .btn-info.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-info .caret, .btn-info .caret {\n    border-top-color: #68B3C8; }\n\n.navbar .navbar-nav > li > a.btn-warning, .btn-warning {\n  border-color: #F3BB45;\n  color: #F3BB45; }\n  .navbar .navbar-nav > li > a.btn-warning:hover, .navbar .navbar-nav > li > a.btn-warning:focus, .navbar .navbar-nav > li > a.btn-warning:active, .navbar .navbar-nav > li > a.btn-warning.active,\n  .open > .navbar .navbar-nav > li > a.btn-warning.dropdown-toggle, .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active,\n  .open > .btn-warning.dropdown-toggle {\n    background-color: #F3BB45;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #F3BB45; }\n    .navbar .navbar-nav > li > a.btn-warning:hover .caret, .navbar .navbar-nav > li > a.btn-warning:focus .caret, .navbar .navbar-nav > li > a.btn-warning:active .caret, .navbar .navbar-nav > li > a.btn-warning.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-warning.dropdown-toggle .caret, .btn-warning:hover .caret, .btn-warning:focus .caret, .btn-warning:active .caret, .btn-warning.active .caret,\n    .open > .btn-warning.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-warning.disabled, .navbar .navbar-nav > li > a.btn-warning.disabled:hover, .navbar .navbar-nav > li > a.btn-warning.disabled:focus, .navbar .navbar-nav > li > a.btn-warning.disabled.focus, .navbar .navbar-nav > li > a.btn-warning.disabled:active, .navbar .navbar-nav > li > a.btn-warning.disabled.active, .navbar .navbar-nav > li > a.btn-warning:disabled, .navbar .navbar-nav > li > a.btn-warning:disabled:hover, .navbar .navbar-nav > li > a.btn-warning:disabled:focus, .navbar .navbar-nav > li > a.btn-warning:disabled.focus, .navbar .navbar-nav > li > a.btn-warning:disabled:active, .navbar .navbar-nav > li > a.btn-warning:disabled.active, .navbar .navbar-nav > li > a.btn-warning[disabled], .navbar .navbar-nav > li > a.btn-warning[disabled]:hover, .navbar .navbar-nav > li > a.btn-warning[disabled]:focus, .navbar .navbar-nav > li > a.btn-warning[disabled].focus, .navbar .navbar-nav > li > a.btn-warning[disabled]:active, .navbar .navbar-nav > li > a.btn-warning[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-warning.active, .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled.focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning:disabled, .btn-warning:disabled:hover, .btn-warning:disabled:focus, .btn-warning:disabled.focus, .btn-warning:disabled:active, .btn-warning:disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled].focus, .btn-warning[disabled]:active, .btn-warning[disabled].active,\n  fieldset[disabled] .btn-warning,\n  fieldset[disabled] .btn-warning:hover,\n  fieldset[disabled] .btn-warning:focus,\n  fieldset[disabled] .btn-warning.focus,\n  fieldset[disabled] .btn-warning:active,\n  fieldset[disabled] .btn-warning.active {\n    background-color: transparent;\n    border-color: #F3BB45; }\n  .navbar .navbar-nav > li > a.btn-warning.btn-fill, .btn-warning.btn-fill {\n    color: #FFFFFF;\n    background-color: #F3BB45;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-warning.btn-fill:hover, .navbar .navbar-nav > li > a.btn-warning.btn-fill:focus, .navbar .navbar-nav > li > a.btn-warning.btn-fill:active, .navbar .navbar-nav > li > a.btn-warning.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-warning.btn-fill.dropdown-toggle, .btn-warning.btn-fill:hover, .btn-warning.btn-fill:focus, .btn-warning.btn-fill:active, .btn-warning.btn-fill.active,\n    .open > .btn-warning.btn-fill.dropdown-toggle {\n      background-color: #BB992F;\n      color: #FFFFFF;\n      border-color: #BB992F; }\n    .navbar .navbar-nav > li > a.btn-warning.btn-fill .caret, .btn-warning.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-warning.btn-simple:hover, .navbar .navbar-nav > li > a.btn-warning.btn-simple:focus, .navbar .navbar-nav > li > a.btn-warning.btn-simple:active, .navbar .navbar-nav > li > a.btn-warning.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-warning.btn-simple.dropdown-toggle, .btn-warning.btn-simple:hover, .btn-warning.btn-simple:focus, .btn-warning.btn-simple:active, .btn-warning.btn-simple.active,\n  .open > .btn-warning.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #BB992F; }\n  .navbar .navbar-nav > li > a.btn-warning.btn-simple .caret, .btn-warning.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-warning .caret, .btn-warning .caret {\n    border-top-color: #F3BB45; }\n\n.navbar .navbar-nav > li > a.btn-danger, .btn-danger {\n  border-color: #EB5E28;\n  color: #EB5E28; }\n  .navbar .navbar-nav > li > a.btn-danger:hover, .navbar .navbar-nav > li > a.btn-danger:focus, .navbar .navbar-nav > li > a.btn-danger:active, .navbar .navbar-nav > li > a.btn-danger.active,\n  .open > .navbar .navbar-nav > li > a.btn-danger.dropdown-toggle, .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active,\n  .open > .btn-danger.dropdown-toggle {\n    background-color: #EB5E28;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #EB5E28; }\n    .navbar .navbar-nav > li > a.btn-danger:hover .caret, .navbar .navbar-nav > li > a.btn-danger:focus .caret, .navbar .navbar-nav > li > a.btn-danger:active .caret, .navbar .navbar-nav > li > a.btn-danger.active .caret,\n    .open > .navbar .navbar-nav > li > a.btn-danger.dropdown-toggle .caret, .btn-danger:hover .caret, .btn-danger:focus .caret, .btn-danger:active .caret, .btn-danger.active .caret,\n    .open > .btn-danger.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .navbar .navbar-nav > li > a.btn-danger.disabled, .navbar .navbar-nav > li > a.btn-danger.disabled:hover, .navbar .navbar-nav > li > a.btn-danger.disabled:focus, .navbar .navbar-nav > li > a.btn-danger.disabled.focus, .navbar .navbar-nav > li > a.btn-danger.disabled:active, .navbar .navbar-nav > li > a.btn-danger.disabled.active, .navbar .navbar-nav > li > a.btn-danger:disabled, .navbar .navbar-nav > li > a.btn-danger:disabled:hover, .navbar .navbar-nav > li > a.btn-danger:disabled:focus, .navbar .navbar-nav > li > a.btn-danger:disabled.focus, .navbar .navbar-nav > li > a.btn-danger:disabled:active, .navbar .navbar-nav > li > a.btn-danger:disabled.active, .navbar .navbar-nav > li > a.btn-danger[disabled], .navbar .navbar-nav > li > a.btn-danger[disabled]:hover, .navbar .navbar-nav > li > a.btn-danger[disabled]:focus, .navbar .navbar-nav > li > a.btn-danger[disabled].focus, .navbar .navbar-nav > li > a.btn-danger[disabled]:active, .navbar .navbar-nav > li > a.btn-danger[disabled].active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger:hover,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger:focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger.focus,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger:active,\n  fieldset[disabled] .navbar .navbar-nav > li > a.btn-danger.active, .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled.focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger:disabled, .btn-danger:disabled:hover, .btn-danger:disabled:focus, .btn-danger:disabled.focus, .btn-danger:disabled:active, .btn-danger:disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled].focus, .btn-danger[disabled]:active, .btn-danger[disabled].active,\n  fieldset[disabled] .btn-danger,\n  fieldset[disabled] .btn-danger:hover,\n  fieldset[disabled] .btn-danger:focus,\n  fieldset[disabled] .btn-danger.focus,\n  fieldset[disabled] .btn-danger:active,\n  fieldset[disabled] .btn-danger.active {\n    background-color: transparent;\n    border-color: #EB5E28; }\n  .navbar .navbar-nav > li > a.btn-danger.btn-fill, .btn-danger.btn-fill {\n    color: #FFFFFF;\n    background-color: #EB5E28;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .navbar .navbar-nav > li > a.btn-danger.btn-fill:hover, .navbar .navbar-nav > li > a.btn-danger.btn-fill:focus, .navbar .navbar-nav > li > a.btn-danger.btn-fill:active, .navbar .navbar-nav > li > a.btn-danger.btn-fill.active,\n    .open > .navbar .navbar-nav > li > a.btn-danger.btn-fill.dropdown-toggle, .btn-danger.btn-fill:hover, .btn-danger.btn-fill:focus, .btn-danger.btn-fill:active, .btn-danger.btn-fill.active,\n    .open > .btn-danger.btn-fill.dropdown-toggle {\n      background-color: #B33C12;\n      color: #FFFFFF;\n      border-color: #B33C12; }\n    .navbar .navbar-nav > li > a.btn-danger.btn-fill .caret, .btn-danger.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-danger.btn-simple:hover, .navbar .navbar-nav > li > a.btn-danger.btn-simple:focus, .navbar .navbar-nav > li > a.btn-danger.btn-simple:active, .navbar .navbar-nav > li > a.btn-danger.btn-simple.active,\n  .open > .navbar .navbar-nav > li > a.btn-danger.btn-simple.dropdown-toggle, .btn-danger.btn-simple:hover, .btn-danger.btn-simple:focus, .btn-danger.btn-simple:active, .btn-danger.btn-simple.active,\n  .open > .btn-danger.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #B33C12; }\n  .navbar .navbar-nav > li > a.btn-danger.btn-simple .caret, .btn-danger.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .navbar .navbar-nav > li > a.btn-danger .caret, .btn-danger .caret {\n    border-top-color: #EB5E28; }\n\n.btn-neutral {\n  border-color: #FFFFFF;\n  color: #FFFFFF; }\n  .btn-neutral:hover, .btn-neutral:focus, .btn-neutral:active, .btn-neutral.active,\n  .open > .btn-neutral.dropdown-toggle {\n    background-color: #FFFFFF;\n    color: rgba(255, 255, 255, 0.7);\n    border-color: #FFFFFF; }\n    .btn-neutral:hover .caret, .btn-neutral:focus .caret, .btn-neutral:active .caret, .btn-neutral.active .caret,\n    .open > .btn-neutral.dropdown-toggle .caret {\n      border-top-color: rgba(255, 255, 255, 0.7); }\n  .btn-neutral.disabled, .btn-neutral.disabled:hover, .btn-neutral.disabled:focus, .btn-neutral.disabled.focus, .btn-neutral.disabled:active, .btn-neutral.disabled.active, .btn-neutral:disabled, .btn-neutral:disabled:hover, .btn-neutral:disabled:focus, .btn-neutral:disabled.focus, .btn-neutral:disabled:active, .btn-neutral:disabled.active, .btn-neutral[disabled], .btn-neutral[disabled]:hover, .btn-neutral[disabled]:focus, .btn-neutral[disabled].focus, .btn-neutral[disabled]:active, .btn-neutral[disabled].active,\n  fieldset[disabled] .btn-neutral,\n  fieldset[disabled] .btn-neutral:hover,\n  fieldset[disabled] .btn-neutral:focus,\n  fieldset[disabled] .btn-neutral.focus,\n  fieldset[disabled] .btn-neutral:active,\n  fieldset[disabled] .btn-neutral.active {\n    background-color: transparent;\n    border-color: #FFFFFF; }\n  .btn-neutral.btn-fill {\n    color: #FFFFFF;\n    background-color: #FFFFFF;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n    .btn-neutral.btn-fill:hover, .btn-neutral.btn-fill:focus, .btn-neutral.btn-fill:active, .btn-neutral.btn-fill.active,\n    .open > .btn-neutral.btn-fill.dropdown-toggle {\n      background-color: #FFFFFF;\n      color: #FFFFFF;\n      border-color: #FFFFFF; }\n    .btn-neutral.btn-fill .caret {\n      border-top-color: #FFFFFF; }\n  .btn-neutral.btn-simple:hover, .btn-neutral.btn-simple:focus, .btn-neutral.btn-simple:active, .btn-neutral.btn-simple.active,\n  .open > .btn-neutral.btn-simple.dropdown-toggle {\n    background-color: transparent;\n    color: #FFFFFF; }\n  .btn-neutral.btn-simple .caret {\n    border-top-color: #FFFFFF; }\n  .btn-neutral .caret {\n    border-top-color: #FFFFFF; }\n  .btn-neutral:hover, .btn-neutral:focus {\n    color: #66615B; }\n  .btn-neutral:active, .btn-neutral.active,\n  .open > .btn-neutral.dropdown-toggle {\n    background-color: #FFFFFF;\n    color: #66615B; }\n  .btn-neutral.btn-fill {\n    color: #66615B; }\n  .btn-neutral.btn-fill:hover, .btn-neutral.btn-fill:focus {\n    color: #403D39; }\n  .btn-neutral.btn-simple:active, .btn-neutral.btn-simple.active {\n    background-color: transparent; }\n\n.btn:disabled, .btn[disabled], .btn.disabled {\n  opacity: 0.5;\n  filter: alpha(opacity=50); }\n\n.btn-simple {\n  border: 0;\n  padding: 7px 18px; }\n  .btn-simple.btn-icon {\n    padding: 7px; }\n\n.btn-lg {\n  font-size: 18px;\n  border-radius: 50px;\n  padding: 11px 30px;\n  font-weight: 400; }\n  .btn-lg.btn-simple {\n    padding: 13px 30px; }\n\n.btn-sm {\n  font-size: 12px;\n  border-radius: 26px;\n  padding: 4px 10px; }\n  .btn-sm.btn-simple {\n    padding: 6px 10px; }\n\n.btn-xs {\n  font-size: 12px;\n  border-radius: 26px;\n  padding: 2px 5px; }\n  .btn-xs.btn-simple {\n    padding: 4px 5px; }\n\n.btn-wd {\n  min-width: 140px; }\n\n.btn-group.select {\n  width: 100%; }\n\n.btn-group.select .btn {\n  text-align: left; }\n\n.btn-group.select .caret {\n  position: absolute;\n  top: 50%;\n  margin-top: -1px;\n  right: 8px; }\n\n.form-control::-moz-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control:-moz-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control::-webkit-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control:-ms-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control {\n  background-color: #fffcf5;\n  border: medium none;\n  border-radius: 4px;\n  color: #66615b;\n  font-size: 14px;\n  transition: background-color 0.3s ease 0s;\n  padding: 7px 18px;\n  height: 40px;\n  -webkit-box-shadow: none;\n  box-shadow: none; }\n  .form-control:focus {\n    background-color: #FFFFFF;\n    -webkit-box-shadow: none;\n    box-shadow: none;\n    outline: 0 !important; }\n  .has-success .form-control,\n  .has-error .form-control,\n  .has-success .form-control:focus,\n  .has-error .form-control:focus {\n    -webkit-box-shadow: none;\n    box-shadow: none; }\n  .has-success .form-control {\n    background-color: #ABF3CB;\n    color: #41B883; }\n    .has-success .form-control.border-input {\n      border: 1px solid #41B883; }\n  .has-success .form-control:focus {\n    background-color: #FFFFFF; }\n  .has-error .form-control {\n    background-color: #FFC0A4;\n    color: #EB5E28; }\n    .has-error .form-control.border-input {\n      border: 1px solid #EB5E28; }\n  .has-error .form-control:focus {\n    background-color: #FFFFFF; }\n  .form-control + .form-control-feedback {\n    border-radius: 6px;\n    font-size: 14px;\n    margin-top: -7px;\n    position: absolute;\n    right: 10px;\n    top: 50%;\n    vertical-align: middle; }\n  .form-control.border-input {\n    border: 1px solid #CCC5B9; }\n  .open .form-control {\n    border-bottom-color: transparent; }\n\n.input-lg {\n  height: 55px;\n  padding: 11px 30px; }\n\n.has-error .form-control-feedback, .has-error .control-label {\n  color: #EB5E28; }\n\n.has-success .form-control-feedback, .has-success .control-label {\n  color: #41B883; }\n\n.input-group-addon {\n  background-color: #fffcf5;\n  border: medium none;\n  border-radius: 4px; }\n  .has-success .input-group-addon,\n  .has-error .input-group-addon {\n    background-color: #FFFFFF; }\n  .has-error .form-control:focus + .input-group-addon {\n    color: #EB5E28; }\n  .has-success .form-control:focus + .input-group-addon {\n    color: #41B883; }\n  .form-control:focus + .input-group-addon,\n  .form-control:focus ~ .input-group-addon {\n    background-color: #FFFFFF; }\n\n.border-input .input-group-addon {\n  border: solid 1px #CCC5B9; }\n\n.input-group {\n  margin-bottom: 15px; }\n\n.input-group[disabled] .input-group-addon {\n  background-color: #E3E3E3; }\n\n.input-group .form-control:first-child,\n.input-group-addon:first-child,\n.input-group-btn:first-child > .dropdown-toggle,\n.input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {\n  border-right: 0 none; }\n\n.input-group .form-control:last-child,\n.input-group-addon:last-child,\n.input-group-btn:last-child > .dropdown-toggle,\n.input-group-btn:first-child > .btn:not(:first-child) {\n  border-left: 0 none; }\n\n.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {\n  background-color: #E3E3E3;\n  cursor: not-allowed;\n  color: #9A9A9A;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]::-moz-placeholder {\n  color: #9A9A9A;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]:-moz-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]::-webkit-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.form-control[disabled]:-ms-input-placeholder {\n  color: #DDDDDD;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.input-group-btn .btn {\n  border-width: 1px;\n  padding: 9px 18px; }\n\n.input-group-btn .btn-default:not(.btn-fill) {\n  border-color: #DDDDDD; }\n\n.input-group-btn:last-child > .btn {\n  margin-left: 0; }\n\ntextarea.form-control {\n  max-width: 100%;\n  padding: 10px 18px;\n  resize: none; }\n\n.alert {\n  border: 0;\n  border-radius: 0;\n  color: #FFFFFF;\n  padding: 10px 15px;\n  font-size: 14px; }\n  .container .alert {\n    border-radius: 4px; }\n  .navbar .alert {\n    border-radius: 0;\n    left: 0;\n    position: absolute;\n    right: 0;\n    top: 85px;\n    width: 100%;\n    z-index: 3; }\n  .navbar:not(.navbar-transparent) .alert {\n    top: 70px; }\n  .alert span[data-notify=\"icon\"] {\n    font-size: 30px;\n    display: block;\n    left: 15px;\n    position: absolute;\n    top: 50%;\n    margin-top: -20px; }\n  .alert .close ~ span {\n    display: block;\n    max-width: 89%; }\n  .alert[data-notify=\"container\"] {\n    padding: 10px 10px 10px 20px;\n    border-radius: 4px; }\n  .alert.alert-with-icon {\n    padding-left: 65px; }\n\n.alert-info {\n  background-color: #7CE4FE;\n  color: #3091B2; }\n\n.alert-success {\n  background-color: #8EF3C5;\n  color: #229863; }\n\n.alert-warning {\n  background-color: #FFE28C;\n  color: #BB992F; }\n\n.alert-danger {\n  background-color: #FF8F5E;\n  color: #B33C12; }\n\n.table thead tr > th,\n.table thead tr > td,\n.table tbody tr > th,\n.table tbody tr > td,\n.table tfoot tr > th,\n.table tfoot tr > td {\n  border-top: 1px solid #CCC5B9; }\n\n.table > thead > tr > th {\n  border-bottom-width: 0;\n  font-size: 1.25em;\n  font-weight: 300; }\n\n.table .radio,\n.table .checkbox {\n  margin-top: 0;\n  margin-bottom: 22px;\n  padding: 0;\n  width: 15px; }\n\n.table > thead > tr > th,\n.table > tbody > tr > th,\n.table > tfoot > tr > th,\n.table > thead > tr > td,\n.table > tbody > tr > td,\n.table > tfoot > tr > td {\n  padding: 12px;\n  vertical-align: middle; }\n\n.table > tbody {\n  text-align: justify; }\n\n.table .th-description {\n  max-width: 150px; }\n\n.table .td-price {\n  font-size: 26px;\n  font-weight: 300;\n  margin-top: 5px;\n  text-align: right; }\n\n.table .td-total {\n  font-weight: 600;\n  font-size: 1.25em;\n  padding-top: 20px;\n  text-align: right; }\n\n.table .td-actions .btn.btn-sm, .table .td-actions .btn.btn-xs {\n  padding-left: 3px;\n  padding-right: 3px; }\n\n.table > tbody > tr {\n  position: relative; }\n\n.table-striped tbody > tr:nth-of-type(2n+1) {\n  background-color: #fff; }\n\n.table-striped tbody > tr:nth-of-type(2n) {\n  background-color: #FFFCF5; }\n\n.table-striped > thead > tr > th,\n.table-striped > tbody > tr > th,\n.table-striped > tfoot > tr > th,\n.table-striped > thead > tr > td,\n.table-striped > tbody > tr > td,\n.table-striped > tfoot > tr > td {\n  padding: 15px 8px; }\n\n/*      Checkbox and radio         */\n.checkbox,\n.radio {\n  margin-bottom: 12px;\n  padding-left: 30px;\n  position: relative;\n  -webkit-transition: color, opacity 0.25s linear;\n  transition: color, opacity 0.25s linear;\n  font-size: 14px;\n  font-weight: normal;\n  line-height: 1.5;\n  color: #66615b;\n  cursor: pointer; }\n  .checkbox .icons,\n  .radio .icons {\n    color: #66615b;\n    display: block;\n    height: 20px;\n    left: 0;\n    position: absolute;\n    top: 0;\n    width: 20px;\n    text-align: center;\n    line-height: 21px;\n    font-size: 20px;\n    cursor: pointer;\n    -webkit-transition: color, opacity 0.15s linear;\n    transition: color, opacity 0.15s linear;\n    opacity: .50; }\n  .checkbox.checked .icons,\n  .radio.checked .icons {\n    opacity: 1; }\n  .checkbox input,\n  .radio input {\n    outline: none !important;\n    display: none; }\n\n.checkbox label,\n.radio label {\n  padding-left: 10px; }\n\n.checkbox .icons .first-icon,\n.radio .icons .first-icon,\n.checkbox .icons .second-icon,\n.radio .icons .second-icon {\n  display: inline-table;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background-color: transparent;\n  margin: 0;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.checkbox .icons .second-icon,\n.radio .icons .second-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox:hover,\n.radio:hover {\n  -webkit-transition: color 0.2s linear;\n  transition: color 0.2s linear; }\n\n.checkbox:hover .first-icon,\n.radio:hover .first-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox:hover .second-icon,\n.radio:hover .second-icon {\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.checkbox.checked .first-icon,\n.radio.checked .first-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox.checked .second-icon,\n.radio.checked .second-icon {\n  opacity: 1;\n  filter: alpha(opacity=100);\n  -webkit-transition: color 0.2s linear;\n  transition: color 0.2s linear; }\n\n.checkbox.disabled,\n.radio.disabled {\n  cursor: default;\n  color: #DDDDDD; }\n\n.checkbox.disabled .icons,\n.radio.disabled .icons {\n  color: #DDDDDD; }\n\n.checkbox.disabled .first-icon,\n.radio.disabled .first-icon {\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.checkbox.disabled .second-icon,\n.radio.disabled .second-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox.disabled.checked .icons,\n.radio.disabled.checked .icons {\n  color: #DDDDDD; }\n\n.checkbox.disabled.checked .first-icon,\n.radio.disabled.checked .first-icon {\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.checkbox.disabled.checked .second-icon,\n.radio.disabled.checked .second-icon {\n  opacity: 1;\n  color: #DDDDDD;\n  filter: alpha(opacity=100); }\n\n.nav > li > a:hover,\n.nav > li > a:focus {\n  background-color: transparent; }\n\n.navbar {\n  border: 0;\n  border-radius: 0;\n  font-size: 16px;\n  z-index: 0; }\n  .navbar .navbar-brand {\n    font-weight: 600;\n    margin: 5px 0px;\n    padding: 20px 15px;\n    font-size: 20px; }\n  .navbar .navbar-nav > li > a {\n    line-height: 1.42857;\n    margin: 15px 0px;\n    padding: 10px 15px; }\n    .navbar .navbar-nav > li > a i,\n    .navbar .navbar-nav > li > a p {\n      display: inline-block;\n      margin: 0; }\n    .navbar .navbar-nav > li > a i {\n      position: relative;\n      top: 1px; }\n  .navbar .navbar-nav > li > a.btn {\n    margin: 15px 3px;\n    padding: 7px 18px; }\n  .navbar .btn {\n    margin: 15px 3px;\n    font-size: 14px; }\n  .navbar .btn-simple {\n    font-size: 16px; }\n\n.navbar-nav > li > .dropdown-menu {\n  border-radius: 6px;\n  margin-top: -5px; }\n\n.navbar-default {\n  background-color: #f4f3ef;\n  border-bottom: 1px solid #DDDDDD; }\n  .navbar-default .brand {\n    color: #66615b !important; }\n  .navbar-default .navbar-nav > li > a:not(.btn) {\n    color: #9A9A9A; }\n  .navbar-default .navbar-nav > .active > a,\n  .navbar-default .navbar-nav > .active > a:not(.btn):hover,\n  .navbar-default .navbar-nav > .active > a:not(.btn):focus,\n  .navbar-default .navbar-nav > li > a:not(.btn):hover,\n  .navbar-default .navbar-nav > li > a:not(.btn):focus {\n    background-color: transparent;\n    border-radius: 3px;\n    color: #68B3C8;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n  .navbar-default .navbar-nav > .dropdown > a:hover .caret,\n  .navbar-default .navbar-nav > .dropdown > a:focus .caret {\n    border-bottom-color: #68B3C8;\n    border-top-color: #68B3C8; }\n  .navbar-default .navbar-nav > .open > a,\n  .navbar-default .navbar-nav > .open > a:hover,\n  .navbar-default .navbar-nav > .open > a:focus {\n    background-color: transparent;\n    color: #68B3C8; }\n  .navbar-default .navbar-nav .navbar-toggle:hover, .navbar-default .navbar-nav .navbar-toggle:focus {\n    background-color: transparent; }\n  .navbar-default:not(.navbar-transparent) .btn-default:hover {\n    color: #68B3C8;\n    border-color: #68B3C8; }\n  .navbar-default:not(.navbar-transparent) .btn-neutral,\n  .navbar-default:not(.navbar-transparent) .btn-neutral:hover,\n  .navbar-default:not(.navbar-transparent) .btn-neutral:active {\n    color: #9A9A9A; }\n\n.navbar-form {\n  -webkit-box-shadow: none;\n  box-shadow: none; }\n  .navbar-form .form-control {\n    border-radius: 0;\n    border: 0;\n    padding: 0;\n    background-color: transparent;\n    height: 22px;\n    font-size: 16px;\n    line-height: 1.4em;\n    color: #E3E3E3; }\n  .navbar-transparent .navbar-form .form-control,\n  [class*=\"navbar-ct\"] .navbar-form .form-control {\n    color: #FFFFFF;\n    border: 0;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.6); }\n\n.navbar-ct-primary {\n  background-color: #8ECFD5; }\n\n.navbar-ct-info {\n  background-color: #7CE4FE; }\n\n.navbar-ct-success {\n  background-color: #8EF3C5; }\n\n.navbar-ct-warning {\n  background-color: #FFE28C; }\n\n.navbar-ct-danger {\n  background-color: #FF8F5E; }\n\n.navbar-transparent {\n  padding-top: 15px;\n  background-color: transparent;\n  border-bottom: 1px solid transparent; }\n\n.navbar-toggle {\n  margin-top: 19px;\n  margin-bottom: 19px;\n  border: 0; }\n  .navbar-toggle .icon-bar {\n    background-color: #FFFFFF; }\n  .navbar-toggle .navbar-collapse,\n  .navbar-toggle .navbar-form {\n    border-color: transparent; }\n  .navbar-toggle.navbar-default .navbar-toggle:hover,\n  .navbar-toggle.navbar-default .navbar-toggle:focus {\n    background-color: transparent; }\n\n.navbar-transparent .navbar-brand, [class*=\"navbar-ct\"] .navbar-brand {\n  opacity: 0.9;\n  filter: alpha(opacity=90); }\n  .navbar-transparent .navbar-brand:focus, .navbar-transparent .navbar-brand:hover, [class*=\"navbar-ct\"] .navbar-brand:focus, [class*=\"navbar-ct\"] .navbar-brand:hover {\n    background-color: transparent;\n    opacity: 1;\n    filter: alpha(opacity=100); }\n\n.navbar-transparent .navbar-brand:not([class*=\"text\"]), [class*=\"navbar-ct\"] .navbar-brand:not([class*=\"text\"]) {\n  color: #FFFFFF; }\n\n.navbar-transparent .navbar-nav > li > a:not(.btn), [class*=\"navbar-ct\"] .navbar-nav > li > a:not(.btn) {\n  color: #FFFFFF;\n  border-color: #FFFFFF;\n  opacity: 0.8;\n  filter: alpha(opacity=80); }\n\n.navbar-transparent .navbar-nav > .active > a:not(.btn),\n.navbar-transparent .navbar-nav > .active > a:hover:not(.btn),\n.navbar-transparent .navbar-nav > .active > a:focus:not(.btn),\n.navbar-transparent .navbar-nav > li > a:hover:not(.btn),\n.navbar-transparent .navbar-nav > li > a:focus:not(.btn), [class*=\"navbar-ct\"] .navbar-nav > .active > a:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > .active > a:hover:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > .active > a:focus:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > li > a:hover:not(.btn),\n[class*=\"navbar-ct\"] .navbar-nav > li > a:focus:not(.btn) {\n  background-color: transparent;\n  border-radius: 3px;\n  color: #FFFFFF;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.navbar-transparent .navbar-nav .nav > li > a.btn:hover, [class*=\"navbar-ct\"] .navbar-nav .nav > li > a.btn:hover {\n  background-color: transparent; }\n\n.navbar-transparent .navbar-nav > .dropdown > a .caret,\n.navbar-transparent .navbar-nav > .dropdown > a:hover .caret,\n.navbar-transparent .navbar-nav > .dropdown > a:focus .caret, [class*=\"navbar-ct\"] .navbar-nav > .dropdown > a .caret,\n[class*=\"navbar-ct\"] .navbar-nav > .dropdown > a:hover .caret,\n[class*=\"navbar-ct\"] .navbar-nav > .dropdown > a:focus .caret {\n  border-bottom-color: #FFFFFF;\n  border-top-color: #FFFFFF; }\n\n.navbar-transparent .navbar-nav > .open > a,\n.navbar-transparent .navbar-nav > .open > a:hover,\n.navbar-transparent .navbar-nav > .open > a:focus, [class*=\"navbar-ct\"] .navbar-nav > .open > a,\n[class*=\"navbar-ct\"] .navbar-nav > .open > a:hover,\n[class*=\"navbar-ct\"] .navbar-nav > .open > a:focus {\n  background-color: transparent;\n  color: #FFFFFF;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.navbar-transparent .btn-default, [class*=\"navbar-ct\"] .btn-default {\n  color: #FFFFFF;\n  border-color: #FFFFFF; }\n\n.navbar-transparent .btn-default.btn-fill, [class*=\"navbar-ct\"] .btn-default.btn-fill {\n  color: #9A9A9A;\n  background-color: #FFFFFF;\n  opacity: 0.9;\n  filter: alpha(opacity=90); }\n\n.navbar-transparent .btn-default.btn-fill:hover,\n.navbar-transparent .btn-default.btn-fill:focus,\n.navbar-transparent .btn-default.btn-fill:active,\n.navbar-transparent .btn-default.btn-fill.active,\n.navbar-transparent .open .dropdown-toggle.btn-fill.btn-default, [class*=\"navbar-ct\"] .btn-default.btn-fill:hover,\n[class*=\"navbar-ct\"] .btn-default.btn-fill:focus,\n[class*=\"navbar-ct\"] .btn-default.btn-fill:active,\n[class*=\"navbar-ct\"] .btn-default.btn-fill.active,\n[class*=\"navbar-ct\"] .open .dropdown-toggle.btn-fill.btn-default {\n  border-color: #FFFFFF;\n  opacity: 1;\n  filter: alpha(opacity=100); }\n\n.footer {\n  background-attachment: fixed;\n  position: relative;\n  line-height: 20px; }\n  .footer nav ul {\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    font-weight: normal; }\n    .footer nav ul li {\n      display: inline-block;\n      padding: 10px 15px;\n      margin: 15px 3px;\n      line-height: 20px;\n      text-align: center; }\n    .footer nav ul a:not(.btn) {\n      color: #66615b;\n      display: block;\n      margin-bottom: 3px; }\n      .footer nav ul a:not(.btn):focus, .footer nav ul a:not(.btn):hover {\n        color: #403D39; }\n  .footer .copyright {\n    color: #66615b;\n    padding: 10px 15px;\n    font-size: 14px;\n    white-space: nowrap;\n    margin: 15px 3px;\n    line-height: 20px;\n    text-align: center; }\n  .footer .heart {\n    color: #EB5E28; }\n\n.dropdown-menu {\n  background-color: #FFFCF5;\n  border: 0 none;\n  border-radius: 6px;\n  display: block;\n  margin-top: 10px;\n  padding: 0px;\n  position: absolute;\n  visibility: hidden;\n  z-index: 9000;\n  opacity: 0;\n  filter: alpha(opacity=0);\n  -webkit-box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1);\n  box-shadow: 0 2px rgba(17, 16, 15, 0.1), 0 2px 10px rgba(17, 16, 15, 0.1); }\n  .open .dropdown-menu {\n    opacity: 1;\n    filter: alpha(opacity=100);\n    visibility: visible; }\n  .dropdown-menu .divider {\n    background-color: #F1EAE0;\n    margin: 0px; }\n  .dropdown-menu .dropdown-header {\n    color: #9A9A9A;\n    font-size: 12px;\n    padding: 10px 15px; }\n  .select .dropdown-menu {\n    border-radius: 0 0 10px 10px;\n    -webkit-box-shadow: none;\n    box-shadow: none;\n    -webkit-transform-origin: 50% -40px;\n    -moz-transform-origin: 50% -40px;\n    -o-transform-origin: 50% -40px;\n    -ms-transform-origin: 50% -40px;\n    transform-origin: 50% -40px;\n    -webkit-transform: scale(1);\n    -moz-transform: scale(1);\n    -o-transform: scale(1);\n    -ms-transform: scale(1);\n    transform: scale(1);\n    -webkit-transition: all 150ms linear;\n    -moz-transition: all 150ms linear;\n    -o-transition: all 150ms linear;\n    -ms-transition: all 150ms linear;\n    transition: all 150ms linear;\n    margin-top: -20px; }\n  .select.open .dropdown-menu {\n    margin-top: -1px; }\n  .dropdown-menu > li > a {\n    color: #66615b;\n    font-size: 14px;\n    padding: 10px 15px;\n    -webkit-transition: none;\n    -moz-transition: none;\n    -o-transition: none;\n    -ms-transition: none;\n    transition: none; }\n    .dropdown-menu > li > a img {\n      margin-top: -3px; }\n  .dropdown-menu > li > a:focus {\n    outline: 0 !important; }\n  .btn-group.select .dropdown-menu {\n    min-width: 100%; }\n  .dropdown-menu > li:first-child > a {\n    border-top-left-radius: 6px;\n    border-top-right-radius: 6px; }\n  .dropdown-menu > li:last-child > a {\n    border-bottom-left-radius: 6px;\n    border-bottom-right-radius: 6px; }\n  .select .dropdown-menu > li:first-child > a {\n    border-radius: 0;\n    border-bottom: 0 none; }\n  .dropdown-menu > li > a:hover,\n  .dropdown-menu > li > a:focus {\n    background-color: #66615B;\n    color: rgba(255, 255, 255, 0.7);\n    opacity: 1;\n    text-decoration: none; }\n  .dropdown-menu.dropdown-primary > li > a:hover,\n  .dropdown-menu.dropdown-primary > li > a:focus {\n    background-color: #7A9E9F; }\n  .dropdown-menu.dropdown-info > li > a:hover,\n  .dropdown-menu.dropdown-info > li > a:focus {\n    background-color: #68B3C8; }\n  .dropdown-menu.dropdown-success > li > a:hover,\n  .dropdown-menu.dropdown-success > li > a:focus {\n    background-color: #41B883; }\n  .dropdown-menu.dropdown-warning > li > a:hover,\n  .dropdown-menu.dropdown-warning > li > a:focus {\n    background-color: #F3BB45; }\n  .dropdown-menu.dropdown-danger > li > a:hover,\n  .dropdown-menu.dropdown-danger > li > a:focus {\n    background-color: #EB5E28; }\n\n.btn-group.select {\n  overflow: hidden; }\n\n.btn-group.select.open {\n  overflow: visible; }\n\n.card {\n  border-radius: 6px;\n  box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);\n  background-color: #FFFFFF;\n  color: #252422;\n  margin-bottom: 20px;\n  position: relative;\n  z-index: 1; }\n  .card .image {\n    width: 100%;\n    overflow: hidden;\n    height: 260px;\n    border-radius: 6px 6px 0 0;\n    position: relative;\n    -webkit-transform-style: preserve-3d;\n    -moz-transform-style: preserve-3d;\n    transform-style: preserve-3d; }\n    .card .image img {\n      width: 100%; }\n  .card .content {\n    padding: 15px 15px 10px 15px; }\n  .card .header {\n    padding: 20px 20px 0; }\n  .card .description {\n    font-size: 16px;\n    color: #66615b; }\n  .card h6 {\n    font-size: 12px;\n    margin: 0; }\n  .card .category,\n  .card label {\n    font-size: 14px;\n    font-weight: 400;\n    color: #9A9A9A;\n    margin-bottom: 0px; }\n    .card .category i,\n    .card label i {\n      font-size: 16px; }\n  .card label {\n    font-size: 15px;\n    margin-bottom: 5px; }\n  .card .title {\n    margin: 0;\n    color: #252422;\n    font-weight: 300; }\n  .card .avatar {\n    width: 50px;\n    height: 50px;\n    overflow: hidden;\n    border-radius: 50%;\n    margin-right: 5px; }\n  .card .footer {\n    padding: 0;\n    line-height: 30px; }\n    .card .footer .legend {\n      padding: 5px 0; }\n    .card .footer hr {\n      margin-top: 5px;\n      margin-bottom: 5px; }\n  .card .stats {\n    color: #a9a9a9;\n    font-weight: 300; }\n    .card .stats i {\n      margin-right: 2px;\n      min-width: 15px;\n      display: inline-block; }\n  .card .footer div {\n    display: inline-block; }\n  .card .author {\n    font-size: 12px;\n    font-weight: 600;\n    text-transform: uppercase; }\n  .card .author i {\n    font-size: 14px; }\n  .card.card-separator:after {\n    height: 100%;\n    right: -15px;\n    top: 0;\n    width: 1px;\n    background-color: #DDDDDD;\n    content: \"\";\n    position: absolute; }\n  .card .ct-chart {\n    margin: 30px 0 30px;\n    height: 245px; }\n  .card .table tbody td, .card .table thead th {\n    padding-left: 15px;\n    padding-right: 15px; }\n  .card .alert {\n    border-radius: 4px;\n    position: relative; }\n    .card .alert.alert-with-icon {\n      padding-left: 65px; }\n  .card .icon-big {\n    font-size: 3em;\n    min-height: 64px; }\n  .card .numbers {\n    font-size: 2em;\n    text-align: right; }\n    .card .numbers p {\n      margin: 0; }\n  .card ul.team-members li {\n    padding: 10px 0px; }\n    .card ul.team-members li:not(:last-child) {\n      border-bottom: 1px solid #F1EAE0; }\n\n.card-user .image {\n  border-radius: 8px 8px 0 0;\n  height: 150px;\n  position: relative;\n  overflow: hidden; }\n  .card-user .image img {\n    width: 100%; }\n\n.card-user .image-plain {\n  height: 0;\n  margin-top: 110px; }\n\n.card-user .author {\n  text-align: center;\n  text-transform: none;\n  margin-top: -65px; }\n  .card-user .author .title {\n    color: #403D39; }\n    .card-user .author .title small {\n      color: #ccc5b9; }\n\n.card-user .avatar {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  position: relative;\n  margin-bottom: 15px; }\n  .card-user .avatar.border-white {\n    border: 5px solid #FFFFFF; }\n  .card-user .avatar.border-gray {\n    border: 5px solid #ccc5b9; }\n\n.card-user .title {\n  font-weight: 600;\n  line-height: 24px; }\n\n.card-user .description {\n  margin-top: 10px; }\n\n.card-user .content {\n  min-height: 200px; }\n\n.card-user.card-plain .avatar {\n  height: 190px;\n  width: 190px; }\n\n.card-map .map {\n  height: 500px;\n  padding-top: 20px; }\n  .card-map .map > div {\n    height: 100%; }\n\n.card-user .footer,\n.card-price .footer {\n  padding: 5px 15px 10px; }\n\n.card-user hr,\n.card-price hr {\n  margin: 5px 15px; }\n\n.card-plain {\n  background-color: transparent;\n  box-shadow: none;\n  border-radius: 0; }\n  .card-plain .image {\n    border-radius: 4px; }\n\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.9em;\n  line-height: 1; }\n\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex; }\n\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end; }\n\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start; }\n\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end; }\n\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end; }\n\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px; }\n\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round; }\n\n.ct-line {\n  fill: none;\n  stroke-width: 4px; }\n\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.7; }\n\n.ct-bar {\n  fill: none;\n  stroke-width: 10px; }\n\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px; }\n\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #68B3C8; }\n\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-area {\n  fill: #68B3C8; }\n\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #F3BB45; }\n\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-area {\n  fill: #F3BB45; }\n\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #EB5E28; }\n\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-area {\n  fill: #EB5E28; }\n\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #41B883; }\n\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-area {\n  fill: #41B883; }\n\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #7A9E9F; }\n\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-area {\n  fill: #7A9E9F; }\n\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: rgba(104, 179, 200, 0.8); }\n\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-area {\n  fill: rgba(104, 179, 200, 0.8); }\n\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: rgba(65, 184, 131, 0.8); }\n\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-area {\n  fill: rgba(65, 184, 131, 0.8); }\n\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: rgba(243, 187, 69, 0.8); }\n\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-area {\n  fill: rgba(243, 187, 69, 0.8); }\n\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: rgba(235, 94, 40, 0.8); }\n\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-area {\n  fill: rgba(235, 94, 40, 0.8); }\n\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: rgba(122, 158, 159, 0.8); }\n\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-area {\n  fill: rgba(122, 158, 159, 0.8); }\n\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: rgba(104, 179, 200, 0.6); }\n\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-area {\n  fill: rgba(104, 179, 200, 0.6); }\n\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: rgba(65, 184, 131, 0.6); }\n\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-area {\n  fill: rgba(65, 184, 131, 0.6); }\n\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: rgba(243, 187, 69, 0.6); }\n\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-area {\n  fill: rgba(243, 187, 69, 0.6); }\n\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: rgba(235, 94, 40, 0.6); }\n\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-area {\n  fill: rgba(235, 94, 40, 0.6); }\n\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: rgba(122, 158, 159, 0.6); }\n\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-area {\n  fill: rgba(122, 158, 159, 0.6); }\n\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%; }\n  .ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%; }\n  .ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.88889%; }\n  .ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.33333%; }\n  .ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%; }\n  .ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%; }\n  .ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.66667%; }\n  .ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%; }\n  .ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.8047%; }\n  .ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%; }\n  .ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%; }\n  .ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.33333%; }\n  .ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%; }\n  .ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%; }\n  .ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%; }\n  .ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.33333%; }\n  .ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%; }\n  .ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%; }\n  .ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both; }\n  .ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0; }\n\n@media (min-width: 992px) {\n  .navbar {\n    min-height: 75px; }\n  .navbar-form {\n    margin-top: 21px;\n    margin-bottom: 21px;\n    padding-left: 5px;\n    padding-right: 5px; }\n  .navbar-search-form {\n    display: none; }\n  .navbar-nav > li > .dropdown-menu,\n  .dropdown .dropdown-menu {\n    transform: translate3d(0px, -40px, 0px);\n    transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s, opacity 0.3s ease 0s, height 0s linear 0.35s; }\n  .navbar-nav > li.open > .dropdown-menu, .dropdown.open .dropdown-menu {\n    transform: translate3d(0px, 0px, 0px); }\n  .navbar-nav > li > .dropdown-menu:before {\n    border-bottom: 11px solid #F1EAE0;\n    border-left: 11px solid transparent;\n    border-right: 11px solid transparent;\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    right: 12px;\n    top: -11px; }\n  .navbar-nav > li > .dropdown-menu:after {\n    border-bottom: 11px solid #FFFCF5;\n    border-left: 11px solid transparent;\n    border-right: 11px solid transparent;\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    right: 12px;\n    top: -10px; }\n  .navbar-nav.navbar-left > li > .dropdown-menu:before {\n    right: auto;\n    left: 12px; }\n  .navbar-nav.navbar-left > li > .dropdown-menu:after {\n    right: auto;\n    left: 12px; }\n  .navbar .navbar-header {\n    margin-left: 10px; }\n  .footer:not(.footer-big) nav > ul li:first-child {\n    margin-left: 0; }\n  body .navbar-collapse.collapse {\n    display: none !important; }\n  .card form [class*=\"col-\"] {\n    padding: 6px; }\n  .card form [class*=\"col-\"]:first-child {\n    padding-left: 15px; }\n  .card form [class*=\"col-\"]:last-child {\n    padding-right: 15px; } }\n\n/*          Changes for small display      */\n@media (max-width: 991px) {\n  .sidebar {\n    display: none; }\n  .main-panel {\n    width: 100%; }\n  .navbar-transparent {\n    padding-top: 15px;\n    background-color: rgba(0, 0, 0, 0.45); }\n  body {\n    position: relative; }\n  h6 {\n    font-size: 1em; }\n  .wrapper {\n    -webkit-transform: translate3d(0px, 0, 0);\n    -moz-transform: translate3d(0px, 0, 0);\n    -o-transform: translate3d(0px, 0, 0);\n    -ms-transform: translate3d(0px, 0, 0);\n    transform: translate3d(0px, 0, 0);\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    left: 0;\n    background-color: white; }\n  .navbar .container {\n    left: 0;\n    width: 100%;\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    position: relative; }\n  .navbar .navbar-right-menu,\n  .navbar .navbar-collapse.collapse,\n  .navbar .navbar-collapse.collapse.in,\n  .navbar .navbar-collapse.collapsing {\n    display: none !important; }\n  .navbar-nav > li {\n    float: none;\n    position: relative;\n    display: block; }\n  .off-canvas-sidebar {\n    position: fixed;\n    display: block;\n    top: 0;\n    height: 100%;\n    width: 230px;\n    right: 0;\n    z-index: 1032;\n    visibility: visible;\n    background-color: #999;\n    overflow-y: visible;\n    border-top: none;\n    text-align: left;\n    padding-right: 0px;\n    padding-left: 0;\n    -webkit-transform: translate3d(230px, 0, 0);\n    -moz-transform: translate3d(230px, 0, 0);\n    -o-transform: translate3d(230px, 0, 0);\n    -ms-transform: translate3d(230px, 0, 0);\n    transform: translate3d(230px, 0, 0);\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }\n    .off-canvas-sidebar .sidebar-wrapper {\n      position: relative;\n      z-index: 3;\n      overflow-y: scroll;\n      height: 100%;\n      box-shadow: inset 1px 0px 0px 0px #DDDDDD; }\n    .off-canvas-sidebar .nav {\n      margin-top: 0;\n      padding: 10px 15px 0; }\n      .off-canvas-sidebar .nav > li > a {\n        margin: 0px 0px;\n        color: #66615B;\n        text-transform: uppercase;\n        font-weight: 600;\n        font-size: 12px;\n        line-height: 1.4em;\n        padding: 10px 0; }\n        .off-canvas-sidebar .nav > li > a:hover, .off-canvas-sidebar .nav > li > a.active {\n          color: #403D39; }\n        .off-canvas-sidebar .nav > li > a p,\n        .off-canvas-sidebar .nav > li > a .notification,\n        .off-canvas-sidebar .nav > li > a .caret {\n          display: inline-block; }\n        .off-canvas-sidebar .nav > li > a .caret {\n          float: right;\n          position: relative;\n          top: 12px; }\n        .off-canvas-sidebar .nav > li > a i {\n          font-size: 18px;\n          margin-right: 10px;\n          line-height: 26px; }\n      .off-canvas-sidebar .nav > li.active > a:before {\n        border-right: none;\n        border-left: 12px solid #DDDDDD;\n        border-top: 12px solid transparent;\n        border-bottom: 12px solid transparent;\n        right: auto;\n        margin-left: -15px;\n        left: 0px;\n        top: 10px; }\n      .off-canvas-sidebar .nav > li.active > a:after {\n        border-right: none;\n        border-left: 12px solid #f4f3ef;\n        border-top: 12px solid transparent;\n        border-bottom: 12px solid transparent;\n        right: auto;\n        margin-left: -15px;\n        left: -1px;\n        top: 10px; }\n    .off-canvas-sidebar::after {\n      top: 0;\n      left: 0;\n      height: 100%;\n      width: 100%;\n      position: absolute;\n      background-color: #f4f3ef;\n      background-image: linear-gradient(to bottom, transparent 0%, rgba(112, 112, 112, 0) 60%, rgba(186, 186, 186, 0.15) 100%);\n      display: block;\n      content: \"\";\n      z-index: 1; }\n    .off-canvas-sidebar.has-image::after {\n      top: 0;\n      left: 0;\n      height: 100%;\n      width: 100%;\n      position: absolute;\n      background-color: rgba(17, 17, 17, 0.8);\n      display: block;\n      content: \"\";\n      z-index: 1; }\n    .off-canvas-sidebar .logo {\n      position: relative;\n      z-index: 4;\n      padding-top: 11px;\n      padding-bottom: 11px; }\n    .off-canvas-sidebar .divider {\n      height: 1px;\n      margin: 10px 0; }\n  .main-panel.push-left {\n    right: 230px; }\n  .nav-open .navbar-collapse {\n    -webkit-transform: translate3d(0px, 0, 0);\n    -moz-transform: translate3d(0px, 0, 0);\n    -o-transform: translate3d(0px, 0, 0);\n    -ms-transform: translate3d(0px, 0, 0);\n    transform: translate3d(0px, 0, 0); }\n  .nav-open .navbar .container {\n    left: -230px; }\n  .nav-open .wrapper {\n    left: 0;\n    -webkit-transform: translate3d(-230px, 0, 0);\n    -moz-transform: translate3d(-230px, 0, 0);\n    -o-transform: translate3d(-230px, 0, 0);\n    -ms-transform: translate3d(-230px, 0, 0);\n    transform: translate3d(-230px, 0, 0); }\n  .navbar-toggle .icon-bar {\n    display: block;\n    position: relative;\n    background: #fff;\n    width: 24px;\n    height: 2px;\n    border-radius: 1px;\n    margin: 0 auto; }\n  .navbar-header .navbar-toggle {\n    margin: 10px 15px 10px 0;\n    width: 40px;\n    height: 40px; }\n  .bar1,\n  .bar2,\n  .bar3 {\n    outline: 1px solid transparent; }\n  .bar1 {\n    top: 0px;\n    -webkit-animation: topbar-back 500ms linear 0s;\n    -moz-animation: topbar-back 500ms linear 0s;\n    animation: topbar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .bar2 {\n    opacity: 1; }\n  .bar3 {\n    bottom: 0px;\n    -webkit-animation: bottombar-back 500ms linear 0s;\n    -moz-animation: bottombar-back 500ms linear 0s;\n    animation: bottombar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .toggled .bar1 {\n    top: 6px;\n    -webkit-animation: topbar-x 500ms linear 0s;\n    -moz-animation: topbar-x 500ms linear 0s;\n    animation: topbar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .toggled .bar2 {\n    opacity: 0; }\n  .toggled .bar3 {\n    bottom: 6px;\n    -webkit-animation: bottombar-x 500ms linear 0s;\n    -moz-animation: bottombar-x 500ms linear 0s;\n    animation: bottombar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  @keyframes topbar-x {\n    0% {\n      top: 0px;\n      transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      transform: rotate(145deg); }\n    75% {\n      transform: rotate(130deg); }\n    100% {\n      transform: rotate(135deg); } }\n  @-webkit-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -webkit-transform: rotate(145deg); }\n    75% {\n      -webkit-transform: rotate(130deg); }\n    100% {\n      -webkit-transform: rotate(135deg); } }\n  @-moz-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -moz-transform: rotate(145deg); }\n    75% {\n      -moz-transform: rotate(130deg); }\n    100% {\n      -moz-transform: rotate(135deg); } }\n  @keyframes topbar-back {\n    0% {\n      top: 6px;\n      transform: rotate(135deg); }\n    45% {\n      transform: rotate(-10deg); }\n    75% {\n      transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -webkit-transform: rotate(135deg); }\n    45% {\n      -webkit-transform: rotate(-10deg); }\n    75% {\n      -webkit-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -moz-transform: rotate(135deg); }\n    45% {\n      -moz-transform: rotate(-10deg); }\n    75% {\n      -moz-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -moz-transform: rotate(0); } }\n  @keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      transform: rotate(-145deg); }\n    75% {\n      transform: rotate(-130deg); }\n    100% {\n      transform: rotate(-135deg); } }\n  @-webkit-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -webkit-transform: rotate(-145deg); }\n    75% {\n      -webkit-transform: rotate(-130deg); }\n    100% {\n      -webkit-transform: rotate(-135deg); } }\n  @-moz-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -moz-transform: rotate(-145deg); }\n    75% {\n      -moz-transform: rotate(-130deg); }\n    100% {\n      -moz-transform: rotate(-135deg); } }\n  @keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      transform: rotate(-135deg); }\n    45% {\n      transform: rotate(10deg); }\n    75% {\n      transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -webkit-transform: rotate(-135deg); }\n    45% {\n      -webkit-transform: rotate(10deg); }\n    75% {\n      -webkit-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -moz-transform: rotate(-135deg); }\n    45% {\n      -moz-transform: rotate(10deg); }\n    75% {\n      -moz-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -moz-transform: rotate(0); } }\n  @-webkit-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @-moz-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  .dropdown-menu .divider {\n    background-color: rgba(229, 229, 229, 0.15); }\n  .navbar-nav {\n    margin: 1px 0; }\n  .dropdown-menu {\n    display: none; }\n    .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {\n      background-color: transparent; }\n  .navbar-fixed-top {\n    -webkit-backface-visibility: hidden; }\n  #bodyClick {\n    height: 100%;\n    width: 100%;\n    position: fixed;\n    opacity: 0;\n    top: 0;\n    left: auto;\n    right: 230px;\n    content: \"\";\n    z-index: 9999;\n    overflow-x: hidden; }\n  .form-control + .form-control-feedback {\n    margin-top: -8px; }\n  .navbar-toggle:hover, .navbar-toggle:focus {\n    background-color: transparent !important; }\n  .btn.dropdown-toggle {\n    margin-bottom: 0; }\n  .media-post .author {\n    width: 20%;\n    float: none !important;\n    display: block;\n    margin: 0 auto 10px; }\n  .media-post .media-body {\n    width: 100%; }\n  .navbar-collapse.collapse {\n    height: 100% !important; }\n  .navbar-collapse.collapse.in {\n    display: block; }\n  .navbar-header .collapse, .navbar-toggle {\n    display: block !important; }\n  .navbar-header {\n    float: none; }\n  .navbar-nav .open .dropdown-menu {\n    position: static;\n    float: none;\n    width: auto;\n    margin-top: 0;\n    background-color: transparent;\n    border: 0;\n    -webkit-box-shadow: none;\n    box-shadow: none; }\n  .main-panel > .content {\n    padding-left: 0;\n    padding-right: 0; }\n  .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {\n    background-color: transparent; }\n  .footer .copyright {\n    padding: 0px 15px;\n    width: 100%; } }\n\n@media (min-width: 992px) {\n  .table-full-width {\n    margin-left: -15px;\n    margin-right: -15px; }\n  .table-responsive {\n    overflow: visible; } }\n\n@media (max-width: 991px) {\n  .table-responsive {\n    width: 100%;\n    margin-bottom: 15px;\n    border: 1px solid #dddddd;\n    overflow-x: scroll;\n    overflow-y: hidden;\n    -ms-overflow-style: -ms-autohiding-scrollbar;\n    -webkit-overflow-scrolling: touch; } }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 185 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 // This file can be required in Browserify and Node.js for automatic polyfill
 // To use it:  require('es6-promise/auto');
 
-module.exports = __webpack_require__(186).polyfill();
+module.exports = __webpack_require__(239).polyfill();
 
 
 /***/ }),
-/* 186 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var require;/*!
@@ -32121,7 +34776,7 @@ function flush() {
 function attemptVertx() {
   try {
     var r = require;
-    var vertx = __webpack_require__(187);
+    var vertx = __webpack_require__(240);
     vertxNext = vertx.runOnLoop || vertx.runOnContext;
     return useVertxTimer();
   } catch (e) {
@@ -33142,69 +35797,19 @@ return Promise$2;
 
 //# sourceMappingURL=es6-promise.map
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(8)))
 
 /***/ }),
-/* 187 */
+/* 240 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 188 */
+/* 241 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    createUserFromHTTP: function createUserFromHTTP(response) {
-        return {
-            email: response.data.email,
-            id: response.data.id,
-            role: response.data.role,
-            name: response.data.name
-        };
-    }
-});
-
-/***/ }),
-/* 196 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTH_USER_KEY; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__factories_user_factory__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_localforage__);
-
-
-
-
-var AUTH_USER_KEY = 'auth-user';
-
-/* harmony default export */ __webpack_exports__["b"] = ({
-    login: function login() {
-        var user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { email: '', password: '' };
-
-        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('http://localhost:8000/api/auth/login/', user).then(this.setUserFromResponse);
-    },
-    setUserFromResponse: function setUserFromResponse(response) {
-        return __WEBPACK_IMPORTED_MODULE_2_localforage__["setItem"](AUTH_USER_KEY, __WEBPACK_IMPORTED_MODULE_1__factories_user_factory__["a" /* default */].createUserFromHTTP(response));
-    }
-});
 
 /***/ })
 /******/ ]);

@@ -3,10 +3,10 @@ import Sidebar from './SideBar.vue';
 const SidebarStore = {
     showSidebar: false,
     sidebarLinks: [{
-            name: 'Home',
-            icon: 'ti-home',
-            path: '/admin/profile'
-        },
+        name: 'Home',
+        icon: 'ti-home',
+        path: '/admin/profile'
+    },
         {
             name: 'Vehicle Types',
             path: '/admin/vehicles/types'
@@ -24,6 +24,11 @@ const SidebarStore = {
             path: '/admin/vehicles/fuels'
         },
         {
+            name: 'Vehicles',
+            icon: 'ti-car',
+            path: '/admin/vehicles/manage'
+        },
+        {
             name: 'logout',
             icon: 'ti-angle-double-left',
             path: '/user/logout'
@@ -38,7 +43,7 @@ const SidebarPlugin = {
     install(Vue) {
         Vue.mixin({
             data() {
-                return { sidebarStore: SidebarStore };
+                return {sidebarStore: SidebarStore};
             }
         });
 

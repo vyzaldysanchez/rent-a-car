@@ -68,7 +68,13 @@
 
 </script>
 <style scoped lang="scss">
+    .table-responsive {
+        overflow-x: scroll;
+    }
+
     .actions {
+        display: inline-block;
+
         > a {
             cursor: pointer;
         }

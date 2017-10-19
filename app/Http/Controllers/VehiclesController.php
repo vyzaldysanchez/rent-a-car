@@ -10,7 +10,7 @@ class VehiclesController extends Controller
 {
     public function index(): JsonResponse
     {
-        $types = Vehicle::all();
+        $types = Vehicle::getWithRelations();
 
         if ($types->count()) {
             return $this->success($types);

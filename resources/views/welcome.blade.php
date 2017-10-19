@@ -17,7 +17,6 @@
     <link type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link href="/css/themify-icons.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Styles -->
     <style>
@@ -79,6 +78,6 @@
 
 <script src="/js/app.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAamVCoyQ4AuvBpxVRMs9P-HFkfPVQj0Kw"
-        type="text/javascript"></script>
+        async type="text/javascript"></script>
 </body>
 </html>
