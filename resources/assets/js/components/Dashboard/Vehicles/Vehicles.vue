@@ -4,7 +4,7 @@
             <h3>Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <vehicles-form></vehicles-form>
+            <vehicles-form @vehicle-created="addVehicle"></vehicles-form>
 
             <hr>
 
@@ -52,6 +52,29 @@
 
                     this.isLoaded = true;
                 });
+        },
+        methods: {
+            addVehicle(data) {
+                const mappedVehicle = {
+                        description: data.description,
+                        chassis: data['chassis_number'],
+                        engine: data['engine_number'],
+                        plate: data['plate_number'],
+                        type: data.type.description,
+                        model: data.model.description,
+                        brand: data.brand.description,
+                        fuel: data.fuel.description,
+                        state: data.state || 'AVAILABLE',
+                    },
+                    index = this.vehicles.length;
+
+                this.vehicles.push(factory.createForTableList({
+                    object: mappedVehicle,
+                    index,
+                    onEdit: null,
+                    onRemove: null
+                }));
+            }
         }
     };
 </script>

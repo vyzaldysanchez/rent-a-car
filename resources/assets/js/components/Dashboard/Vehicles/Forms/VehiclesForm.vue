@@ -64,7 +64,7 @@
                 this.engine = value.slice(0, 11).toUpperCase();
             },
             plate(value) {
-                this.plate= value.slice(0, 8).toUpperCase();
+                this.plate = value.slice(0, 8).toUpperCase();
             },
             vehicle(value) {
                 this.edit = !!value;
@@ -84,6 +84,10 @@
                 brands: [],
                 models: [],
                 fuels: [],
+                typesSource: [],
+                brandsSource: [],
+                modelsSource: [],
+                fuelsSource: [],
                 isSavingVehicle: false,
                 formError: '',
                 edit: !!this.$props.vehicle
@@ -97,6 +101,11 @@
                 this.$axios.get('http://localhost:8000/api/fuels')
             ]).then(response => {
                 const [types, models, brands, fuels] = response;
+
+                this.typesSource = types.data;
+                this.modelsSource = models.data;
+                this.brandsSource = brands.data;
+                this.fuelsSource = fuels.data;
 
                 this.types = types.data.map(type => ({value: type.id, label: type.description}));
                 this.models = models.data.map(model => ({value: model.id, label: model.description}));
@@ -201,10 +210,13 @@
 
                 actionPerformed.then(res => {
                     const actionToNotify = this.edit ? 'vehicle-updated' : 'vehicle-created';
-                    this.description = '';
-                    res.data.brandId = this.brandId;
-                    this.brandId = null;
                     this.isSavingModel = false;
+                    res.data.brand = this.brandsSource.find(brand => brand.id == this.brandId);
+                    res.data.model = this.modelsSource.find(model => model.id == this.modelId);
+                    res.data.type = this.typesSource.find(type => type.id == this.typeId);
+                    res.data.fuel = this.fuelsSource.find(fuel => fuel.id == this.fuelId);
+
+                    this.clearForm();
                     this.$emit(actionToNotify, res.data);
                 });
             },
@@ -223,17 +235,27 @@
                     icon: 'fa fa-warning'
                 });
             },
-            updateType(id){
+            updateType(id) {
                 this.typeId = id;
             },
-            updateModel(id){
+            updateModel(id) {
                 this.modelId = id;
             },
-            updateBrand(id){
+            updateBrand(id) {
                 this.brandId = id;
             },
-            updateFuel(id){
+            updateFuel(id) {
                 this.fuelId = id;
+            },
+            clearForm() {
+                this.description = '';
+                this.chassis = '';
+                this.engine = '';
+                this.plate = '';
+                this.brandId = null;
+                this.modelId = null;
+                this.typeId = null;
+                this.fuelId = null;
             }
         }
     };
