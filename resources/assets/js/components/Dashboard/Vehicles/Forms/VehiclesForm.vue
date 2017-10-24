@@ -200,7 +200,7 @@
                 this.isSavingBrand = true;
 
                 actionPerformed.then(res => {
-                    const actionToNotify = this.edit ? 'model-updated' : 'model-created';
+                    const actionToNotify = this.edit ? 'vehicle-updated' : 'vehicle-created';
                     this.description = '';
                     res.data.brandId = this.brandId;
                     this.brandId = null;
