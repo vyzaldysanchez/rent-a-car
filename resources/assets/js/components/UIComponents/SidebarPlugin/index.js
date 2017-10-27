@@ -29,6 +29,11 @@ const SidebarStore = {
             path: '/admin/vehicles/manage'
         },
         {
+            name: 'Employees',
+            icon: 'ti-user',
+            path: '/admin/employees'
+        },
+        {
             name: 'logout',
             icon: 'ti-angle-double-left',
             path: '/user/logout'
