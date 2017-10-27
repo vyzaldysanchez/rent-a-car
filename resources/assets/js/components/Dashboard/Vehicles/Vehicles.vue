@@ -1,7 +1,7 @@
 <template>
     <div class="vehicles">
         <div v-if="!isLoaded">
-            <h3>Loading...</h3>
+            <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
             <vehicles-form :edit="vehicleToEdit !== null" :vehicle="vehicleToEdit"

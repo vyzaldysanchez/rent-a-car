@@ -1,16 +1,18 @@
 <template>
     <div class="vehicle-types">
         <div v-if="!loaded">
-            <h3 class="text-center">Loading data...</h3>
+            <h3 class="text-center">Loading...</h3>
         </div>
-        <vehicle-types-form :edit="vehicleTypeToEdit !== null" :vehicle-type="vehicleTypeToEdit"
-                            @type-created="addVehicleType" @type-updated="updateVehicleType">
-        </vehicle-types-form>
+        <div v-if="loaded">
+            <vehicle-types-form :edit="vehicleTypeToEdit !== null" :vehicle-type="vehicleTypeToEdit"
+                                @type-created="addVehicleType" @type-updated="updateVehicleType">
+            </vehicle-types-form>
 
-        <hr>
+            <hr>
 
-        <table-list v-if="loaded" :columns="propsToDisplay" v-bind:tableData="vehicleTypes"
-                    :use-actions="true"></table-list>
+            <table-list :columns="propsToDisplay" v-bind:tableData="vehicleTypes"
+                        :use-actions="true"></table-list>
+        </div>
     </div>
 </template>
 <script>
