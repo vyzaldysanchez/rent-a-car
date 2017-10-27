@@ -5,7 +5,7 @@ const SidebarStore = {
     sidebarLinks: [{
         name: 'Home',
         icon: 'ti-home',
-        path: '/admin/profile'
+        path: '/admin/overview'
     },
         {
             name: 'Vehicle Types',
@@ -27,6 +27,11 @@ const SidebarStore = {
             name: 'Vehicles',
             icon: 'ti-car',
             path: '/admin/vehicles/manage'
+        },
+        {
+            name: 'Employees',
+            icon: 'ti-user',
+            path: '/admin/employees'
         },
         {
             name: 'logout',

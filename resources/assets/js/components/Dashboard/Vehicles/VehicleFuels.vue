@@ -1,7 +1,7 @@
 <template>
     <div class="vehicle-fuels">
         <div v-if="!isLoaded">
-            <h3>Loading...</h3>
+            <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
             <vehicle-fuels-form :edit="fuelToUpdate !== null" :fuel="fuelToUpdate" @fuel-created="addFuel"

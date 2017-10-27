@@ -9,7 +9,7 @@
             <form>
                 <div class="row">
                     <div class="col-md-12">
-                        <fg-input type="text" label="Username" placeholder="employee" v-model="email">
+                        <fg-input type="email" label="Username" placeholder="employee" v-model="email">
                         </fg-input>
                     </div>
                     <div class="col-md-12">
@@ -68,14 +68,19 @@
                     this.authenticating = true;
                     this.loginBtnText = LOADING_TEXT;
 
-                    userService.login(user)
-                        .then(() => this.$router.push({path: '/'}))
+                    userService.login(user).then(() => this.$router.push({path: '/'}))
                         .catch(error => {
                             this.authenticating = false;
                             this.loginBtnText = LOGIN_TEXT;
 
-                            if (error.response.status === 401) {
-                                this.alertError('Credentials invalid. Try again.');
+                            if (error.response.status === 422) {
+                                const errors = error.response.data.errors;
+                                if (errors) {
+                                    const errorKeys = Object.keys(errors);
+                                    this.alertError(errors[errorKeys[0]][0] || 'Credentials invalid. Try again.');
+                                } else {
+                                    this.alertError('Credentials invalid. Try again.');
+                                }
                             }
                         });
                 } else {

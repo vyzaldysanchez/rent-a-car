@@ -1,10 +1,11 @@
 <template>
     <div class="vehicles">
         <div v-if="!isLoaded">
-            <h3>Loading...</h3>
+            <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <vehicles-form @vehicle-created="addVehicle"></vehicles-form>
+            <vehicles-form :edit="vehicleToEdit !== null" :vehicle="vehicleToEdit"
+                           @vehicle-created="addVehicle" @vehicle-updated="updateVehicle"></vehicles-form>
 
             <hr>
 
@@ -28,7 +29,8 @@
             return {
                 isLoaded: false,
                 vehicles: [],
-                tableColumns: [...tableColumns]
+                tableColumns: [...tableColumns],
+                vehicleToEdit: null
             };
         },
         mounted() {
@@ -36,18 +38,28 @@
                 .then(response => {
                     this.vehicles = response.data.map((vehicle, index) => {
                         const mappedVehicle = {
+                            id: vehicle.id,
                             description: vehicle.description,
                             chassis: vehicle['chassis_number'],
                             engine: vehicle['engine_number'],
                             plate: vehicle['plate_number'],
+                            typeId: vehicle.type.id,
                             type: vehicle.type.description,
+                            modelId: vehicle.model.id,
                             model: vehicle.model.description,
+                            brandId: vehicle.brand.id,
                             brand: vehicle.brand.description,
+                            fuelId: vehicle.fuel.id,
                             fuel: vehicle.fuel.description,
                             state: vehicle.state,
                         };
 
-                        return factory.createForTableList({object: mappedVehicle, index, onEdit: null, onRemove: null});
+                        return factory.createForTableList({
+                            object: mappedVehicle,
+                            index,
+                            onEdit: this.edit,
+                            onRemove: this.askToRemove
+                        });
                     });
 
                     this.isLoaded = true;
@@ -56,13 +68,18 @@
         methods: {
             addVehicle(data) {
                 const mappedVehicle = {
+                        id: data.id,
                         description: data.description,
                         chassis: data['chassis_number'],
                         engine: data['engine_number'],
                         plate: data['plate_number'],
+                        typeId: data.type.id,
                         type: data.type.description,
+                        modelId: data.model.id,
                         model: data.model.description,
+                        brandId: data.brand.id,
                         brand: data.brand.description,
+                        fuelId: data.fuel.id,
                         fuel: data.fuel.description,
                         state: data.state || 'AVAILABLE',
                     },
@@ -71,9 +88,39 @@
                 this.vehicles.push(factory.createForTableList({
                     object: mappedVehicle,
                     index,
-                    onEdit: null,
-                    onRemove: null
+                    onEdit: this.edit,
+                    onRemove: this.askToRemove
                 }));
+            },
+            askToRemove(vehicle) {
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: `The vehicle and all it\'s data associated will be deleted.`,
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(() => this.removeVehicle(vehicle));
+            },
+            removeVehicle(vehicle) {
+                this.$axios.delete(`http://localhost:8000/api/vehicles/${vehicle.id}`)
+                    .then(() => {
+                        const index = this.vehicles.findIndex(storedVehicle => vehicle.id === storedVehicle.id);
+                        this.vehicles = this.vehicles.slice(0, index).concat(this.vehicles.slice(index + 1));
+                    });
+            },
+            edit(vehicle) {
+                this.vehicleToEdit = vehicle;
+            },
+            updateVehicle(vehicleData) {
+                this.vehicles = this.vehicles.map(vehicle => {
+                    if (vehicle.id === vehicleData.id) {
+                        vehicle = Object.assign(vehicle, {description: vehicleData.description});
+                    }
+
+                    return vehicle;
+                });
+
+                this.vehicleToEdit = null;
             }
         }
     };

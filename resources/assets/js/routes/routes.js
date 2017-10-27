@@ -1,16 +1,11 @@
-import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
+import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue';
 // GeneralViews
-import NotFound from '../components/GeneralViews/NotFoundPage.vue'
+import NotFound from '../components/GeneralViews/NotFoundPage.vue';
 // Admin pages
-import Overview from '../components/Dashboard/Views/Overview.vue'
-import UserProfile from '../components/Dashboard/Views/UserProfile.vue'
-import Notifications from '../components/Dashboard/Views/Notifications.vue'
-import Icons from '../components/Dashboard/Views/Icons.vue'
-import Maps from '../components/Dashboard/Views/Maps.vue'
-import Typography from '../components/Dashboard/Views/Typography.vue'
-import TableList from '../components/Dashboard/Views/TableList.vue'
-import usersRoutes from './users/routes'
-import vehiclesRoutes from './vehicles/routes'
+import Overview from '../components/Dashboard/Views/Overview.vue';
+import Employees from '../components/Dashboard/Management/Employees.vue';
+import usersRoutes from './users/routes';
+import vehiclesRoutes from './vehicles/routes';
 
 const routes = [
     usersRoutes,
@@ -22,7 +17,7 @@ const routes = [
     {
         path: '/admin',
         component: DashboardLayout,
-        redirect: '/admin/profile',
+        redirect: '/admin/overview',
         children: [
             ...vehiclesRoutes,
             {
@@ -31,35 +26,10 @@ const routes = [
                 component: Overview
             },
             {
-                path: 'profile',
-                name: 'profile',
-                component: UserProfile
+                path: 'employees',
+                name: 'employees',
+                component: Employees
             },
-            {
-                path: 'notifications',
-                name: 'notifications',
-                component: Notifications
-            },
-            {
-                path: 'icons',
-                name: 'icons',
-                component: Icons
-            },
-            {
-                path: 'maps',
-                name: 'maps',
-                component: Maps
-            },
-            {
-                path: 'typography',
-                name: 'typography',
-                component: Typography
-            },
-            {
-                path: 'table-list',
-                name: 'table-list',
-                component: TableList
-            }
         ]
     },
     {path: '*', component: NotFound}

@@ -1,16 +1,18 @@
 <template>
     <div class="vehicle-models">
         <div v-if="!isLoaded">
-            <h3>Loading...</h3>
+            <h3 class="text-center">Loading...</h3>
         </div>
 
-        <vehicle-models-form :edit="modelToUpdate !== null" :model="modelToUpdate" :brands="brands"
-                             @model-created="addModel" @model-updated="updateModel">
-        </vehicle-models-form>
+        <div v-if="isLoaded">
+            <vehicle-models-form :edit="modelToUpdate !== null" :model="modelToUpdate" :brands="brands"
+                                 @model-created="addModel" @model-updated="updateModel">
+            </vehicle-models-form>
 
-        <hr>
+            <hr>
 
-        <table-list v-if="isLoaded" :columns="tableColumns" :use-actions="true" :table-data="models"></table-list>
+            <table-list :columns="tableColumns" :use-actions="true" :table-data="models"></table-list>
+        </div>
     </div>
 </template>
 <script>
