@@ -66,8 +66,14 @@
             plate(value) {
                 this.plate = value.slice(0, 8).toUpperCase();
             },
-            vehicle(value) {
-                this.edit = !!value;
+            vehicle(vehicle) {
+                if (this.edit = !!vehicle) {
+                    for (let vehicleProp of Object.keys(vehicle)) {
+                        if (vehicleProp in this) {
+                            this[vehicleProp] = vehicle[vehicleProp];
+                        }
+                    }
+                }
             }
         },
         data() {

@@ -4,7 +4,8 @@
             <h3>Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <vehicles-form @vehicle-created="addVehicle"></vehicles-form>
+            <vehicles-form :edit="vehicleToEdit !== null" :vehicle="vehicleToEdit"
+                           @vehicle-created="addVehicle" @vehicle-updated="updateVehicle"></vehicles-form>
 
             <hr>
 
@@ -28,7 +29,8 @@
             return {
                 isLoaded: false,
                 vehicles: [],
-                tableColumns: [...tableColumns]
+                tableColumns: [...tableColumns],
+                vehicleToEdit: null
             };
         },
         mounted() {
@@ -41,9 +43,13 @@
                             chassis: vehicle['chassis_number'],
                             engine: vehicle['engine_number'],
                             plate: vehicle['plate_number'],
+                            typeId: vehicle.type.id,
                             type: vehicle.type.description,
+                            modelId: vehicle.model.id,
                             model: vehicle.model.description,
+                            brandId: vehicle.brand.id,
                             brand: vehicle.brand.description,
+                            fuelId: vehicle.fuel.id,
                             fuel: vehicle.fuel.description,
                             state: vehicle.state,
                         };
@@ -51,7 +57,7 @@
                         return factory.createForTableList({
                             object: mappedVehicle,
                             index,
-                            onEdit: null,
+                            onEdit: this.edit,
                             onRemove: this.askToRemove
                         });
                     });
@@ -67,9 +73,13 @@
                         chassis: data['chassis_number'],
                         engine: data['engine_number'],
                         plate: data['plate_number'],
+                        typeId: data.type.id,
                         type: data.type.description,
+                        modelId: data.model.id,
                         model: data.model.description,
+                        brandId: data.brand.id,
                         brand: data.brand.description,
+                        fuelId: data.fuel.id,
                         fuel: data.fuel.description,
                         state: data.state || 'AVAILABLE',
                     },
@@ -78,7 +88,7 @@
                 this.vehicles.push(factory.createForTableList({
                     object: mappedVehicle,
                     index,
-                    onEdit: null,
+                    onEdit: this.edit,
                     onRemove: this.askToRemove
                 }));
             },
@@ -97,6 +107,11 @@
                         const index = this.vehicles.findIndex(storedVehicle => vehicle.id === storedVehicle.id);
                         this.vehicles = this.vehicles.slice(0, index).concat(this.vehicles.slice(index + 1));
                     });
+            },
+            edit(vehicle) {
+                this.vehicleToEdit = vehicle;
+            },
+            updateVehicle(vehicle) {
             }
         }
     };
