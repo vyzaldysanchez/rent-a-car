@@ -5,7 +5,7 @@ const SidebarStore = {
     sidebarLinks: [{
         name: 'Home',
         icon: 'ti-home',
-        path: '/admin/profile'
+        path: '/admin/overview'
     },
         {
             name: 'Vehicle Types',
