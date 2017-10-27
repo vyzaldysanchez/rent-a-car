@@ -111,7 +111,16 @@
             edit(vehicle) {
                 this.vehicleToEdit = vehicle;
             },
-            updateVehicle(vehicle) {
+            updateVehicle(vehicleData) {
+                this.vehicles = this.vehicles.map(vehicle => {
+                    if (vehicle.id === vehicleData.id) {
+                        vehicle = Object.assign(vehicle, {description: vehicleData.description});
+                    }
+
+                    return vehicle;
+                });
+
+                this.vehicleToEdit = null;
             }
         }
     };
