@@ -4,22 +4,22 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <vehicle-fuels-form :edit="fuelToUpdate !== null" :fuel="fuelToUpdate" @fuel-created="addFuel"
-                                @fuel-updated="updateFuel"></vehicle-fuels-form>
-
+            <vehicle-fuels-form :edit="fuelToUpdate !== null" :fuel="fuelToUpdate" @fuel-created="addFuel" @fuel-updated="updateFuel"></vehicle-fuels-form>
+    
             <hr>
-
+    
             <table-list :columns="tableColumns" :use-actions="true" :table-data="fuels"></table-list>
         </div>
     </div>
 </template>
+
 <script>
     import VehicleFuelsForm from './Forms/VehicleFuelsForm.vue';
     import TableList from './../Views/TableList.vue';
     import factory from './../../../factories/factory';
-
+    
     const tableColumns = ['Ord', 'Description', 'State', 'Actions'];
-
+    
     export default {
         components: {
             VehicleFuelsForm,
@@ -49,15 +49,17 @@
         },
         methods: {
             addFuel(data) {
-                let fuel = Object.assign(data, {state: data.state || 'ACTIVE'});
-
+                let fuel = Object.assign(data, {
+                    state: data.state || 'ACTIVE'
+                });
+    
                 fuel = factory.createForTableList({
                     object: fuel,
                     index: this.fuels.length,
                     onEdit: this.edit,
                     onRemove: this.askToRemove
                 });
-
+    
                 this.fuels.push(fuel);
             },
             edit(model) {
@@ -66,12 +68,14 @@
             updateFuel(data) {
                 this.fuels = this.fuels.map(fuel => {
                     if (fuel.id === data.id) {
-                        fuel = Object.assign(fuel, {description: data.description});
+                        fuel = Object.assign(fuel, {
+                            description: data.description
+                        });
                     }
-
+    
                     return fuel;
                 });
-
+    
                 this.fuelToUpdate = null;
             },
             askToRemove(fuel) {
