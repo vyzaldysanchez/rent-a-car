@@ -6,49 +6,42 @@
                     <fg-input label="Description" placeholder="Vehicle Description..." v-model="description"></fg-input>
                 </div>
                 <div class="col-md-5">
-                    <fg-input label="Chasis No." placeholder="AESFAIAS7676Q..." :min="17" :max="17"
-                              v-model="chassis"></fg-input>
+                    <fg-input label="Chasis No." placeholder="AESFAIAS7676Q..." :min="17" :max="17" v-model="chassis"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-input label="Engine No." placeholder="ADFGHGREADSDFSDR..." :min="11" :max="11"
-                              v-model="engine"></fg-input>
+                    <fg-input label="Engine No." placeholder="ADFGHGREADSDFSDR..." :min="11" :max="11" v-model="engine"></fg-input>
                 </div>
                 <div class="col-md-5">
-                    <fg-input label="Plate No." placeholder="ADFGHGREADSDFSDR..." :min="8" :max="8"
-                              v-model="plate"></fg-input>
+                    <fg-input label="Plate No." placeholder="ADFGHGREADSDFSDR..." :min="8" :max="8" v-model="plate"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-select label="Vehicle type" placeholder="Select a vehicle type from the list below..."
-                               v-model="typeId" :options="types" @change="updateType"></fg-select>
+                    <fg-select label="Vehicle type" placeholder="Select a vehicle type from the list below..." v-model="typeId" :options="types" @change="updateType"></fg-select>
                 </div>
                 <div class="col-md-5">
-                    <fg-select label="Vehicle brand" placeholder="Select a brand from the list below..."
-                               v-model="brandId" :options="brands" @change="updateBrand"></fg-select>
+                    <fg-select label="Vehicle brand" placeholder="Select a brand from the list below..." v-model="brandId" :options="brands" @change="updateBrand"></fg-select>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-select label="Vehicle model" placeholder="Select a model from the list below..."
-                               v-model="modelId" :options="models" @change="updateModel"></fg-select>
+                    <fg-select label="Vehicle model" placeholder="Select a model from the list below..." v-model="modelId" :options="models" @change="updateModel"></fg-select>
                 </div>
                 <div class="col-md-5">
-                    <fg-select label="Fuel" placeholder="Select a fuel type from the list below..."
-                               v-model="fuelId" :options="fuels" @change="updateFuel"></fg-select>
+                    <fg-select label="Fuel" placeholder="Select a fuel type from the list below..." v-model="fuelId" :options="fuels" @change="updateFuel"></fg-select>
                 </div>
-
+    
                 <div class="text-center">
-                    <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingVehicle}"
-                            @click.prevent="validBeforeSave">
-                        Save
-                    </button>
+                    <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingVehicle}" @click.prevent="validBeforeSave">
+                                                                    Save
+                                                                </button>
                 </div>
             </div>
         </form>
-
+    
         <notifications></notifications>
     </div>
 </template>
+
 <script>
     import PaperNotification from '../../../UIComponents/NotificationPlugin/Notifications.vue';
-
+    
     export default {
         components: {
             PaperNotification
@@ -100,92 +93,90 @@
             };
         },
         mounted() {
-            Promise.all([
-                this.$axios.get('http://localhost:8000/api/types'),
-                this.$axios.get('http://localhost:8000/api/models'),
-                this.$axios.get('http://localhost:8000/api/brands'),
-                this.$axios.get('http://localhost:8000/api/fuels')
-            ]).then(response => {
+            this.getInitialDataPromise().then(response => {
                 const [types, models, brands, fuels] = response;
-
+    
                 this.typesSource = types.data;
                 this.modelsSource = models.data;
                 this.brandsSource = brands.data;
                 this.fuelsSource = fuels.data;
-
-                this.types = types.data.map(type => ({value: type.id, label: type.description}));
-                this.models = models.data.map(model => ({value: model.id, label: model.description}));
-                this.brands = brands.data.map(brand => ({value: brand.id, label: brand.description}));
-                this.fuels = fuels.data.map(fuel => ({value: fuel.id, label: fuel.description}));
+    
+                this.types = types.data.map(type => ({
+                    value: type.id,
+                    label: type.description
+                }));
+                this.models = models.data.map(model => ({
+                    value: model.id,
+                    label: model.description
+                }));
+                this.brands = brands.data.map(brand => ({
+                    value: brand.id,
+                    label: brand.description
+                }));
+                this.fuels = fuels.data.map(fuel => ({
+                    value: fuel.id,
+                    label: fuel.description
+                }));
             });
         },
         methods: {
+            getInitialDataPromise() {
+                return Promise.all([
+                    this.$axios.get('http://localhost:8000/api/types'),
+                    this.$axios.get('http://localhost:8000/api/models'),
+                    this.$axios.get('http://localhost:8000/api/brands'),
+                    this.$axios.get('http://localhost:8000/api/fuels')
+                ]);
+            },
             isFormValid() {
-                if (!this.description) {
-                    this.formError = 'The description is required';
-                    return false;
+                this.formError = '';
+    
+                switch (true) {
+                    case !this.description:
+                        this.formError = 'The description is required';
+                        break;
+                    case !this.chassis:
+                        this.formError = 'The chassis is required';
+                        break;
+                    case this.chassis.length !== 17:
+                        this.formError = 'The chassis is not long enough';
+                        break;
+                    case !this.engine:
+                        this.formError = 'The engine is required';
+                        break;
+                    case this.engine.length !== 11:
+                        this.formError = 'The engine is not long enough';
+                        break;
+                    case !this.plate:
+                        this.formError = 'The plate is required';
+                        break;
+                    case this.plate.length !== 8:
+                        this.formError = 'The plate is not long enough';
+                        break;
+                    case !this.typeId:
+                        this.formError = 'The vehicle type is required';
+                        break;
+                    case !this.brandId:
+                        this.formError = 'The brand is required';
+                        break;
+                    case !this.modelId:
+                        this.formError = 'The model is required';
+                        break;
+                    case !this.fuelId:
+                        this.formError = 'The fuel is required';
+                        break;
                 }
-
-                if (!this.chassis) {
-                    this.formError = 'The chassis is required';
-                    return false;
-                }
-
-                if (this.chassis.length < 17) {
-                    this.formError = 'The chassis is not long enough';
-                    return false;
-                }
-
-                if (!this.engine) {
-                    this.formError = 'The engine is required';
-                    return false;
-                }
-
-                if (this.engine.length < 11) {
-                    this.formError = 'The engine is not long enough';
-                    return false;
-                }
-
-                if (!this.plate) {
-                    this.formError = 'The plate is required';
-                    return false;
-                }
-
-                if (this.plate.length < 8) {
-                    this.formError = 'The plate is not long enough';
-                    return false;
-                }
-
-                if (!this.typeId) {
-                    this.formError = 'The vehicle type is required';
-                    return false;
-                }
-
-                if (!this.brandId) {
-                    this.formError = 'The brand is required';
-                    return false;
-                }
-
-                if (!this.modelId) {
-                    this.formError = 'The model is required';
-                    return false;
-                }
-
-                if (!this.fuelId) {
-                    this.formError = 'The fuel is required';
-                    return false;
-                }
-
-                return true;
+    
+                return !!this.formError;
             },
             validBeforeSave() {
                 if (this.isSavingVehicle) {
                     return;
                 }
-
+    
                 if (this.isFormValid()) {
                     const actionToPerform = this.edit ? 'updated' : 'created';
-
+    
                     this.$swal({
                         title: 'Are you sure?',
                         html: `The vehicle <b>${this.description}</b> will be ${actionToPerform}.`,
@@ -209,11 +200,11 @@
                         'fuel_id': this.fuelId
                     },
                     actionPerformed = this.edit ?
-                        this.getUpdatePromise(body) :
-                        this.getCreatePromise(body);
-
+                    this.getUpdatePromise(body) :
+                    this.getCreatePromise(body);
+    
                 this.isSavingBrand = true;
-
+    
                 actionPerformed.then(res => {
                     const actionToNotify = this.edit ? 'vehicle-updated' : 'vehicle-created';
                     this.isSavingModel = false;
@@ -221,7 +212,7 @@
                     res.data.model = this.modelsSource.find(model => model.id == this.modelId);
                     res.data.type = this.typesSource.find(type => type.id == this.typeId);
                     res.data.fuel = this.fuelsSource.find(fuel => fuel.id == this.fuelId);
-
+    
                     this.clearForm();
                     this.$emit(actionToNotify, res.data);
                 });
