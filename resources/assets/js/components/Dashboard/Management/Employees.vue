@@ -4,19 +4,25 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
+            <employees-form></employees-form>
+
+            <hr>
+
             <table-list :columns="tableColumns" :table-data="employees"></table-list>
         </div>
     </div>
 </template>
 
 <script>
+    import EmployeesForm from './Forms/EmployeesForm.vue';
     import TableList from './../Views/TableList.vue';
     
     const tableColumns = ['Ord', 'Name', 'Identification', 'CreditCard', 'CreditLimit', 'PersonType', 'State', 'Actions'];
     
     export default {
         components: {
-            TableList
+            TableList,
+            EmployeesForm
         },
         data() {
             return {
