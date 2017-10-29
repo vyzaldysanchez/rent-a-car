@@ -3,7 +3,7 @@ import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
 import NotFound from '../components/GeneralViews/NotFoundPage.vue';
 // Admin pages
 import Overview from '../components/Dashboard/Views/Overview.vue';
-import Employees from '../components/Dashboard/Management/Employees.vue';
+import Clients from '../components/Dashboard/Management/Clients.vue';
 import usersRoutes from './users/routes';
 import vehiclesRoutes from './vehicles/routes';
 
@@ -26,13 +26,13 @@ const routes = [
                 component: Overview
             },
             {
-                path: 'employees',
-                name: 'employees',
-                component: Employees
+                path: 'clients',
+                name: 'clients',
+                component: Clients
             },
         ]
     },
-    {path: '*', component: NotFound}
+    { path: '*', component: NotFound }
 ];
 
 /**

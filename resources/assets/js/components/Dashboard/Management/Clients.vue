@@ -4,7 +4,7 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <employees-form></employees-form>
+            <clients-form></clients-form>
 
             <hr>
 
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import EmployeesForm from './Forms/EmployeesForm.vue';
+    import ClientsForm from './Forms/ClientsForm.vue';
     import TableList from './../Views/TableList.vue';
     
     const tableColumns = ['Ord', 'Name', 'Identification', 'CreditCard', 'CreditLimit', 'PersonType', 'State', 'Actions'];
@@ -22,7 +22,7 @@
     export default {
         components: {
             TableList,
-            EmployeesForm
+            ClientsForm
         },
         data() {
             return {
