@@ -32,4 +32,6 @@ class PersonType extends Model
     protected $updated_at;
 
     protected $fillable = ['name'];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

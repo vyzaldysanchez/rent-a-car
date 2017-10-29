@@ -1,6 +1,9 @@
 <template>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" v-if="!tableData.length">
+            <h3 class="text-danger text-center">No data available.</h3>
+        </div>
+        <div class="col-md-12" v-else>
             <fg-input name="search-box" placeholder="Search..."
                       v-model="valueToSearch" @input="filterItems()"></fg-input>
             <div class="card card-plain">
