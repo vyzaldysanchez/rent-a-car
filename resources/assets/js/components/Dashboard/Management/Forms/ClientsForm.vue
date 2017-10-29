@@ -6,7 +6,7 @@
                     <fg-input label="Name" placeholder="John Doe" v-model="employee.name"></fg-input>
                 </div>
                 <div class="col-md-5">
-                    <fg-input label="Identification" placeholder="403-9879652-0" v-model="employee.identification"></fg-input>
+                    <fg-input type="text" label="Identification" :max="13" placeholder="403-9879652-0" v-model="identification"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
                     <fg-input label="Credit Card" placeholder="4585554818138161865" v-model="employee.creditCard"></fg-input>
@@ -34,6 +34,12 @@
                 isSavingEmployee: false,
                 isFormValid: true,
                 formErrors: [],
+                get identification() {
+                    return this.employee.identification;
+                },
+                set identification(value) {
+                    this.employee.identification = value.replace(/^(\d{3})(\d{7})(\d{1})$/, '$1-$2-$3');
+                },
                 employee: {
                     name: '',
                     identification: '',
@@ -50,6 +56,7 @@
             }
         },
         mounted() {
+            console.log(this.$options);
             this.$axios.get('http://localhost:8000/api/person_types').then(
                 resp =>
                 (this.personTypes = resp.data.map(personType => ({
@@ -74,8 +81,8 @@
                 this.validateName();
                 this.validateCreditCard();
                 this.validateCreditLimit();
-                this.validatePersonType();    
-
+                this.validatePersonType();
+    
                 if (this.formHasErrors) {
                     this.notifyErrors();
                 } else {}
@@ -114,10 +121,10 @@
                     this.formErrors.push('The credit limit is not valid.');
                 }
             },
-            validatePersonType(){
+            validatePersonType() {
                 this.isFormValid = this.isFormValid && this.employee.personType > 0;
-
-                 if (!this.isFormValid) {
+    
+                if (!this.isFormValid) {
                     this.formErrors.push('The person type selected is not valid.');
                 }
             },
