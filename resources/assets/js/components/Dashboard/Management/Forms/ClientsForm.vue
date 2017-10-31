@@ -9,7 +9,7 @@
                     <fg-input type="text" label="Identification" :max="13" placeholder="403-9879652-0" v-model="identification"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-input label="Credit Card" placeholder="4585554818138161865" v-model="client.creditCard"></fg-input>
+                    <fg-input label="Credit Card" placeholder="4585554818138161865" :max="19" v-model="client.creditCard"></fg-input>
                 </div>
                 <div class="col-md-5">
                     <fg-input label="Credit Limit" placeholder="896.15" type="number" v-model="client.creditLimit"></fg-input>
@@ -39,14 +39,16 @@
                     return this.client.identification;
                 },
                 set identification(value) {
-                    this.client.identification = value.replace(/^(\d{3})(\d{7})(\d{1})$/, '$1-$2-$3');
+                    this.client.identification = value
+                        .replace(/\D+/g, '')
+                        .replace(/^(\d{3})(\d{7})(\d{1})$/, '$1-$2-$3');
                 },
                 client: {
                     name: '',
                     identification: '',
                     creditCard: '',
                     creditLimit: 0,
-                    personType: 0
+                    personType: 1
                 },
                 personTypes: []
             };
@@ -74,6 +76,7 @@
                     return;
                 }
     
+                this.isFormValid = true;
                 this.formErrors = [];
     
                 this.validateName();
@@ -90,7 +93,8 @@
     
                     this.$swal({
                         title: 'Are you sure?',
-                        html: `The client <b>${this.client.name}</b> will be ${actionToPerform}.`,
+                        html: `The client <b>${this.client
+                            .name}</b> will be ${actionPerformed}.`,
                         type: 'warning',
                         showConfirmButton: true,
                         showCancelButton: true
@@ -108,18 +112,30 @@
                 }
             },
             validateIdentification() {
-                this.isFormValid = this.isFormValid && this.isIdentificationValid(this.client.identification);
+                this.isFormValid =
+                    this.isFormValid &&
+                    this.isIdentificationValid(this.client.identification);
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The identification format is not correct.');
                 }
             },
             validateCreditCard() {
-                this.isFormValid =
-                    this.isFormValid && this.client.creditCard.length !== 19;
+                const lengthIsValid = this.client.creditCard.length === 19,
+                    formatIsValid = this.client.creditCard.match(/\d/g);
     
-                if (!this.isFormValid) {
-                    this.formErrors.push('The credit card number is no 19 characters.');
+                this.formIsValid = this.formIsValid && lengthIsValid && formatIsValid;
+    
+                if (!lengthIsValid) {
+                    this.formErrors.push(
+                        'The credit card number length is no 19 characters.'
+                    );
+                }
+    
+                if (!formatIsValid) {
+                    this.formErrors.push(
+                        'Only numeric chars are allowed for a credit card.'
+                    );
                 }
             },
             validateCreditLimit() {
@@ -151,6 +167,29 @@
                     horizontalAlign: 'right',
                     icon: 'fa fa-warning'
                 });
+            },
+            save() {
+                const body = {
+                    name: this.client.name,
+                    identification_number: this.client.identification,
+                    credit_card_number: this.client.creditCard,
+                    credit_limit: this.client.creditLimit,
+                    person_type_id: this.client.personType
+                };
+    
+                this.isSavingClient = true;
+    
+                this.$axios
+                    .post('http://localhost:8000/api/clients', body)
+                    .then(resp => {
+                        this.isSavingClient = false;
+                    })
+                    .catch(error => {
+                        this.formIsValid = false;
+                        this.formErrors.push(error.response.data.message);
+                        this.notifyErrors();
+                        this.isSavingClient = false;
+                    });
             }
         }
     };
