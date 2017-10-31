@@ -1,25 +1,25 @@
 <template>
-    <div class="employees-form">
+    <div class="clients-form">
         <form>
             <div class="row">
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-input label="Name" placeholder="John Doe" v-model="employee.name"></fg-input>
+                    <fg-input label="Name" placeholder="John Doe" v-model="client.name"></fg-input>
                 </div>
                 <div class="col-md-5">
                     <fg-input type="text" label="Identification" :max="13" placeholder="403-9879652-0" v-model="identification"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-input label="Credit Card" placeholder="4585554818138161865" v-model="employee.creditCard"></fg-input>
+                    <fg-input label="Credit Card" placeholder="4585554818138161865" v-model="client.creditCard"></fg-input>
                 </div>
                 <div class="col-md-5">
-                    <fg-input label="Credit Limit" placeholder="896.15" type="number" v-model="employee.creditLimit"></fg-input>
+                    <fg-input label="Credit Limit" placeholder="896.15" type="number" v-model="client.creditLimit"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-select label="Person Type" placeholder="Select a person type" v-model="employee.personType" :options="personTypes" @change="updateEmployeeId"></fg-select>
+                    <fg-select label="Person Type" placeholder="Select a person type" v-model="client.personType" :options="personTypes" @change="updateClientId"></fg-select>
                 </div>
                 <div class="col-md-12">
                     <div class="text-center">
-                        <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingEmployee}" @click.prevent="validBeforeSave">Save</button>
+                        <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingClient}" @click.prevent="validBeforeSave">Save</button>
                     </div>
                 </div>
             </div>
@@ -31,16 +31,17 @@
     export default {
         data() {
             return {
-                isSavingEmployee: false,
+                isSavingClient: false,
                 isFormValid: true,
                 formErrors: [],
+                onEditionMode: false,
                 get identification() {
-                    return this.employee.identification;
+                    return this.client.identification;
                 },
                 set identification(value) {
-                    this.employee.identification = value.replace(/^(\d{3})(\d{7})(\d{1})$/, '$1-$2-$3');
+                    this.client.identification = value.replace(/^(\d{3})(\d{7})(\d{1})$/, '$1-$2-$3');
                 },
-                employee: {
+                client: {
                     name: '',
                     identification: '',
                     creditCard: '',
@@ -66,11 +67,11 @@
             );
         },
         methods: {
-            updateEmployeeId(id) {
-                this.employee.personType = id;
+            updateClientId(id) {
+                this.client.personType = id;
             },
             validBeforeSave() {
-                if (this.isSavingEmployee) {
+                if (this.isSavingClient) {
                     return;
                 }
     
@@ -85,22 +86,30 @@
     
                 if (this.formHasErrors) {
                     this.notifyErrors();
-                } else {}
+                } else {
+                    const actionPerformed = this.onEditionMode ? 'updated' : 'created';
+    
+                    this.$swal({
+                        title: 'Are you sure?',
+                        html: `The client <b>${this.client.name}</b> will be ${actionToPerform}.`,
+                        type: 'warning',
+                        showConfirmButton: true,
+                        showCancelButton: true
+                    }).then(this.save.bind(this));
+                }
             },
             isIdentificationValid(value) {
                 return /\d{3}-\d{7}-\d{1}/.test(value);
             },
             validateName() {
-                this.isFormValid = this.isFormValid && !!this.employee.name;
+                this.isFormValid = this.isFormValid && !!this.client.name;
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The name field is empty');
                 }
             },
             validateIdentification() {
-                this.isFormValid =
-                    this.isFormValid &&
-                    this.isIdentificationValid(this.employee.identification);
+                this.isFormValid = this.isFormValid && this.isIdentificationValid(this.client.identification);
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The identification format is not correct.');
@@ -108,21 +117,21 @@
             },
             validateCreditCard() {
                 this.isFormValid =
-                    this.isFormValid && this.employee.creditCard.length !== 19;
+                    this.isFormValid && this.client.creditCard.length !== 19;
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The credit card number is no 19 characters.');
                 }
             },
             validateCreditLimit() {
-                this.isFormValid = this.isFormValid && this.employee.creditLimit > 0;
+                this.isFormValid = this.isFormValid && this.client.creditLimit > 0;
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The credit limit is not valid.');
                 }
             },
             validatePersonType() {
-                this.isFormValid = this.isFormValid && this.employee.personType > 0;
+                this.isFormValid = this.isFormValid && this.client.personType > 0;
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The person type selected is not valid.');
