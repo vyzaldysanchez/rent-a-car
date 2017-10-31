@@ -4,22 +4,22 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <vehicles-form :edit="vehicleToEdit !== null" :vehicle="vehicleToEdit"
-                           @vehicle-created="addVehicle" @vehicle-updated="updateVehicle"></vehicles-form>
-
+            <vehicles-form :edit="vehicleToEdit !== null" :vehicle="vehicleToEdit" @vehicle-created="addVehicle" @vehicle-updated="updateVehicle"></vehicles-form>
+    
             <hr>
-
+    
             <table-list :columns="tableColumns" :table-data="vehicles" :use-actions="true"></table-list>
         </div>
     </div>
 </template>
+
 <script>
     import TableList from './../../Dashboard/Views/TableList.vue';
     import VehiclesForm from './Forms/VehiclesForm.vue';
     import factory from '../../../factories/factory';
-
+    
     const tableColumns = ['Ord', 'Description', 'Chassis', 'Engine', 'Plate', 'Type', 'Brand', 'Model', 'Fuel', 'State', 'Actions'];
-
+    
     export default {
         components: {
             TableList,
@@ -36,7 +36,7 @@
         mounted() {
             this.$axios.get('http://localhost:8000/api/vehicles')
                 .then(response => {
-                    this.vehicles = response.data.map((vehicle, index) => {
+                    this.vehicles = (response.data || []).map((vehicle, index) => {
                         const mappedVehicle = {
                             id: vehicle.id,
                             description: vehicle.description,
@@ -53,7 +53,7 @@
                             fuel: vehicle.fuel.description,
                             state: vehicle.state,
                         };
-
+    
                         return factory.createForTableList({
                             object: mappedVehicle,
                             index,
@@ -61,7 +61,7 @@
                             onRemove: this.askToRemove
                         });
                     });
-
+    
                     this.isLoaded = true;
                 });
         },
@@ -84,7 +84,7 @@
                         state: data.state || 'AVAILABLE',
                     },
                     index = this.vehicles.length;
-
+    
                 this.vehicles.push(factory.createForTableList({
                     object: mappedVehicle,
                     index,
@@ -114,12 +114,14 @@
             updateVehicle(vehicleData) {
                 this.vehicles = this.vehicles.map(vehicle => {
                     if (vehicle.id === vehicleData.id) {
-                        vehicle = Object.assign(vehicle, {description: vehicleData.description});
+                        vehicle = Object.assign(vehicle, {
+                            description: vehicleData.description
+                        });
                     }
-
+    
                     return vehicle;
                 });
-
+    
                 this.vehicleToEdit = null;
             }
         }

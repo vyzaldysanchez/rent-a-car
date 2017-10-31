@@ -29,8 +29,8 @@
     
                 <div class="text-center">
                     <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingVehicle}" @click.prevent="validBeforeSave">
-                                                                    Save
-                                                                </button>
+                                                                        Save
+                                                                    </button>
                 </div>
             </div>
         </form>
@@ -96,24 +96,24 @@
             this.getInitialDataPromise().then(response => {
                 const [types, models, brands, fuels] = response;
     
-                this.typesSource = types.data;
-                this.modelsSource = models.data;
-                this.brandsSource = brands.data;
-                this.fuelsSource = fuels.data;
+                this.typesSource = types.data || [];
+                this.modelsSource = models.data || [];
+                this.brandsSource = brands.data || [];
+                this.fuelsSource = fuels.data || [];
     
-                this.types = types.data.map(type => ({
+                this.types = this.typesSource.map(type => ({
                     value: type.id,
                     label: type.description
                 }));
-                this.models = models.data.map(model => ({
+                this.models = this.modelsSource.map(model => ({
                     value: model.id,
                     label: model.description
                 }));
-                this.brands = brands.data.map(brand => ({
+                this.brands = this.brandsSource.map(brand => ({
                     value: brand.id,
                     label: brand.description
                 }));
-                this.fuels = fuels.data.map(fuel => ({
+                this.fuels = this.fuelsSource.map(fuel => ({
                     value: fuel.id,
                     label: fuel.description
                 }));

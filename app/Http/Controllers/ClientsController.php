@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Http\Utils\HttpStatus;
 
 class ClientsController extends Controller
 {
@@ -26,6 +27,13 @@ class ClientsController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        if (Client::findByIdentification($request->identification_number)) {
+            return $this->unprocessableEntity(new class {
+                public $code = HttpStatus::UNPROCESSABLE_ENTITY;
+                public $message = 'This identification number is already in use. Try another one.';
+            });
+        }
+
         $storingResult = Client::create($request->all());
         return $this->created($storingResult);
     }

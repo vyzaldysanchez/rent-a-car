@@ -4,24 +4,23 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="loaded">
-            <vehicle-types-form :edit="vehicleTypeToEdit !== null" :vehicle-type="vehicleTypeToEdit"
-                                @type-created="addVehicleType" @type-updated="updateVehicleType">
+            <vehicle-types-form :edit="vehicleTypeToEdit !== null" :vehicle-type="vehicleTypeToEdit" @type-created="addVehicleType" @type-updated="updateVehicleType">
             </vehicle-types-form>
-
+    
             <hr>
-
-            <table-list :columns="propsToDisplay" v-bind:tableData="vehicleTypes"
-                        :use-actions="true"></table-list>
+    
+            <table-list :columns="propsToDisplay" v-bind:tableData="vehicleTypes" :use-actions="true"></table-list>
         </div>
     </div>
 </template>
+
 <script>
     import TableList from './../Views/TableList.vue'
     import VehicleTypesForm from './Forms/VehicleTypesForm.vue'
     import formUtils from './../../../utils/form.utils'
-
+    
     const vehicleTypesColumns = ['Ord', 'Description', 'State', 'Actions'];
-
+    
     export default {
         components: {
             VehicleTypesForm,
@@ -37,32 +36,51 @@
         },
         mounted() {
             this.$axios.get('http://localhost:8000/api/types').then((res) => {
-                    this.vehicleTypes = res.data.map((type, position) => {
-                        const {id, description, state} = type,
-                            vehicleType = {ord: position + 1, id, description, state};
-
-                        return formUtils.addActionsTo(vehicleType, this.edit, this.askToRemove);
-                    });
-                    this.loaded = true;
-                }
-            );
+                this.vehicleTypes = (res.data || []).map((type, position) => {
+                    const {
+                        id,
+                        description,
+                        state
+                    } = type,
+                    vehicleType = {
+                        ord: position + 1,
+                        id,
+                        description,
+                        state
+                    };
+    
+                    return formUtils.addActionsTo(vehicleType, this.edit, this.askToRemove);
+                });
+                this.loaded = true;
+            });
         },
         methods: {
             addVehicleType(data) {
-                const {id, description, state} = data,
-                    vehicleType = {ord: this.vehicleTypes.length + 1, id, description, state: state || 'ACTIVE'};
-
+                const {
+                    id,
+                    description,
+                    state
+                } = data,
+                vehicleType = {
+                    ord: this.vehicleTypes.length + 1,
+                    id,
+                    description,
+                    state: state || 'ACTIVE'
+                };
+    
                 this.vehicleTypes.push(formUtils.addActionsTo(vehicleType, this.edit, this.askToRemove));
             },
             updateVehicleType(data) {
                 this.vehicleTypes = this.vehicleTypes.map(type => {
                     if (type.id === data.id) {
-                        type = Object.assign(type, {description: data.description});
+                        type = Object.assign(type, {
+                            description: data.description
+                        });
                     }
-
+    
                     return type;
                 });
-
+    
                 this.vehicleTypeToEdit = null;
             },
             edit(vehicleType) {
@@ -88,4 +106,7 @@
         }
     };
 </script>
-<style scoped lang="scss"></style>
+
+<style scoped lang="scss">
+    
+</style>

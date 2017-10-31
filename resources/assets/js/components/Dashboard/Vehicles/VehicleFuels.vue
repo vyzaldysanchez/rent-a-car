@@ -36,7 +36,7 @@
         mounted() {
             this.$axios.get(`http://localhost:8000/api/fuels`)
                 .then(response => {
-                    this.fuels = response.data.map((fuel, index) => {
+                    this.fuels = (response.data || []).map((fuel, index) => {
                         return factory.createForTableList({
                             object: fuel,
                             index,

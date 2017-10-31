@@ -9,4 +9,5 @@ class HttpStatus
     public const CREATED = 201;
     public const NO_CONTENT = 204;
     public const UNAUTHORIZED = 401;
+    public const UNPROCESSABLE_ENTITY = 422;
 }
