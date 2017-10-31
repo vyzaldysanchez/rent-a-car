@@ -14,12 +14,6 @@
             <div class="navbar-right-menu">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#" class="btn-rotate">
-                            <i class="ti-settings"></i>
-                            <p>
-                                Settings
-                            </p>
-                        </a>
                     </li>
                 </ul>
             </div>
