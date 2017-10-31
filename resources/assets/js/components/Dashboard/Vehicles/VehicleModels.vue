@@ -3,26 +3,26 @@
         <div v-if="!isLoaded">
             <h3 class="text-center">Loading...</h3>
         </div>
-
+    
         <div v-if="isLoaded">
-            <vehicle-models-form :edit="modelToUpdate !== null" :model="modelToUpdate" :brands="brands"
-                                 @model-created="addModel" @model-updated="updateModel">
+            <vehicle-models-form :edit="modelToUpdate !== null" :model="modelToUpdate" :brands="brands" @model-created="addModel" @model-updated="updateModel">
             </vehicle-models-form>
-
+    
             <hr>
-
+    
             <table-list :columns="tableColumns" :use-actions="true" :table-data="models"></table-list>
         </div>
     </div>
 </template>
+
 <script>
     import TableList from './../Views/TableList.vue'
     import VehicleModelsForm from './Forms/VehicleModelsForm.vue'
     import brandsFactory from '../../../factories/brands.factory'
     import modelsFactory from '../../../factories/models.factory'
-
+    
     const tableColumns = ['Ord', 'Description', 'Brand', 'State', 'Actions'];
-
+    
     export default {
         components: {
             TableList,
@@ -34,13 +34,16 @@
                 this.$axios.get('http://localhost:8000/api/models')
             ]).then(response => {
                 const [brandsResponse, modelsResponse] = response;
-
-                this.brands = brandsResponse.data.map((brand, index) => brandsFactory.createBrand({brand, index}));
-                this.models = modelsResponse.data.map((model, index) => {
+    
+                this.brands = (brandsResponse.data || []).map((brand, index) => brandsFactory.createBrand({
+                    brand,
+                    index
+                }));
+                this.models = (modelsResponse.data || []).map((model, index) => {
                     const brand = this.brands.find(brand => brand.id == model['vehicle_brand_id']);
-
+    
                     delete model['vehicle_brand_id'];
-
+    
                     return modelsFactory.createModelForTableList({
                         model,
                         brand,
@@ -49,7 +52,7 @@
                         onRemove: this.askToRemove
                     });
                 });
-
+    
                 this.isLoaded = true;
             });
         },
@@ -64,11 +67,13 @@
         },
         methods: {
             addModel(data) {
-                let model = Object.assign(data, {state: data.state || 'ACTIVE'});
-
+                let model = Object.assign(data, {
+                    state: data.state || 'ACTIVE'
+                });
+    
                 const index = this.models.length + 1,
                     brand = this.brands.find(brand => brand.id == model['vehicle_brand_id']);
-
+    
                 model = modelsFactory.createModelForTableList({
                     model,
                     brand,
@@ -76,7 +81,7 @@
                     onEdit: this.edit,
                     onRemove: this.askToRemove
                 });
-
+    
                 this.models.push(model);
             },
             edit(model) {
@@ -85,13 +90,16 @@
             updateModel(data) {
                 this.models = this.models.map(model => {
                     if (model.id === data.id) {
-                        model = Object.assign(model, {description: data.description, brandId: data.brandId});
+                        model = Object.assign(model, {
+                            description: data.description,
+                            brandId: data.brandId
+                        });
                         model.brand = this.brands.find(brand => brand.id == model.brandId).description;
                     }
-
+    
                     return model;
                 });
-
+    
                 this.modelToUpdate = null;
             },
             askToRemove(model) {

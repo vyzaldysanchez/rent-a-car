@@ -38,7 +38,7 @@
         },
         mounted() {
             this.$axios.get('http://localhost:8000/api/brands').then(result => {
-                this.brands = result.data.map(
+                this.brands = (result.data || []).map(
                     (brand, index) => brandsFactory.createBrandForTableList({
                         brand,
                         index,
