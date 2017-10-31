@@ -94,7 +94,7 @@
                     this.$swal({
                         title: 'Are you sure?',
                         html: `The client <b>${this.client
-                            .name}</b> will be ${actionPerformed}.`,
+                        .name}</b> will be ${actionPerformed}.`,
                         type: 'warning',
                         showConfirmButton: true,
                         showCancelButton: true
@@ -179,8 +179,7 @@
     
                 this.isSavingClient = true;
     
-                this.$axios
-                    .post('http://localhost:8000/api/clients', body)
+                this.sendRequest(body)
                     .then(resp => {
                         this.isSavingClient = false;
                     })
@@ -190,6 +189,20 @@
                         this.notifyErrors();
                         this.isSavingClient = false;
                     });
+            },
+            sendRequest(body) {
+                return this.onEditionMode ?
+                    this.getClientUpdatePromise(body) :
+                    this.getClientCreationPromise(body);
+            },
+            getClientCreationPromise(body) {
+                return this.$axios.post('http://localhost:8000/api/clients', body);
+            },
+            getClientUpdatePromise(body) {
+                return this.$axios.put(
+                    `http://localhost:8000/api/clients/${this.$props.client.id}`,
+                    body
+                );
             }
         }
     };
