@@ -57,7 +57,6 @@
             }
         },
         mounted() {
-            console.log(this.$options);
             this.$axios.get('http://localhost:8000/api/person_types').then(
                 resp =>
                 (this.personTypes = resp.data.map(personType => ({
