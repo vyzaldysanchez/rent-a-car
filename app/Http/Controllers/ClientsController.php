@@ -28,9 +28,16 @@ class ClientsController extends Controller
     public function store(Request $request): JsonResponse
     {
         if (Client::findByIdentification($request->identification_number)) {
-            return $this->unprocessableEntity(new class {
+            $message = 'This identification number ' .$request->identification_number. ' is already in use. Try another one.';
+
+            return $this->unprocessableEntity(new class($message) {
                 public $code = HttpStatus::UNPROCESSABLE_ENTITY;
-                public $message = 'This identification number is already in use. Try another one.';
+                public $message = '';
+
+                public function __construct($message)
+                {
+                    $this->message = $message;
+                }
             });
         }
 
