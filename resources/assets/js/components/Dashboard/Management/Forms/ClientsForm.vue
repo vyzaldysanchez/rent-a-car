@@ -28,21 +28,32 @@
 </template>
 
 <script>
+    const createDefaultClient = () => {
+        return {
+            id: 0,
+            name: '',
+            identification: '',
+            creditCard: '',
+            creditLimit: 0,
+            personType: 1
+        };
+    };
+    
     export default {
+        props: {
+            clientToUpdate: {
+                type: Object,
+                default: createDefaultClient
+            }
+        },
         data() {
             return {
                 isSavingClient: false,
                 isFormValid: true,
                 formErrors: [],
-                onEditionMode: false,
-                client: {
-                    name: '',
-                    identification: '',
-                    creditCard: '',
-                    creditLimit: 0,
-                    personType: 1
-                },
-                personTypes: []
+                onEditionMode: !!this.$props.clientToUpdate,
+                personTypes: [],
+                client: this.onEditionMode ? Object.assign({}, this.$props.clientToUpdate) : createDefaultClient()
             };
         },
         created() {
@@ -60,7 +71,7 @@
             },
             identification: {
                 get() {
-                    return this.client.identification;
+                    return this.client ? this.client.identification : '';
                 },
                 set(value) {
                     this.client.identification = value
@@ -70,7 +81,7 @@
             },
             creditCard: {
                 get() {
-                    return this.client.creditCard;
+                    return this.client ? this.client.creditCard : '';
                 },
                 set(number) {
                     this.client.creditCard = number.replace(/\D+/g, '');

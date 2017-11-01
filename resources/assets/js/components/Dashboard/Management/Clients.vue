@@ -4,11 +4,11 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <clients-form></clients-form>
+            <clients-form :client-to-update="clientToEdit" @client-created="addClient"></clients-form>
     
             <hr>
     
-            <table-list :columns="tableColumns" :table-data="employees" :use-actions="true"></table-list>
+            <table-list :columns="tableColumns" :table-data="clients" :use-actions="true"></table-list>
         </div>
     </div>
 </template>
@@ -17,6 +17,7 @@
     import ClientsForm from './Forms/ClientsForm.vue';
     import TableList from './../Views/TableList.vue';
     import factory from './../../../factories/factory';
+    import formUtils from './../../../utils/form.utils';
     
     const tableColumns = [
         'Ord',
@@ -39,14 +40,15 @@
             return {
                 tableColumns: [...tableColumns],
                 isLoaded: false,
-                employees: []
+                clients: [],
+                clientToEdit: null
             };
         },
         computed: {
-             personTypes:{
-                 get() {
-                     return personTypesSource;
-                 }
+            personTypes: {
+                get() {
+                    return personTypesSource;
+                }
             }
         },
         created() {
@@ -54,22 +56,22 @@
                 this.$axios.get('http://localhost:8000/api/clients'),
                 this.$axios.get('http://localhost:8000/api/person_types')
             ]).then(res => {
-                const [respEmployees, respPersonTypes] = res;
-                const employees = respEmployees.status === 204 ? [] : respEmployees.data.slice(0);
+                const [respClients, respPersonTypes] = res;
+                const clients = respClients.status === 204 ? [] : respClients.data.slice(0);
                 personTypesSource = respPersonTypes.status === 204 ? [] : respPersonTypes.data.slice(0);
-                this.employees = employees.map(this.createEmployeeAsTableItem.bind(this));
+                this.clients = clients.map(this.createClientAsTableItem.bind(this));
                 this.isLoaded = true;
             });
         },
         methods: {
-            createEmployeeAsTableItem(employee, index) {
+            createClientAsTableItem(client, index) {
                 const object = {
-                    name: employee.name,
-                    identification: employee.identification_number,
-                    creditcard: employee.credit_card_number,
-                    creditlimit: employee.credit_limit,
-                    persontype: personTypesSource.find(personType => personType.id == employee.person_type_id).name,
-                    state: employee.state
+                    name: client.name,
+                    identification: client.identification_number,
+                    creditcard: client.credit_card_number,
+                    creditlimit: client.credit_limit,
+                    persontype: personTypesSource.find(personType => personType.id == client.person_type_id).name,
+                    state: client.state
                 };
     
                 return factory.createForTableList({
@@ -78,6 +80,16 @@
                     onEdit: null,
                     onRemove: null
                 });
+            },
+            addClient(clientRes) {
+                const client = Object.assign({}, clientRes, {
+                    ord: this.clients.length + 1
+                });
+    
+                this.clients.push(formUtils.addActionsTo(client, null, null));
+            },
+            edit(client) {
+                this.clientToEdit = client;
             }
         }
     };
