@@ -4,7 +4,8 @@
             {{label}}
         </label>
         <input class="form-control border-input" v-bind="$props" :name="name" :value="value" :minlength="min"
-               :maxlength="max" @input="$emit('input',$event.target.value)" @blur="$emit('blur', $event.target)"/>
+               :maxlength="max" @input="$emit('input',$event.target.value)" @blur="$emit('blur', $event.target)"
+               @change="$emit('change', $event)"/>
     </div>
 </template>
 <script>
