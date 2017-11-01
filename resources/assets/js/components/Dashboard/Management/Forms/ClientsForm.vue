@@ -195,7 +195,7 @@
                                 creditLimit: resp.data.credit_limit,
                                 personType: resp.data.person_type_id
                             };
-
+    
                         this.isSavingClient = false;
                         this.clearForm();
                         this.$emit(eventToEmit, body);
