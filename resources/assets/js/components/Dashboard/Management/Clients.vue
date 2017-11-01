@@ -28,6 +28,7 @@
         'State',
         'Actions'
     ];
+    let personTypesSource = [];
     
     export default {
         components: {
@@ -41,6 +42,13 @@
                 employees: []
             };
         },
+        computed: {
+             personTypes:{
+                 get() {
+                     return personTypesSource;
+                 }
+            }
+        },
         created() {
             Promise.all([
                 this.$axios.get('http://localhost:8000/api/clients'),
@@ -48,28 +56,29 @@
             ]).then(res => {
                 const [respEmployees, respPersonTypes] = res;
                 const employees = respEmployees.status === 204 ? [] : respEmployees.data.slice(0);
-                const personTypes = respPersonTypes.status === 204 ? [] : respPersonTypes.data.slice(0);
-    
-                this.employees = employees.map((employee, index) => {
-                    const object = {
-                        name: employee.name,
-                        identification: employee.identification_number,
-                        creditcard: employee.credit_card_number,
-                        creditlimit: employee.credit_limit,
-                        persontype: personTypes.find(personType => personType.id == employee.person_type_id).name,
-                        state: employee.state
-                    };
-    
-                    return factory.createForTableList({
-                        object,
-                        index,
-                        onEdit: null,
-                        onRemove: null
-                    });
-                });
-    
+                personTypesSource = respPersonTypes.status === 204 ? [] : respPersonTypes.data.slice(0);
+                this.employees = employees.map(this.createEmployeeAsTableItem.bind(this));
                 this.isLoaded = true;
             });
+        },
+        methods: {
+            createEmployeeAsTableItem(employee, index) {
+                const object = {
+                    name: employee.name,
+                    identification: employee.identification_number,
+                    creditcard: employee.credit_card_number,
+                    creditlimit: employee.credit_limit,
+                    persontype: personTypesSource.find(personType => personType.id == employee.person_type_id).name,
+                    state: employee.state
+                };
+    
+                return factory.createForTableList({
+                    object,
+                    index,
+                    onEdit: null,
+                    onRemove: null
+                });
+            }
         }
     };
 </script>
