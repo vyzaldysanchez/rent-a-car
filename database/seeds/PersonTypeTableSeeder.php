@@ -17,6 +17,5 @@ class PersonTypeTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         factory(PersonType::class, 1)->create(['name' => PersonType::LEGAL_TYPE]);
-        factory(PersonType::class, 1)->create(['name' => PersonType::PHYSICAL_TYPE]);
     }
 }
