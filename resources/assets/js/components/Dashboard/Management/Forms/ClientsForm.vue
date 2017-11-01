@@ -9,7 +9,7 @@
                     <fg-input type="text" label="Identification" :max="13" placeholder="403-9879652-0" v-model="identification"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-input label="Credit Card" placeholder="4585554818138161865" :max="19" v-model="client.creditCard"></fg-input>
+                    <fg-input label="Credit Card" placeholder="4585554818138161865" :max="19" v-model="creditCard"></fg-input>
                 </div>
                 <div class="col-md-5">
                     <fg-input label="Credit Limit" placeholder="896.15" type="number" v-model="client.creditLimit"></fg-input>
@@ -35,14 +35,6 @@
                 isFormValid: true,
                 formErrors: [],
                 onEditionMode: false,
-                get identification() {
-                    return this.client.identification;
-                },
-                set identification(value) {
-                    this.client.identification = value
-                        .replace(/\D+/g, '')
-                        .replace(/^(\d{3})(\d{7})(\d{1})$/, '$1-$2-$3');
-                },
                 client: {
                     name: '',
                     identification: '',
@@ -53,12 +45,7 @@
                 personTypes: []
             };
         },
-        computed: {
-            formHasErrors() {
-                return this.formErrors.length > 0;
-            }
-        },
-        mounted() {
+        created() {
             this.$axios.get('http://localhost:8000/api/person_types').then(
                 resp =>
                 (this.personTypes = resp.data.map(personType => ({
@@ -66,6 +53,29 @@
                     label: personType.name
                 })))
             );
+        },
+        computed: {
+            formHasErrors() {
+                return this.formErrors.length > 0;
+            },
+            identification: {
+                get() {
+                    return this.client.identification;
+                },
+                set(value) {
+                    this.client.identification = value
+                        .replace(/\D+/g, '')
+                        .replace(/^(\d{3})(\d{7})(\d{1})/, '$1-$2-$3');
+                }
+            },
+            creditCard: {
+                get() {
+                    return this.client.creditCard;
+                },
+                set(number) {
+                    this.client.creditCard = number.replace(/\D+/g, '');
+                }
+            }
         },
         methods: {
             updateClientId(id) {
@@ -81,7 +91,6 @@
     
                 this.validateName();
                 this.validateIdentification();
-                this.validateName();
                 this.validateCreditCard();
                 this.validateCreditLimit();
                 this.validatePersonType();
@@ -89,12 +98,9 @@
                 if (this.formHasErrors) {
                     this.notifyErrors();
                 } else {
-                    const actionPerformed = this.onEditionMode ? 'updated' : 'created';
-    
                     this.$swal({
                         title: 'Are you sure?',
-                        html: `The client <b>${this.client
-                        .name}</b> will be ${actionPerformed}.`,
+                        html: `The client <b>${this.client.name}</b> will be ${this.getActionToPerform()}.`,
                         type: 'warning',
                         showConfirmButton: true,
                         showCancelButton: true
@@ -181,7 +187,18 @@
     
                 this.sendRequest(body)
                     .then(resp => {
+                        const eventToEmit = this.onEditionMode ? 'client-updated' : 'client-created',
+                            body = {
+                                name: resp.data.name,
+                                identification: resp.data.identification_number,
+                                creditCard: resp.data.credit_card_number,
+                                creditLimit: resp.data.credit_limit,
+                                personType: resp.data.person_type_id
+                            };
+
                         this.isSavingClient = false;
+                        this.clearForm();
+                        this.$emit(eventToEmit, body);
                     })
                     .catch(error => {
                         this.formIsValid = false;
@@ -203,6 +220,18 @@
                     `http://localhost:8000/api/clients/${this.$props.client.id}`,
                     body
                 );
+            },
+            clearForm() {
+                this.client = {
+                    name: '',
+                    identification: '',
+                    creditCard: '',
+                    creditLimit: 0,
+                    personType: 1
+                };
+            },
+            getActionToPerform() {
+                return this.onEditionMode ? 'updated' : 'created';
             }
         }
     };
