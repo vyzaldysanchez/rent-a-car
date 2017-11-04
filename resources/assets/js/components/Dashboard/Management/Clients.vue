@@ -65,19 +65,21 @@
         },
         methods: {
             createClientAsTableItem(client, index) {
+                const personType = personTypesSource.find(personType => personType.id == client.person_type_id);
                 const object = {
                     name: client.name,
                     identification: client.identification_number,
                     creditcard: client.credit_card_number,
                     creditlimit: client.credit_limit,
-                    persontype: personTypesSource.find(personType => personType.id == client.person_type_id).name,
+                    persontype: personType.name,
+                    personTypeId: personType.id,
                     state: client.state
                 };
     
                 return factory.createForTableList({
                     object,
                     index,
-                    onEdit: null,
+                    onEdit: this.edit,
                     onRemove: null
                 });
             },
@@ -86,7 +88,7 @@
                     ord: this.clients.length + 1
                 });
     
-                this.clients.push(formUtils.addActionsTo(client, null, null));
+                this.clients.push(formUtils.addActionsTo(client, this.edit, null));
             },
             edit(client) {
                 this.clientToEdit = client;

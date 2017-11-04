@@ -12,10 +12,10 @@
                     <fg-input label="Credit Card" placeholder="4585554818138161865" :max="19" v-model="creditCard"></fg-input>
                 </div>
                 <div class="col-md-5">
-                    <fg-input label="Credit Limit" placeholder="896.15" type="number" v-model="client.creditLimit"></fg-input>
+                    <fg-input label="Credit Limit" placeholder="896.15" type="number" v-model="client.creditlimit"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
-                    <fg-select label="Person Type" placeholder="Select a person type" v-model="client.personType" :options="personTypes" @change="updateClientId"></fg-select>
+                    <fg-select label="Person Type" placeholder="Select a person type" v-model="client.persontype" :options="personTypes" @change="updatePersonTypeId"></fg-select>
                 </div>
                 <div class="col-md-12">
                     <div class="text-center">
@@ -33,9 +33,9 @@
             id: 0,
             name: '',
             identification: '',
-            creditCard: '',
-            creditLimit: 0,
-            personType: 1
+            creditcard: '',
+            creditlimit: 0,
+            persontype: null
         };
     };
     
@@ -53,7 +53,9 @@
                 formErrors: [],
                 onEditionMode: !!this.$props.clientToUpdate,
                 personTypes: [],
-                client: this.onEditionMode ? Object.assign({}, this.$props.clientToUpdate) : createDefaultClient()
+                client: this.onEditionMode ? Object.assign({}, this.$props.clientToUpdate, {
+                    persontype: this.$props.clientToUpdate.personTypeId.toString()
+                }) : createDefaultClient()
             };
         },
         created() {
@@ -81,16 +83,23 @@
             },
             creditCard: {
                 get() {
-                    return this.client ? this.client.creditCard : '';
+                    return this.client ? this.client.creditcard : '';
                 },
                 set(number) {
-                    this.client.creditCard = number.replace(/\D+/g, '');
+                    this.client.creditcard = number.replace(/\D+/g, '');
                 }
             }
         },
+        watch: {
+            clientToUpdate(newVal) {
+                this.client = newVal ? Object.assign({}, newVal, {
+                    persontype: newVal.personTypeId.toString()
+                }) : createDefaultClient();
+            }
+        },
         methods: {
-            updateClientId(id) {
-                this.client.personType = id;
+            updatePersonTypeId(id) {
+                this.client.persontype = id;
             },
             validBeforeSave() {
                 if (this.isSavingClient) {
@@ -138,8 +147,8 @@
                 }
             },
             validateCreditCard() {
-                const lengthIsValid = this.client.creditCard.length === 19,
-                    formatIsValid = this.client.creditCard.match(/\d/g);
+                const lengthIsValid = this.client.creditcard.length === 19,
+                    formatIsValid = this.client.creditcard.match(/\d/g);
     
                 this.formIsValid = this.formIsValid && lengthIsValid && formatIsValid;
     
@@ -156,14 +165,14 @@
                 }
             },
             validateCreditLimit() {
-                this.isFormValid = this.isFormValid && this.client.creditLimit > 0;
+                this.isFormValid = this.isFormValid && this.client.creditlimit > 0;
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The credit limit is not valid.');
                 }
             },
             validatePersonType() {
-                this.isFormValid = this.isFormValid && this.client.personType > 0;
+                this.isFormValid = this.isFormValid && this.client.persontype > 0;
     
                 if (!this.isFormValid) {
                     this.formErrors.push('The person type selected is not valid.');
@@ -189,9 +198,9 @@
                 const body = {
                     name: this.client.name,
                     identification_number: this.client.identification,
-                    credit_card_number: this.client.creditCard,
-                    credit_limit: this.client.creditLimit,
-                    person_type_id: this.client.personType
+                    credit_card_number: this.client.creditcard,
+                    credit_limit: this.client.creditlimit,
+                    person_type_id: this.client.persontype
                 };
     
                 this.isSavingClient = true;
@@ -236,9 +245,9 @@
                 this.client = {
                     name: '',
                     identification: '',
-                    creditCard: '',
-                    creditLimit: 0,
-                    personType: 1
+                    creditcard: '',
+                    creditlimit: 0,
+                    persontype: null
                 };
             },
             getActionToPerform() {
