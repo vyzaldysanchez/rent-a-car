@@ -5,10 +5,6 @@
         <side-bar type="navbar" :sidebar-links="$sidebar.sidebarLinks">
             <ul class="nav navbar-nav">
                 <li>
-                    <a>
-                        <i class="ti-settings"></i>
-                        <p>Settings</p>
-                    </a>
                 </li>
                 <li class="divider"></li>
             </ul>

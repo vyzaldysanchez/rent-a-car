@@ -4,11 +4,11 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <clients-form></clients-form>
-
+            <clients-form :client-to-update="clientToEdit" @client-created="addClient"></clients-form>
+    
             <hr>
-
-            <table-list :columns="tableColumns" :table-data="employees"></table-list>
+    
+            <table-list :columns="tableColumns" :table-data="clients" :use-actions="true"></table-list>
         </div>
     </div>
 </template>
@@ -16,8 +16,20 @@
 <script>
     import ClientsForm from './Forms/ClientsForm.vue';
     import TableList from './../Views/TableList.vue';
+    import factory from './../../../factories/factory';
+    import formUtils from './../../../utils/form.utils';
     
-    const tableColumns = ['Ord', 'Name', 'Identification', 'CreditCard', 'CreditLimit', 'PersonType', 'State', 'Actions'];
+    const tableColumns = [
+        'Ord',
+        'Name',
+        'Identification',
+        'CreditCard',
+        'CreditLimit',
+        'PersonType',
+        'State',
+        'Actions'
+    ];
+    let personTypesSource = [];
     
     export default {
         components: {
@@ -28,15 +40,60 @@
             return {
                 tableColumns: [...tableColumns],
                 isLoaded: false,
-                employees: []
+                clients: [],
+                clientToEdit: null
             };
         },
-        mounted() {
-            this.$axios.get('http://localhost:8000/api/employees')
-                .then(res => {
-                    this.employees = (res.status === 204) ? [] : res.data.slice(0);
-                    this.isLoaded = true;
+        computed: {
+            personTypes: {
+                get() {
+                    return personTypesSource;
+                }
+            }
+        },
+        created() {
+            Promise.all([
+                this.$axios.get('http://localhost:8000/api/clients'),
+                this.$axios.get('http://localhost:8000/api/person_types')
+            ]).then(res => {
+                const [respClients, respPersonTypes] = res;
+                const clients = respClients.status === 204 ? [] : respClients.data.slice(0);
+                personTypesSource = respPersonTypes.status === 204 ? [] : respPersonTypes.data.slice(0);
+                this.clients = clients.map(this.createClientAsTableItem.bind(this));
+                this.isLoaded = true;
+            });
+        },
+        methods: {
+            createClientAsTableItem(client, index) {
+                const personType = personTypesSource.find(personType => personType.id == client.person_type_id);
+                const object = {
+                    id: client.id,
+                    name: client.name,
+                    identification: client.identification_number,
+                    creditcard: client.credit_card_number,
+                    creditlimit: client.credit_limit,
+                    persontype: personType.name,
+                    personTypeId: personType.id,
+                    state: client.state
+                };
+    
+                return factory.createForTableList({
+                    object,
+                    index,
+                    onEdit: this.edit,
+                    onRemove: null
                 });
+            },
+            addClient(clientRes) {
+                const client = Object.assign({}, clientRes, {
+                    ord: this.clients.length + 1
+                });
+    
+                this.clients.push(formUtils.addActionsTo(client, this.edit, null));
+            },
+            edit(client) {
+                this.clientToEdit = client;
+            }
         }
     };
 </script>

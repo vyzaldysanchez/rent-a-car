@@ -9,26 +9,29 @@
         <div class="content table-responsive table-full-width">
             <table class="table" :class="tableClass">
                 <thead>
-                <th v-for="column in columns">
-                    {{column}}
-                </th>
+                    <th v-for="(column, key) in columns" v-bind:key="key">
+                        {{column}}
+                    </th>
                 </thead>
                 <tbody>
-                <tr v-for="item in data">
-                    <td v-for="column in columns" v-if="hasValue(item, column)">
-                        <div v-if="hasValue(item, column) && !isAction(item, column)">
-                            {{itemValue(item, column)}}
-                        </div>
-                        <div class="actions" v-if="isAction(item, column)" v-for="action in item.actions">
-                            <a :class="action.classes" v-html="action.text" @click.prevent="action.click"></a>
-                        </div>
-                    </td>
-                </tr>
+                    <tr v-for="(item, key) in data" v-bind:key="key">
+                        <td v-for="(column, key) in columns" v-if="hasValue(item, column)" v-bind:key="key">
+                            <div v-if="hasValue(item, column) && !isAction(item, column)">
+                                {{itemValue(item, column)}}
+                            </div>
+                            <div v-if="isAction(item, column)">
+                                <div class="actions" v-for="(action, key) in item.actions" v-bind:key="key">
+                                    <a :class="action.classes" v-html="action.text" @click.prevent="action.click"></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </template>
+
 <script>
     export default {
         props: {
@@ -46,7 +49,10 @@
                 type: String,
                 default: ''
             },
-            useActions: {type: Boolean, default: false}
+            useActions: {
+                type: Boolean,
+                default: false
+            }
         },
         computed: {
             tableClass() {
@@ -65,17 +71,16 @@
             }
         }
     }
-
 </script>
+
 <style scoped lang="scss">
     .table-responsive {
         overflow-x: scroll;
     }
-
+    
     .actions {
         display: inline-block;
-
-        > a {
+        >a {
             cursor: pointer;
         }
     }

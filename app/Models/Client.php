@@ -66,7 +66,7 @@ class Client extends Model
         'person_type_id',
     ];
 
-    public static function findByIdentification($identificationNumber): Client
+    public static function findByIdentification($identificationNumber): ?Client
     {
         return parent::where('identification_number', '=', $identificationNumber)->first();
     }
