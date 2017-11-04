@@ -95,6 +95,7 @@
                 this.client = newVal ? Object.assign({}, newVal, {
                     persontype: newVal.personTypeId.toString()
                 }) : createDefaultClient();
+                this.onEditionMode = !!newVal;
             }
         },
         methods: {
@@ -237,7 +238,7 @@
             },
             getClientUpdatePromise(body) {
                 return this.$axios.put(
-                    `http://localhost:8000/api/clients/${this.$props.client.id}`,
+                    `http://localhost:8000/api/clients/${this.$props.clientToUpdate.id}`,
                     body
                 );
             },

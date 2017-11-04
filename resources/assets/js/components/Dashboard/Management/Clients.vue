@@ -67,6 +67,7 @@
             createClientAsTableItem(client, index) {
                 const personType = personTypesSource.find(personType => personType.id == client.person_type_id);
                 const object = {
+                    id: client.id,
                     name: client.name,
                     identification: client.identification_number,
                     creditcard: client.credit_card_number,
