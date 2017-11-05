@@ -30,6 +30,11 @@ const routes = [
                 name: 'clients',
                 component: Clients
             },
+            {
+                path: 'employees',
+                name: 'employees',
+                component: null
+            }
         ]
     },
     { path: '*', component: NotFound }
