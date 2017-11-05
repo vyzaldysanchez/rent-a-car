@@ -17,6 +17,11 @@
                 <div class="col-md-5 col-md-offset-1">
                     <fg-input type="date" label="Admission Date" v-model="employee.admissionDate"></fg-input>
                 </div>
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <button class="btn btn-info btn-fill btn-wd" :class="{'disabled': isSavingEmployee}" @click.prevent="validBeforeSave">Save</button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -26,6 +31,7 @@
     export default {
         data() {
             return {
+                isSavingEmployee: false,
                 employee: {
                     name: '',
                     identification: '',
@@ -50,7 +56,8 @@
                 const date = new Date(),
                     day = date.getDate();
                 return `${date.getFullYear()}-${date.getMonth() + 1}-${day < 10 ? ('0' + day) : day}`;
-            }
+            },
+            validBeforeSave() {}
         }
     };
 </script>
