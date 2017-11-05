@@ -17,6 +17,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './../sass/paper-dashboard.scss';
 import 'es6-promise/auto';
 import * as axios from 'axios';
+import dataFormatter from './utils/data-formatter.utils';
 
 // plugin setup
 Vue.use(VueRouter);
@@ -63,6 +64,12 @@ Object.defineProperty(Vue.prototype, '$storage', {
 Object.defineProperty(Vue.prototype, '$axios', {
     get() {
         return axios;
+    }
+});
+
+Object.defineProperty(Vue.prototype, '$formatter', {
+    get() {
+        return dataFormatter;
     }
 });
 

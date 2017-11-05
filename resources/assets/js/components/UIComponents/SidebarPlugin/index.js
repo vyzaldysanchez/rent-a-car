@@ -34,6 +34,11 @@ const SidebarStore = {
             path: '/admin/clients'
         },
         {
+            name: 'Employees',
+            icon: 'ti-layout-cta-left',
+            path: '/admin/employees'
+        },
+        {
             name: 'logout',
             icon: 'ti-angle-double-left',
             path: '/user/logout'

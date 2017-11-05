@@ -76,9 +76,7 @@
                     return this.client ? this.client.identification : '';
                 },
                 set(value) {
-                    this.client.identification = value
-                        .replace(/\D+/g, '')
-                        .replace(/^(\d{3})(\d{7})(\d{1})/, '$1-$2-$3');
+                    this.client.identification = this.$formatter.formatIdentification(value);
                 }
             },
             creditCard: {
