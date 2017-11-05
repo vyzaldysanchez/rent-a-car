@@ -4,6 +4,9 @@ import NotFound from '../components/GeneralViews/NotFoundPage.vue';
 // Admin pages
 import Overview from '../components/Dashboard/Views/Overview.vue';
 import Clients from '../components/Dashboard/Management/Clients.vue';
+import Employees from '../components/Dashboard/Management/Employees.vue';
+
+//Routes
 import usersRoutes from './users/routes';
 import vehiclesRoutes from './vehicles/routes';
 
@@ -33,7 +36,7 @@ const routes = [
             {
                 path: 'employees',
                 name: 'employees',
-                component: null
+                component: Employees
             }
         ]
     },
