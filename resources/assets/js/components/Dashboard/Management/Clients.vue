@@ -81,7 +81,7 @@
                     object,
                     index,
                     onEdit: this.edit,
-                    onRemove: null
+                    onRemove: this.askToRemove
                 });
             },
             addClient(clientRes) {
@@ -103,6 +103,22 @@
                     return client;
                 });
                 this.clientToEdit = null;
+            },
+            askToRemove(client) {
+                this.$swal({
+                    title: 'Are you sure?',
+                    html: `The client <b>${client.name}</b> and all it's data associated will be deleted.`,
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.delete.bind(this, client));
+            },
+            delete(clientToDelete) {
+                this.$axios.delete(`http://localhost:8000/api/clients/${clientToDelete.id}`)
+                    .then(() => {
+                        const index = this.clients.findIndex(client => clientToDelete.id === client.id);
+                        this.clients = this.clients.slice(0, index).concat(this.clients.slice(index + 1));
+                    });
             }
         }
     };
