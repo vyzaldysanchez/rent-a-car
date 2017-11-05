@@ -85,11 +85,15 @@
                 });
             },
             addClient(clientRes) {
-                const client = Object.assign({}, clientRes, {
-                    ord: this.clients.length + 1
-                });
+                const client = Object.assign(clientRes, {
+                    person_type_id: clientRes.personType,
+                    identification_number: clientRes.identification,
+                    credit_card_number: clientRes.creditCard,
+                    credit_limit: clientRes.creditLimit,
+                    state: clientRes.state || 'ACTIVE'
     
-                this.clients.push(formUtils.addActionsTo(client, this.edit, null));
+                });
+                this.clients.push(this.createClientAsTableItem(client, this.clients.length));
             },
             edit(client) {
                 this.clientToEdit = client;
