@@ -4,7 +4,7 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <clients-form :client-to-update="clientToEdit" @client-created="addClient"></clients-form>
+            <clients-form :client-to-update="clientToEdit" @client-created="addClient" @client-updated="updateClient"></clients-form>
     
             <hr>
     
@@ -93,6 +93,16 @@
             },
             edit(client) {
                 this.clientToEdit = client;
+            },
+            updateClient(data) {
+                this.clients = this.clients.map(client => {
+                    if (client.id === data.id) {
+                        client = Object.assign(client, data);
+                    }
+    
+                    return client;
+                });
+                this.clientToEdit = null;
             }
         }
     };
