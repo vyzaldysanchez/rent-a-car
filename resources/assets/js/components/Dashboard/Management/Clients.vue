@@ -4,7 +4,7 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="isLoaded">
-            <clients-form :client-to-update="clientToEdit" @client-created="addClient"></clients-form>
+            <clients-form :client-to-update="clientToEdit" @client-created="addClient" @client-updated="updateClient"></clients-form>
     
             <hr>
     
@@ -81,7 +81,7 @@
                     object,
                     index,
                     onEdit: this.edit,
-                    onRemove: null
+                    onRemove: this.askToRemove
                 });
             },
             addClient(clientRes) {
@@ -93,6 +93,32 @@
             },
             edit(client) {
                 this.clientToEdit = client;
+            },
+            updateClient(data) {
+                this.clients = this.clients.map(client => {
+                    if (client.id === data.id) {
+                        client = Object.assign(client, data);
+                    }
+    
+                    return client;
+                });
+                this.clientToEdit = null;
+            },
+            askToRemove(client) {
+                this.$swal({
+                    title: 'Are you sure?',
+                    html: `The client <b>${client.name}</b> and all it's data associated will be deleted.`,
+                    type: 'warning',
+                    showConfirmButton: true,
+                    showCancelButton: true
+                }).then(this.delete.bind(this, client));
+            },
+            delete(clientToDelete) {
+                this.$axios.delete(`http://localhost:8000/api/clients/${clientToDelete.id}`)
+                    .then(() => {
+                        const index = this.clients.findIndex(client => clientToDelete.id === client.id);
+                        this.clients = this.clients.slice(0, index).concat(this.clients.slice(index + 1));
+                    });
             }
         }
     };

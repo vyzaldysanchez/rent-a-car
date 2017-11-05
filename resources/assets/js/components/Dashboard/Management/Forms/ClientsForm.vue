@@ -210,6 +210,7 @@
                     .then(resp => {
                         const eventToEmit = this.onEditionMode ? 'client-updated' : 'client-created',
                             body = {
+                                id: resp.data.id,
                                 name: resp.data.name,
                                 identification: resp.data.identification_number,
                                 creditCard: resp.data.credit_card_number,
