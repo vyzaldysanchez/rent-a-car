@@ -28,7 +28,7 @@ Vue.use(Notifications);
 Vue.use(SideBar);
 
 // Storage setup
-localforage.config({
+localforage.default.config({
     name: 'vy-rent-car'
 });
 
