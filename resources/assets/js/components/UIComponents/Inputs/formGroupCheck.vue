@@ -14,5 +14,11 @@
 <script>
 import fgInput from './formGroupInput';
 
-export default { ...fgInput };
+export default {
+  ...fgInput,
+  props: {
+    ...fgInput.props,
+    value: [Boolean]
+  }
+};
 </script>
