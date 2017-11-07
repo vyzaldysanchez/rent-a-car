@@ -1,4 +1,4 @@
 {
-    "presets": ["es2015", "stage-3"],
+    "presets": ["es2015", "stage-3", "airbnb"],
     "plugins": ["transform-object-rest-spread"]
 }
