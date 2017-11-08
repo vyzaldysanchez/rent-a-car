@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <input class="border-input" type="checkbox" v-bind="$props" :name="name" :value="value" :minlength="min" :maxlength="max" @input="$emit('input',$event.target.value)" @blur="$emit('blur', $event.target)" @change="$emit('change', $event)" />
+        <input class="border-input" type="checkbox" v-bind="$props" :name="name" :value="value" :minlength="min" :maxlength="max" @input="$emit('input',$event.target.checked)" @blur="$emit('blur', $event.target)" @change="$emit('change', $event.target.checked)" />
         <label v-if="label" :for="name">{{label}}</label>
     </div>
 </template>
