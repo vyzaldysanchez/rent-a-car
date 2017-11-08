@@ -8,30 +8,30 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            type: {
-                type: String,
-                default: 'text'
-            },
-            label: String,
-            name: String,
-            disabled: Boolean,
-            placeholder: String,
-            value: [String, Number],
-            max: Number,
-            min: Number,
-            asFormControl: {
-                type: Boolean,
-                default: true
-            }
-        }
+export default {
+  props: {
+    type: {
+      type: String,
+      default: 'text'
+    },
+    label: String,
+    name: String,
+    disabled: Boolean,
+    placeholder: String,
+    value: [String, Number],
+    max: Number,
+    min: Number,
+    asFormControl: {
+      type: Boolean,
+      default: true
     }
+  }
+};
 </script>
 
 <style scoped lang="scss">
-    label {
-        display: flex;
-        flex-flow: column;
-    }
+label {
+  display: flex;
+  flex-flow: column;
+}
 </style>
