@@ -114,6 +114,10 @@ export default {
       this.validateSchedule();
       this.validateCommission();
 
+      if (this.activateCredentials) {
+        this.validateCredentials();
+      }
+
       if (!this.formIsValid) {
         this.notifyErrors();
       }
@@ -154,6 +158,28 @@ export default {
       if (!isValid) {
         this.errors.push('The commision should not be negative.');
       }
+    },
+    validateCredentials() {
+      const { email, password } = this.employee.credentials;
+      const emailIsValid = this.isEmailValid(email);
+      const passwordIsValid = this.isPasswordValid(password);
+
+      if (!emailIsValid) {
+        this.errors.push('Only valid emails are allowed.');
+      }
+
+      if (!passwordIsValid) {
+        this.errors.push('Passwords do not match.');
+      }
+
+      this.formIsValid = this.formIsValid && emailIsValid && passwordIsValid;
+    },
+    isEmailValid(email) {
+      const validEmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return !!email.trim() && validEmailRegex.test(email);
+    },
+    isPasswordValid(password) {
+      return !!password.trim() && password === this.passwordConfirmation;
     },
     getFormErrorListAsHTML() {
       const errorList = this.errors.reduce(
