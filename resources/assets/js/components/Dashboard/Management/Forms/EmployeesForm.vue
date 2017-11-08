@@ -132,7 +132,7 @@ export default {
     },
     validateIdentification() {
       const isValid = this.isIdentificationValid(this.employee.identification);
-      this.formIsValid = this.formIsValid && nameIsValid;
+      this.formIsValid = this.formIsValid && isValid;
 
       if (!isValid) {
         this.errors.push('Identification format is invalid.');
@@ -151,7 +151,7 @@ export default {
       }
     },
     validateCommission() {
-      const isValid = this.employee.commission < 0;
+      const isValid = this.employee.commission >= 0;
 
       this.formIsValid = this.formIsValid && isValid;
 
