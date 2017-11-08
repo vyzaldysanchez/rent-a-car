@@ -1,4 +1,4 @@
-let mix = require('laravel-mix'),
+const mix = require('laravel-mix'),
     DashboardPlugin = require('webpack-dashboard/plugin');
 
 /*
@@ -13,8 +13,12 @@ let mix = require('laravel-mix'),
  */
 
 mix.webpackConfig({
+    module: {
+        noParse: /node_modules\/localforage\/dist\/localforage.js/
+    },
     plugins: [new DashboardPlugin()]
 });
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix
+    .js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');
