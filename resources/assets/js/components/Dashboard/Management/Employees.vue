@@ -20,7 +20,8 @@ const columns = [
   'Identification',
   'Schedule',
   'Commission',
-  'Admission'
+  'Admission',
+  'Actions'
 ];
 
 import EmployeesForm from './Forms/EmployeesForm.vue';
@@ -35,6 +36,7 @@ export default {
   data() {
     return {
       loaded: false,
+      employeeToUpdate: null,
       employees: [],
       tableData: [],
       columns: [...columns]
@@ -47,10 +49,16 @@ export default {
       this.loaded = true;
     });
   },
+  watch: {
+    employees(val) {
+      this.loadTableDataFrom(val);
+    }
+  },
   methods: {
     loadTableDataFrom(data) {
       this.tableData = data.map((employee, index) => {
         const object = {
+          id: employee.id,
           name: employee.name,
           identification: employee['identification_card'],
           schedule: employee['work_schedule'],
@@ -61,10 +69,34 @@ export default {
         return factory.createForTableList({
           object,
           index,
-          onEdit: null,
-          onRemove: null
+          onEdit: this.setAsEmployeeToUpdate.bind(this),
+          onRemove: this.askBeforeDeletion.bind(this)
         });
       });
+    },
+    setAsEmployeeToUpdate(employee) {
+      this.employeeToUpdate = employee;
+    },
+    askBeforeDeletion(employee) {
+      this.$swal({
+        title: 'Are you sure?',
+        html: `The employee <b>${employee.name}</b> and all it's data associated will be deleted.`,
+        type: 'warning',
+        showConfirmButton: true,
+        showCancelButton: true
+      }).then(this.delete.bind(this, employee));
+    },
+    delete(employeeToDelete) {
+      this.$axios
+        .delete(`http://localhost:8000/api/employees/${employeeToDelete.id}`)
+        .then(() => {
+          const index = this.employees.findIndex(
+            employee => employeeToDelete.id === employee.id
+          );
+          this.employees = this.employees
+            .slice(0, index)
+            .concat(this.employees.slice(index + 1));
+        });
     }
   }
 };

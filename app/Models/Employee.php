@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+
 /**
  * Class Employee
  * @package App\Models
@@ -15,7 +18,8 @@ namespace App\Models;
  * @property string $state
  * @property string $created_at
  * @property string $updated_at
- * @property int $user_id
+ * @property int    $user_id
+ * @property User   $user
  */
 class Employee extends User
 {
@@ -41,4 +45,18 @@ class Employee extends User
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function (Employee $employee) {
+            $employee->user()->delete();
+        });
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo('\App\Models\User', 'user_id');
+    }
 }

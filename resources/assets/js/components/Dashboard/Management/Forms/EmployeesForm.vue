@@ -49,6 +49,9 @@ const workSchedules = [
 ];
 
 export default {
+  props: {
+    edit: [Boolean]
+  },
   data() {
     return {
       isSavingEmployee: false,
@@ -57,7 +60,6 @@ export default {
       formIsValid: false,
       errors: [],
       schedules: [...workSchedules],
-      edit: false,
       employee: {
         name: '',
         identification: '',
