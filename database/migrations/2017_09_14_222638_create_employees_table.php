@@ -18,13 +18,13 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 45);
-            $table->string('identification_card', 11)->unique();
+            $table->string('identification_card', 13)->unique();
             $table->enum('work_schedule', EmployeeWorkSchedule::getAll());
             $table->float('commission_percent', 10)->default(0.00);
             $table->date('admission_date');
             $table->enum('state', CommonStatus::getAll())->default(CommonStatus::INACTIVE);
 
-            $table->integer('user_id')->unsigned()->default(0);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
