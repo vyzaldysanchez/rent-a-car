@@ -11,7 +11,7 @@ class EmployeesController extends Controller
 {
     public function index(): JsonResponse
     {
-        $employees = Employee::all();
+        $employees = Employee::allWithCredentials();
 
         if ($employees->count()) {
             return $this->success($employees);
