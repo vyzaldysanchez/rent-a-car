@@ -14,7 +14,7 @@
                                @change="selectSchedule" v-model="employee.schedule"></fg-select>
                 </div>
                 <div class="col-md-5">
-                    <fg-input type="number" label="Commision (%)" v-model="commission"></fg-input>
+                    <fg-input type="number" label="Commission (%)" v-model="commission"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
                     <fg-input type="date" label="Admission Date" v-model="employee.admissionDate"></fg-input>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+    import formValidator from './../../../../utils/form-validator.utils';
+
     const workSchedules = [
         {value: 'Morning', label: 'Morning'},
         {value: 'Afternoon', label: 'Afternoon'},
@@ -163,7 +165,7 @@
                 }
             },
             isIdentificationValid(value) {
-                return /\d{3}-\d{7}-\d{1}/.test(value);
+                return /\d{3}-\d{7}-\d{1}/.test(value) && formValidator.validateIdentification(value);
             },
             validateSchedule() {
                 const isValid = !!this.employee.schedule;

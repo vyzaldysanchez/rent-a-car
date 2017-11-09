@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    import formValidator from '../../../../utils/form-validator.utils';
 
     const createDefaultClient = () => {
         return {
@@ -141,21 +142,21 @@
                 }
             },
             isIdentificationValid(value) {
-                return /\d{3}-\d{7}-\d{1}/.test(value);
+                return /\d{3}-\d{7}-\d{1}/.test(value) && formValidator.validateIdentification(value);
             },
             validateName() {
-                this.isFormValid = this.isFormValid && !!this.client.name;
+                const isValid = !!this.client.name;
+                this.isFormValid = this.isFormValid && isValid;
 
-                if (!this.isFormValid) {
+                if (!isValid) {
                     this.formErrors.push('The name field is empty');
                 }
             },
             validateIdentification() {
-                this.isFormValid =
-                    this.isFormValid &&
-                    this.isIdentificationValid(this.client.identification);
+                const isValid = this.isIdentificationValid(this.client.identification);
+                this.isFormValid = this.isFormValid && isValid;
 
-                if (!this.isFormValid) {
+                if (!isValid) {
                     this.formErrors.push('The identification format is not correct.');
                 }
             },
@@ -178,16 +179,18 @@
                 }
             },
             validateCreditLimit() {
-                this.isFormValid = this.isFormValid && this.client.creditlimit > 0;
+                const isValid = this.client.creditlimit > 0;
+                this.isFormValid = this.isFormValid && isValid;
 
-                if (!this.isFormValid) {
+                if (!isValid) {
                     this.formErrors.push('The credit limit is not valid.');
                 }
             },
             validatePersonType() {
-                this.isFormValid = this.isFormValid && this.client.persontype > 0;
+                const isValid = this.client.persontype > 0;
+                this.isFormValid = this.isFormValid && isValid;
 
-                if (!this.isFormValid) {
+                if (!isValid) {
                     this.formErrors.push('The person type selected is not valid.');
                 }
             },
