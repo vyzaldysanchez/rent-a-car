@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <input class="border-input" type="checkbox" v-bind="$props" :id="id" :name="name" :value="value"
+        <input class="border-input" type="checkbox" v-bind="$props" :id="id" :name="name" :value="value" :checked="value"
                :minlength="min" :maxlength="max"
                @input="$emit('input',$event.target.checked)" @blur="$emit('blur', $event.target)"
                @change="$emit('change', $event.target.checked)"/>
