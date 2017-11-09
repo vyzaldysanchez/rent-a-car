@@ -43,7 +43,17 @@ class Controller extends BaseController
         return $this->response->json(null, HttpStatus::UNAUTHORIZED);
     }
 
-    protected function unprocessableEntity($data): JsonResponse {
-        return $this->response->json($data, HttpStatus::UNPROCESSABLE_ENTITY);
+    protected function unProcessableEntity(string $message): JsonResponse
+    {
+        return $this->response->json(new class($message)
+        {
+            public $code = HttpStatus::UNPROCESSABLE_ENTITY;
+            public $message = '';
+
+            public function __construct($message)
+            {
+                $this->message = $message;
+            }
+        }, HttpStatus::UNPROCESSABLE_ENTITY);
     }
 }
