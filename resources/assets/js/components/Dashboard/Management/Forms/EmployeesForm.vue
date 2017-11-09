@@ -60,7 +60,7 @@
 
     export default {
         props: {
-            edit: [Boolean]
+            employeeToUpdate: {type: Object, default: null}
         },
         data() {
             return {
@@ -70,9 +70,17 @@
                 formIsValid: false,
                 errors: [],
                 schedules: [...workSchedules],
-                onEditionMode: false,
-                employee: this.createInitialEmployee()
+                onEditionMode: this.$props.employeeToUpdate !== null,
+                employee: this.onEditionMode ? this.createEmployeeFromProps() : this.createInitialEmployee()
             };
+        },
+        watch: {
+            employeeToUpdate(employee) {
+                if (employee) {
+                    this.onEditionMode = true;
+                    this.employee = this.createEmployeeFromProps();
+                }
+            }
         },
         computed: {
             identification: {
@@ -96,6 +104,18 @@
             }
         },
         methods: {
+            createEmployeeFromProps() {
+                const {name, identification, commission, schedule, admission} = this.$props.employeeToUpdate;
+
+                return {
+                    name, identification, schedule, commission,
+                    admissionDate: admission,
+                    credentials: {
+                        email: '',
+                        password: ''
+                    }
+                };
+            },
             createInitialEmployee() {
                 return {
                     name: '',
@@ -224,7 +244,7 @@
                 });
             },
             getActionToPerform() {
-                return this.edit ? 'updated' : 'created';
+                return this.onEditionMode ? 'updated' : 'created';
             },
             save() {
                 const body = {
@@ -241,21 +261,26 @@
 
                 this.isSavingEmployee = true;
 
-                this.$axios.post('http://localhost:8000/api/employees', body)
-                    .then(resp => {
-                        const eventToEmit = this.onEditionMode ? 'employee-updated' : 'employee-created';
-                        this.isSavingEmployee = false;
-
-                        this.clearForm();
-                        this.$emit(eventToEmit, resp.data);
-                    })
-                    .catch(error => {
-                        this.formIsValid = false;
-                        this.isSavingEmployee = false;
-
-                        this.errors.push(error.response.data.message);
-                        this.notifyErrors();
-                    });
+                this.sendRequest(body).then(resp => {
+                    const eventToEmit = this.onEditionMode ? 'employee-updated' : 'employee-created';
+                    this.isSavingEmployee = false;
+                    this.clearForm();
+                    this.$emit(eventToEmit, resp.data);
+                }).catch(error => {
+                    this.formIsValid = false;
+                    this.isSavingEmployee = false;
+                    this.errors.push(error.response.data.message);
+                    this.notifyErrors();
+                });
+            },
+            sendRequest(body) {
+                return this.onEditionMode ? this.getUpdateRequest(body) : this.getCreationRequest(body);
+            },
+            getCreationRequest(body) {
+                return this.$axios.post('http://localhost:8000/api/employees', body);
+            },
+            getUpdateRequest(body) {
+                return this.$axios.put(`http://localhost:8000/api/employees/${this.$props.employeeToUpdate.id}`, body);
             },
             clearForm() {
                 this.employee = this.createInitialEmployee();

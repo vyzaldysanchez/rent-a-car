@@ -4,7 +4,8 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="loaded">
-            <employees-form @employee-created="addEmployee"></employees-form>
+            <employees-form :employee-to-update="employeeToUpdate" @employee-created="addEmployee"
+                            @employee-updated="updateEmployee"></employees-form>
 
             <hr>
 
@@ -99,6 +100,16 @@
             },
             addEmployee(employee) {
                 this.employees.push(employee);
+            },
+            updateEmployee(data) {
+                this.employees = this.employees.map(employee => {
+                    if (employee.id === data.id) {
+                        employee = {...employee, ...data};
+                    }
+
+                    return employee;
+                });
+                this.employeeToUpdate = null;
             }
         }
     };
