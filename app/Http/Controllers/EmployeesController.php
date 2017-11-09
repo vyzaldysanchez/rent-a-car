@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Enums\CommonStatus;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -50,12 +51,37 @@ class EmployeesController extends Controller
         }
 
         $storingResult = Employee::create($employeeToStore);
-        return $this->created($storingResult);
+        $result = Employee::where('id', '=', $storingResult->id)->with(['credentials'])->first();
+
+        return $this->created($result);
     }
 
     public function update(Request $request, Employee $employee): JsonResponse
     {
+        if (isset($request->credentials) && !empty($request->credentials)) {
+            $userFound = User::findByEmail($request->credentials['email']);
+
+            if ($userFound && $userFound->id !== $employee->user_id) {
+                $message = 'The email ' . $request->credentials['email'] . ' is already in use.';
+                return $this->unProcessableEntity($message);
+            }
+
+            $employee->credentials
+                ->update($request->credentials + ['name' => $request->name, 'state' => CommonStatus::ACTIVE]);
+        } elseif ($employee->credentials) {
+            $employee->credentials->update(['name' => $request->name, 'state' => CommonStatus::INACTIVE]);
+        }
+
+        $identificationInUse = Employee::existsByIdentificationCard($request['identification_card']);
+        $identificationChanged = $employee->identification_card !== $request['identification_card'];
+
+        if ($identificationChanged && $identificationInUse) {
+            $message = 'The identification ' . $request['identification_card'] . ' is already in use.';
+            return $this->unProcessableEntity($message);
+        }
+
         $employee->update($request->all());
+
         return $this->success($employee);
     }
 

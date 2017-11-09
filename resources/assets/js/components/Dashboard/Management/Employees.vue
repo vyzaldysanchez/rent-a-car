@@ -58,10 +58,11 @@
         methods: {
             loadTableDataFrom(data) {
                 this.tableData = data.map((employee, index) => {
-                    const {id, name} = employee;
+                    const {id, name, credentials} = employee;
                     const object = {
                         id,
                         name,
+                        credentials,
                         identification: employee['identification_card'],
                         schedule: employee['work_schedule'],
                         commission: employee['commission_percent'],

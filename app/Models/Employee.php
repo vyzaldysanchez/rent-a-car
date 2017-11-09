@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\CommonStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\{
     HasRelationships, QueriesRelationships
@@ -46,7 +47,6 @@ class Employee extends User
         'work_schedule',
         'commission_percent',
         'admission_date',
-        'state',
         'user_id'
     ];
 
@@ -63,7 +63,8 @@ class Employee extends User
 
     public function credentials(): BelongsTo
     {
-        return $this->belongsTo('\App\Models\User', 'user_id')->select(['id', 'email']);
+        return $this->belongsTo('\App\Models\User', 'user_id')->select(['id', 'email', 'state'])
+            ->where('state', '=', CommonStatus::ACTIVE);
     }
 
     public static function existsByIdentificationCard(string $identification): bool
