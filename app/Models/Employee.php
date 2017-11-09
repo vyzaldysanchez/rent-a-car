@@ -15,6 +15,7 @@ namespace App\Models;
  * @property string $state
  * @property string $created_at
  * @property string $updated_at
+ * @property int $user_id
  */
 class Employee extends User
 {
@@ -27,6 +28,7 @@ class Employee extends User
     protected $state;
     protected $created_at;
     protected $updated_at;
+    protected $user_id;
 
     protected $fillable = [
         'name',
@@ -34,6 +36,9 @@ class Employee extends User
         'work_schedule',
         'commission_percent',
         'admission_date',
-        'state'
+        'state',
+        'user_id'
     ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

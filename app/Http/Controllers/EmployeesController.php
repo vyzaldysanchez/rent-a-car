@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,33 @@ class EmployeesController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $storingResult = Employee::create($request->all());
+        $user = null;
+
+        if (isset($request->credentials) && !empty($request->credentials)) {
+            if (User::findByEmail($request->credentials['email'])) {
+                $message = 'The email ' . $request->credentials['email'] . ' is already in use.';
+                
+                return $this->unprocessableEntity(new class($message) {
+                    public $code = HttpStatus::UNPROCESSABLE_ENTITY;
+                    public $message = '';
+                            
+                    public function __construct($message)
+                    {
+                        $this->message = $message;
+                    }
+                });
+            }
+
+            $user = User::create($request->credentials + ['name' => $request->name]);
+        }
+
+        $employeeToStore = $request->all();
+
+        if ($user) {
+            $employeeToStore = $employeeToStore + ['user_id' => $user->id];
+        }
+
+        $storingResult = Employee::create($employeeToStore);
         return $this->created($storingResult);
     }
 

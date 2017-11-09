@@ -12,7 +12,7 @@
                     <fg-select label="Schedule" placeholder="Select the work schedule" :options="schedules" @change="selectSchedule"></fg-select>
                 </div>
                 <div class="col-md-5">
-                    <fg-input type="number" label="Commision" v-model="commission"></fg-input>
+                    <fg-input type="number" label="Commision (%)" v-model="commission"></fg-input>
                 </div>
                 <div class="col-md-5 col-md-offset-1">
                     <fg-input type="date" label="Admission Date" v-model="employee.admissionDate"></fg-input>
@@ -57,6 +57,7 @@ export default {
       formIsValid: false,
       errors: [],
       schedules: [...workSchedules],
+      edit: false,
       employee: {
         name: '',
         identification: '',
@@ -120,6 +121,15 @@ export default {
 
       if (!this.formIsValid) {
         this.notifyErrors();
+      } else {
+        this.$swal({
+          title: 'Are you sure?',
+          html: `The employee <b>${this.employee
+            .name}</b> will be ${this.getActionToPerform()}.`,
+          type: 'warning',
+          showConfirmButton: true,
+          showCancelButton: true
+        }).then(this.save.bind(this));
       }
     },
     validateName() {
@@ -196,6 +206,42 @@ export default {
         horizontalAlign: 'right',
         icon: 'fa fa-warning'
       });
+    },
+    getActionToPerform() {
+      return this.edit ? 'updated' : 'created';
+    },
+    save() {
+      const body = {
+        name: this.employee.name,
+        identification_card: this.identification,
+        work_schedule: this.employee.schedule,
+        commission_percent: this.commission,
+        admission_date: this.employee.admissionDate
+      };
+
+      if (this.activateCredentials) {
+        body.credentials = this.employee.credentials;
+      }
+
+      this.isSavingEmployee = true;
+
+      this.$axios
+        .post('http://localhost:8000/api/employees', body)
+        .then(resp => {
+          const eventToEmit = this.onEditionMode
+              ? 'employee-updated'
+              : 'employee-created';
+
+          this.isSavingEmployee = false;
+          //this.clearForm();
+          //this.$emit(eventToEmit, body);
+        })
+        .catch(error => {
+          this.formIsValid = false;
+          this.errors.push(error.response.data.message);
+          this.notifyErrors();
+          this.isSavingEmployee = false;
+        });
     }
   }
 };
