@@ -6,7 +6,6 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Utils\HttpStatus;
 
 class EmployeesController extends Controller
 {
@@ -33,16 +32,7 @@ class EmployeesController extends Controller
         if (isset($request->credentials) && !empty($request->credentials)) {
             if (User::findByEmail($request->credentials['email'])) {
                 $message = 'The email ' . $request->credentials['email'] . ' is already in use.';
-                
-                return $this->unprocessableEntity(new class($message) {
-                    public $code = HttpStatus::UNPROCESSABLE_ENTITY;
-                    public $message = '';
-                            
-                    public function __construct($message)
-                    {
-                        $this->message = $message;
-                    }
-                });
+                return $this->unProcessableEntity($message);
             }
 
             $user = User::create($request->credentials + ['name' => $request->name]);
@@ -52,6 +42,11 @@ class EmployeesController extends Controller
 
         if ($user) {
             $employeeToStore = $employeeToStore + ['user_id' => $user->id];
+        }
+
+        if (Employee::existsByIdentificationCard($employeeToStore['identification_card'])) {
+            $message = 'The identification ' . $employeeToStore['identification_card'] . ' is already in use.';
+            return $this->unProcessableEntity($message);
         }
 
         $storingResult = Employee::create($employeeToStore);
