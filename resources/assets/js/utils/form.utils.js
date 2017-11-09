@@ -1,6 +1,7 @@
 export default {
     addActionsTo(object, onEdit, onDelete) {
-        return Object.assign(object, {
+        return {
+            ...object,
             actions: [
                 {
                     click: () => onEdit(object),
@@ -13,6 +14,6 @@ export default {
                     text: '<i class="fa fa-remove"></i>'
                 }
             ]
-        });
+        };
     }
 };

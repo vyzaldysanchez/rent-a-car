@@ -21,7 +21,8 @@
         ...fgInput,
         props: {
             ...fgInput.props,
-            value: [Boolean]
+            value: Boolean,
+            id: String
         }
     };
 </script>
