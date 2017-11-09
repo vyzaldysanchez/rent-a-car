@@ -79,6 +79,10 @@
                 if (employee) {
                     this.onEditionMode = true;
                     this.employee = this.createEmployeeFromProps();
+
+                    if (employee.credentials) {
+                        this.activateCredentials = true;
+                    }
                 }
             }
         },
@@ -105,13 +109,13 @@
         },
         methods: {
             createEmployeeFromProps() {
-                const {name, identification, commission, schedule, admission} = this.$props.employeeToUpdate;
+                const {name, identification, commission, schedule, admission, credentials} = this.$props.employeeToUpdate;
 
                 return {
                     name, identification, schedule, commission,
                     admissionDate: admission,
                     credentials: {
-                        email: '',
+                        ...credentials,
                         password: ''
                     }
                 };
@@ -124,6 +128,7 @@
                     commission: 0.0,
                     admissionDate: this.getDefaultDateValue(),
                     credentials: {
+                        id: 0,
                         email: '',
                         password: ''
                     }
@@ -214,7 +219,11 @@
                     this.errors.push('Only valid emails are allowed.');
                 }
 
-                if (!passwordIsValid) {
+                if (!password) {
+                    this.errors.push('Password cannot be empty.');
+                }
+
+                if (password && !passwordIsValid) {
                     this.errors.push('Passwords do not match.');
                 }
 

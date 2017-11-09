@@ -1,6 +1,8 @@
 <?php
 
-use App\Models\Enums\UserRole;
+use App\Models\Enums\{
+    CommonStatus, UserRole
+};
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->enum('role', UserRole::getAll())->default(UserRole::EMPLOYEE);
+            $table->enum('state', [CommonStatus::ACTIVE, CommonStatus::INACTIVE])->default(CommonStatus::ACTIVE);
             $table->timestamps();
         });
     }

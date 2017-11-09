@@ -22,7 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->enum('work_schedule', EmployeeWorkSchedule::getAll());
             $table->float('commission_percent', 10)->default(0.00);
             $table->date('admission_date');
-            $table->enum('state', CommonStatus::getAll())->default(CommonStatus::INACTIVE);
+            $table->enum('state', CommonStatus::getAll())->default(CommonStatus::ACTIVE);
 
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

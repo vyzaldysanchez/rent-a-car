@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Enums\CommonStatus;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Concerns\{
+    HasRelationships, QueriesRelationships
+};
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
@@ -19,10 +24,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $created_at
  * @property string $updated_at
  * @property int    $user_id
- * @property User   $user
+ * @property User   $credentials
  */
 class Employee extends User
 {
+    use HasRelationShips, QueriesRelationships;
+
     protected $id;
     protected $name;
     protected $identification_card;
@@ -40,7 +47,6 @@ class Employee extends User
         'work_schedule',
         'commission_percent',
         'admission_date',
-        'state',
         'user_id'
     ];
 
@@ -55,13 +61,19 @@ class Employee extends User
         });
     }
 
-    public function user(): BelongsTo
+    public function credentials(): BelongsTo
     {
-        return $this->belongsTo('\App\Models\User', 'user_id');
+        return $this->belongsTo('\App\Models\User', 'user_id')->select(['id', 'email', 'state'])
+            ->where('state', '=', CommonStatus::ACTIVE);
     }
 
     public static function existsByIdentificationCard(string $identification): bool
     {
         return parent::where('identification_card', '=', $identification)->exists();
+    }
+
+    public static function allWithCredentials(): Collection
+    {
+        return parent::with(['credentials'])->get(['*']);
     }
 }
