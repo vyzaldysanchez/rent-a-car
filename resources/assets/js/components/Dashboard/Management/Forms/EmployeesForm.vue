@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-md-5 col-md-offset-1">
                     <fg-select label="Schedule" placeholder="Select the work schedule" :options="schedules"
-                               @change="selectSchedule"></fg-select>
+                               @change="selectSchedule" v-model="employee.schedule"></fg-select>
                 </div>
                 <div class="col-md-5">
                     <fg-input type="number" label="Commision (%)" v-model="commission"></fg-input>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-5">
                     <fg-check label="Activate user" name="credentials" id="credentials"
-                              @change="toggleCredentials"></fg-check>
+                              @change="toggleCredentials" v-model="activateCredentials"></fg-check>
                 </div>
                 <div class="col-md-12" v-if="activateCredentials">
                     <div class="col-md-6 col-md-offset-3">
