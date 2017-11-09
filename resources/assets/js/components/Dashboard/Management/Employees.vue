@@ -4,7 +4,7 @@
             <h3 class="text-center">Loading...</h3>
         </div>
         <div v-if="loaded">
-            <employees-form></employees-form>
+            <employees-form @employee-created="addEmployee"></employees-form>
 
             <hr>
 
@@ -96,6 +96,9 @@
                         this.employees = this.employees.slice(0, index)
                             .concat(this.employees.slice(index + 1));
                     });
+            },
+            addEmployee(employee) {
+                this.employees.push(employee);
             }
         }
     };
