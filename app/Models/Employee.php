@@ -60,7 +60,7 @@ class Employee extends User
         return $this->belongsTo('\App\Models\User', 'user_id');
     }
 
-    public static function existsByIdentificationCard(string $identification): boolean
+    public static function existsByIdentificationCard(string $identification): bool
     {
         return parent::where('identification_card', '=', $identification)->exists();
     }
