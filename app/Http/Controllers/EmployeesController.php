@@ -58,18 +58,28 @@ class EmployeesController extends Controller
 
     public function update(Request $request, Employee $employee): JsonResponse
     {
-        if (isset($request->credentials) && !empty($request->credentials)) {
-            $userFound = User::findByEmail($request->credentials['email']);
+        $credentialsRequest = ['name' => $request->name];
 
-            if ($userFound && $userFound->id !== $employee->user_id) {
+        if (isset($request->credentials) && !empty($request->credentials)) {
+            $userFound = User::where('id', '!=', $employee->user_id)
+                ->whereEmail($request->credentials['email'])->first();
+
+            if ($userFound) {
                 $message = 'The email ' . $request->credentials['email'] . ' is already in use.';
                 return $this->unProcessableEntity($message);
             }
 
-            $employee->credentials
-                ->update($request->credentials + ['name' => $request->name, 'state' => CommonStatus::ACTIVE]);
-        } elseif ($employee->credentials) {
-            $employee->credentials->update(['name' => $request->name, 'state' => CommonStatus::INACTIVE]);
+            if ($employee->hasInactiveCredentials()) {
+                $employee->credentials->activate();
+            } elseif (!$employee->credentials) {
+                User::create($request->credentials);
+            }
+        } elseif ($employee->hasActiveCredentials()) {
+            $employee->credentials->desactivate();
+        }
+
+        if ($employee->credentials) {
+            $employee->credentials->save($credentialsRequest);
         }
 
         $identificationInUse = Employee::existsByIdentificationCard($request['identification_card']);
