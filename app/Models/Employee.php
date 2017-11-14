@@ -4,11 +4,9 @@ namespace App\Models;
 
 use App\Models\Enums\CommonStatus;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Concerns\{
-    HasRelationships, QueriesRelationships
-};
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
+use Illuminate\Database\Eloquent\Concerns\QueriesRelationships;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 
 /**
  * Class Employee
@@ -25,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $updated_at
  * @property int    $user_id
  * @property User   $credentials
+ * @property User $nonActiveCredentials
  */
 class Employee extends User
 {
@@ -61,10 +60,25 @@ class Employee extends User
         });
     }
 
+    protected function userAttatched(): BelongsTo
+    {
+        return $this->belongsTo('\App\Models\User', 'user_id')->select(['id', 'email', 'state']);
+    }
+
+
     public function credentials(): BelongsTo
     {
-        return $this->belongsTo('\App\Models\User', 'user_id')->select(['id', 'email', 'state'])
-            ->where('state', '=', CommonStatus::ACTIVE);
+        return $this->userAttatched();
+    }
+
+    public function hasActiveCredentials(): bool
+    {
+        return $this->credentials && $this->credentials->state === CommonStatus::ACTIVE;
+    }
+
+    public function hasInactiveCredentials(): bool
+    {
+        return $this->credentials && $this->credentials->state === CommonStatus::INACTIVE;
     }
 
     public static function existsByIdentificationCard(string $identification): bool

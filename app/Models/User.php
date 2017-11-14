@@ -4,12 +4,18 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Enums\CommonStatus;
 
 /**
  * Class User
  * @package App\Models
  *
  * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $state
  */
 class User extends Authenticatable
 {
@@ -33,8 +39,25 @@ class User extends Authenticatable
         'password', 'remember_token', 'created_at', 'updated_at'
     ];
 
-    public static function findByEmail(string $email): ?User
+    public function scopeWhereEmail(Builder $query, string $email): Builder
+    {
+        return $query->where('email', '=', $email);
+    }
+
+    public static function findByEmail(): ?User
     {
         return parent::where('email', '=', $email)->first();
+    }
+
+    public function activate(): User
+    {
+        $this->update(['state' => CommonStatus::ACTIVE]);
+        return $this;
+    }
+
+    public function desactivate(): User
+    {
+        $this->update(['state' => CommonStatus::INACTIVE]);
+        return $this;
     }
 }
