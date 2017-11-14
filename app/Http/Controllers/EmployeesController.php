@@ -61,8 +61,6 @@ class EmployeesController extends Controller
         $credentialsRequest = ['name' => $request->name];
 
         if (isset($request->credentials) && !empty($request->credentials)) {
-            $credentialsRequest +=  $request->credentials;
-
             $userFound = User::where('id', '!=', $employee->user_id)
                 ->whereEmail($request->credentials['email'])->first();
 
@@ -73,9 +71,15 @@ class EmployeesController extends Controller
 
             if ($employee->hasInactiveCredentials()) {
                 $employee->credentials->activate();
+            } elseif (!$employee->credentials) {
+                User::create($request->credentials);
             }
         } elseif ($employee->hasActiveCredentials()) {
             $employee->credentials->desactivate();
+        }
+
+        if ($employee->credentials) {
+            $employee->credentials->save($credentialsRequest);
         }
 
         $identificationInUse = Employee::existsByIdentificationCard($request['identification_card']);
@@ -86,7 +90,7 @@ class EmployeesController extends Controller
             return $this->unProcessableEntity($message);
         }
 
-        $employee->update($request->all() + $credentialsRequest);
+        $employee->update($request->all());
 
         return $this->success($employee);
     }
