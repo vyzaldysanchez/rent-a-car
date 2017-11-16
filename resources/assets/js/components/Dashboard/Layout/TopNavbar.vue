@@ -14,6 +14,9 @@
             <div class="navbar-right-menu">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                        <a href="/#/admin/vehicles/rent" class="btn btn-primary">
+                        Make a rent -> <i class="ti-car"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
