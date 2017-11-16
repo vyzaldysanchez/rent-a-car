@@ -38,8 +38,8 @@
                 </div>
             </div>
         </div>
-        <footer class="footer-demo">
-            <div class="container">
+        <footer class="footer">
+            <div>
                 <nav class="pull-left">
                     <ul>
                         <li>

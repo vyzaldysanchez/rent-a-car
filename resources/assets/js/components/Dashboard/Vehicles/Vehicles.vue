@@ -33,7 +33,7 @@
                 vehicleToEdit: null
             };
         },
-        mounted() {
+        created() {
             this.$axios.get('http://localhost:8000/api/vehicles')
                 .then(response => {
                     this.vehicles = (response.data || []).map((vehicle, index) => {
