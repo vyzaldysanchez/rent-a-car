@@ -6,6 +6,7 @@ import vClickOutside from 'v-click-outside';
 import GlobalComponents from './globalComponents';
 import Notifications from './components/UIComponents/NotificationPlugin';
 import SideBar from './components/UIComponents/SidebarPlugin';
+import LoadingMessage from './components/UIComponents/Messages';
 import App from './App.vue';
 import { AUTH_USER_KEY } from './services/user.service';
 // router setup
@@ -26,59 +27,60 @@ Vue.use(GlobalComponents);
 Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
+Vue.use(LoadingMessage);
 
 // Storage setup
 localforage.default.config({
-    name: 'vy-rent-car'
+  name: 'vy-rent-car'
 });
 
 // configure router
 const router = new VueRouter({
-    routes, // short for routes: routes
-    linkActiveClass: 'active'
+  routes, // short for routes: routes
+  linkActiveClass: 'active'
 });
 
 router.beforeEach((to, from, next) => {
-    localforage.getItem(AUTH_USER_KEY).then(user => {
-        if (user || to.fullPath === '/user/login') {
-            next();
-        } else {
-            next({ path: '/user/login' });
-        }
-    });
+  localforage.getItem(AUTH_USER_KEY).then(user => {
+    if (user || to.fullPath === '/user/login') {
+      next();
+    } else {
+      next({ path: '/user/login' });
+    }
+  });
 });
 
 // global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {
-    get() {
-        return this.$root.Chartist;
-    }
+  get() {
+    return this.$root.Chartist;
+  }
 });
 
 Object.defineProperty(Vue.prototype, '$storage', {
-    get() {
-        return localforage;
-    }
+  get() {
+    return localforage;
+  }
 });
 
 Object.defineProperty(Vue.prototype, '$axios', {
-    get() {
-        return axios;
-    }
+  get() {
+    return axios;
+  }
 });
 
 Object.defineProperty(Vue.prototype, '$formatter', {
-    get() {
-        return dataFormatter;
-    }
+  get() {
+    return dataFormatter;
+  }
 });
 
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    render: h => h(App),
-    router,
-    data: {
-        Chartist
-    }
+  el: '#app',
+  render: h => h(App),
+  router,
+  data: {
+    Chartist
+  }
 });
