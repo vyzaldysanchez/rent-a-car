@@ -1,7 +1,7 @@
 <template>
     <div class="loader">
         <h2><i class="fa fa-spinner fa-spin"></i></h2>
-        <h3><span>{{ message }}</span></h3>
+        <h3 v-if="!onlyIcon"><span>{{ message }}</span></h3>
     </div>
 </template>
 
@@ -9,7 +9,8 @@
 .loader {
   text-align: center;
 
-  h2, h3 {
+  h2,
+  h3 {
     display: block;
   }
 }
@@ -22,6 +23,10 @@ export default {
     message: {
       type: String,
       default: 'Loading...'
+    },
+    onlyIcon: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
