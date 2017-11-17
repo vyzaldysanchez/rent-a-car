@@ -34,14 +34,14 @@
 </template>
 
 <script>
-import formValidator from "../../../../utils/form-validator.utils";
+import formValidator from '../../../../utils/form-validator.utils';
 
 const createDefaultClient = () => {
   return {
     id: 0,
-    name: "",
-    identification: "",
-    creditcard: "",
+    name: '',
+    identification: '',
+    creditcard: '',
     creditlimit: 0,
     persontype: null
   };
@@ -69,7 +69,7 @@ export default {
     };
   },
   created() {
-    this.$axios.get("http://localhost:8000/api/person_types").then(
+    this.$axios.get('http://localhost:8000/api/person_types').then(
       resp =>
         (this.personTypes = !resp.data
           ? []
@@ -85,7 +85,7 @@ export default {
     },
     identification: {
       get() {
-        return this.client ? this.client.identification : "";
+        return this.client ? this.client.identification : '';
       },
       set(value) {
         this.client.identification = this.$formatter.formatIdentification(
@@ -95,10 +95,10 @@ export default {
     },
     creditCard: {
       get() {
-        return this.client ? this.client.creditcard : "";
+        return this.client ? this.client.creditcard : '';
       },
       set(number) {
-        this.client.creditcard = number.replace(/\D+/g, "");
+        this.client.creditcard = number.replace(/\D+/g, '');
       }
     }
   },
@@ -134,10 +134,10 @@ export default {
         this.notifyErrors();
       } else {
         this.$swal({
-          title: "Are you sure?",
+          title: 'Are you sure?',
           html: `The client <b>${this.client
             .name}</b> will be ${this.getActionToPerform()}.`,
-          type: "warning",
+          type: 'warning',
           showConfirmButton: true,
           showCancelButton: true
         }).then(this.save.bind(this));
@@ -154,7 +154,7 @@ export default {
       this.isFormValid = this.isFormValid && isValid;
 
       if (!isValid) {
-        this.formErrors.push("The name field is empty");
+        this.formErrors.push('The name field is empty');
       }
     },
     validateIdentification() {
@@ -162,7 +162,7 @@ export default {
       this.isFormValid = this.isFormValid && isValid;
 
       if (!isValid) {
-        this.formErrors.push("The identification format is not correct.");
+        this.formErrors.push('The identification format is not correct.');
       }
     },
     validateCreditCard() {
@@ -173,13 +173,13 @@ export default {
 
       if (!lengthIsValid) {
         this.formErrors.push(
-          "The credit card number length is no 19 characters."
+          'The credit card number length is no 19 characters.'
         );
       }
 
       if (!formatIsValid) {
         this.formErrors.push(
-          "Only numeric chars are allowed for a credit card."
+          'Only numeric chars are allowed for a credit card.'
         );
       }
     },
@@ -188,7 +188,7 @@ export default {
       this.isFormValid = this.isFormValid && isValid;
 
       if (!isValid) {
-        this.formErrors.push("The credit limit is not valid.");
+        this.formErrors.push('The credit limit is not valid.');
       }
     },
     validatePersonType() {
@@ -196,7 +196,7 @@ export default {
       this.isFormValid = this.isFormValid && isValid;
 
       if (!isValid) {
-        this.formErrors.push("The person type selected is not valid.");
+        this.formErrors.push('The person type selected is not valid.');
       }
     },
     getFormErrorListAsHTML() {
@@ -209,10 +209,10 @@ export default {
     notifyErrors() {
       this.$notifications.notify({
         message: this.getFormErrorListAsHTML(),
-        type: "danger",
-        verticalAlign: "bottom",
-        horizontalAlign: "right",
-        icon: "fa fa-warning"
+        type: 'danger',
+        verticalAlign: 'bottom',
+        horizontalAlign: 'right',
+        icon: 'fa fa-warning'
       });
     },
     save() {
@@ -229,8 +229,8 @@ export default {
       this.sendRequest(body)
         .then(resp => {
           const eventToEmit = this.onEditionMode
-              ? "client-updated"
-              : "client-created",
+              ? 'client-updated'
+              : 'client-created',
             body = {
               id: resp.data.id,
               name: resp.data.name,
@@ -257,7 +257,7 @@ export default {
         : this.getClientCreationPromise(body);
     },
     getClientCreationPromise(body) {
-      return this.$axios.post("http://localhost:8000/api/clients", body);
+      return this.$axios.post('http://localhost:8000/api/clients', body);
     },
     getClientUpdatePromise(body) {
       return this.$axios.put(
@@ -267,15 +267,15 @@ export default {
     },
     clearForm() {
       this.client = {
-        name: "",
-        identification: "",
-        creditcard: "",
+        name: '',
+        identification: '',
+        creditcard: '',
         creditlimit: 0,
         persontype: null
       };
     },
     getActionToPerform() {
-      return this.onEditionMode ? "updated" : "created";
+      return this.onEditionMode ? 'updated' : 'created';
     }
   }
 };
