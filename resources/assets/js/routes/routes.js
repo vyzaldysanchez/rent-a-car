@@ -11,36 +11,36 @@ import usersRoutes from './users/routes';
 import vehiclesRoutes from './vehicles/routes';
 
 const routes = [
-    usersRoutes,
-    {
-        path: '/',
-        component: DashboardLayout,
-        redirect: '/admin'
-    },
-    {
-        path: '/admin',
-        component: DashboardLayout,
-        redirect: '/admin/overview',
-        children: [
-            ...vehiclesRoutes,
-            {
-                path: 'overview',
-                name: 'overview',
-                component: Overview
-            },
-            {
-                path: 'clients',
-                name: 'clients',
-                component: Clients
-            },
-            {
-                path: 'employees',
-                name: 'employees',
-                component: Employees
-            }
-        ]
-    },
-    { path: '*', component: NotFound }
+  usersRoutes,
+  {
+    path: '/',
+    component: DashboardLayout,
+    redirect: '/admin'
+  },
+  {
+    path: '/admin',
+    component: DashboardLayout,
+    redirect: '/admin/overview',
+    children: [
+      ...vehiclesRoutes,
+      {
+        path: 'overview',
+        name: 'overview',
+        component: Overview
+      },
+      {
+        path: 'clients',
+        name: 'clients',
+        component: Clients
+      },
+      {
+        path: 'employees',
+        name: 'employees',
+        component: Employees
+      }
+    ]
+  },
+  { path: '*', component: NotFound }
 ];
 
 /**
