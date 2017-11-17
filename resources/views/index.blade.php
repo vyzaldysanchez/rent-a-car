@@ -11,10 +11,6 @@
     <title>Rent A Car</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-    <link type="text/css" href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet">
-    <link type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link href="/css/themify-icons.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 </head>
