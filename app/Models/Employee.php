@@ -62,7 +62,7 @@ class Employee extends User
 
     protected function userAttatched(): BelongsTo
     {
-        return $this->belongsTo('\App\Models\User', 'user_id')->select(['id', 'email', 'state']);
+        return $this->belongsTo(User::class, 'user_id')->select(['id', 'email', 'state']);
     }
 
 
@@ -73,12 +73,12 @@ class Employee extends User
 
     public function hasActiveCredentials(): bool
     {
-        return $this->credentials && $this->credentials->state === CommonStatus::ACTIVE;
+        return optional($this->credentials)->state === CommonStatus::ACTIVE;
     }
 
     public function hasInactiveCredentials(): bool
     {
-        return $this->credentials && $this->credentials->state === CommonStatus::INACTIVE;
+        return optional($this->credentials)->state === CommonStatus::INACTIVE;
     }
 
     public static function existsByIdentificationCard(string $identification): bool

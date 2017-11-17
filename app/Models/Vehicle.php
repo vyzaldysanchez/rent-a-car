@@ -59,22 +59,22 @@ class Vehicle extends Model
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo('App\Models\VehicleType', 'vehicle_type_id');
+        return $this->belongsTo(VehicleType::class, 'vehicle_type_id');
     }
 
     public function brand(): BelongsTo
     {
-        return $this->belongsTo('App\Models\VehicleBrand', 'vehicle_brand_id');
+        return $this->belongsTo(VehicleBrand::class, 'vehicle_brand_id');
     }
 
     public function model(): BelongsTo
     {
-        return $this->belongsTo('App\Models\VehicleModel', 'vehicle_model_id');
+        return $this->belongsTo(VehicleModel::class, 'vehicle_model_id');
     }
 
     public function fuel(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Fuel', 'fuel_id');
+        return $this->belongsTo(Fuel::class, 'fuel_id');
     }
 
     public static function getWithRelations($columns = ['*']): Collection
