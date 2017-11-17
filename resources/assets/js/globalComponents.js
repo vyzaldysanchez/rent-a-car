@@ -8,12 +8,12 @@ import DropDown from './components/UIComponents/Dropdown.vue';
  */
 
 const GlobalComponents = {
-    install(Vue) {
-        Vue.component('fg-input', fgInput);
-        Vue.component('fg-select', fgSelect);
-        Vue.component('fg-check', fgCheck);
-        Vue.component('drop-down', DropDown);
-    }
+  install(Vue) {
+    Vue.component('FgInput', fgInput);
+    Vue.component('FgSelect', fgSelect);
+    Vue.component('FgCheck', fgCheck);
+    Vue.component('DropDown', DropDown);
+  }
 };
 
 export default GlobalComponents;
