@@ -3,7 +3,7 @@
         <label v-if="label" :for="name">
             {{label}}
         </label>
-        <input class="border-input" :class="{'form-control': asFormControl}" v-bind="$props" :name="name" :value="value"
+        <input class="border-input" :class="{'form-control': asFormControl}" v-bind="$props" :name="name" :id="id" :value="value"
                :minlength="min" :maxlength="max" @input="$emit('input',$event.target.value)"
                @blur="$emit('blur', $event.target)" @change="$emit('change', $event)"/>
     </div>
@@ -16,6 +16,7 @@
                 type: String,
                 default: 'text'
             },
+            id: String,
             label: String,
             name: String,
             disabled: Boolean,
