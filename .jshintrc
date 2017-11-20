@@ -1,6 +1,7 @@
 {
-    "esversion": 6,
-    "globals": {
-        "esversion": true
-    }
+  "esversion": 6,
+  "globals": {
+    "esversion": true
+  },
+  "module": true
 }
