@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
@@ -10,9 +9,13 @@ use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request) : JsonResponse
     {
-        $employees = Employee::allWithCredentials();
+        $excludeUserFromRequest = $request->exists('except');
+        $filters = $excludeUserFromRequest ? ['user_id' => $request->get('except')] : [];
+        $filtersCondition = $excludeUserFromRequest ? '!=' : '';
+        
+        $employees = Employee::allWithCredentials($filters, $filtersCondition);
 
         if ($employees->count()) {
             return $this->success($employees);
@@ -21,12 +24,12 @@ class EmployeesController extends Controller
         return $this->noContent();
     }
 
-    public function display(Employee $employee): JsonResponse
+    public function display(Employee $employee) : JsonResponse
     {
         return $this->success($employee);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request) : JsonResponse
     {
         $user = null;
 
@@ -56,7 +59,7 @@ class EmployeesController extends Controller
         return $this->created($result);
     }
 
-    public function update(Request $request, Employee $employee): JsonResponse
+    public function update(Request $request, Employee $employee) : JsonResponse
     {
         $credentialsRequest = ['name' => $request->name];
 
@@ -95,7 +98,7 @@ class EmployeesController extends Controller
         return $this->success($employee);
     }
 
-    public function delete(Employee $employee): JsonResponse
+    public function delete(Employee $employee) : JsonResponse
     {
         $employee->delete();
         return $this->noContent();

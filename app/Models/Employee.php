@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Models\Enums\CommonStatus;
@@ -7,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Concerns\QueriesRelationships;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Employee
@@ -51,7 +51,7 @@ class Employee extends User
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected static function boot(): void
+    protected static function boot() : void
     {
         parent::boot();
 
@@ -60,34 +60,40 @@ class Employee extends User
         });
     }
 
-    protected function userAttatched(): BelongsTo
+    protected function userAttatched() : BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id')->select(['id', 'email', 'state']);
     }
 
 
-    public function credentials(): BelongsTo
+    public function credentials() : BelongsTo
     {
         return $this->userAttatched();
     }
 
-    public function hasActiveCredentials(): bool
+    public function hasActiveCredentials() : bool
     {
         return optional($this->credentials)->state === CommonStatus::ACTIVE;
     }
 
-    public function hasInactiveCredentials(): bool
+    public function hasInactiveCredentials() : bool
     {
         return optional($this->credentials)->state === CommonStatus::INACTIVE;
     }
 
-    public static function existsByIdentificationCard(string $identification): bool
+    public static function existsByIdentificationCard(string $identification) : bool
     {
         return parent::where('identification_card', '=', $identification)->exists();
     }
 
-    public static function allWithCredentials(): Collection
+    public static function allWithCredentials(array $filters = array(), string $filtersCondition = '=') : Collection
     {
-        return parent::with(['credentials'])->get(['*']);
+        return parent::with(['credentials'])->where(function (Builder $query) use ($filters, $filtersCondition) {
+            foreach ($filters as $column => $value) {
+                $query->where($column, $filtersCondition, $value);
+            }
+
+            return $query;
+        })->get(['*']);
     }
 }
