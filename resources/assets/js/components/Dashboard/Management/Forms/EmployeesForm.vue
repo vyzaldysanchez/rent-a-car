@@ -278,7 +278,8 @@
                 }).catch(error => {
                     this.formIsValid = false;
                     this.isSavingEmployee = false;
-                    this.errors.push(error.response.data.message);
+                    const errors = error.response.data.errors || [error.response.data.message];
+                    this.errors.push(Object.values(errors).map(error => error[0]));
                     this.notifyErrors();
                 });
             },
