@@ -21,7 +21,7 @@ class EmployeeTableSeeder extends Seeder
         factory(Employee::class, 1)->create([
             'name' => $userToSeed->name,
             'identification_card' => '402-2317202-0',
-            'user_id' => \App\Models\User::first()->id
+            'user_id' => $userToSeed->id
         ]);
     }
 }
