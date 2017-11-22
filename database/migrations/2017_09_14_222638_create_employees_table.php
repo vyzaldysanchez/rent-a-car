@@ -20,7 +20,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name', 45);
             $table->string('identification_card', 13)->unique();
             $table->enum('work_schedule', EmployeeWorkSchedule::getAll());
-            $table->float('commission_percent', 10)->default(0.00);
+            $table->float('commission_percent', 10, 2)->default(0.00);
             $table->date('admission_date');
             $table->enum('state', CommonStatus::getAll())->default(CommonStatus::ACTIVE);
 

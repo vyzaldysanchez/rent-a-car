@@ -18,6 +18,7 @@
     import EmployeesForm from './Forms/EmployeesForm.vue';
     import TableList from './../Views/TableList.vue';
     import factory from './../../../factories/factory';
+    import {AUTH_USER_KEY} from '../../../services/user.service'
 
     const columns = [
         'Ord',
@@ -44,11 +45,15 @@
             };
         },
         created() {
-            this.$axios.get('http://localhost:8000/api/employees').then(resp => {
-                this.employees = resp.data || [];
-                this.loadTableDataFrom(this.employees);
-                this.loaded = true;
+            this.$storage.getItem(AUTH_USER_KEY).then(user => {
+                this.$axios.get(`http://localhost:8000/api/employees?except=${user.id}`).then(resp => {
+                    this.employees = resp.data || [];
+                    this.loadTableDataFrom(this.employees);
+                    this.loaded = true;
+                });
             });
+
+            
         },
         watch: {
             employees(val) {

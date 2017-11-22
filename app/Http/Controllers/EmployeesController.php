@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
@@ -7,12 +6,17 @@ use App\Models\Enums\CommonStatus;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Http\Requests\EmployeeCreationRequest;
 
 class EmployeesController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request) : JsonResponse
     {
-        $employees = Employee::allWithCredentials();
+        $excludeUserFromRequest = $request->exists('except');
+        $filters = $excludeUserFromRequest ? ['user_id' => $request->get('except')] : [];
+        $filtersCondition = $excludeUserFromRequest ? '!=' : '';
+
+        $employees = Employee::allWithCredentials($filters, $filtersCondition);
 
         if ($employees->count()) {
             return $this->success($employees);
@@ -21,21 +25,18 @@ class EmployeesController extends Controller
         return $this->noContent();
     }
 
-    public function display(Employee $employee): JsonResponse
+    public function display(Employee $employee) : JsonResponse
     {
         return $this->success($employee);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(EmployeeCreationRequest $request) : JsonResponse
     {
+        $request->validate();
+
         $user = null;
 
         if (isset($request->credentials) && !empty($request->credentials)) {
-            if (User::findByEmail($request->credentials['email'])) {
-                $message = 'The email ' . $request->credentials['email'] . ' is already in use.';
-                return $this->unProcessableEntity($message);
-            }
-
             $user = User::create($request->credentials + ['name' => $request->name]);
         }
 
@@ -45,18 +46,13 @@ class EmployeesController extends Controller
             $employeeToStore = $employeeToStore + ['user_id' => $user->id];
         }
 
-        if (Employee::existsByIdentificationCard($employeeToStore['identification_card'])) {
-            $message = 'The identification ' . $employeeToStore['identification_card'] . ' is already in use.';
-            return $this->unProcessableEntity($message);
-        }
-
         $storingResult = Employee::create($employeeToStore);
         $result = Employee::where('id', '=', $storingResult->id)->with(['credentials'])->first();
 
         return $this->created($result);
     }
 
-    public function update(Request $request, Employee $employee): JsonResponse
+    public function update(Request $request, Employee $employee) : JsonResponse
     {
         $credentialsRequest = ['name' => $request->name];
 
@@ -95,7 +91,7 @@ class EmployeesController extends Controller
         return $this->success($employee);
     }
 
-    public function delete(Employee $employee): JsonResponse
+    public function delete(Employee $employee) : JsonResponse
     {
         $employee->delete();
         return $this->noContent();

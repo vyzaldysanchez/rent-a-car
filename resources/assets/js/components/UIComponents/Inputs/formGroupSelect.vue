@@ -4,7 +4,7 @@
             {{label}}
         </label>
         <select class="form-control border-input" :name="name" :id="id" v-bind="$props" :value="value"
-                @change="$emit('change',$event.target.value)">
+                @change="$emit('change', $event.target.value)">
             <option v-if="placeholder" disabled :value="null">{{placeholder}}</option>
             <option v-for="(option, index) in options" v-bind:key="index" :value="option.value">
                 {{option.label}}
