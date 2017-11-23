@@ -23,9 +23,15 @@ class EmployeeCreationRequest extends FormRequest
             'identification_card' => ['required', 'unique:employees'],
             'work_schedule' => 'required',
             'admission_date' => 'required',
-            'credentials' => [
-                'email' => ['required', 'unique:users']
-            ]
+            'credentials.email' => ['required_with:credentials', 'unique:users,email']
+        ];
+    }
+
+    public function messages() : array
+    {
+        return [
+            'credentials.email.required_with' => 'The email for the credentials is missing.',
+            'credentials.email.unique' => 'The email provided is already taken.'
         ];
     }
 }
