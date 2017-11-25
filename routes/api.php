@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -11,6 +10,7 @@ Route::middleware('web')->group(function () {
     Route::post('auth/logout', 'Auth\LoginController@logout');
 
     Route::get('vehicles/', 'VehiclesController@index');
+    Route::get('vehicles/available', 'VehiclesController@allAvailable');
     Route::get('vehicles/{vehicle}', 'VehiclesController@display');
     Route::post('vehicles', 'VehiclesController@store');
     Route::put('vehicles/{vehicle}', 'VehiclesController@update');

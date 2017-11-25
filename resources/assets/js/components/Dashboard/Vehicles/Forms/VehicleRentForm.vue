@@ -84,7 +84,7 @@ export default {
   methods: {
     getFormDataRequest() {
       return Promise.all([
-        this.$axios.get('http://localhost:8000/api/vehicles'),
+        this.$axios.get('http://localhost:8000/api/vehicles/available'),
         this.$axios.get('http://localhost:8000/api/clients')
       ]);
     }
