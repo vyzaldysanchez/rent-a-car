@@ -15,10 +15,7 @@ export default {
   },
   data() {
     return {
-      loaded: false,
-      get message() {
-        return 'Loading the rents module, please wait a moment...';
-      }
+      loaded: false
     };
   },
   methods: {

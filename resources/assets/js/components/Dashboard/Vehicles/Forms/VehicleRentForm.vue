@@ -6,11 +6,11 @@
 
     <form>
       <div class="col-md-6 form-group">
-        <fg-select :options="vehicles" id="vehicle" name="vehicle" label="Vehicle to rent" placeholder="Select the vehicle to rent"></fg-select>
+        <fg-select :options="vehicles" id="vehicle" name="vehicle" label="Vehicle to rent" placeholder="Select the vehicle to rent" v-model="rent.vehicleId" @change="selectVehicle"></fg-select>
       </div>
       
       <div class="col-md-6 form-group">
-        <fg-select :options="clients" id="client" name="client" label="Client who rents" placeholder="Select the client to rent the car"></fg-select>
+        <fg-select :options="clients" id="client" name="client" label="Client who rents" placeholder="Select the client to rent the car" v-model="rent.clientId" @change="selectClient"></fg-select>
       </div>
       
       <div class="col-md-6 form-group">
@@ -30,12 +30,12 @@
       </div>
       
       <div class="col-md-12 form-group">
-        <fg-textarea label="Comment" id="comment" name="comment"></fg-textarea>
+        <fg-textarea label="Comment" id="comment" name="comment" v-model="rent.comment"></fg-textarea>
       </div>
 
       <div class="form-group">
-        <button type="button" class="btn btn-primary btn-fill center-block">
-          Make rent!
+        <button type="button" class="btn btn-primary btn-fill center-block" :class="{'disabled': isCreatingRent}"
+            @click.prevent="validBeforeSave">Save
         </button>
       </div>
     </form>
@@ -44,7 +44,7 @@
 
 <style lang="scss" scoped>
 .title {
-  margin: 15px 0;
+	margin: 15px 0;
 }
 </style>
 
@@ -53,41 +53,160 @@
 import fgSelectHelper from './../../../UIComponents/Inputs/Helpers/fg-select.helper';
 
 export default {
-  data() {
-    return {
-      rent: {
-        dailyFair: 0.0,
-        rentDays: 1,
-        date: null,
-        returnDate: null
-      },
-      vehicles: [],
-      clients: []
-    };
-  },
-  created() {
-    this.getFormDataRequest().then(res => {
-      const [vehicles, clients] = res;
+	data() {
+		return {
+			rent: {
+				vehicleId: null,
+				clientId: null,
+				dailyFair: 0.0,
+				rentDays: 1,
+				date: null,
+				returnDate: null,
+				comment: ''
+			},
+			vehicles: [],
+			clients: [],
+			isValid: false,
+			errors: [],
+			isCreatingRent: false
+		};
+	},
+	created() {
+		this.getFormDataRequest().then(res => {
+			const [vehicles, clients] = res;
 
-      this.vehicles = fgSelectHelper.mapToSelectListItem(vehicles.data, [
-        'id',
-        'description'
-      ]);
-      this.clients = fgSelectHelper.mapToSelectListItem(clients.data, [
-        'id',
-        'name'
-      ]);
+			this.vehicles = fgSelectHelper.mapToSelectListItem(vehicles.data, [
+				'id',
+				'description'
+			]);
+			this.clients = fgSelectHelper.mapToSelectListItem(clients.data, [
+				'id',
+				'name'
+			]);
 
-      this.$emit('loaded');
-    });
-  },
-  methods: {
-    getFormDataRequest() {
-      return Promise.all([
-        this.$axios.get('http://localhost:8000/api/vehicles'),
-        this.$axios.get('http://localhost:8000/api/clients')
-      ]);
-    }
-  }
+			this.$emit('loaded');
+		});
+	},
+	methods: {
+		getFormDataRequest() {
+			return Promise.all([
+				this.$axios.get('http://localhost:8000/api/vehicles/available'),
+				this.$axios.get('http://localhost:8000/api/clients')
+			]);
+		},
+		selectVehicle(id) {
+			this.rent.vehicleId = id;
+		},
+		selectClient(id) {
+			this.rent.clientId = id;
+		},
+		validBeforeSave() {
+			this.isCreatingRent = true;
+
+			this.validate();
+
+			this.isCreatingRent = false;
+		},
+		validate() {
+			this.errors = [];
+			this.isValid = true;
+
+			this.validateSelectedVehicle();
+			this.validateSelectedClient();
+			this.validateDailyFair();
+			this.validateRentDays();
+			this.validateRentDate();
+			this.validateReturnDate();
+
+			if (this.errors.length) {
+				this.notifyErrors();
+			}
+		},
+		validateSelectedVehicle() {
+			if (!this.rent.vehicleId) {
+				this.errors.push('You must select a vehicle.');
+			}
+
+			this.isValid = this.isValid && this.rent.vehicleId > 0;
+		},
+		validateSelectedClient() {
+			if (!this.rent.clientId) {
+				this.errors.push('A client must be selected.');
+			}
+
+			this.isValid = this.isValid && this.rent.clientId > 0;
+		},
+		validateDailyFair() {
+			if (!this.rent.dailyFair) {
+				this.errors.push('Must define a fair to be charged daily.');
+			}
+
+			this.isValid = this.isValid && this.rent.dailyFair > 0;
+		},
+		validateRentDays() {
+			if (!this.rent.rentDays) {
+				this.errors.push('An amount of days must be set for the rent.');
+			}
+
+			this.isValid = this.isValid && this.rent.rentDays > 0;
+		},
+		validateRentDate() {
+			const hasNoDate = !this.rent.date;
+
+			if (hasNoDate) {
+				this.errors.push('A date for the rent must be provided.');
+			}
+
+			const rentIsOutDated = this.$date.isOutDated(this.rent.date);
+
+			if (!hasNoDate && rentIsOutDated) {
+				this.errors.push(
+					'The rent cannot be assigned for a passed date.'
+				);
+			}
+
+			this.isValid = this.isValid && !hasNoDate && !rentIsOutDated;
+		},
+		validateReturnDate() {
+			const hasNoDate = !this.rent.returnDate;
+			let isValid = true;
+
+			if (hasNoDate) {
+				isValid = false;
+
+				this.errors.push('A return date must be provided.');
+			} else {
+				const { returnDate, date } = this.rent;
+				const returnDateIsOutDated = this.$date.isOutDated(returnDate);
+
+				if (returnDateIsOutDated) {
+					this.errors.push(
+						'The return date cannot be assigned for a passed date.'
+					);
+				}
+
+				const returnDateIsInvalid = returnDate < date;
+
+				if (returnDateIsInvalid) {
+					this.errors.push(
+						'The return date cannot be before the rent date.'
+					);
+				}
+
+				isValid = !returnDateIsOutDated && !returnDateIsInvalid;
+			}
+
+			this.isValid = this.isValid && isValid;
+		},
+		notifyErrors() {
+			this.$notifications.notify({
+				message: this.$formsValidator.getErrorListAsHTML(this.errors),
+				type: 'danger',
+				verticalAlign: 'bottom',
+				horizontalAlign: 'right',
+				icon: 'fa fa-warning'
+			});
+		}
+	}
 };
 </script>

@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Enums\VehicleState;
 
 /**
  * Class Vehicle
@@ -57,28 +58,40 @@ class Vehicle extends Model
 
     protected $with = self::RELATIONS;
 
-    public function type(): BelongsTo
+    public function type() : BelongsTo
     {
         return $this->belongsTo(VehicleType::class, 'vehicle_type_id');
     }
 
-    public function brand(): BelongsTo
+    public function brand() : BelongsTo
     {
         return $this->belongsTo(VehicleBrand::class, 'vehicle_brand_id');
     }
 
-    public function model(): BelongsTo
+    public function model() : BelongsTo
     {
         return $this->belongsTo(VehicleModel::class, 'vehicle_model_id');
     }
 
-    public function fuel(): BelongsTo
+    public function fuel() : BelongsTo
     {
         return $this->belongsTo(Fuel::class, 'fuel_id');
     }
 
-    public static function getWithRelations($columns = ['*']): Collection
+    public static function getWithRelations($columns = ['*']) : Collection
     {
-        return parent::with(static::RELATIONS)->get($columns);
+        return static::getWithRelationsQuery()->get($columns);
+    }
+
+    public static function getAllAvailableWithRelations($columns = ['*']) : Collection
+    {
+        return static::getWithRelationsQuery()
+            ->where('state', VehicleState::AVAILABLE)
+            ->get($columns);
+    }
+
+    public static function getWithRelationsQuery() : Builder
+    {
+        return parent::with(static::RELATIONS);
     }
 }

@@ -19,7 +19,5 @@
 <div id="app"></div>
 
 <script src="/js/app.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAamVCoyQ4AuvBpxVRMs9P-HFkfPVQj0Kw"
-        async type="text/javascript"></script>
 </body>
 </html>
