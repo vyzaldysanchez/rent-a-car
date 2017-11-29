@@ -233,10 +233,7 @@ export default {
 				});
 		},
 		clearForm() {
-			this.employee = this.createInitialRent();
-			this.passwordConfirmation = '';
-			this.activateCredentials = false;
-			this.onEditionMode = false;
+			this.rent = this.createInitialRent();
 		},
 		createInitialRent() {
 			return {
