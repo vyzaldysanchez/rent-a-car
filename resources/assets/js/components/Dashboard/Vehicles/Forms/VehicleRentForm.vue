@@ -25,15 +25,11 @@
         <fg-input type="number" id="fair" name="fair" label="Daily fair" v-model="rent.dailyFair" :min="0.00"></fg-input>
       </div>
       
-      <div class="col-md-6 form-group">
-        <fg-input type="number" id="days" name="days" label="Rent days" v-model="rent.rentDays" :min="1"></fg-input>
-      </div>
-      
       <div class="col-md-12 form-group">
         <fg-textarea label="Comment" id="comment" name="comment" v-model="rent.comment"></fg-textarea>
       </div>
 
-      <div class="form-group">
+      <div class="col-md-12 form-group">
         <button type="button" class="btn btn-primary btn-fill center-block" :class="{'disabled': isCreatingRent}"
             @click.prevent="validBeforeSave">Save
         </button>
@@ -110,7 +106,6 @@ export default {
 			this.validateSelectedVehicle();
 			this.validateSelectedClient();
 			this.validateDailyFair();
-			this.validateRentDays();
 			this.validateRentDate();
 			this.validateReturnDate();
 
@@ -146,13 +141,6 @@ export default {
 			}
 
 			this.isValid = this.isValid && this.rent.dailyFair > 0;
-		},
-		validateRentDays() {
-			if (!this.rent.rentDays) {
-				this.errors.push('An amount of days must be set for the rent.');
-			}
-
-			this.isValid = this.isValid && this.rent.rentDays > 0;
 		},
 		validateRentDate() {
 			const hasNoDate = !this.rent.date;
@@ -218,8 +206,7 @@ export default {
 				rent_date: this.rent.date,
 				return_date: this.rent.returnDate,
 				daily_fee: this.rent.dailyFair,
-				duration_in_days: this.rent.rentDays,
-				employee_id: this.rent.employeeId,
+				employee_id: this.employeeId,
 				comment: this.rent.comment
 			};
 
@@ -256,7 +243,6 @@ export default {
 				vehicleId: null,
 				clientId: null,
 				dailyFair: 0.0,
-				rentDays: 1,
 				date: null,
 				returnDate: null,
 				comment: ''
