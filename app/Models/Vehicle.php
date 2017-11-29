@@ -78,6 +78,11 @@ class Vehicle extends Model
         return $this->belongsTo(Fuel::class, 'fuel_id');
     }
 
+    public function setAsRented(): bool
+    {
+        return $this->update(['state' => VehicleState::RENTED]);
+    }
+
     public static function getWithRelations($columns = ['*']) : Collection
     {
         return static::getWithRelationsQuery()->get($columns);

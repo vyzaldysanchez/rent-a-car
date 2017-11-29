@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  *
  * @property int    $id
+ * @property int    $vehicle_id
  * @property string $created_at
  * @property string $updated_at
  */
