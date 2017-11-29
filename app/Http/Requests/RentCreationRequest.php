@@ -26,13 +26,12 @@ class RentCreationRequest extends FormRequest
     public function rules()
     {
         return [
-            'vehicle_id' => ['required|integer|exists:vehicles', new VehicleAvailable],
-            'client_id' => 'required|integer|exists:clients',
-            'employee_id' => 'required|integer|exists:employees',
+            'vehicle_id' => ['required', 'integer', 'exists:vehicles,id', new VehicleAvailable],
+            'client_id' => 'required|integer|exists:clients,id',
+            'employee_id' => 'required|integer|exists:employees,id',
             'rent_date' => 'required|date|after_or_equal:now',
             'return_date' => 'required|date|after_or_equal:rent_date',
-            'daily_fee' => ['required|numeric', new GreaterThan(0)],
-            'duration_in_days' => ['required|integer', new GreaterThan(0)]
+            'daily_fee' => ['required', 'numeric', new GreaterThan(0)]
         ];
     }
 }

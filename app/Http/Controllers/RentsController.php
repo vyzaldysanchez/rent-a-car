@@ -12,10 +12,9 @@ class RentsController extends Controller
 {
     public function store(RentCreationRequest $request) : JsonResponse
     {
-        $validFields = $request->validate();
-        $comment = $request->get('comment');
-
-        $rent = Rent::create($validFields + compact('comment'));
+        $request->validate();
+        
+        $rent = Rent::create($request->all());
 
         \Event::dispatch(new RentRegistered($rent));
 
