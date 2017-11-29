@@ -21,7 +21,7 @@ class GreaterThan implements Rule
      */
     public function passes($attribute, $value) : bool
     {
-        return $value > $limit;
+        return $value > $this->limit;
     }
 
     /**
