@@ -51,30 +51,25 @@
 
 <script>
 import fgSelectHelper from './../../../UIComponents/Inputs/Helpers/fg-select.helper';
+import { AUTH_USER_KEY } from '../../../../services/user.service';
 
 export default {
 	data() {
 		return {
-			rent: {
-				vehicleId: null,
-				clientId: null,
-				dailyFair: 0.0,
-				rentDays: 1,
-				date: null,
-				returnDate: null,
-				comment: ''
-			},
+			rent: this.createInitialRent(),
 			vehicles: [],
 			clients: [],
 			isValid: false,
 			errors: [],
-			isCreatingRent: false
+			isCreatingRent: false,
+			employeeId: 0
 		};
 	},
 	created() {
 		this.getFormDataRequest().then(res => {
-			const [vehicles, clients] = res;
+			const [vehicles, clients, user] = res;
 
+			this.employeeId = user.employeeId;
 			this.vehicles = fgSelectHelper.mapToSelectListItem(vehicles.data, [
 				'id',
 				'description'
@@ -91,7 +86,8 @@ export default {
 		getFormDataRequest() {
 			return Promise.all([
 				this.$axios.get('http://localhost:8000/api/vehicles/available'),
-				this.$axios.get('http://localhost:8000/api/clients')
+				this.$axios.get('http://localhost:8000/api/clients'),
+				this.$storage.getItem(AUTH_USER_KEY)
 			]);
 		},
 		selectVehicle(id) {
@@ -120,6 +116,14 @@ export default {
 
 			if (this.errors.length) {
 				this.notifyErrors();
+			} else {
+				this.$swal({
+					title: 'Are you sure?',
+					html: `The rent will be created.`,
+					type: 'warning',
+					showConfirmButton: true,
+					showCancelButton: true
+				}).then(this.save.bind(this));
 			}
 		},
 		validateSelectedVehicle() {
@@ -206,6 +210,57 @@ export default {
 				horizontalAlign: 'right',
 				icon: 'fa fa-warning'
 			});
+		},
+		save() {
+			const body = {
+				vehicle_id: this.rent.vehicleId,
+				client_id: this.rent.clientId,
+				rent_date: this.rent.date,
+				return_date: this.rent.returnDate,
+				daily_fee: this.rent.dailyFair,
+				duration_in_days: this.rent.rentDays,
+				employee_id: this.rent.employeeId,
+				comment: this.rent.comment
+			};
+
+			this.isCreatingRent = true;
+
+			this.$axios
+				.post('http://localhost:8000/api/rents', body)
+				.then(resp => {
+					const eventToEmit = 'rent-created';
+					this.isCreatingRent = false;
+					this.clearForm();
+					this.$emit(eventToEmit, resp.data);
+				})
+				.catch(error => {
+					this.isValid = false;
+					this.isCreatingRent = false;
+					const errors = error.response.data.errors || [
+						error.response.data.message
+					];
+					this.errors.push(
+						Object.values(errors).map(error => error[0])
+					);
+					this.notifyErrors();
+				});
+		},
+		clearForm() {
+			this.employee = this.createInitialRent();
+			this.passwordConfirmation = '';
+			this.activateCredentials = false;
+			this.onEditionMode = false;
+		},
+		createInitialRent() {
+			return {
+				vehicleId: null,
+				clientId: null,
+				dailyFair: 0.0,
+				rentDays: 1,
+				date: null,
+				returnDate: null,
+				comment: ''
+			};
 		}
 	}
 };

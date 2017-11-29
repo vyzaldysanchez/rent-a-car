@@ -63,4 +63,6 @@ Route::middleware('web')->group(function () {
     Route::post('users', 'UsersController@store');
     Route::put('users/{user}', 'UsersController@update');
     Route::delete('users/{user}', 'UsersController@delete');
+
+    Route::resource('/rents', 'RentsController');
 });

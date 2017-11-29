@@ -28,6 +28,7 @@ class RentCreationRequest extends FormRequest
         return [
             'vehicle_id' => ['required|integer|exists:vehicles', new VehicleAvailable],
             'client_id' => 'required|integer|exists:clients',
+            'employee_id' => 'required|integer|exists:employees',
             'rent_date' => 'required|date|after_or_equal:now',
             'return_date' => 'required|date|after_or_equal:rent_date',
             'daily_fee' => ['required|numeric', new GreaterThan(0)],
