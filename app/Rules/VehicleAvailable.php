@@ -16,7 +16,7 @@ class VehicleAvailable implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Vehicle::where('status', '=', VehicleState::AVAILABLE)->find($value) != null;
+        return Vehicle::where('state', '=', VehicleState::AVAILABLE)->find($value) != null;
     }
 
     /**

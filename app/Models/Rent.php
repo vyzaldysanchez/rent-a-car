@@ -1,14 +1,15 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 /**
  * Class Rent
  * @package App\Models
  *
  * @property int    $id
+ * @property int    $vehicle_id
  * @property string $created_at
  * @property string $updated_at
  */
@@ -36,4 +37,18 @@ class Rent extends Model
         'vehicle_id',
         'client_id',
     ];
+
+    protected static function boot() : void
+    {
+        parent::boot();
+
+        static::saving(function (Rent $rent) {
+            $rentDate = Carbon::createFromFormat('Y-m-d', $rent->attributes['rent_date']);
+            $returnDate = Carbon::createFromFormat('Y-m-d', $rent->attributes['return_date']);
+            
+            $rent->attributes['duration_in_days'] = $rentDate->diffInDays($returnDate);
+
+            return $rent;
+        });
+    }
 }

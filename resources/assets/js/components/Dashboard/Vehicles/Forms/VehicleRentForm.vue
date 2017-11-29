@@ -25,15 +25,11 @@
         <fg-input type="number" id="fair" name="fair" label="Daily fair" v-model="rent.dailyFair" :min="0.00"></fg-input>
       </div>
       
-      <div class="col-md-6 form-group">
-        <fg-input type="number" id="days" name="days" label="Rent days" v-model="rent.rentDays" :min="1"></fg-input>
-      </div>
-      
       <div class="col-md-12 form-group">
         <fg-textarea label="Comment" id="comment" name="comment" v-model="rent.comment"></fg-textarea>
       </div>
 
-      <div class="form-group">
+      <div class="col-md-12 form-group">
         <button type="button" class="btn btn-primary btn-fill center-block" :class="{'disabled': isCreatingRent}"
             @click.prevent="validBeforeSave">Save
         </button>
@@ -51,30 +47,25 @@
 
 <script>
 import fgSelectHelper from './../../../UIComponents/Inputs/Helpers/fg-select.helper';
+import { AUTH_USER_KEY } from '../../../../services/user.service';
 
 export default {
 	data() {
 		return {
-			rent: {
-				vehicleId: null,
-				clientId: null,
-				dailyFair: 0.0,
-				rentDays: 1,
-				date: null,
-				returnDate: null,
-				comment: ''
-			},
+			rent: this.createInitialRent(),
 			vehicles: [],
 			clients: [],
 			isValid: false,
 			errors: [],
-			isCreatingRent: false
+			isCreatingRent: false,
+			employeeId: 0
 		};
 	},
 	created() {
 		this.getFormDataRequest().then(res => {
-			const [vehicles, clients] = res;
+			const [vehicles, clients, user] = res;
 
+			this.employeeId = user.employeeId;
 			this.vehicles = fgSelectHelper.mapToSelectListItem(vehicles.data, [
 				'id',
 				'description'
@@ -91,7 +82,8 @@ export default {
 		getFormDataRequest() {
 			return Promise.all([
 				this.$axios.get('http://localhost:8000/api/vehicles/available'),
-				this.$axios.get('http://localhost:8000/api/clients')
+				this.$axios.get('http://localhost:8000/api/clients'),
+				this.$storage.getItem(AUTH_USER_KEY)
 			]);
 		},
 		selectVehicle(id) {
@@ -114,12 +106,19 @@ export default {
 			this.validateSelectedVehicle();
 			this.validateSelectedClient();
 			this.validateDailyFair();
-			this.validateRentDays();
 			this.validateRentDate();
 			this.validateReturnDate();
 
 			if (this.errors.length) {
 				this.notifyErrors();
+			} else {
+				this.$swal({
+					title: 'Are you sure?',
+					html: `The rent will be created.`,
+					type: 'warning',
+					showConfirmButton: true,
+					showCancelButton: true
+				}).then(this.save.bind(this));
 			}
 		},
 		validateSelectedVehicle() {
@@ -142,13 +141,6 @@ export default {
 			}
 
 			this.isValid = this.isValid && this.rent.dailyFair > 0;
-		},
-		validateRentDays() {
-			if (!this.rent.rentDays) {
-				this.errors.push('An amount of days must be set for the rent.');
-			}
-
-			this.isValid = this.isValid && this.rent.rentDays > 0;
 		},
 		validateRentDate() {
 			const hasNoDate = !this.rent.date;
@@ -206,6 +198,55 @@ export default {
 				horizontalAlign: 'right',
 				icon: 'fa fa-warning'
 			});
+		},
+		save() {
+			const body = {
+				vehicle_id: this.rent.vehicleId,
+				client_id: this.rent.clientId,
+				rent_date: this.rent.date,
+				return_date: this.rent.returnDate,
+				daily_fee: this.rent.dailyFair,
+				employee_id: this.employeeId,
+				comment: this.rent.comment
+			};
+
+			this.isCreatingRent = true;
+
+			this.$axios
+				.post('http://localhost:8000/api/rents', body)
+				.then(resp => {
+					const eventToEmit = 'rent-created';
+					this.isCreatingRent = false;
+					this.clearForm();
+					this.$emit(eventToEmit, resp.data);
+				})
+				.catch(error => {
+					this.isValid = false;
+					this.isCreatingRent = false;
+					const errors = error.response.data.errors || [
+						error.response.data.message
+					];
+					this.errors.push(
+						Object.values(errors).map(error => error[0])
+					);
+					this.notifyErrors();
+				});
+		},
+		clearForm() {
+			this.employee = this.createInitialRent();
+			this.passwordConfirmation = '';
+			this.activateCredentials = false;
+			this.onEditionMode = false;
+		},
+		createInitialRent() {
+			return {
+				vehicleId: null,
+				clientId: null,
+				dailyFair: 0.0,
+				date: null,
+				returnDate: null,
+				comment: ''
+			};
 		}
 	}
 };
