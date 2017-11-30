@@ -22,7 +22,7 @@ class CreateRentsTable extends Migration
             $table->float('daily_fee')->default(0.00);
             $table->integer('duration_in_days')->default(1);
             $table->text('comment')->nullable();
-            $table->enum('state', RentState::getAll())->default(RentState::NOT_STARTED);
+            $table->enum('state', RentState::getAll())->default(RentState::ON_GOING);
 
             $table->integer('employee_id')->unsigned()->default(0);
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');

@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Rent
@@ -45,10 +46,20 @@ class Rent extends Model
         static::saving(function (Rent $rent) {
             $rentDate = Carbon::createFromFormat('Y-m-d', $rent->attributes['rent_date']);
             $returnDate = Carbon::createFromFormat('Y-m-d', $rent->attributes['return_date']);
-            
+
             $rent->attributes['duration_in_days'] = $rentDate->diffInDays($returnDate);
 
             return $rent;
         });
+    }
+
+    public function vehicle() : BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function client() : BelongsTo
+    {
+        return $this->belongsTo(Client::class);
     }
 }
