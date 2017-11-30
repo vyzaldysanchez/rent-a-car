@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Jimmyjs\ReportGenerator\ServiceProvider::class,
 
         /*
          * Application Service Providers...
