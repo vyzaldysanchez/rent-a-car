@@ -4,18 +4,26 @@
 			<p class="text-center">Rents Report</p>
 		</div>
 
+		<div class="col-md-4 col-md-offset-4">
+			<fg-select label="Search by" placeholder="Select one of the following" :options="options" 
+				:value="field" @change="value => this.field = value"></fg-select>	
+		</div>
+
 	    <div class="col-md-6">
-			<input type="date" name="report-since" class="form-control" v-model="since" />
+			<label for="report-since">Since:</label>
+			<input type="date" name="report-since" id="report-since" class="form-control" v-model="since" />
 		</div>
 
 		<div class="col-md-6">
-			<input type="date" name="report-to" class="form-control" v-model="to" />
+			<label for="report-to">To:</label>
+			<input type="date" name="report-to" id="report-to" class="form-control" v-model="to" />
 		</div>
 
 		<hr>
 
 		<div class="col-md-12">
-       		<a class="btn btn-primary btn-fill center-block" id="report-btn" target="_blank" :href="reportLink">Generate Report</a>
+       		<a class="btn btn-primary btn-fill center-block" id="report-btn" target="_blank" 
+			   :href="reportLink" @click="generateReport($event)">Generate Report</a>
 		</div>
 	</div>
 </template>
@@ -24,14 +32,36 @@
 export default {
 	computed: {
 		reportLink() {
-			return `/reports?since=${this.since}&to=${this.to}&field=rent_date`;
+			return `/reports?since=${this.since}&to=${this.to}&field=${this.field}`;
 		}
 	},
 	data() {
 		return {
 			since: null,
-			to: null
+			to: null,
+			field: null,
+			get options() {
+				return [
+					{ value: 'rent_date', label: 'Date' },
+					{ value: 'return_date', label: 'Return' }
+				];
+			}
 		};
+	},
+	methods: {
+		generateReport(event) {
+			if (!this.since && !this.to) {
+				event.preventDefault();
+
+				this.$notifications.notify({
+					message: 'Must select at least the "since" date.',
+					type: 'danger',
+					verticalAlign: 'bottom',
+					horizontalAlign: 'right',
+					icon: 'fa fa-warning'
+				});
+			}
+		}
 	}
 };
 </script>
