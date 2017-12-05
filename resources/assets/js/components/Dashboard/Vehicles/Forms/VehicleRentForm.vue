@@ -6,14 +6,6 @@
 
     <form>
       <div class="col-md-6 form-group">
-        <fg-select :options="vehicles" id="vehicle" name="vehicle" label="Vehicle to rent" placeholder="Select the vehicle to rent" v-model="rent.vehicleId" @change="selectVehicle"></fg-select>
-      </div>
-      
-      <div class="col-md-6 form-group">
-        <fg-select :options="clients" id="client" name="client" label="Client who rents" placeholder="Select the client to rent the car" v-model="rent.clientId" @change="selectClient"></fg-select>
-      </div>
-      
-      <div class="col-md-6 form-group">
         <fg-input type="date" id="rentDate" name="rentDate" label="Rent date" v-model="rent.date"></fg-input>
       </div>
       
@@ -46,34 +38,28 @@
 
 
 <script>
-import fgSelectHelper from './../../../UIComponents/Inputs/Helpers/fg-select.helper';
 import { AUTH_USER_KEY } from '../../../../services/user.service';
+import { RENT_INSPECTION } from './../../../../utils/form.utils';
 
 export default {
 	data() {
 		return {
 			rent: this.createInitialRent(),
-			vehicles: [],
-			clients: [],
 			isValid: false,
 			errors: [],
 			isCreatingRent: false,
-			employeeId: 0
+			employeeId: 0,
+			inspection: null
 		};
 	},
 	created() {
 		this.getFormDataRequest().then(res => {
-			const [vehicles, clients, user] = res;
+			const [user, inspection] = res;
+
+			console.log(RENT_INSPECTION);
 
 			this.employeeId = user.employeeId;
-			this.vehicles = fgSelectHelper.mapToSelectListItem(vehicles.data, [
-				'id',
-				'description'
-			]);
-			this.clients = fgSelectHelper.mapToSelectListItem(clients.data, [
-				'id',
-				'name'
-			]);
+			this.inspection = inspection;
 
 			this.$emit('loaded');
 		});
@@ -81,9 +67,8 @@ export default {
 	methods: {
 		getFormDataRequest() {
 			return Promise.all([
-				this.$axios.get('http://localhost:8000/api/vehicles/available'),
-				this.$axios.get('http://localhost:8000/api/clients'),
-				this.$storage.getItem(AUTH_USER_KEY)
+				this.$storage.getItem(AUTH_USER_KEY),
+				this.$storage.getItem(RENT_INSPECTION)
 			]);
 		},
 		selectVehicle(id) {
@@ -94,17 +79,13 @@ export default {
 		},
 		validBeforeSave() {
 			this.isCreatingRent = true;
-
 			this.validate();
-
 			this.isCreatingRent = false;
 		},
 		validate() {
 			this.errors = [];
 			this.isValid = true;
 
-			this.validateSelectedVehicle();
-			this.validateSelectedClient();
 			this.validateDailyFair();
 			this.validateRentDate();
 			this.validateReturnDate();
@@ -120,20 +101,6 @@ export default {
 					showCancelButton: true
 				}).then(this.save.bind(this));
 			}
-		},
-		validateSelectedVehicle() {
-			if (!this.rent.vehicleId) {
-				this.errors.push('You must select a vehicle.');
-			}
-
-			this.isValid = this.isValid && this.rent.vehicleId > 0;
-		},
-		validateSelectedClient() {
-			if (!this.rent.clientId) {
-				this.errors.push('A client must be selected.');
-			}
-
-			this.isValid = this.isValid && this.rent.clientId > 0;
 		},
 		validateDailyFair() {
 			if (!this.rent.dailyFair) {
@@ -201,8 +168,8 @@ export default {
 		},
 		save() {
 			const body = {
-				vehicle_id: this.rent.vehicleId,
-				client_id: this.rent.clientId,
+				vehicle_id: this.inspection.vehicle_id,
+				client_id: this.inspection.client_id,
 				rent_date: this.rent.date,
 				return_date: this.rent.returnDate,
 				daily_fee: this.rent.dailyFair,
@@ -213,27 +180,34 @@ export default {
 			this.isCreatingRent = true;
 
 			this.$axios
-				.post('http://localhost:8000/api/rents', body)
+				.post('/api/rents', body)
 				.then(resp => {
+					this.inspection.rent_id = resp.data.id;
+
+					return this.$axios
+						.post('/api/inspections', this.inspection)
+						.then(res => {
 					const eventToEmit = 'rent-created';
 					this.isCreatingRent = false;
 					this.clearForm();
+							this.$storage.removeItem(RENT_INSPECTION);
 					this.$emit(eventToEmit, resp.data);
 				})
-				.catch(error => {
+						.catch(this.throwError.bind(this));
+				})
+				.catch(this.throwError.bind(this));
+		},
+		clearForm() {
+			this.rent = this.createInitialRent();
+		},
+		throwError(error) {
 					this.isValid = false;
 					this.isCreatingRent = false;
 					const errors = error.response.data.errors || [
 						error.response.data.message
 					];
-					this.errors.push(
-						Object.values(errors).map(error => error[0])
-					);
+			this.errors.push(Object.values(errors).map(error => error[0]));
 					this.notifyErrors();
-				});
-		},
-		clearForm() {
-			this.rent = this.createInitialRent();
 		},
 		createInitialRent() {
 			return {
