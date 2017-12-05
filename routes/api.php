@@ -65,4 +65,6 @@ Route::middleware('web')->group(function () {
     Route::delete('users/{user}', 'UsersController@delete');
 
     Route::resource('/rents', 'RentsController');
+
+    Route::resource('/inspections', 'InspectionsController');
 });
