@@ -1,4 +1,5 @@
 import fgInput from './components/UIComponents/Inputs/formGroupInput.vue';
+import fgRange from './components/UIComponents/Inputs/formGroupRange.vue';
 import fgSelect from './components/UIComponents/Inputs/formGroupSelect.vue';
 import fgCheck from './components/UIComponents/Inputs/formGroupCheck.vue';
 import fgTextarea from './components/UIComponents/Inputs/formGroupTextarea.vue';
@@ -9,13 +10,14 @@ import DropDown from './components/UIComponents/Dropdown.vue';
  */
 
 const GlobalComponents = {
-  install(Vue) {
-    Vue.component('FgInput', fgInput);
-    Vue.component('FgSelect', fgSelect);
-    Vue.component('FgCheck', fgCheck);
-    Vue.component('FgTextarea', fgTextarea);
-    Vue.component('DropDown', DropDown);
-  }
+	install(Vue) {
+		Vue.component('FgInput', fgInput);
+		Vue.component('FgRange', fgRange);
+		Vue.component('FgSelect', fgSelect);
+		Vue.component('FgCheck', fgCheck);
+		Vue.component('FgTextarea', fgTextarea);
+		Vue.component('DropDown', DropDown);
+	}
 };
 
 export default GlobalComponents;
