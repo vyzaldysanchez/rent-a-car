@@ -11,8 +11,8 @@ class ReportsController extends Controller
     public function find(Request $request)
     {
         $today = Carbon::now()->toDateString();
-        $since = $request->has('since') ? $request->query('since') : $today;
-        $to = $request->has('to') ? $request->query('to') : $today;
+        $since = ($request->has('since') && $request->query('since') !== 'null') ? $request->query('since') : $today;
+        $to = ($request->has('to') && $request->query('to') !== 'null') ? $request->query('to') : Carbon::parse($since)->addDays(1)->toDateString();
         $field = $request->query('field');
         $title = 'Rents report';
         $meta = [
