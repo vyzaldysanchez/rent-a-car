@@ -32,7 +32,8 @@
 export default {
 	computed: {
 		reportLink() {
-			return `/reports?since=${this.since}&to=${this.to}&field=${this.field}`;
+			return `/reports?since=${this.since}&to=${this.to}&field=${this
+				.field}`;
 		}
 	},
 	data() {
@@ -50,11 +51,23 @@ export default {
 	},
 	methods: {
 		generateReport(event) {
-			if (!this.since && !this.to) {
-				event.preventDefault();
+			const datesAreMissing = !this.since && !this.to;
+			const fieldIsMissing = !this.field;
 
+			let message = '';
+
+			if (datesAreMissing) {
+				message = 'Must select at least the "since" date.';
+			}
+
+			if (fieldIsMissing) {
+				message = 'Must select a field to filter by.';
+			}
+
+			if (fieldIsMissing || datesAreMissing) {
+				event.preventDefault();
 				this.$notifications.notify({
-					message: 'Must select at least the "since" date.',
+					message,
 					type: 'danger',
 					verticalAlign: 'bottom',
 					horizontalAlign: 'right',
