@@ -95,7 +95,9 @@ export default {
 			bottomRightTire: '',
 			topLeftTire: '',
 			topRightTire: '',
-			isCreatingInspection: false
+			isCreatingInspection: false,
+			isFormValid: false,
+			error: []
 		};
 	},
 	computed: {
@@ -129,13 +131,60 @@ export default {
 			this[tireName] = value;
 		},
 		validBeforeSave() {
-			this.$swal({
-				title: 'Are you sure?',
-				html: `The inspection will be stored and performed when the rent is finished!.`,
-				type: 'warning',
-				showConfirmButton: true,
-				showCancelButton: true
-			}).then(this.save.bind(this));
+			this.errors = [];
+			this.isFormValid = true;
+
+			this.validate();
+
+			if (this.isFormValid) {
+				this.$swal({
+					title: 'Are you sure?',
+					html: `The inspection will be stored and performed when the rent is finished!.`,
+					type: 'warning',
+					showConfirmButton: true,
+					showCancelButton: true
+				}).then(this.save.bind(this));
+			} else {
+				this.notifyErrors();
+			}
+		},
+		validate() {
+			this.validateVehicle();
+			this.validateClient();
+			this.validateTires();
+		},
+		validateVehicle() {
+			const isValid = !!this.vehicleId;
+
+			if (!isValid) {
+				this.errors.push('Must select a vehicle!');
+			}
+
+			this.isFormValid = this.isFormValid && isValid;
+		},
+		validateClient() {
+			const isValid = !!this.clientId;
+
+			if (!isValid) {
+				this.errors.push('Must select a client!');
+			}
+
+			this.isFormValid = this.isFormValid && isValid;
+		},
+		validateTires() {
+			const isTopLeftValid = !!this.topLeftTire;
+			const isTopRightValid = !!this.topRightTire;
+			const isBottomLeftValid = !!this.bottomLeftTire;
+			const isBottomRightValid = !!this.bottomRightTire;
+
+			const isTopValid = isTopLeftValid && isTopRightValid;
+			const isBottomValid = isBottomLeftValid && isBottomRightValid;
+
+			if (!isTopValid || !isBottomValid) {
+				this.errors.push('Must set the tires state!');
+			}
+
+			this.isFormValid = this.isFormValid && isTopValid && isBottomValid;
 		},
 		save() {
 			const body = {
@@ -161,6 +210,15 @@ export default {
 				.then(() =>
 					this.$router.push({ path: '/admin/vehicles/rent' })
 				);
+		},
+		notifyErrors() {
+			this.$notifications.notify({
+				message: this.$formsValidator.getErrorListAsHTML(this.errors),
+				type: 'danger',
+				verticalAlign: 'bottom',
+				horizontalAlign: 'right',
+				icon: 'fa fa-warning'
+			});
 		}
 	}
 };
