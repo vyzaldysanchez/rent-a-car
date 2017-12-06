@@ -78,9 +78,14 @@ class Vehicle extends Model
         return $this->belongsTo(Fuel::class, 'fuel_id');
     }
 
-    public function setAsRented(): bool
+    public function setAsRented() : bool
     {
         return $this->update(['state' => VehicleState::RENTED]);
+    }
+
+    public function setAsAvailable() : bool
+    {
+        return $this->update(['state' => VehicleState::AVAILABLE]);
     }
 
     public static function getWithRelations($columns = ['*']) : Collection

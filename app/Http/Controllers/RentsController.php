@@ -7,7 +7,11 @@ use Illuminate\Http \{
 use App\Http\Requests\RentCreationRequest;
 use App\Models\Rent;
 use App\Events\RentRegistered;
-use App\Http\Resources\RentsResourceCollection;
+use App\Http\Resources \{
+    RentsResource, RentsResourceCollection
+};
+use App\Events\RentEnded;
+use App\Http\Requests\RentCancelationRequest;
 
 class RentsController extends Controller
 {
@@ -31,5 +35,18 @@ class RentsController extends Controller
         \Event::dispatch(new RentRegistered($rent));
 
         return $this->created($rent);
+    }
+
+    public function update(RentCancelationRequest $request, Rent $rent) : JsonResponse
+    {
+        $request->validate();
+
+        $rent->state = $request->get('state');
+
+        $rent->update();
+
+        \Event::dispatch(new RentEnded($rent));
+
+        return $this->success(new RentsResource($rent));
     }
 }
