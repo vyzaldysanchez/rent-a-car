@@ -50,13 +50,7 @@ export default {
 				vehicle: rent.vehicle,
 				client: rent.client,
 				state: rent.state.toUpperCase(),
-				actions: [
-					{
-						text: '<button class="btn btn-danger">End</button>',
-						click: this.confirmRentEnding.bind(this, rent.id),
-						classes: 'text-danger'
-					}
-				]
+				actions: [this.getActionFor(rent)]
 			}));
 		}
 	},
@@ -84,6 +78,21 @@ export default {
 						rent => (rent.id === res.data.id ? res.data : rent)
 					);
 				});
+		},
+		getActionFor(rent) {
+			if (rent.state === 'on going') {
+				return {
+					text: '<button class="btn btn-danger">End</button>',
+					click: this.confirmRentEnding.bind(this, rent.id),
+					classes: 'text-danger'
+				};
+			}
+
+			return {
+				text: '<span>Nothing to do!</span>',
+				click: () => null,
+				classes: 'text-muted disabled'
+			};
 		}
 	}
 };
