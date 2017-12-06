@@ -187,12 +187,12 @@ export default {
 					return this.$axios
 						.post('/api/inspections', this.inspection)
 						.then(res => {
-					const eventToEmit = 'rent-created';
-					this.isCreatingRent = false;
-					this.clearForm();
+							const eventToEmit = 'rent-created';
+							this.isCreatingRent = false;
+							this.clearForm();
 							this.$storage.removeItem(RENT_INSPECTION);
-					this.$emit(eventToEmit, resp.data);
-				})
+							this.$emit(eventToEmit, resp.data);
+						})
 						.catch(this.throwError.bind(this));
 				})
 				.catch(this.throwError.bind(this));
@@ -201,13 +201,13 @@ export default {
 			this.rent = this.createInitialRent();
 		},
 		throwError(error) {
-					this.isValid = false;
-					this.isCreatingRent = false;
-					const errors = error.response.data.errors || [
-						error.response.data.message
-					];
+			this.isValid = false;
+			this.isCreatingRent = false;
+			const errors = error.response.data.errors || [
+				error.response.data.message
+			];
 			this.errors.push(Object.values(errors).map(error => error[0]));
-					this.notifyErrors();
+			this.notifyErrors();
 		},
 		createInitialRent() {
 			return {
