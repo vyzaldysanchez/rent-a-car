@@ -17,7 +17,7 @@ class RentsController extends Controller
 {
     public function index() : JsonResponse
     {
-        $rents = Rent::all();
+        $rents = Rent::orderBy('created_at', 'desc')->get(['*']);
 
         if ($rents->count()) {
             return $this->success(new RentsResourceCollection($rents));
