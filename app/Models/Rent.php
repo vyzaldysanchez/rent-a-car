@@ -44,8 +44,8 @@ class Rent extends Model
         parent::boot();
 
         static::saving(function (Rent $rent) {
-            $rentDate = Carbon::createFromFormat('Y-m-d', $rent->attributes['rent_date']);
-            $returnDate = Carbon::createFromFormat('Y-m-d', $rent->attributes['return_date']);
+            $rentDate = Carbon::parse($rent->attributes['rent_date']);
+            $returnDate = Carbon::parse($rent->attributes['return_date']);
 
             $rent->attributes['duration_in_days'] = $rentDate->diffInDays($returnDate);
 

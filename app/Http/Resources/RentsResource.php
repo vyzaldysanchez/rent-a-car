@@ -15,11 +15,13 @@ class RentsResource extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'duration_in_days' => $this->duration_in_days . ' days',
             'return_date' => Carbon::parse($this->return_date)->toFormattedDateString(),
             'rent_date' => Carbon::parse($this->rent_date)->toFormattedDateString(),
             'vehicle' => $this->vehicle->description,
-            'client' => $this->client->name
+            'client' => $this->client->name,
+            'state' => str_replace('_', ' ',  $this->state)
         ];
     }
 }

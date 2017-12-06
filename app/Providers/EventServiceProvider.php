@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
@@ -16,6 +15,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RentRegistered' => [
             'App\Listeners\RentRegisteredListener',
         ],
+        'App\Events\RentEnded' => [
+            'App\Listeners\RentEndedListener'
+        ]
     ];
 
     /**

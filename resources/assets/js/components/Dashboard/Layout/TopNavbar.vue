@@ -11,10 +11,10 @@
                 </button>
                 <a class="navbar-brand">{{routeName}}</a>
             </div>
-            <div class="navbar-right-menu">
+            <div class="navbar-right-menu" v-if="isNotRent">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/#/admin/vehicles/rent" class="btn btn-primary">
+                        <a href="/#/admin/vehicles/inspection" class="btn btn-primary">
                         Make a rent -> <i class="ti-car"></i>
                         </a>
                     </li>
@@ -24,37 +24,44 @@
     </nav>
 </template>
 <script>
-    export default {
-        computed: {
-            routeName() {
-                const {name} = this.$route;
-                return this.capitalizeFirstLetter(name)
-            }
-        },
-        data() {
-            return {
-                activeNotifications: false
-            }
-        },
-        methods: {
-            capitalizeFirstLetter(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1)
-            },
-            toggleNotificationDropDown() {
-                this.activeNotifications = !this.activeNotifications
-            },
-            closeDropDown() {
-                this.activeNotifications = false
-            },
-            toggleSidebar() {
-                this.$sidebar.displaySidebar(!this.$sidebar.showSidebar)
-            },
-            hideSidebar() {
-                this.$sidebar.displaySidebar(false)
-            }
-        }
-    }
+export default {
+	computed: {
+		routeName() {
+			const { name } = this.$route;
+			return this.capitalizeFirstLetter(name);
+		},
+		isNotRent() {
+			const { path } = this.$route;
 
+			return (
+				path !== '/admin/vehicles/inspection' &&
+				path !== '/admin/vehicles/rent'
+			);
+		}
+	},
+	data() {
+		return {
+			activeNotifications: false
+		};
+	},
+	methods: {
+		capitalizeFirstLetter(string) {
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		},
+		toggleNotificationDropDown() {
+			this.activeNotifications = !this.activeNotifications;
+		},
+		closeDropDown() {
+			this.activeNotifications = false;
+		},
+		toggleSidebar() {
+			this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+		},
+		hideSidebar() {
+			this.$sidebar.displaySidebar(false);
+		}
+	}
+};
 </script>
 <style>
 

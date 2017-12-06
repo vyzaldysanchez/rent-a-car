@@ -5,6 +5,7 @@ import VehicleFuels from '../../components/Dashboard/Vehicles/VehicleFuels.vue';
 import Vehicles from '../../components/Dashboard/Vehicles/Vehicles.vue';
 import VehicleRent from '../../components/Dashboard/Vehicles/VehicleRent.vue';
 import VehicleRents from '../../components/Dashboard/Vehicles/VehicleRents.vue';
+import VehicleInspection from './../../components/Dashboard/Vehicles/VehicleInspection';
 
 export default [
 	{
@@ -31,6 +32,11 @@ export default [
 		path: 'vehicles/manage',
 		name: 'vehicles',
 		component: Vehicles
+	},
+	{
+		path: 'vehicles/inspection',
+		name: 'vehicle inspection',
+		component: VehicleInspection
 	},
 	{
 		path: 'vehicles/rent',

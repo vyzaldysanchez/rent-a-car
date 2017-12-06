@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Inspection
@@ -38,6 +38,20 @@ class Inspection extends Model
         'top_left_tire_state',
         'top_right_tire_state',
         'bottom_left_tire_state',
-        'bottom_right_tire_state'
+        'bottom_right_tire_state',
+        'client_id',
+        'employee_id',
+        'vehicle_id',
+        'rent_id'
     ];
+
+    public function rent() : BelongsTo
+    {
+        return $this->belongsTo(VehicleRent::class);
+    }
+
+    public function vehicle() : BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
 }
